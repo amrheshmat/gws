@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MWS.Infrustructure", "MWS.Infrustructure\MWS.Infrustructure.csproj", "{D342BB5D-A8AD-450E-BD2F-70E8E02EDBB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9E7DEBED-9835-477F-9CF5-040A64D18D14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MWS.Data", "MWS.Data\MWS.Data.csproj", "{10831EB6-ABF1-422D-9FEB-C23CB5AFCE50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{0A114E51-DEBF-4733-95DA-B2DEC759566C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{6A2C5017-0672-44C2-BCB3-7F38B9D48EED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrustructure", "Infrustructure", "{05426091-C32E-448E-AE6A-A44330415518}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MWS.Business.Shared", "Business\MWS.Business.Shared\MWS.Business.Shared.csproj", "{76A47648-E1CA-471A-ACBD-E9EC3F083222}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleMVC", "Services\SampleMVC\SampleMVC.csproj", "{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripBusiness", "Business\TripBusiness\TripBusiness.csproj", "{18BBA748-6712-4DC8-B92E-2B67641A18FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D342BB5D-A8AD-450E-BD2F-70E8E02EDBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D342BB5D-A8AD-450E-BD2F-70E8E02EDBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D342BB5D-A8AD-450E-BD2F-70E8E02EDBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D342BB5D-A8AD-450E-BD2F-70E8E02EDBB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10831EB6-ABF1-422D-9FEB-C23CB5AFCE50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10831EB6-ABF1-422D-9FEB-C23CB5AFCE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10831EB6-ABF1-422D-9FEB-C23CB5AFCE50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10831EB6-ABF1-422D-9FEB-C23CB5AFCE50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A47648-E1CA-471A-ACBD-E9EC3F083222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A47648-E1CA-471A-ACBD-E9EC3F083222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A47648-E1CA-471A-ACBD-E9EC3F083222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A47648-E1CA-471A-ACBD-E9EC3F083222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18BBA748-6712-4DC8-B92E-2B67641A18FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18BBA748-6712-4DC8-B92E-2B67641A18FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18BBA748-6712-4DC8-B92E-2B67641A18FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18BBA748-6712-4DC8-B92E-2B67641A18FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D342BB5D-A8AD-450E-BD2F-70E8E02EDBB4} = {05426091-C32E-448E-AE6A-A44330415518}
+		{10831EB6-ABF1-422D-9FEB-C23CB5AFCE50} = {6A2C5017-0672-44C2-BCB3-7F38B9D48EED}
+		{76A47648-E1CA-471A-ACBD-E9EC3F083222} = {0A114E51-DEBF-4733-95DA-B2DEC759566C}
+		{F5F7D193-5765-4A1A-AB95-DEAB63671D1A} = {9E7DEBED-9835-477F-9CF5-040A64D18D14}
+		{18BBA748-6712-4DC8-B92E-2B67641A18FD} = {0A114E51-DEBF-4733-95DA-B2DEC759566C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2FF6515-4427-48AC-8449-ACA2E2563054}
+	EndGlobalSection
+EndGlobal

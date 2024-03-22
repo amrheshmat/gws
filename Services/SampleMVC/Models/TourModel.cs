@@ -1,0 +1,15 @@
+using MWS.Data.Entities;
+
+namespace SampleMVC.Models
+{
+    public class TourModel
+    {
+        public Tour? Tour { get; set; }
+        public List<Include>? includes { get; set; }
+        public List<Exclude>? excludes { get; set; }
+        public List<Expect>? expects { get; set; }
+        public List<Pack>? packs { get; set; }
+        public List<Day>? days { get; set; }
+        public List<TourDay>? tourDays { get; set; }
+    }
+}

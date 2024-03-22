@@ -1,0 +1,292 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@inject IOptions<RequestLocalizationOptions> LocOptions;
+
+@{
+    string returnUrl = ViewContext.HttpContext.Request.Path;
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.TwoLetterISOLanguageName })
+        .ToList();
+    var lang = requestCulture?.RequestCulture.UICulture.Name;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     
+    <meta charset="UTF-8">
+    <title>Travosy - Tour &amp; Travels Agency Tailwind CSS Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Tour &amp; Travels Agency Tailwind CSS Template" name="description">
+    <meta content="Tour, Travels, agency, business, corporate, tour packages, journey, trip, tailwind css, Admin, Landing" name="keywords">
+    <meta name="author" content="Shreethemes">
+    <meta name="website" content="https://shreethemes.in">
+    <meta name="email" content="support@shreethemes.in">
+    <meta name="version" content="1.0.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Css -->
+    <link href="~/css/swiper.min.css" rel="stylesheet">
+    <link href="~/css/tiny-slider.css" rel="stylesheet">
+    <link href="~/css/datepicker.min.css" rel="stylesheet">
+    <!-- Main Css -->
+    <link href="~/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/tailwind.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/gallery.css" rel="stylesheet" type="text/css">
+    <link href="~/css/main-style.css" rel="stylesheet" type="text/css">
+    @if (lang.Contains("ar"))
+    {
+        <link rel="stylesheet" href="~/css/homestyle-ar.css" data-n-g="">
+        <script src="~/js/website-ar.js"></script>
+    }
+</head>
+<body class="dark:bg-slate-900">
+    <!-- Loader Start -->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+    </div> 
+    <!-- Loader End -->
+    <!-- TAGLINE START-->
+    <div class="tagline bg-slate-900">
+        <div class="container relative">
+            <div class="grid grid-cols-1">
+                <div class="flex items-center justify-between">
+                    <ul class="list-none">
+                        <li class="inline-flex items-center ms-2">
+                            <ul class="list-none">
+                                <li class="inline-flex mb-0"><a href="#!" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="#!" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="#!" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter size-4 align-middle" title="twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="tel:+152534-468-854" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone size-4 align-middle" title="phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a></li>
+                            </ul><!--end icon-->
+                        </li>
+                    </ul>
+
+                    <ul class="list-none">
+                        <li class="inline-flex items-center">
+                            <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
+                                <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
+                                <select id="culture"
+                                        name="culture"
+                                        style="border-radius: 10px;"
+                                        onchange="this.form.submit();"
+                                        asp-items="cultureItems"
+                                        asp-for="@requestCulture.RequestCulture.UICulture.Name">
+                                </select>
+                            </form>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div><!--end container-->
+    </div><!--end tagline-->
+    <!-- TAGLINE END-->
+    <!-- Start Navbar -->
+    <nav id="topnav" class="defaultscroll is-sticky tagline-height">
+        <div class="container relative">
+            <!-- Logo container-->
+            <a class="logo" href="/">
+                <span class="inline-block dark:hidden">
+                    <img style="margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="">
+                    <img style="margin-top: 20px;" src="~/images/logo-light.png" class="h-7 l-light" alt="">
+                </span>
+                <img src="~/images/logo-white.png" class="hidden dark:inline-block" alt="">
+            </a>
+            <!-- End Logo container-->
+            <!-- Start Mobile Toggle -->
+            <div class="menu-extras">
+                <div class="menu-item">
+                    <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- End Mobile Toggle -->
+            
+
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu justify-end nav-light">
+                   @*  <li class="has-submenu parent-menu-item active">
+                        <a href="javascript:void(0)">Hero</a><span class="menu-arrow"></span>
+                        <ul class="submenu">
+                            <li><a href="index.html" class="sub-menu-item">Tour One</a></li>
+                            <li class="active"><a href="index-two.html" class="sub-menu-item active">Tour Two</a></li>
+                            <li><a href="index-three.html" class="sub-menu-item">Tour Three</a></li>
+                            <li><a href="index-four.html" class="sub-menu-item">Tour Four</a></li>
+                            <li><a href="index-five.html" class="sub-menu-item">Tour Five</a></li>
+                        </ul>
+                    </li> *@
+                    <li class="active"><a href="/" class="sub-menu-item ">Home</a></li>
+                    <li class="active" id="ourTours"><a href="/" class="sub-menu-item">Our Tours</a></li>
+                    <li class="active"><a href="/contactUs/contactUs" class="sub-menu-item">Contact Us</a></li>
+                    <li class="active"><a href="/aboutUs" class="sub-menu-item">Who We Are</a></li>
+                    <li class="active"><a href="/" class="sub-menu-item">Special Request</a></li>
+                </ul><!--end navigation menu-->
+            </div><!--end navigation-->
+        </div><!--end container-->
+    </nav><!--end header-->
+    <!-- End Navbar -->
+            @RenderBody()
+    <!-- Footer Start -->
+    <footer class="footer bg-dark-footer relative text-gray-200 dark:text-gray-200">
+        <div class="container relative">
+            <div class="grid grid-cols-12">
+                <div class="col-span-12">
+                    <div class="py-[60px] px-0">
+                        <div class="grid md:grid-cols-12 grid-cols-1 gap-6">
+                            <div class="lg:col-span-3 md:col-span-12">
+                                <a href="#" class="text-[22px] focus:outline-none">
+                                    <img src="~/images/logo-light.png" alt="">
+                                </a>
+                                <ul class="list-none mt-6">
+                                    <li class="inline"><a href="https://1.envato.market/travosy" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart size-4 align-middle" title="Buy Now"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></a></li>
+                                    <li class="inline"><a href="https://dribbble.com/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dribbble size-4 align-middle" title="dribbble"><circle cx="12" cy="12" r="10"></circle><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"></path></svg></a></li>
+                                    <li class="inline"><a href="http://linkedin.com/company/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin size-4 align-middle" title="Linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></li>
+                                    <li class="inline"><a href="https://www.facebook.com/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
+                                    <li class="inline"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
+                                    <li class="inline"><a href="https://twitter.com/shreethemes" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter size-4 align-middle" title="twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a></li>
+                                    <li class="inline"><a href="mailto:support@shreethemes.in" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail size-4 align-middle" title="email"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a></li>
+                                </ul><!--end icon-->
+                                <div style="margin-top:50px;">
+                                    <a href="https://api.whatsapp.com/send?phone=00201061840607&amp;text=Hi." class="floatwa" target="_blank">
+                                        <img src="~/images/WhatsApp_icon.png" style="height: 50px;">
+                                        <i class="fa fa-whatsapp my-floatwa icon-whatsapp" style="width: 20px;height: 20px;"></i>
+                                    </a>
+                                </div>
+                            </div><!--end col-->
+
+                            <div class="lg:col-span-3 md:col-span-4">
+                                <div class="lg:ms-8">
+                                    <h5 class="tracking-[1px] text-gray-100 font-semibold">About</h5>
+                                    <ul class="list-none footer-list mt-6">
+                                        <li><a href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">About us</a></li>
+                                        <li class="mt-[10px]"><a href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> FAQ</a></li>
+                                        <li class="mt-[10px]"><a href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> Terms and conditions</a></li>
+                                        @* <li class="mt-[10px]"><a href="pricing.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Pricing</a></li> *@
+                                    </ul>
+                                </div>
+                            </div><!--end col-->
+
+                            <div class="lg:col-span-3 md:col-span-4">
+                                <div style="background:#fff;color:#000;" id="TA_cdswritereviewlgvi761" class="TA_cdswritereviewlgvi">
+                                    <link rel="stylesheet" type="text/css" href="https://static.tacdn.com/css2/build/concat/styleguide-v22291400912a.css" data-rup="styleguide">
+                                    <div id="CDSWIDWRL" class="widWRL  cx_brand_refresh1 "> 
+                                        <div class="widWRLData border "> 
+                                            <div class="widWRLBranding">
+                                                <dl> 
+                                                    <dt>
+                                                        <a target="_blank" href="https://www.tripadvisor.com/">
+                                                            <img style="width: 50%; margin: auto;" src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_lockup_horizontal_secondary_registered.svg" alt="Tripadvisor">
+                                                        </a> 
+                                                    </dt> 
+                                                </dl> 
+                                            </div> 
+                                            <div class="widWRLLink" style="margin: 0px 10px;font-size: 12px;">
+                                                <a target="_blank" href="https://www.tripadvisor.com/Attraction_Review-g294202-d27490275-Reviews-Amr_Heshmat-Giza_Giza_Governorate.html" onclick="ta.cds.handleTALink(62975,this);return true;" rel="nofollow">Review Amr Heshmat</a>
+                                            </div> 
+                                            <form style="font-size: 12px;margin: 0px 10px;" action="https://www.tripadvisor.com/UserReview-g294202-d27490275-Reviews-Amr_Heshmat-Giza_Giza_Governorate.html?m=62976" target="_blank" name="cdsWRLForm1793" id="cdsWRLForm1793" onsubmit="ta.cds.handleTALink(62975,this);return false;">
+                                                <input type="hidden" id="rating01793" value="(Click to rate)"> 
+                                                <input type="hidden" id="rating11793" value="Terrible"> 
+                                                <input type="hidden" id="rating21793" value="Poor"> 
+                                                <input type="hidden" id="rating31793" value="Average"> 
+                                                <input type="hidden" id="rating41793" value="Very Good"> 
+                                                <input type="hidden" id="rating51793" value="Excellent"> 
+                                                <input type="hidden" id="defaultTitle1793" value="Title your review - Describe your stay in one sentence or less. "> 
+                                                <input type="hidden" id="reviewTitle1793" name="ReviewTitle"> 
+                                                <div class="widWRLRating"> 
+                                                    <input style="background: #000;color: #fff;padding: 5px 8px;border-radius: 5px;" type="hidden" name="qid10" id="qid101793" value="0">
+                                                    <span class="widWRLRate ui_bubble_rating bubble_00" id="ratingSpan" onclick="return selectRating(this, event, true, 1793);" onmousemove="return selectRating(this, event, false, 1793);" onmouseout="return lastSetRating(this, 1793);"> </span> <span id="ratingText1793" class="widWRLRatingText">(Click to rate)</span>
+                                                </div> <div class="widWRLReview"> <textarea style="border: 2px solid #979696;height:70px!important" id="taWRLTitle1793" onfocus="initTextArea(this);" rows="3" cols="30" onkeypress="limitLength(this, 120);"> </textarea> </div> <div class="widWRLButton">
+                                                    <input style="background: #000;color: #fff;padding: 5px 10px; border-radius: 5px;" type="submit" id="taWRLContinue1793" name="taWRLContinue1793" value="Continue" onclick="checkTextArea(1793);">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end grid-->
+                    </div><!--end col-->
+                </div>
+            </div><!--end grid-->
+        </div><!--end container-->
+
+        <div class="py-[30px] px-0 border-t border-slate-800">
+            <div class="container relative text-center">
+                <div class="grid grid-cols-1">
+                    <div class="text-center">
+                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="/" target="_blank" class="text-reset">A.Heshmat</a></p>
+                    </div>
+                </div><!--end grid-->
+            </div><!--end container-->
+        </div>
+    </footer><!--end footer-->
+    <!-- Footer End -->
+    <!-- Switcher -->
+    <div class="fixed top-1/4 -left-2 z-50">
+        <span class="relative inline-block rotate-90">
+            <input type="checkbox" class="checkbox opacity-0 absolute" id="chk">
+            <label class="label bg-slate-900 dark:bg-white shadow dark:shadow-gray-800 cursor-pointer rounded-full flex justify-between items-center p-1 w-14 h-8" for="chk">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon w-[18px] h-[18px] text-yellow-500"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun w-[18px] h-[18px] text-yellow-500"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <span class="ball bg-white dark:bg-slate-900 rounded-full absolute top-[2px] left-[2px] w-7 h-7"></span>
+            </label>
+        </span>
+    </div>
+
+    <!-- <div class="fixed top-1/2 -right-11 z-50 hidden sm:block">
+        <a href="https://1.envato.market/travosy" target="_blank" class="py-1 px-3 relative inline-block rounded-t-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold"><i class="mdi mdi-cart-outline me-1"></i> Download</a>
+    </div> -->
+    <!-- Switcher -->
+    <!-- LTR & RTL Mode Code -->
+    <div class="fixed top-[40%] -left-3 z-50">
+        <a href="" id="switchRtl">
+            <span class="py-1 px-3 relative inline-block rounded-b-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold rtl:block ltr:hidden">LTR</span>
+            <span class="py-1 px-3 relative inline-block rounded-b-md -rotate-90 bg-white dark:bg-slate-900 shadow-md dark:shadow dark:shadow-gray-800 font-semibold ltr:block rtl:hidden">RTL</span>
+        </a>
+    </div>
+    <!-- LTR & RTL Mode Code -->
+    <!-- Back to top -->
+    <a href="#" onclick="topFunction()" id="back-to-top" class="back-to-top fixed text-lg rounded-md z-10 bottom-5 end-5 size-8 text-center bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white justify-center items-center hidden"><i class="fa fa-arrow-up"></i></a>
+    <!-- Back to top -->
+    <!-- JAVASCRIPTS -->
+    <script src="~/js/swiper.min.js"></script>
+    <script src="~/js/tiny-slider.js"></script>
+    <script src="~/js/datepicker.min.js"></script>
+    <script src="~/js/feather.min.js"></script>
+    <script src="~/js/plugins.init.js"></script>
+    <script src="~/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <!-- JAVASCRIPTS -->
+    <script>
+        $(document).ready(function () {
+            $("#ourTours").on("click",function (e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: $("#tourPackages").offset().top - 70
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

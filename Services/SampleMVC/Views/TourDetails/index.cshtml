@@ -1,0 +1,846 @@
+﻿@model SampleMVC.Models.TourModel;
+@{
+	ViewData["Title"] = "Admin Page";
+	Layout = "~/Views/Shared/_layout.cshtml";
+	var days = ViewBag.days;
+	var attachments = ViewBag.attachments;
+}
+<!--Start image section-->
+<div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;" />
+    </div>
+</div>
+<div class="container" style="margin:30px 0px;">
+	<div style="margin:50px 0px;">
+		
+<section class="gallery">
+  <div class="gallery__item">
+    <input type="radio" id="img-1" checked name="gallery" class="gallery__selector"/>
+    <img class="gallery__img" src="~/Files/@attachments[0].attachmentPath" alt=""/>
+				<label for="img-1" class="gallery__thumb"><img src="~/Files/@attachments[0].attachmentPath" alt="" /></label>
+  </div>
+  @{
+	attachments.RemoveAt(0);
+	}
+@foreach (var att in attachments)
+{
+  <div class="gallery__item">
+	<input type="radio" id="img-@att.tourAttachmentId" name="gallery" class="gallery__selector" />
+	<img class="gallery__img" src="~/Files/@att.attachmentPath" alt="" />
+	<label for="img-@att.tourAttachmentId" class="gallery__thumb"><img src="~/Files/@att.attachmentPath" alt="" /></label>
+  </div>
+}
+</section>
+	</div>
+   <div class="row">
+       <div class="col-xs-12 col-md-8">
+				<p class="d-none d-md-block d-block d-lg-none"><a class="btn_map" data-bs-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map">View on map</a></p>
+				<!-- Map button for tablets/mobiles -->
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+						<h3 style="font-weight: 800;">
+							<i class="  icon_set_1_icon-17
+
+" style="
+    color: #e04f67;
+"></i>Description
+						</h3>
+					</div>
+					<div class="col-lg-9">
+						<table class="table tour-info-table" style="
+    background-color: #d5eaeb45;
+    border-radius: 10px;
+
+">
+							<tbody>
+								<tr>
+									<td>
+										<i class=" icon-back-in-time" style="
+    color: #03a84e;
+    font-size: 16px;
+"> </i>
+										<span class="me-3"></span><span style="font-weight: 700;">Duration</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Model.Tour.duration Days</p>
+									</td>
+								</tr>
+								<tr style="
+    background-color: #00848929;
+">
+
+
+									<td>
+										<i class=" icon_set_1_icon-41" style="
+    color: #03a84e;
+    font-size: 16px;
+"></i><span class="me-3"></span><span style="font-weight: 700;">Tour Location</span>
+									</td>
+									<td>
+									<p class="value" style="margin:0;">@Model.Tour.tourLocation</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<i class="  icon-calendar-outlilne
+" style="
+    color: #03a84e;
+    font-size: 16px;
+"> </i><span class="me-3"></span><span style="font-weight: 700;">Tour Availability</span>
+									</td>
+									<td>
+										<div class="weekDays-selector">
+										@foreach(var day in days)
+										{
+											if(Model.tourDays != null && Model.tourDays.Count > 0)
+											{
+												if (Model.tourDays.Where(e => e.dayId == day.dayId).ToList().Count > 0)
+												{
+													<input type="checkbox" id="weekday-@day.dayName" value="@day.dayId" onclick="return false;" name="@day.dayName" class="weekday" checked>
+												}
+												else
+												{
+													<input type="checkbox" id="weekday-@day.dayName" value="@day.dayId" onclick="return false;" name="@day.dayName" class="weekday">
+												}
+												<label style="width:40px" for="weekday-@day.dayName">@day.dayName</label>
+											}
+										}
+										
+										</div>
+
+
+									</td>
+								</tr>
+								<tr style="
+    background-color: #00848929;
+">
+									<td>
+										<i class="icon-location-inv" style="
+    color: #03a84e;
+    font-size: 16px;
+"></i>
+										<span class="me-3" style="font-weight: 700;">Pickup</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Model.Tour.pickupLocation</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<i class="icon-location-inv" style="
+    color: #03a84e;
+    font-size: 16px;
+"></i>
+										<span class="me-3" style="font-weight: 700;">Dropoff</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Model.Tour.dropOff</p>
+									</td>
+								</tr>
+								<tr style="
+    background-color: #00848929;
+">
+									<td>
+										<i class="icon-group" style="
+    color: #03a84e;
+    font-size: 16px;
+"></i>
+										<span class="me-3" style="font-weight: 700;">Tour Type</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Model.Tour.tourType</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<hr>
+						<h4 style="font-weight: 700;">Overview:</h4>
+
+						<p>
+						</p><p>
+							@Model.Tour.overview
+						</p>
+						<p></p>
+						@if(Model.includes != null && Model.includes.Count>0)
+					{
+						<h4 style="font-weight: 700;">What's include:</h4>
+
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="list_ok">
+									<ul>
+										@foreach (var i in Model.includes)
+										{
+											<li>
+												<h3>@i.includeText</h3>
+											</li>
+										}
+									</ul>
+								</ul>
+							</div>
+
+						</div>
+					}
+					@if(Model.excludes != null && Model.excludes.Count > 0)
+					{
+						<h4 style="font-weight: 700;">What's not included:</h4>
+
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="list_no">
+									<ul>
+										@foreach(var e in Model.excludes)
+										{
+											<li>
+												<h3>@e.excludeText</h3>
+											</li>
+										}
+									</ul>
+								</ul>
+							</div>
+
+						</div>
+					}
+					
+						<!-- End row  -->
+					</div>
+				</div>
+				<!-- End row  -->
+				<hr>
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+						<h3 style="font-weight: 800;">
+							<i class="  pe-7s-info
+
+" style="
+    color: #e04f67;
+"></i>Highlights
+						</h3>
+					</div>
+					<div class="col-lg-9">
+						<p>
+							@Model.Tour.highlights
+						</p>
+					</div>
+				</div>
+				<hr>
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+						<h3 style="font-weight: 800;">
+							<i class=" icon_set_1_icon-68
+" style="
+    color: #e04f67;
+"></i>What To Expect (Itinerary)
+						</h3>
+					</div>
+					<div class="col-lg-9">
+						<div id="itinerary" class="form-box page-scroll">
+
+							<div class="form-content contact-form-action">
+								<div id="transfers" class="accordion_styled">
+
+								@if (Model.expects != null && Model.expects.Count > 0)
+								{
+									var i = 1;
+									foreach(var e in Model.expects)
+									{
+										
+										<div class="card">
+											<div class="card-header">
+												<h4>
+													<a class="accordion-toggle" data-bs-toggle="collapse" href="#collapse_@e.expectId" aria-controls="collapse_@e.expectId">
+														<strong>Day @i</strong><i class="indicator fa fa-plus float-right"></i>
+													</a>
+												</h4>
+											</div>
+											<div id="collapse_@e.expectId" class="collapse" data-parent="#transfers">
+												<div class="card-body">
+													<h3>@e.details</h3>
+												</div>
+											</div>
+										</div>
+										i++;
+									}
+								}
+								
+									
+									@* <div class="card">
+										<div class="card-header">
+											<h4>
+											<a class="accordion-toggle" data-bs-toggle="collapse"  href="#collapse236" aria-controls="collapse236"><strong>Day 2</strong><i class="indicator fa fa-plus float-right"></i></a>
+											</h4>
+										</div>
+										<div id="collapse236" class="collapse" data-parent="#transfers">
+											<div class="card-body">
+												<h3>After breakfast our expert egyptologist guide will pick you up from your hotel to star our amazing day tour in Cairo,</h3>
+
+												<h3>
+													our first tour will be the 3 great pyramids of Giza ( Cheops, Chephren and Mykerinus)<br>
+													listen well to your expert tour guide who will inform you by details the history of the great pyramids,
+												</h3>
+
+												<h3>Visit the famous sphinx and the amazing valley temple,</h3>
+
+												<h3>Eat your delicious lunch in local restaurant,</h3>
+
+												<h3>Move to visit the splendid Egyptian museum one of the most important museums in the world and see the famous treasures there such as Tutankhamon treasures,</h3>
+
+												<h3>Drive over and visit the famous old market of Khan El Khalili,</h3>
+
+												<h3>Drink your warm Egyptian tea at public coffee shop and discover the amazing Egyptian culture,</h3>
+
+												<h3>After the splendid day tour drive in comfort to your hotel</h3>
+
+												<h3>Over night Cairo hotel</h3>
+											</div>
+										</div>
+									</div>
+
+									<div class="card">
+										<div class="card-header">
+											<h4>
+											<a class="accordion-toggle" data-bs-toggle="collapse"  href="#collapse237"><strong>Day 3</strong><i class="indicator fa fa-plus float-right"></i></a>
+											</h4>
+										</div>
+										<div id="collapse237" class="collapse" data-parent="#transfers">
+											<div class="card-body">
+												<h3>Our expert representative will pick you up from your hotel on time and drive to Cairo airport to take the flight to Luxor,</h3>
+
+												<h3>Arrive to Luxor the great city which has the most ancient temples in the world,</h3>
+
+												<h3>Our first tour will be the famous west bank of Luxor,</h3>
+
+												<h3>
+													Visit the most famous site of Luxor valley of the kings,<br>
+													listen well to your expert tour guide who will inform you by details the details of the tombs there such as the famous tomb of Tutankhamon,
+												</h3>
+
+												<h3>Drive over and visit queen Hatshepsut temple and know her attractive story,</h3>
+
+												<h3>stop at colossi of Memnon,</h3>
+
+												<h3>Now it is time to relax and enjoy the great Egyptian river Nile by traditional sailing Felucca,</h3>
+
+												<h3>Sail deeply into the Nile where you can take unique photos of the splendid views at the both sides of the river Nile,</h3>
+
+												<h3>Visit the famous banana island and walk around to discover the most famous types of fruits in Egypt,</h3>
+
+												<h3>Sail again and have your typical Egyptian lunch during sailing,</h3>
+
+												<h3>After lunch ride a camel and explore the local villages of Luxor and touch the hidden cultural side of Egypt,</h3>
+
+												<h3>next stop will be Karnak temple the largest temple in Egypt,</h3>
+
+												<h3>Drive over to visit the beautiful Luxor temple,</h3>
+
+												<h3>After the unique day tour drive to your hotel,</h3>
+
+												<h3>Have your welcome drink with smooth check in,</h3>
+
+												<h3>Over night hotel in Luxor</h3>
+											</div>
+										</div>
+									</div>
+
+									<div class="card">
+										<div class="card-header">
+											<h4>
+												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse238"><strong>Day 4</strong><i class="indicator fa fa-plus float-right"></i></a>
+											</h4>
+										</div>
+										<div id="collapse238" class="collapse" data-parent="#transfers">
+											<div class="card-body">
+												<h3>Our expert tour guide will pick you up from your hotel on time,</h3>
+
+												<h3>Drive through the daily life and the natural views all over the way to Edfu,</h3>
+
+												<h3>Arrive Edfu and visit the majestic temple dedicated to Horus known as Edfu Temple which is considered to be the best preserved cult temple in Egypt,</h3>
+
+												<h3>Drive over and arrive to Kom ombo city and visit Temple of Kom Ombo which is an unusual double temple,</h3>
+
+												<h3>Now we are now close to Aswan such charming city famous by the Nubian culture,</h3>
+
+												<h3>Have your delicious lunch at local restaurant,</h3>
+
+												<h3>Start our first tour in Aswan and visit the great Philae island temple by sailing motor boat,</h3>
+
+												<h3>Philae was built in the honor of Goddess Isis the chief deity of the island,</h3>
+
+												<h3>Move to visit the famous Aswan high dam,an engineering miracle built in 1960 protecting Egypt from annual floods from the Nile,</h3>
+
+												<h3>Next we going to visit the unfinished obelisk which shows the techniques used by the ancient Egyptians to cut obelisks. Most probably this obelisk belongs to Queen Hatshepsut,one of the rulers of the 18th Dynasty and the royal wife of king Tuthmosis II. This queen was the owner of her Temple in the eastern bank of Luxor,</h3>
+
+												<h3>Drive in comfort to your hotel,</h3>
+
+												<h3>Over night hotel in Aswan</h3>
+											</div>
+										</div>
+									</div>
+
+									<div class="card">
+										<div class="card-header">
+											<h4>
+												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse239"><strong>Day 5</strong><i class="indicator fa fa-plus float-right"></i></a>
+											</h4>
+										</div>
+										<div id="collapse239" class="collapse" data-parent="#transfers">
+											<div class="card-body">
+												<h3>Morning after breakfast it is time to visit the most important temple in Egypt Abu simbel temples,</h3>
+
+												<h3>Upon arrival your guide will show you the world renowned site where Ramses II (1290-1223 B.C.) ordered two sun temples carved from the Limestone Mountains The great temple of Amon Re and Ra-Harakhte where the four famous colossal statues of Ramses II sit majestically over 20 meters high,staring out across the desert. Walk to the small temple of Hathor dedicated to the cow-headed goddess of love, happiness, joy and music built in honor of Ramses favorite wife Queen Nefertari,</h3>
+
+												<h3>Have your lunch in local restaurant,</h3>
+
+												<h3>After the amazing day tour drive back in comfort to Aswan airport and fly back to Cairo,</h3>
+
+												<h3>You will find our expert representative and our qualified driver waiting for you at Cairo airport,</h3>
+
+												<h3>Drive in comfort to your hotel,</h3>
+
+												<h3>Rest and refresh,</h3>
+
+												<h3>Over night hotel in Cairo</h3>
+											</div>
+										</div>
+									</div>
+
+									<div class="card">
+										<div class="card-header">
+											<h4>
+												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse240"><strong>Day 6</strong><i class="indicator fa fa-plus float-right"></i></a>
+											</h4>
+										</div>
+										<div id="collapse240" class="collapse" data-parent="#transfers">
+											<div class="card-body">
+												<h3>Enjoy your breakfast,</h3>
+
+												<h3>your egyptolgist guide will pick you up from your hotel to visit the second capital of Egypt and home to Alexander the great which is Alexandria,</h3>
+
+												<h3>Drive through the daily life and arrive to Alexandria which located on Mediterranean sea,</h3>
+
+												<h3>Our first tour will be the famous Pompey's Pillar and watch the highest monument in the world,</h3>
+
+												<h3>Next stop will be the modern library of Alexandria which has groups of museums and it has the oldest books and manuscripts in the world,</h3>
+
+												<h3>Drive over and visit the roman amphitheater which is considered to be one of the famous monuments belonging the Grego-roman period,</h3>
+
+												<h3>Our last stop will be sultan Qaitbay citadel(from outside) which is considered to be one of the most famous sightseeing in Alexandria,</h3>
+
+												<h3>Have your delicious lunch which definitely will be fish the most famous food in Alexandria,</h3>
+
+												<h3>After the amazing day tour drive back in comfort to your hotel in Cairo,</h3>
+
+												<h3>over night hotel in Cairo</h3>
+											</div>
+										</div>
+									</div>
+
+									<div class="card">
+										<div class="card-header">
+											<h4>
+												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse241"><strong>Day 7</strong><i class="indicator fa fa-plus float-right"></i></a>
+											</h4>
+										</div>
+										<div id="collapse241" class="collapse" data-parent="#transfers">
+											<div class="card-body">
+												<h3>Enjoy your breakfast then our expert representative will pick you up from your hotel,</h3>
+
+												<h3>transfer in comfort to Cairo international airport,</h3>
+
+												<h3>our representative will assist with the formalities and bags,</h3>
+
+												<h3>it is time to say goodbye but of course with unique photos and unforgettable memories</h3>
+											</div>
+										</div>
+									</div> *@
+
+								</div>
+
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<hr>
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+						<h3 style="font-weight: 800;">
+							<i class="  icon_set_1_icon-33
+" style="
+    color: #e04f67;
+"></i>What to Pack
+						</h3>
+
+					</div>
+					<div class="col-lg-9">
+
+						<ul class="row" style="list-style:none;">
+						@if(Model.packs != null && Model.packs.Count > 0)
+						{
+							foreach(var p in Model.packs)
+							{
+								<li class="col-lg-6">
+									<p>
+										@p.title
+									</p>
+								</li>
+							}
+						}
+						</ul>
+					</div>
+				</div>
+				<hr>
+				@* <div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+						<h3 style="font-weight: 800;">
+							<i class="   icon_set_1_icon-92
+
+" style="
+    color: #e04f67;
+"></i>Additional Info
+						</h3>
+
+					</div>
+					<div class="col-lg-9">
+
+
+						<p>
+							<strong>Prices</strong><br>
+							Prices are quoted in US Dollars per person per trip except during Christmas, New Year &amp; Easter holidays.
+						</p>
+
+
+						<strong>Children Policy</strong>
+
+						<ul>
+							<li>Up to 2 years: FREE</li>
+							<li>Age from 2 and below 5 years: 25% of adult price</li>
+							<li>Age from 5 up to 11 years: 60% of adult price</li>
+							<li>Ages 12 and Up: adult price.</li>
+						</ul>
+
+
+
+
+						<p>
+							<strong>Notes :</strong><br>
+							Child pricing applies to children who share rooms with their parents (Max 2 Children in one Room)
+						</p>
+					</div>
+				</div> *@
+				@* <div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+						<h3>Reviews </h3>
+
+					</div>
+					<div class="col-lg-9">
+
+
+						<div class="hidden-xs hidden-sm">
+							<iframe frameborder="0" height="100%" src="https://www.tripadvisor.com/WidgetEmbed-cdspropertydetail?locationId=16811093&amp;partnerId=D6282B2F6A53462795614F9FCD066B22&amp;display=true" style="height: 1240px;" width="100%"></iframe>
+
+						</div>
+					</div>
+				</div> *@
+       </div>
+       <div class="col-xs-12 col-md-4">
+		   <div>
+				<h3 style="background: #393939;color: #fff; padding: 10px;margin: auto;" class="inner">
+					<strong>- Booking -</strong>
+				</h3>
+			</div>
+			<form style="border: 1px solid #eee;padding: 10px;" id="booking" action="send.php" method="post" novalidate="novalidate">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>Name</label>
+							<input class="form-control required" name="name" id="name_booking" type="text">
+							<input class="form-control required" name="tourid" value="43736" id="tourid" type="hidden">
+						</div>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label>Email</label>
+					<input class="form-control required" type="email" name="email" id="email_booking">
+				</div>
+				<div class="form-group">
+					<label>Mobile or whatsapp no</label>
+					<input class="form-control required" type="text" name="phone" id="phone_booking">
+				</div>
+				<div class="form-group">
+					<label>Pickup Details</label>
+					<input class="form-control required" type="text" name="pickup" id="pickup">
+				</div>
+				<div>
+					<label>Nationality</label>
+					<select id="nationality" class="form-control" name="nationality" required="">
+						<option value="" selected="selected">Select your Nationality</option>
+						<option value="American">American</option>
+						<option value="Afghan">Afghan</option>
+						<option value="Albanian">Albanian</option>
+						<option value="Algerian">Algerian</option>
+						<option value="Andorran">Andorran</option>
+						<option value="Angolan">Angolan</option>
+						<option value="Argentinian">Argentinian</option>
+						<option value="Armenian">Armenian</option>
+						<option value="Australian">Australian</option>
+						<option value="Austrian">Austrian</option>
+						<option value="Azerbaijani">Azerbaijani</option>
+						<option value="Bahamian">Bahamian</option>
+						<option value="Bahraini">Bahraini</option>
+						<option value="Bangladeshi">Bangladeshi</option>
+						<option value="Barbadian">Barbadian</option>
+						<option value="Belarusian">Belarusian</option>
+						<option value="Belgian">Belgian</option>
+						<option value="Belizean">Belizean</option>
+						<option value="Beninese">Beninese</option>
+						<option value="Bhutanese">Bhutanese</option>
+						<option value="Bolivian">Bolivian</option>
+						<option value="Bosnian">Bosnian</option>
+						<option value="Botswanan">Botswanan</option>
+						<option value="Brazilian">Brazilian</option>
+						<option value="British&nbsp;Indian Ocean">British&nbsp;Indian Ocean</option>
+						<option value="British Virgin">British Virgin</option>
+						<option value="Bruneian">Bruneian</option>
+						<option value="Bulgarian">Bulgarian</option>
+						<option value="Burkinese">Burkinese</option>
+						<option value="Burundian">Burundian</option>
+						<option value="Cambodian">Cambodian</option>
+						<option value="Cameroonian">Cameroonian</option>
+						<option value="Canadian">Canadian</option>
+						<option value="Cape Verdean">Cape Verdean</option>
+						<option value="Chadian">Chadian</option>
+						<option value="Chilean">Chilean</option>
+						<option value="Chinese">Chinese</option>
+						<option value="Colombian">Colombian</option>
+						<option value="Congolese">Congolese</option>
+						<option value="Costa Rican">Costa Rican</option>
+						<option value="Croatian">Croatian</option>
+						<option value="Cuban">Cuban</option>
+						<option value="Cypriot">Cypriot</option>
+						<option value="Czech">Czech</option>
+						<option value="Danish">Danish</option>
+						<option value="Djiboutian">Djiboutian</option>
+						<option value="Dominican">Dominican</option>
+						<option value="East Timorese">East Timorese</option>
+						<option value="Ecuadorean">Ecuadorean</option>
+						<option value="Egyptian">Egyptian</option>
+						<option value="Salvadorean">Salvadorean</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Eritrean">Eritrean</option>
+						<option value="Estonian">Estonian</option>
+						<option value="Ethiopian">Ethiopian</option>
+						<option value="Fijian">Fijian</option>
+						<option value="Finnish">Finnish</option>
+						<option value="French">French</option>
+						<option value="Guyanese">Guyanese</option>
+						<option value="Gabonese">Gabonese</option>
+						<option value="Gambian">Gambian</option>
+						<option value="Georgian">Georgian</option>
+						<option value="German">German</option>
+						<option value="Ghanaian">Ghanaian</option>
+						<option value="Greek">Greek</option>
+						<option value="Grenadian">Grenadian</option>
+						<option value="Guatemalan">Guatemalan</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Haitian">Haitian</option>
+						<option value="Honduran">Honduran</option>
+						<option value="Hungarian">Hungarian</option>
+						<option value="Icelander">Icelander</option>
+						<option value="Indian">Indian</option>
+						<option value="Indonesian">Indonesian</option>
+						<option value="Iranian">Iranian</option>
+						<option value="Iraqi">Iraqi</option>
+						<option value="Irish">Irish</option>
+						<option value="Israeli">Israeli</option>
+						<option value="Italian">Italian</option>
+						<option value="Jamaican">Jamaican</option>
+						<option value="Japanese">Japanese</option>
+						<option value="Jordanian">Jordanian</option>
+						<option value="Kazakh">Kazakh</option>
+						<option value="Kenyan">Kenyan</option>
+						<option value="Kuwaiti">Kuwaiti</option>
+						<option value="Laotian">Laotian</option>
+						<option value="Latvian">Latvian</option>
+						<option value="Lebanese">Lebanese</option>
+						<option value="Liberian">Liberian</option>
+						<option value="Libyan">Libyan</option>
+						<option value="Lithuanian">Lithuanian</option>
+						<option value="Macedonian">Macedonian</option>
+						<option value="Madagascan">Madagascan</option>
+						<option value="Malawian">Malawian</option>
+						<option value="Malaysian">Malaysian</option>
+						<option value="Maldivian">Maldivian</option>
+						<option value="Malian">Malian</option>
+						<option value="Maltese">Maltese</option>
+						<option value="Mauritanian">Mauritanian</option>
+						<option value="Mauritian">Mauritian</option>
+						<option value="Mexican">Mexican</option>
+						<option value="Moldovan">Moldovan</option>
+						<option value="Monacan">Monacan</option>
+						<option value="Mongolian">Mongolian</option>
+						<option value="Moroccan">Moroccan</option>
+						<option value="Mozambican">Mozambican</option>
+						<option value="Namibian">Namibian</option>
+						<option value="Nepalese">Nepalese</option>
+						<option value="Dutch">Dutch</option>
+						<option value="New Zealand">New Zealand</option>
+						<option value="Nicaraguan">Nicaraguan</option>
+						<option value="Nigerien">Nigerien</option>
+						<option value="Nigerian">Nigerian</option>
+						<option value="North Korean">North Korean</option>
+						<option value="Norwegian">Norwegian</option>
+						<option value="Omani">Omani</option>
+						<option value="Pakistani">Pakistani</option>
+						<option value="Panamanian">Panamanian</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Paraguayan">Paraguayan</option>
+						<option value="Peruvian">Peruvian</option>
+						<option value="Filipino">Filipino</option>
+						<option value="Polish">Polish</option>
+						<option value="Portuguese">Portuguese</option>
+						<option value="Qatari">Qatari</option>
+						<option value="Romanian">Romanian</option>
+						<option value="Russian">Russian</option>
+						<option value="Rwandan">Rwandan</option>
+						<option value="Saudi">Saudi</option>
+						<option value="Senegalese">Senegalese</option>
+						<option value="Serbian">Serbian</option>
+						<option value="Sierra Leonian">Sierra Leonian</option>
+						<option value="Singaporean">Singaporean</option>
+						<option value="Slovak">Slovak</option>
+						<option value="Slovenian">Slovenian</option>
+						<option value="Somali">Somali</option>
+						<option value="South African">South African</option>
+						<option value="South Korean">South Korean</option>
+						<option value="Spanish">Spanish</option>
+						<option value="Sri Lankan">Sri Lankan</option>
+						<option value="Sudanese">Sudanese</option>
+						<option value="Surinamese">Surinamese</option>
+						<option value="Swazi">Swazi</option>
+						<option value="Swedish">Swedish</option>
+						<option value="Swiss">Swiss</option>
+						<option value="Syrian">Syrian</option>
+						<option value="Taiwanese">Taiwanese</option>
+						<option value="Tajik">Tajik</option>
+						<option value="Tanzanian">Tanzanian</option>
+						<option value="Thai">Thai</option>
+						<option value="Togolese">Togolese</option>
+						<option value="Trinidadian">Trinidadian</option>
+						<option value="Tunisian">Tunisian</option>
+						<option value="Turkish">Turkish</option>
+						<option value="Turkmen">Turkmen</option>
+						<option value="Tuvaluan">Tuvaluan</option>
+						<option value="Ugandan">Ugandan</option>
+						<option value="Ukrainian">Ukrainian</option>
+						<option value="Emirati">Emirati</option>
+						<option value="British">British</option>
+						<option value="Uruguayan">Uruguayan</option>
+						<option value="Uzbek">Uzbek</option>
+						<option value="Vanuatuan">Vanuatuan</option>
+						<option value="Venezuelan">Venezuelan</option>
+						<option value="Vietnamese">Vietnamese</option>
+						<option value="Yemeni">Yemeni</option>
+						<option value="Zambian">Zambian</option>
+						<option value="Zimbabwean">Zimbabwean</option>
+					</select>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label><i class="icon-calendar-7"></i> Date</label>
+							<input class="date-pick form-control required valid" type="date" name="date_booking" id="date_booking">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label><i class=" icon-clock"></i> Time</label>
+							<input class="time-pick form-control required valid" type="time" name="time_booking" id="time_booking">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label>Adults</label>
+							<div class="numbers-row">
+								<input type="number" value="1" id="adults" class="qty2 form-control" name="adults">
+							</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<label>Children</label>
+							<div class="numbers-row">
+								<input type="number" value="0" id="children" class="qty2 form-control " name="children">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="output"></div>
+				<div class="row">
+
+
+					<div class="col-6">
+						<div class="form-group">
+							<label>Infant</label>
+							<div class="numbers-row">
+								<input type="number" value="0" class="qty2 form-control " name="infant">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<p>
+					<small>* Prices for person.</small>
+				</p>
+				<button type="submit" class="btn_full" style="background: #ef4444;color: #fff;padding: 10px;border-radius: 5px;width: 100%;">
+					Book now
+				</button>
+			</form>
+       </div>
+   </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    function viewcontact(id, name) {
+        $(".modal-body #contactId").val(id);
+        $(".modal-body #contactName").val(name);
+    }
+</script>

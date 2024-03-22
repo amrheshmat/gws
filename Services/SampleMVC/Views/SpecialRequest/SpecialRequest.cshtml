@@ -1,0 +1,109 @@
+﻿@model MWS.Data.Entities.SpecialRequest;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var specialRequests = ViewBag.specialRequests;
+}
+    <div class="row">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+            <div id="contextual-classes" class="mb-4">
+                <h2>SpecialRequest</h2>
+            </div>
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                            SpecialRequest Name
+                                        </th>
+                                        <th scope="col">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                @foreach (var specialRequest in specialRequests)
+                                    {
+                                        if(i % 2 == 0)
+                                        {
+                                            <tr class="table-active">
+                                                <td scope="row">
+                                                @specialRequest.title
+                                                </td>
+                                                <td>
+                                                    <span style="margin:0px 5px;cursor:pointer"><i style="color: #dc3545;" class="fa fa-trash"></i></span>
+                                                <span onclick="editspecialRequest(@specialRequest.specialRequestId,@specialRequest.title)" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                                </td>
+                                            </tr>
+                                        }else
+                                        {
+                                            <tr>
+                                                <td scope="row">
+                                                @specialRequest.title
+                                                </td>
+                                                <td>
+                                                    <span style="margin:0px 5px;cursor:pointer"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                                <span onclick="editspecialRequest(@specialRequest.specialRequestId,@specialRequest.title)" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                                </td>
+                                            </tr>
+                                        }
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("edit", "SpecialRequest", FormMethod.Post))
+                {
+                    @Html.TextBoxFor(m => m.specialRequestId, new { @id = "specialRequestId", @class = "form-control", style = "display:none" })
+
+                        <div class="mb-3">
+                        <label class="form-label" for="name">
+                            name
+                            </label>
+                        @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control", placeholder = "Enter SpecialRequest Name " })
+                        </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#demoGrid').dataTable({
+        });
+    });
+    function editspecialRequest(id,name) {
+        $(".modal-body #specialRequestId").val(id);
+        $(".modal-body #name").val(name);
+        }
+</script>

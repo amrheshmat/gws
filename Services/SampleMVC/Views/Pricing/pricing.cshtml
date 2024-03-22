@@ -1,0 +1,347 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@model MWS.Data.Entities.HotelRoomPricing;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "pricing").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "pricing").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "pricing").ToList().Count;
+    var models = ViewBag.pricing;
+    var hotels = ViewBag.hotels;
+    var rooms = ViewBag.rooms;
+    }
+
+
+
+    <div class="row">
+
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+
+        <div id="contextual-classes" class="row">
+            <h2 class="col-11">User</h2>
+            @if (hasAddPermission > 0)
+            {
+                <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">Add</span>
+            }
+        </div>
+
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                            Hotel Type
+                                        </th>
+                                        <th scope="col">
+                                            Room Type
+                                        </th>
+                                        <th scope="col">
+                                            Price
+                                        </th>
+                                        <th scope="col">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                @foreach (var user in models)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @user.hotelTypeName
+                                            </td>
+                                            <td>
+                                                @user.roomTypeName
+                                            </td>
+                                            <td>
+                                                @user.price
+                                            </td>
+                                            <td>
+                                            @if (hasDeletePermission > 0)
+                                            {
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteUser(@user.hotelRoomId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            }
+                                            @if (hasEditPermission > 0)
+                                            {
+                                                <span onclick="editUser(@user.hotelRoomId,'@user.hotelTypeId','@user.roomTypeId','@user.price','@user.numberOfAdult','@user.numberOfChild','@user.numberOfInfant')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            }    
+                                        </td>
+                                        </tr>
+                                    }
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Pricing</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("add", "pricing", FormMethod.Post, new { @id = "formUser" }))
+                {
+                    @Html.TextBoxFor(m => m.hotelRoomId, new { @id = "hotelRoomId", @class = "form-control", style = "display:none" })
+                    <div class="mb-3">
+                        <label class="form-label" for="hotel">
+                            hotel
+                        </label>
+                        @Html.TextBoxFor(m => m.hotelTypeId, new { @id = "hotelId", @class = "form-control", style = "display:none" })
+                        <select name="hotel" class="form-select" id="hotel">
+                            @foreach (var hotel in hotels)
+                            {
+                              <option value="@hotel.hotelTypeId">@hotel.hotelTypeName</option>
+                            }
+                        </select>
+                        <span id="hotelRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="room">
+                            room
+                        </label>
+                        @Html.TextBoxFor(m => m.roomTypeId, new { @id = "roomId", @class = "form-control", style = "display:none" })
+                        <select name="room" class="form-select" id="room">
+                            @foreach (var room in rooms)
+                            {
+                                <option value="@room.roomTypeId">@room.roomTypeName</option>
+                            }
+                        </select>
+                        <span id="roomRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="price">
+                            price
+                        </label>
+                        @Html.TextBoxFor(m => m.price, new {type="number", @id = "price", @class = "form-control", placeholder = "Enter Price ", required = "required" })
+                        <span id="priceRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfAdult">
+                            max number of adult
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfAdult, new { type = "number" ,@id = "numberOfAdult", @class = "form-control", required = "required" })
+                        <span id="numberOfAdultRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfChild">
+                            max number of child
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfChild, new { type = "number", @id = "numberOfChild", @class = "form-control", required = "required" })
+                        <span id="numberOfChildRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfInfant">
+                            max number of infant
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfInfant, new { type = "number", @id = "numberOfInfant", @class = "form-control", required = "required" })
+                        <span id="numberOfInfantRequired" style="color:red"></span>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            // do something…
+            clearData();
+        })
+        $('#formUserBtn').on("click",function (e) {
+            //validation
+            if ($(".modal-body #hotelId").val() == '') {
+                $(".modal-body #hotelRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #hotelRequired").text("");
+            }
+            if ($(".modal-body #roomId").val() == '') {
+                $(".modal-body #roomRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #roomRequired").text("");
+            }
+            if ($(".modal-body #price").val() == '') {
+                $(".modal-body #priceRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #priceRequired").text("");
+            }
+            if ($(".modal-body #numberOfAdult").val() == '') {
+                $(".modal-body #numberOfAdultRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #numberOfAdultRequired").text("");
+            }
+            if ($(".modal-body #numberOfChild").val() == '') {
+                $(".modal-body #numberOfChildRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #numberOfChildRequired").text("");
+            }
+            if ($(".modal-body #numberOfInfant").val() == '') {
+                $(".modal-body #numberOfInfantRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #numberOfInfantRequired").text("");
+            }
+            
+           
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.hotelTypeId = $(".modal-body #hotelId").val();
+            userUpdate.roomTypeId = $(".modal-body #roomId").val();
+            userUpdate.price = $(".modal-body #price").val();
+            userUpdate.numberOfAdult = $(".modal-body #numberOfAdult").val();
+            userUpdate.numberOfChild = $(".modal-body #numberOfChild").val();
+            userUpdate.numberOfInfant = $(".modal-body #numberOfInfant").val();
+            if ($(".modal-body #hotelRoomId").val() != '')
+                userUpdate.hotelRoomId = $(".modal-body #hotelRoomId").val();
+
+            if ($(".modal-body #hotelRoomId").val() == "") {
+                $.ajax({
+                    url: "/Pricing/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        if (message == "Added") {
+                            Swal.fire({
+                                title: "Added",
+                                text: "User deleted",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "You clicked the button!",
+                                icon: "success",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                        alert();
+                    }
+                });
+            } else {
+                userUpdate.hotelRoomId = $(".modal-body #hotelRoomId").val();
+                $.ajax({
+                    url: "/Pricing/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        if (message == "Updated") {
+                            Swal.fire({
+                                title: "Edit",
+                                text: "User updated",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "You clicked the button!",
+                                icon: "success",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+           
+        });
+       
+        $('#demoGrid').dataTable({
+        });
+    });
+    $(document).on('change', '#hotel', function () {
+        $(".modal-body #hotelId").val($(this).val());
+    });
+    $(document).on('change', '#room', function () {
+        $(".modal-body #roomId").val($(this).val());
+    });
+    function DeleteUser(id) {
+        $.ajax({
+            url: "/Pricing/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (message) {
+                if (message == "Deleted") {
+                    Swal.fire({
+                        title: "Delete",
+                        text: "User deleted",
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error When Delete User!",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    }
+    function editUser(id,hotTypeId,roomTypeId,price,numberOfAdult,numberOfChild,numberOfInfant) {
+        $(".modal-body #hotelRoomId").val(id);
+        $(".modal-body #hotelId").val(hotTypeId);
+        $(".modal-body #roomId").val(roomTypeId);
+        $(".modal-body #price").val(price);
+        $(".modal-body #numberOfAdult").val(numberOfAdult);
+        $(".modal-body #numberOfChild").val(numberOfChild);
+        $(".modal-body #numberOfInfant").val(numberOfInfant);
+        $("#room").val(roomTypeId);
+        $("#hotel").val(hotTypeId);
+        }
+    function clearData() {
+            $(".modal-body #hotelRoomId").val("");
+            $(".modal-body #price").val("");
+            $(".modal-body #numberOfAdult").val("");
+        }
+</script>

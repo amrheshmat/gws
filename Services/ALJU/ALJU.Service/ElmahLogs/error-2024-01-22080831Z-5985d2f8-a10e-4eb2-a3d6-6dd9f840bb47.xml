@@ -1,0 +1,148 @@
+﻿<error errorId="5985d2f8-a10e-4eb2-a3d6-6dd9f840bb47" application="ALJU.QuotationRequest.Service" host="PCS5412" type="System.InvalidOperationException" message="Nullable object must have a value." source="System.Private.CoreLib" detail="# caller: @C:\Sources\ElmahCore\ElmahCore\ElmahCore\Internal$\CallerInfo.cs:9&#xD;&#xA;System.InvalidOperationException: Nullable object must have a value.&#xD;&#xA;   at System.Nullable`1.get_Value()&#xD;&#xA;   at MWS.Business.Malath.lease.Business.QuotationBusiness.GetNotListValues(USERS appUser) in D:\Git\MWS-Core\Business\MWS.Business.Malath.lease\Business\QuotationBusiness.cs:line 383&#xD;&#xA;   at MWS.Business.Malath.lease.Business.QuotationBusiness.MapPartnerData(QuoteRequest quotesRequest, USERS appUser) in D:\Git\MWS-Core\Business\MWS.Business.Malath.lease\Business\QuotationBusiness.cs:line 78" time="2024-01-22T08:08:31.3463679Z" statusCode="500">
+  <serverVariables>
+    <item name="RequestTimedOut">
+      <value string="False" />
+    </item>
+    <item name="MinResponseDataRate">
+      <value string="Bytes per second: 240, Grace Period: 00:00:05" />
+    </item>
+    <item name="ConnectionIdFeature">
+      <value string="0HN0R44722NGS" />
+    </item>
+    <item name="HasStartedConsumingRequestBody">
+      <value string="True" />
+    </item>
+    <item name="MaxRequestBodySize">
+      <value string="30000000" />
+    </item>
+    <item name="MinRequestBodyDataRate">
+      <value string="Bytes per second: 240, Grace Period: 00:00:05" />
+    </item>
+    <item name="AllowSynchronousIO">
+      <value string="False" />
+    </item>
+    <item name="TraceIdentifier">
+      <value string="0HN0R44722NGS:00000001" />
+    </item>
+    <item name="IsUpgradableRequest">
+      <value string="False" />
+    </item>
+    <item name="IsUpgraded">
+      <value string="False" />
+    </item>
+    <item name="IsExtendedConnectRequest">
+      <value string="False" />
+    </item>
+    <item name="IsExtendedConnectAccepted">
+      <value string="False" />
+    </item>
+    <item name="RemoteIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="RemotePort">
+      <value string="50586" />
+    </item>
+    <item name="LocalIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="LocalPort">
+      <value string="7143" />
+    </item>
+    <item name="Scheme">
+      <value string="https" />
+    </item>
+    <item name="Method">
+      <value string="Post" />
+    </item>
+    <item name="MethodText">
+      <value string="POST" />
+    </item>
+    <item name="Path">
+      <value string="/AddQuotationRequest" />
+    </item>
+    <item name="QueryString">
+      <value string="" />
+    </item>
+    <item name="RawTarget">
+      <value string="/AddQuotationRequest" />
+    </item>
+    <item name="HttpVersion">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="Header_Accept">
+      <value string="*/*" />
+    </item>
+    <item name="Header_Connection">
+      <value string="keep-alive" />
+    </item>
+    <item name="Header_Host">
+      <value string="localhost:7143" />
+    </item>
+    <item name="Header_User-Agent">
+      <value string="PostmanRuntime/7.26.8" />
+    </item>
+    <item name="Header_Accept-Encoding">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="Header_Authorization">
+      <value string="Basic dGFtZWVuaXVzZXI6bWFsYXRoNQ==" />
+    </item>
+    <item name="Header_Cache-Control">
+      <value string="no-cache" />
+    </item>
+    <item name="Header_Content-Type">
+      <value string="application/json" />
+    </item>
+    <item name="Header_Content-Length">
+      <value string="3557" />
+    </item>
+    <item name="Header_Postman-Token">
+      <value string="ccc08ca8-e4a3-456d-902c-086b12d86150" />
+    </item>
+    <item name="RequestTrailersAvailable">
+      <value string="True" />
+    </item>
+    <item name="StatusCode">
+      <value string="200" />
+    </item>
+    <item name="HasResponseStarted">
+      <value string="False" />
+    </item>
+    <item name="HasFlushedHeaders">
+      <value string="False" />
+    </item>
+    <item name="HasResponseCompleted">
+      <value string="False" />
+    </item>
+    <item name="IsWebTransportRequest">
+      <value string="False" />
+    </item>
+    <item name="Connection_Id">
+      <value string="0HN0R44722NGS" />
+    </item>
+    <item name="Connection_RemoteIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="Connection_RemotePort">
+      <value string="50586" />
+    </item>
+    <item name="Connection_LocalIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="Connection_LocalPort">
+      <value string="7143" />
+    </item>
+    <item name="HttpStatusCode">
+      <value string="500" />
+    </item>
+  </serverVariables>
+  <messageLog>
+    <message level="Warning" time-stamp="2024-01-22T08:07:40.7698136Z" message="The decimal property 'PARTNER_CODE' on entity type 'AGGR_CODES' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Warning" time-stamp="2024-01-22T08:07:40.7736708Z" message="A decimal property 'PARTNER_CODE' is part of a key on entity type 'AGGR_CODES' which may lead to a precision loss if the configured precision and scale don't match the column type in the database. Consider using a different property as the key, or make sure that the database column type matches the model configuration." />
+    <message level="Warning" time-stamp="2024-01-22T08:07:40.7761016Z" message="The decimal property 'EXPORT_BI' on entity type 'LOOKUP_DETAILS' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Warning" time-stamp="2024-01-22T08:07:40.7784264Z" message="The decimal property 'ACCESS_FAILED_COUNT' on entity type 'USERS' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Warning" time-stamp="2024-01-22T08:07:40.7807949Z" message="The decimal property 'ID' on entity type 'USERS' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Information" time-stamp="2024-01-22T08:07:41.0325633Z" message="Executed DbCommand (68ms) [Parameters=[], CommandType='Text', CommandTimeout='0']&#xD;&#xA;SELECT &quot;l&quot;.&quot;MASTER_CODE&quot;, &quot;l&quot;.&quot;DETAIL_CODE&quot;, &quot;l&quot;.&quot;ACTIVE&quot;, &quot;l&quot;.&quot;CREATED_BY&quot;, &quot;l&quot;.&quot;CREATION_DATE&quot;, &quot;l&quot;.&quot;DETAIL_DESC_AR&quot;, &quot;l&quot;.&quot;DETAIL_DESC_EN&quot;, &quot;l&quot;.&quot;EXPORT_BI&quot;, &quot;l&quot;.&quot;LAST_UPDATED_BY&quot;, &quot;l&quot;.&quot;LAST_UPDATE_DATE&quot;, &quot;l&quot;.&quot;MALATH_SYS&quot;, &quot;l&quot;.&quot;MAPPED_CODE&quot;, &quot;l&quot;.&quot;MAPPED_DESC&quot;&#xD;&#xA;FROM &quot;NONMED&quot;.&quot;LOOKUP_DETAILS&quot; &quot;l&quot;" />
+    <message level="Error" exception="System.InvalidOperationException: Nullable object must have a value.&#xD;&#xA;   at System.Nullable`1.get_Value()&#xD;&#xA;   at MWS.Business.Malath.lease.Business.QuotationBusiness.GetNotListValues(USERS appUser) in D:\Git\MWS-Core\Business\MWS.Business.Malath.lease\Business\QuotationBusiness.cs:line 383&#xD;&#xA;   at MWS.Business.Malath.lease.Business.QuotationBusiness.MapPartnerData(QuoteRequest quotesRequest, USERS appUser) in D:\Git\MWS-Core\Business\MWS.Business.Malath.lease\Business\QuotationBusiness.cs:line 78" time-stamp="2024-01-22T08:08:31.3430832Z" message="Nullable object must have a value." />
+  </messageLog>
+</error>

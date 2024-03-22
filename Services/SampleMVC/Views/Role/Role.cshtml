@@ -1,0 +1,256 @@
+﻿@model MWS.Data.Entities.Role;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var Roles = ViewBag.Roles;
+    var permissions = ViewBag.permissions;
+    var rolePermissioms = ViewBag.rolePermission;
+}
+
+
+
+    <div class="row">
+
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+
+        <div id="contextual-classes" class="row">
+            <h2 class="col-11">Role</h2>
+            <span class="col-1 btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</span>
+        </div>
+
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                            Role Name
+                                        </th>
+                                        <th scope="col">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                    @foreach(var Role in Roles)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Role.roleName
+                                            </td>
+                                            <td>
+                                            <span style="margin:0px 5px;cursor:pointer" onclick="DeleteRole(@Role.roleId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            <a href="/Role/Edit/@Role.roleId"  class="" style="cursor:pointer" ><i style="color:#624bff;" class="fa fa-edit"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("edit", "Role", FormMethod.Post, new { @id = "formUser" }))
+                {
+                    @Html.TextBoxFor(m => m.roleId, new { @id = "roleId", @class = "form-control", style = "display:none" })
+
+                        <div class="mb-3">
+                            <label class="form-label" for="roleName">
+                                roleName
+                            </label>
+                            @Html.TextBoxFor(m => m.roleName, new { @id="roleName", @class = "form-control", placeholder = "Enter Role Name " })
+                        <span id="roleNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                            @foreach (var permission in permissions)
+                            {
+                                if (rolePermissioms != null)
+                                {
+                                    foreach (var rolePermission in rolePermissioms)
+                                    {
+                                        if (rolePermission.permissionId == permission.permissionId)
+                                        {
+                                            <option selected value="@permission.permissionId" id="@permission.permissionId">@permission.permissionName</option>
+                                        }
+                                    }
+
+                                }
+                                <option value="@permission.permissionId" id="@permission.permissionId">@permission.permissionName</option>
+                            }
+                        </select>
+                        
+                        <span id="permissionIdRequired" style="color:red"></span>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.modal').on('shown.bs.modal', function (e) {
+            var id = $("#roleId").val();
+            $.ajax({
+                url: "/Role/GetPermissionById/" + id,
+                type: "GET",
+                cache: false,
+                success: function (data) {
+                }
+            });
+        })
+        $('#demoGrid').dataTable({
+        });
+
+        $('#formUserBtn').on("click", function (e) {
+            alert($(".modal-body #roleId").val());
+            //validation
+            if ($(".modal-body #roleName").val() == '') {
+                $(".modal-body #roleNameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #roleNameRequired").text("");
+            }
+            if ($(".modal-body #permissionId").val() == '') {
+                $(".modal-body #permissionIdRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #permissionIdRequired").text("");
+            }
+            alert($(".modal-body #roleName").val());
+            e.preventDefault();
+            var selectedPermissions = [];
+            for (var i = 0; i < $("#field2").val().length; i++) {
+                var permission = {
+                    "permissionId": $("#field2").val()[i],
+                };
+                selectedPermissions.push(permission);
+            }
+            var userUpdate = {};
+            userUpdate.roleName = $(".modal-body #roleName").val();
+            userUpdate.permissions = selectedPermissions;
+            if ($(".modal-body #roleId").val() == "") {
+                $.ajax({
+                    url: "/Role/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        console.log("s");
+                        if (message == "Added") {
+                            Swal.fire({
+                                title: "Added",
+                                text: "Role Added",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "error!",
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                        alert();
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "/Role/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        if (message == "Updated") {
+                            Swal.fire({
+                                title: "Edit",
+                                text: "Role updated",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "error!",
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+    function DeleteRole(id) {
+        $.ajax({
+            url: "/Role/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (message) {
+                if (message == "Deleted") {
+                    Swal.fire({
+                        title: "Delete",
+                        text: "Role deleted",
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error When Delete Role!",
+                        icon: "error",
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    }
+        function test(selectedOptions) {
+            debugger;
+            var val = "";
+            for (var i = 0; i < selectedOptions.length; i++) {
+                val += selectedOptions[i].id + ",";
+            }
+            $(".modal-body #permissionId").val(val);
+        }
+</script>

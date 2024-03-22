@@ -1,0 +1,436 @@
+﻿@model SampleMVC.Models.TourModel;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var days = ViewBag.days;
+    var tour = ViewBag.tour;
+}
+    
+<!-- Modal -->
+@using (Html.BeginForm("Add", "Tour", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.TextBoxFor(m => m.Tour.tourId, new { value = "@tour.tourId", @id = "tourId", @class = "form-control", style = "display:none" })
+    <div class="container" style="margin-top:100px;width:85%;">
+    <div class="row">
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="title">
+            title
+        </label>
+                @Html.TextBoxFor(m => m.Tour.title, new {  @id = "title", @class = "form-control", placeholder = "Enter Tour Name " })
+        <span id="titleRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="duration">
+            Duration
+        </label>
+                @Html.TextBoxFor(m => m.Tour.duration, new {type = "number", @id = "duration", @class = "form-control", placeholder = "Enter Tour duration " })
+                <span id="durationRequired" style="color:red"></span>
+            </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="tourLocation">
+            Tour Location
+        </label>
+                @Html.TextBoxFor(m => m.Tour.tourLocation, new {  @id = "tourLocation", @class = "form-control", placeholder = "Enter Tour Location " })
+        <span id="tourLocationRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="pickupLocation">
+            Pickup Location
+        </label>
+                @Html.TextBoxFor(m => m.Tour.pickupLocation, new { @id = "pickupLocation", @class = "form-control", placeholder = "Enter Pickup Location " })
+                <span id="pickupLocationRequired" style="color:red"></span>
+            </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="dropOff">
+            Drop Off
+        </label>
+                @Html.TextBoxFor(m => m.Tour.dropOff, new {  @id = "dropOff", @class = "form-control", placeholder = "Enter Drop Off " })
+                <span id="dropOffRequired" style="color:red"></span>
+            </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="tourType">
+            Tour Type
+        </label>
+                @Html.TextBoxFor(m => m.Tour.tourType, new {  @id = "tourType", @class = "form-control", placeholder = "Enter Tour Type " })
+        <span id="tourTypeRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="overview">
+            Overview
+        </label>
+                @Html.TextBoxFor(m => m.Tour.overview, new { @id = "overview", @class = "form-control", placeholder = "Enter Overview" })
+                <span id="overviewRequired" style="color:red"></span>
+            </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="highlights">
+            Highlights
+        </label>
+                @Html.TextBoxFor(m => m.Tour.highlights, new { @id = "highlights", @class = "form-control", placeholder = "Enter highlights" })
+                <span id="highlightsRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="price">
+            Price
+        </label>
+                @Html.TextBoxFor(m => m.Tour.price, new {  type = "number", @id = "price", @class = "form-control", placeholder = "Enter price" })
+                <span id="priceRequired" style="color:red"></span>
+            </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="capacity">
+            Capacity
+        </label>
+                @Html.TextBoxFor(m => m.Tour.capacity, new { type = "number", @id = "capacity", @class = "form-control", placeholder = "Enter Capacity" })
+                <span id="capacityRequired" style="color:red"></span>
+    </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="capacity" style="display:block">
+                    avaliable days
+                </label>
+                <select class="form-control" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                    @{
+                        var i = 0;
+                    }
+                    @foreach (var day in days)
+                    {
+                        if (Model.tourDays != null)
+                        {
+                            if(Model.tourDays.Where(e => e.dayId == day.dayId).ToList().Count>0)
+                            {
+                                <option value="@day.dayId" id="@day.dayId" selected>@day.dayName</option>
+                            }
+                            else{
+                                <option value="@day.dayId" id="@day.dayId">@day.dayName</option>
+                            }
+                    }
+                    }
+                </select>
+                <span id="dayRequired" style="color:red"></span>
+
+             </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="tourDays">
+                    Number Of Days
+                </label>
+                @Html.TextBoxFor(m => m.Tour.tourDays, new { type = "text", @id = "tourDays", @class = "form-control", placeholder = "Enter number of days" })
+                <span id="tourDaysRequired" style="color:red"></span>
+            </div>
+            <div  class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="include" style="width:80%">
+                    includes
+                </label>
+                <i class="fa fa-plus" id="addIncludeBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
+                <div id="addInclude">
+                    @if (Model.includes != null && Model.includes.Count>0)
+                    {
+                        <input type="text" value="@Model.includes[0].includeText" id="include" class="form-control" />
+                        Model.includes.RemoveAt(0);
+                        foreach (var include in Model.includes)
+                        {
+                            <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input value="@include.includeText" type='text' class='form-control' style='margin: 5px 0px'></div>
+                        }
+                    }
+
+            </div>
+                <span id="includeRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="exclude" style="width:80%">
+                    excludes
+                </label>
+                <i class="fa fa-plus" id="addExcludeBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
+                <div id="addExclude">
+                    @if (Model.excludes != null && Model.excludes.Count > 0)
+                    {
+                        <input type="text" value="@Model.excludes[0].excludeText" id="exclude" class="form-control" />
+                    
+                        Model.excludes.RemoveAt(0);
+                        foreach (var exclude in Model.excludes)
+                        {
+                            <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input value="@exclude.excludeText" type='text' class='form-control' style='margin: 5px 0px'></div>
+                        }
+                    }
+                </div>
+                <span id="excludeRequired" style="color:red"></span>
+
+            </div>
+            <div  class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="Expect" style="width:80%">
+                    Expects
+                </label>
+                <i class="fa fa-plus" id="addExpectBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
+                <div id="addExpect">
+                    @if (Model.expects != null && Model.expects.Count > 0)
+                    {
+                        <input type="text" value="@Model.expects[0].details" id="expect" class="form-control" />
+                        Model.expects.RemoveAt(0);
+                        foreach (var expect in Model.expects)
+                        {
+                            <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input value="@expect.details" type='text' class='form-control' style='margin: 5px 0px'></div>
+                        }
+                    }
+                </div>
+                <span id="expectRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="packup" style="width:80%">
+                    packups
+                </label>
+                <i class="fa fa-plus" id="addPackBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
+                <div id="addPack">
+                    @if (Model.packs != null && Model.packs.Count > 0)
+                    {
+                        <input type="text" value="@Model.packs[0].title" id="pack" class="form-control" />
+                        Model.packs.RemoveAt(0);
+                        foreach (var pack in Model.packs)
+                        {
+                            <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input value="@pack.title" type='text' class='form-control' style='margin: 5px 0px'></div>
+                        }
+                    }
+                </div>
+                <span id="packRequired" style="color:red"></span>
+            </div>
+           
+            <div>
+                <button type="submit" class="btn btn-primary" id="addTourBtn">Save</button>
+            </div>
+        </div>
+    </div>
+   
+}
+
+
+<script>
+    function test(selectedOptions) {
+        var val = "";
+        for (var i = 0; i < selectedOptions.length; i++) {
+            val += selectedOptions[i].id + ",";
+        }
+    }
+    $(document).ready(function () {
+       
+        $('#addTourBtn').on("click", function (e) {
+            e.preventDefault();
+            //validation
+            if ($("#title").val() == '') {
+                $("#titleRequired").text("required");
+                return false;
+            } else {
+                $("#titleRequired").text("");
+            }
+            if ($("#duration").val() == '') {
+                $("#durationRequired").text("required");
+                return false;
+            } else {
+                $("#durationRequired").text("");
+            }
+            if ($("#tourLocation").val() == '') {
+                $("#tourLocationRequired").text("required");
+                return false;
+            } else {
+                $("#tourLocationRequired").text("");
+            }
+            if ($("#pickupLocation").val() == '') {
+                $("#pickupLocationRequired").text("required");
+                return false;
+            } else {
+                $("#pickupLocationRequired").text("");
+            }
+            if ($("#dropOff").val() == '') {
+                $("#dropOffRequired").text("required");
+                return false;
+            } else {
+                $("#dropOffRequired").text("");
+            }
+            if ($("#tourType").val() == '') {
+                $("#tourTypeRequired").text("required");
+                return false;
+            } else {
+                $("#tourTypeRequired").text("");
+            }
+            if ($("#overview").val() == '') {
+                $("#overviewRequired").text("required");
+                return false;
+            } else {
+                $("#overviewRequired").text("");
+            }
+            if ($("#highlights").val() == '') {
+                $("#highlightsRequired").text("required");
+                return false;
+            } else {
+                $("#highlightsRequired").text("");
+            }
+            if ($("#price").val() == '') {
+                $("#priceRequired").text("required");
+                return false;
+            } else {
+                $("#priceRequired").text("");
+            }
+            if ($("#capacity").val() == '') {
+                $("#capacityRequired").text("required");
+                return false;
+            } else {
+                $("#capacityRequired").text("");
+            } if ($("#tourDays").val() == '') {
+                $("#tourDaysRequired").text("required");
+                return false;
+            } else {
+                $("#tourDaysRequired").text("");
+            }
+            if ($("#field2").val() == '') {
+                $("#dayRequired").text("required");
+                return false;
+            } else {
+                $("#dayRequired").text("");
+            }
+            if ($("#include").val() == '') {
+                $("#includeRequired").text("required");
+                return false;
+            } else {
+                $("#includeRequired").text("");
+            }
+            if ($("#exclude").val() == '') {
+                $("#excludeRequired").text("required");
+                return false;
+            } else {
+                $("#excludeRequired").text("");
+            }
+             if ($("#expect").val() == '') {
+                $("#expectRequired").text("required");
+                return false;
+            } else {
+                $("#expectRequired").text("");
+            }
+            if ($("#pack").val() == '') {
+                $("#packRequired").text("required");
+                return false;
+            } else {
+                $("#packRequired").text("");
+            }
+            var includes = [];
+            var excludes = [];
+            var packs = [];
+            var expects = [];
+            $('#addInclude').children('input').each(function () {
+                var include = {
+                    "includeText": this.value,
+                };
+                includes.push(include);
+            });
+            $('#addInclude div').children('input').each(function () {
+                var include = {
+                    "includeText": this.value,
+                };
+                includes.push(include);
+            });
+            $('#addExclude').children('input').each(function () {
+                var exclude = {
+                    "excludeText": this.value,
+                };
+                excludes.push(exclude);
+            });
+            $('#addExclude div').children('input').each(function () {
+                var exclude = {
+                    "excludeText": this.value,
+                };
+                excludes.push(exclude);
+            });
+             $('#addExpect').children('input').each(function () {
+                var expect = {
+                    "details": this.value,
+                };
+                expects.push(expect);
+            });
+            $('#addExpect div').children('input').each(function () {
+                var expect = {
+                    "details": this.value,
+                };
+                expects.push(expect);
+            });
+             $('#addPack').children('input').each(function () {
+                var pack = {
+                    "title": this.value,
+                };
+                packs.push(pack);
+            });
+            $('#addPack div').children('input').each(function () {
+                var pack = {
+                    "title": this.value,
+                };
+                packs.push(pack);
+            });
+            var selectedDays = [];
+          
+            for (var i = 0; i < $("#field2").val().length; i++) {
+                var day = {
+                    "dayId": $("#field2").val()[i],
+                };
+                selectedDays.push(day);
+            }
+            var id = $("#tourId").val();
+            var tour = {};
+            alert($("#title").val());
+            tour.tour = {};
+            tour.tour.tourId = id;
+            tour.tour.title = $("#title").val();
+            tour.tour.duration = $("#duration").val();
+            tour.tour.tourLocation = $("#tourLocation").val();
+            tour.tour.pickupLocation = $("#pickupLocation").val();
+            tour.tour.dropOff = $("#dropOff").val();
+            tour.tour.tourType = $("#tourType").val();
+            tour.tour.highlights = $("#highlights").val();
+            tour.tour.overview = $("#overview").val();
+            tour.tour.capacity = $("#capacity").val();
+            tour.tour.tourDays = $("#tourDays").val();
+            tour.tour.price = $("#price").val();
+            tour.tour.tourType = $("#tourType").val();
+            tour.includes = includes;
+            tour.excludes = excludes;
+            tour.expects = expects;
+            tour.packs = packs;
+            tour.days = selectedDays;
+            $.ajax({
+                url: "/Tour/Edit",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(tour),
+                success: function (message) {
+                    console.log("s");
+                    if (message == "Updated") {
+                        Swal.fire({
+                            title: "Updated",
+                            text: "Tour deleted",
+                            icon: "success",
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                        }, 1500);
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "error when updating!",
+                            icon: "error",
+                            timer: 1500
+                        });
+                    }
+                }
+            });
+        });
+        $("#addIncludeBtn").click(function () {
+            $("#addInclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <input type='text'  class='form-control' style='margin:5px 0px'></div>");
+        });
+        $("#addExcludeBtn").click(function () {
+            $("#addExclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <input type='text'  class='form-control' style='margin:5px 0px'/></div>");
+        });
+        $("#addExpectBtn").click(function () {
+            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input type='text'  class='form-control' style='margin:5px 0px'/></div>");
+        });
+        $("#addPackBtn").click(function () {
+            // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
+            $("#addPack").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input type='text' class='form-control' style='margin: 5px 0px'></div>");
+        });
+    });
+    function remove(e) {
+        $(event.target).parent().remove();
+    }
+</script>

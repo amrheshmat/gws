@@ -1,0 +1,150 @@
+﻿<error errorId="de537a6b-3759-45e6-8926-586d699aa064" application="ALJU.QuotationRequest.Service" host="PCS5412" type="System.InvalidCastException" message="Column contains NULL data" source="Oracle.ManagedDataAccess" detail="# caller: @C:\Sources\ElmahCore\ElmahCore\ElmahCore\Internal$\CallerInfo.cs:9&#xD;&#xA;System.InvalidCastException: Column contains NULL data&#xD;&#xA;   at Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)&#xD;&#xA;   at lambda_method410(Closure, QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()&#xD;&#xA;   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)&#xD;&#xA;   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)&#xD;&#xA;   at MWS.Business.Shared.Business.CustomCaching.GetCachedLookupDetails() in D:\Git\MWS-Core\Business\MWS.Business.Shared\Business\CustomCaching.cs:line 125&#xD;&#xA;   at MWS.Business.Malath.lease.Business.QuotationBusiness.MapPartnerData(QuoteRequest quotesRequest, USERS appUser) in D:\Git\MWS-Core\Business\MWS.Business.Malath.lease\Business\QuotationBusiness.cs:line 43&#xD;&#xA;   at MWS.Business.ALJ.BusinessALJ.QuotationALJBusiness.AddQuotationRequest(AljuQuotationRequest aljuQuotationRequest, String trx, HttpContext httpContext) in D:\Git\MWS-Core\Business\MWS.Business.ALJ\BusinessALJ\QuotationALJBusiness.cs:line 111&#xD;&#xA;   at ALJU.Service.Controllers.QuotationController.AddQuotationRequest() in D:\Git\MWS-Core\Services\ALJU\ALJU.Service\Controllers\QuotationController.cs:line 56" time="2024-01-21T22:29:42.9275845Z" statusCode="500">
+  <serverVariables>
+    <item name="RequestTimedOut">
+      <value string="False" />
+    </item>
+    <item name="MinResponseDataRate">
+      <value string="Bytes per second: 240, Grace Period: 00:00:05" />
+    </item>
+    <item name="ConnectionIdFeature">
+      <value string="0HN0QQ18JDBO1" />
+    </item>
+    <item name="HasStartedConsumingRequestBody">
+      <value string="True" />
+    </item>
+    <item name="MaxRequestBodySize">
+      <value string="30000000" />
+    </item>
+    <item name="MinRequestBodyDataRate">
+      <value string="Bytes per second: 240, Grace Period: 00:00:05" />
+    </item>
+    <item name="AllowSynchronousIO">
+      <value string="False" />
+    </item>
+    <item name="TraceIdentifier">
+      <value string="0HN0QQ18JDBO1:00000001" />
+    </item>
+    <item name="IsUpgradableRequest">
+      <value string="False" />
+    </item>
+    <item name="IsUpgraded">
+      <value string="False" />
+    </item>
+    <item name="IsExtendedConnectRequest">
+      <value string="False" />
+    </item>
+    <item name="IsExtendedConnectAccepted">
+      <value string="False" />
+    </item>
+    <item name="RemoteIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="RemotePort">
+      <value string="57072" />
+    </item>
+    <item name="LocalIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="LocalPort">
+      <value string="7143" />
+    </item>
+    <item name="Scheme">
+      <value string="https" />
+    </item>
+    <item name="Method">
+      <value string="Post" />
+    </item>
+    <item name="MethodText">
+      <value string="POST" />
+    </item>
+    <item name="Path">
+      <value string="/AddQuotationRequest" />
+    </item>
+    <item name="QueryString">
+      <value string="" />
+    </item>
+    <item name="RawTarget">
+      <value string="/AddQuotationRequest" />
+    </item>
+    <item name="HttpVersion">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="Header_Accept">
+      <value string="*/*" />
+    </item>
+    <item name="Header_Connection">
+      <value string="keep-alive" />
+    </item>
+    <item name="Header_Host">
+      <value string="localhost:7143" />
+    </item>
+    <item name="Header_User-Agent">
+      <value string="PostmanRuntime/7.26.8" />
+    </item>
+    <item name="Header_Accept-Encoding">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="Header_Authorization">
+      <value string="Basic dGFtZWVuaXVzZXI6bWFsYXRoNQ==" />
+    </item>
+    <item name="Header_Cache-Control">
+      <value string="no-cache" />
+    </item>
+    <item name="Header_Content-Type">
+      <value string="application/json" />
+    </item>
+    <item name="Header_Content-Length">
+      <value string="3557" />
+    </item>
+    <item name="Header_Postman-Token">
+      <value string="3ff03104-ba2d-454a-9f04-e4bf2019b146" />
+    </item>
+    <item name="RequestTrailersAvailable">
+      <value string="True" />
+    </item>
+    <item name="StatusCode">
+      <value string="200" />
+    </item>
+    <item name="HasResponseStarted">
+      <value string="False" />
+    </item>
+    <item name="HasFlushedHeaders">
+      <value string="False" />
+    </item>
+    <item name="HasResponseCompleted">
+      <value string="False" />
+    </item>
+    <item name="IsWebTransportRequest">
+      <value string="False" />
+    </item>
+    <item name="Connection_Id">
+      <value string="0HN0QQ18JDBO1" />
+    </item>
+    <item name="Connection_RemoteIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="Connection_RemotePort">
+      <value string="57072" />
+    </item>
+    <item name="Connection_LocalIpAddress">
+      <value string="::1" />
+    </item>
+    <item name="Connection_LocalPort">
+      <value string="7143" />
+    </item>
+    <item name="HttpStatusCode">
+      <value string="500" />
+    </item>
+  </serverVariables>
+  <messageLog>
+    <message level="Warning" time-stamp="2024-01-21T22:29:42.3997657Z" message="The decimal property 'PARTNER_CODE' on entity type 'AGGR_CODES' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Warning" time-stamp="2024-01-21T22:29:42.4029738Z" message="A decimal property 'PARTNER_CODE' is part of a key on entity type 'AGGR_CODES' which may lead to a precision loss if the configured precision and scale don't match the column type in the database. Consider using a different property as the key, or make sure that the database column type matches the model configuration." />
+    <message level="Warning" time-stamp="2024-01-21T22:29:42.4051374Z" message="The decimal property 'EXPORT_BI' on entity type 'LOOKUP_DETAILS' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Warning" time-stamp="2024-01-21T22:29:42.4072744Z" message="The decimal property 'ACCESS_FAILED_COUNT' on entity type 'USERS' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Warning" time-stamp="2024-01-21T22:29:42.4100522Z" message="The decimal property 'ID' on entity type 'USERS' does not have a store type specified. This may lead to a precision loss if the values do not fit in the default precision and scale. Oracle recommends to explicitly specify the column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'." />
+    <message level="Information" time-stamp="2024-01-21T22:29:42.6028885Z" message="Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='0']&#xD;&#xA;SELECT &quot;u&quot;.&quot;USER_ID&quot;, &quot;u&quot;.&quot;ACCESS_FAILED_COUNT&quot;, &quot;u&quot;.&quot;ACCESS_FAILED_DATE&quot;, &quot;u&quot;.&quot;ACTIVE&quot;, &quot;u&quot;.&quot;ADDRESS&quot;, &quot;u&quot;.&quot;APPROVAL&quot;, &quot;u&quot;.&quot;APPROVAL_CLAIM&quot;, &quot;u&quot;.&quot;APPROVAL_DIST_STATUS&quot;, &quot;u&quot;.&quot;APPROVAL_LIMIT&quot;, &quot;u&quot;.&quot;A_USER_NAME&quot;, &quot;u&quot;.&quot;BUSINESS_SOURCE&quot;, &quot;u&quot;.&quot;BUSINESS_TYPE&quot;, &quot;u&quot;.&quot;BUS_SCHEME&quot;, &quot;u&quot;.&quot;CITRIX_LOGIN&quot;, &quot;u&quot;.&quot;CLAIM_LIMIT&quot;, &quot;u&quot;.&quot;COMP_CODE&quot;, &quot;u&quot;.&quot;CONNECT_STRING&quot;, &quot;u&quot;.&quot;CONNECT_TYPE&quot;, &quot;u&quot;.&quot;CREATED_BY&quot;, &quot;u&quot;.&quot;CREATION_DATE&quot;, &quot;u&quot;.&quot;CRS_FLAG&quot;, &quot;u&quot;.&quot;DIVISION&quot;, &quot;u&quot;.&quot;E_MAIL&quot;, &quot;u&quot;.&quot;FAX_EXT&quot;, &quot;u&quot;.&quot;FAX_NO&quot;, &quot;u&quot;.&quot;GENDER&quot;, &quot;u&quot;.&quot;GLOB&quot;, &quot;u&quot;.&quot;ID&quot;, &quot;u&quot;.&quot;IP_RESTRICT&quot;, &quot;u&quot;.&quot;ISCALLCENTER&quot;, &quot;u&quot;.&quot;ISONLINE&quot;, &quot;u&quot;.&quot;ISSUE_POLICY&quot;, &quot;u&quot;.&quot;ISWEB_FLAG&quot;, &quot;u&quot;.&quot;JOB_TITLE&quot;, &quot;u&quot;.&quot;LAST_UPDATED_BY&quot;, &quot;u&quot;.&quot;LAST_UPDATE_DATE&quot;, &quot;u&quot;.&quot;LEVEL_ID&quot;, &quot;u&quot;.&quot;LIVE&quot;, &quot;u&quot;.&quot;MANAGER_ID&quot;, &quot;u&quot;.&quot;MANAGER_STAMP&quot;, &quot;u&quot;.&quot;MOBILE&quot;, &quot;u&quot;.&quot;ORIGINAL_BRANCH&quot;, &quot;u&quot;.&quot;OWNER_STAMP&quot;, &quot;u&quot;.&quot;PARTNER_BRANCH&quot;, &quot;u&quot;.&quot;PARTNER_CODE&quot;, &quot;u&quot;.&quot;PART_TIME&quot;, &quot;u&quot;.&quot;PF_NUMBER&quot;, &quot;u&quot;.&quot;PORT&quot;, &quot;u&quot;.&quot;PRINTING_CARD&quot;, &quot;u&quot;.&quot;PROF_POSITION&quot;, &quot;u&quot;.&quot;PROF_TYPE&quot;, &quot;u&quot;.&quot;REPORT_SERVER&quot;, &quot;u&quot;.&quot;ROLE_ID&quot;, &quot;u&quot;.&quot;SERVER_IP&quot;, &quot;u&quot;.&quot;SIGNATURE&quot;, &quot;u&quot;.&quot;SOURCE_CODE&quot;, &quot;u&quot;.&quot;SOURCE_OWNER&quot;, &quot;u&quot;.&quot;SOURCE_TYPE&quot;, &quot;u&quot;.&quot;STATUS&quot;, &quot;u&quot;.&quot;USED_DATESTAMP&quot;, &quot;u&quot;.&quot;USER_IP&quot;, &quot;u&quot;.&quot;USER_NAME&quot;, &quot;u&quot;.&quot;USER_PWD&quot;, &quot;u&quot;.&quot;USER_SERIAL&quot;, &quot;u&quot;.&quot;WEBPASSWORD&quot;&#xD;&#xA;FROM &quot;TPAUSER&quot;.&quot;USERS&quot; &quot;u&quot;" />
+    <message level="Information" time-stamp="2024-01-21T22:29:42.8379180Z" message="Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='0']&#xD;&#xA;SELECT &quot;a&quot;.&quot;MASTER_CODE&quot;, &quot;a&quot;.&quot;PARTNER_CODE&quot;, &quot;a&quot;.&quot;BRANCH_CODE&quot;, &quot;a&quot;.&quot;AGGR_CODE&quot;, &quot;a&quot;.&quot;AGGR_ADD_DATA&quot;, &quot;a&quot;.&quot;DESC_AR&quot;, &quot;a&quot;.&quot;DESC_EN&quot;, &quot;a&quot;.&quot;MALATH_CODE&quot;&#xD;&#xA;FROM &quot;NONMED&quot;.&quot;AGGR_CODES&quot; &quot;a&quot;" />
+    <message level="Error" exception="System.InvalidCastException: Column contains NULL data&#xD;&#xA;   at Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)&#xD;&#xA;   at lambda_method410(Closure, QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()" time-stamp="2024-01-21T22:29:42.8640375Z" message="An exception occurred while iterating over the results of a query for context type 'MWS.Infrustructure.Context.AGGRDbContext'.&#xD;&#xA;System.InvalidCastException: Column contains NULL data&#xD;&#xA;   at Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)&#xD;&#xA;   at lambda_method410(Closure, QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()" />
+    <message level="Error" exception="System.InvalidCastException: Column contains NULL data&#xD;&#xA;   at Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)&#xD;&#xA;   at lambda_method410(Closure, QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator)&#xD;&#xA;   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()&#xD;&#xA;   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)&#xD;&#xA;   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)&#xD;&#xA;   at MWS.Business.Shared.Business.CustomCaching.GetCachedLookupDetails() in D:\Git\MWS-Core\Business\MWS.Business.Shared\Business\CustomCaching.cs:line 125&#xD;&#xA;   at MWS.Business.Malath.lease.Business.QuotationBusiness.MapPartnerData(QuoteRequest quotesRequest, USERS appUser) in D:\Git\MWS-Core\Business\MWS.Business.Malath.lease\Business\QuotationBusiness.cs:line 43&#xD;&#xA;   at MWS.Business.ALJ.BusinessALJ.QuotationALJBusiness.AddQuotationRequest(AljuQuotationRequest aljuQuotationRequest, String trx, HttpContext httpContext) in D:\Git\MWS-Core\Business\MWS.Business.ALJ\BusinessALJ\QuotationALJBusiness.cs:line 111&#xD;&#xA;   at ALJU.Service.Controllers.QuotationController.AddQuotationRequest() in D:\Git\MWS-Core\Services\ALJU\ALJU.Service\Controllers\QuotationController.cs:line 56" time-stamp="2024-01-21T22:29:42.9239310Z" message="Column contains NULL data" />
+  </messageLog>
+</error>

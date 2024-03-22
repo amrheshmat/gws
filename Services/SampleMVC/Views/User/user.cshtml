@@ -1,0 +1,335 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@model MWS.Data.Entities.User;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "user").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "user").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "user").ToList().Count;
+    var users = ViewBag.users;
+        var roles = ViewBag.roles;
+    }
+
+
+
+    <div class="row">
+
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+
+        <div id="contextual-classes" class="row">
+            <h2 class="col-11">User</h2>
+            @if (hasAddPermission > 0)
+            {
+                <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">Add</span>
+            }
+        </div>
+
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                            User Name
+                                        </th>
+                                        <th scope="col">
+                                            Mobile
+                                        </th>
+                                        <th scope="col">
+                                            Email
+                                        </th>
+                                        <th scope="col">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                    @foreach(var user in users)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @user.userName
+                                            </td>
+                                            <td>
+                                                @user.mobile
+                                            </td>
+                                            <td>
+                                                @user.email
+                                            </td>
+                                            <td>
+                                            @if (hasDeletePermission > 0)
+                                            {
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteUser(@user.userId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            }
+                                            @if (hasEditPermission > 0)
+                                            {
+                                            <span onclick="editUser(@user.userId,'@user.userName','@user.mobile','@user.email','@user.roleId')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            }    
+                                        </td>
+                                        </tr>
+                                    }
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("add", "user", FormMethod.Post, new { @id = "formUser" }))
+                {
+                    @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
+                    @Html.TextBoxFor(model => model.userId, new
+                        {
+                            @id = "datepicker",
+                            @class = "form-control",
+                            type = "text",
+                             disabled="disabled"
+                        } )
+                    <div><i class="fa fa-calendar-alt" onclick="showDatePicker()" id="showDatePicker"></i></div>
+                        <div class="mb-3">
+                            <label class="form-label" for="username">
+                                Username
+                            </label>
+                        @Html.TextBoxFor(m => m.userName, new { @id = "userName", @class = "form-control", placeholder = "Enter User Name ", required = "required" })
+                        <span id="userNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="mobile">
+                            mobile
+                        </label>
+                        @Html.TextBoxFor(m => m.mobile, new { @id = "mobile", @class = "form-control", placeholder = "Enter Mobile ", required = "required" })
+                        <span id="mobileRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">
+                            email
+                        </label>
+                        @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", placeholder = "Enter email ", required = "required" })
+                        <span id="emailRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3" id="passwordDiv">
+                        <label class="form-label" for="password">
+                            Password
+                        </label>
+                        @Html.TextBoxFor(m => m.password, new { @id = "password", @class = "form-control", placeholder = "Enter password ", required = "required" })
+                        <span id="passwordRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">
+                            roles
+                        </label>
+                        @Html.TextBoxFor(m => m.roleId, new { @id = "roleId", @class = "form-control", style = "display:none" })
+                        <select name="role" class="form-select" id="role">
+                            @foreach(var role in roles)
+                            {
+                                <option value="@role.roleId" >@role.roleName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    $(document).ready(function () {
+       
+        $('#formUserBtn').on("click",function (e) {
+            //validation
+            if ($(".modal-body #email").val() == '') {
+                $(".modal-body #emailRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #emailRequired").text("");
+            }
+            if ($(".modal-body #mobile").val() == '') {
+                $(".modal-body #mobileRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #mobileRequired").text("");
+            }
+            if ($(".modal-body #userName").val() == '') {
+                $(".modal-body #userNameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #userNameRequired").text("");
+            }
+           
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.userName = $(".modal-body #userName").val();
+            userUpdate.email = $(".modal-body #email").val();
+            userUpdate.mobile = $(".modal-body #mobile").val();
+            userUpdate.password = $(".modal-body #password").val();
+            if ($(".modal-body #roleId").val() != '')
+            userUpdate.roleId = $(".modal-body #roleId").val();
+
+            if ($(".modal-body #userId").val() == "") {
+                if ($(".modal-body #password").val() == '') {
+                    $(".modal-body #passwordRequired").text("required");
+                    return false;
+                } else {
+                    $(".modal-body #passwordRequired").text("");
+                }
+                var url = '@Url.Action("Add", "user")';
+                $('#formUser').prop('action', url);
+                console.log("b");
+                $.ajax({
+                    url: "/User/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        console.log("s");
+                        if (message == "Added") {
+                            Swal.fire({
+                                title: "Added",
+                                text: "User deleted",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "You clicked the button!",
+                                icon: "success",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                        alert();
+                    }
+                });
+            } else {
+                userUpdate.userId = $(".modal-body #userId").val();
+                var url = '@Url.Action("Edit", "user")';
+                $('#formUser').prop('action', url);
+                $.ajax({
+                    url: "/User/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        if (message == "Updated") {
+                            Swal.fire({
+                                title: "Edit",
+                                text: "User updated",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "You clicked the button!",
+                                icon: "success",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+           
+        });
+        $("#datepicker").datepicker({
+            beforeShowDay: noMondays
+        });
+       
+        function noMondays(date) {
+            if (date.getDay() === 0)  /* Monday */
+                return [false, "closed", "Closed on Monday"]
+            else
+                return [true, "", ""]
+        }
+        $('#demoGrid').dataTable({
+            // "processing": true, // for show progress bar
+            // "serverSide": true, // for process server side
+            // "filter": true, // this is for disable filter (search box)
+            // "orderMulti": false, // for disable multiple column at once
+            // "pageLength": 5,
+        });
+    });
+    $(document).on('change', '#role', function () {
+
+        $(".modal-body #roleId").val($(this).val());
+    });
+    function showDatePicker() {
+        $("#datepicker").datepicker('show'); //Show on click of button
+    }
+    function DeleteUser(id) {
+        $.ajax({
+            url: "/User/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (message) {
+                if (message == "Deleted") {
+                    Swal.fire({
+                        title: "Delete",
+                        text: "User deleted",
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error When Delete User!",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    }
+    function editUser(id,name,mobile,email,roleId) {
+        $('#passwordDiv').hide();
+            $(".modal-body #userId").val(id);
+            $(".modal-body #userName").val(name);
+            $(".modal-body #mobile").val(mobile);
+            $(".modal-body #email").val(email);
+        $("#role").val(roleId);
+        }
+</script>

@@ -29,21 +29,21 @@
         <label class="form-label" for="tourLocation">
             Tour Location
         </label>
-        @Html.TextBoxFor(m => m.tourLocation, new { @id = "tourLocation", @class = "form-control", placeholder = "Enter Tour Location " })
+                @Html.TextAreaFor(m => m.tourLocation, new { @id = "tourLocation", @class = "form-control", placeholder = "Enter Tour Location " })
         <span id="tourLocationRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="pickupLocation">
             Pickup Location
         </label>
-        @Html.TextBoxFor(m => m.pickupLocation, new { @id = "pickupLocation", @class = "form-control", placeholder = "Enter Pickup Location " })
+                @Html.TextAreaFor(m => m.pickupLocation, new { @id = "pickupLocation", @class = "form-control", placeholder = "Enter Pickup Location " })
                 <span id="pickupLocationRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="dropOff">
             Drop Off
         </label>
-        @Html.TextBoxFor(m => m.dropOff, new { @id = "dropOff", @class = "form-control", placeholder = "Enter Drop Off " })
+                @Html.TextAreaFor(m => m.dropOff, new { @id = "dropOff", @class = "form-control", placeholder = "Enter Drop Off " })
                 <span id="dropOffRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
@@ -57,14 +57,14 @@
         <label class="form-label" for="overview">
             Overview
         </label>
-        @Html.TextBoxFor(m => m.overview, new { @id = "overview", @class = "form-control", placeholder = "Enter Overview" })
+                @Html.TextAreaFor(m => m.overview, new { @id = "overview", @class = "form-control", placeholder = "Enter Overview" })
                 <span id="overviewRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="highlights">
             Highlights
         </label>
-        @Html.TextBoxFor(m => m.highlights, new { @id = "highlights", @class = "form-control", placeholder = "Enter highlights" })
+                @Html.TextAreaFor(m => m.highlights, new { @id = "highlights", @class = "form-control", placeholder = "Enter highlights" })
                 <span id="highlightsRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
@@ -78,7 +78,7 @@
         <label class="form-label" for="capacity">
             Capacity
         </label>
-        @Html.TextBoxFor(m => m.capacity, new { type = "number", @id = "capacity", @class = "form-control", placeholder = "Enter price" })
+                @Html.TextBoxFor(m => m.capacity, new { type = "number", @id = "capacity", @class = "form-control", placeholder = "Enter capacity" })
                 <span id="capacityRequired" style="color:red"></span>
     </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
@@ -94,13 +94,6 @@
                 <span id="dayRequired" style="color:red"></span>
 
              </div>
-            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
-                <label class="form-label" for="tourDays">
-                    Number Of Days
-                </label>
-                @Html.TextBoxFor(m => m.tourDays, new { type = "text", @id = "tourDays", @class = "form-control", placeholder = "Enter number of days" })
-                <span id="tourDaysRequired" style="color:red"></span>
-            </div>
             <div  class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="include" style="width:80%">
                     includes
@@ -162,7 +155,6 @@
     $(document).ready(function () {
        
         $('#addTourBtn').on("click", function (e) {
-            alert($("#expect").val());
             e.preventDefault();
             //validation
             if ($("#title").val() == '') {
@@ -224,12 +216,6 @@
                 return false;
             } else {
                 $("#capacityRequired").text("");
-            }
-            if ($("#tourDays").val() == '') {
-                $("#tourDaysRequired").text("required");
-                return false;
-            } else {
-                $("#tourDaysRequired").text("");
             }
             if ($("#field2").val() == '') {
                 $("#dayRequired").text("required");
@@ -334,7 +320,6 @@
             tour.tour.tourType = $("#tourType").val();
             tour.tour.overview = $("#overview").val();
             tour.capacity = $("#capacity").val();
-            tour.tourDays = $("#tourDays").val();
             tour.price = $("#price").val();
             tour.includes = includes;
             tour.excludes = excludes;

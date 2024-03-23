@@ -3,6 +3,7 @@
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var localizations = ViewBag.localizations;
+    var languages = ViewBag.languages;
 }
     <div class="row">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
@@ -42,7 +43,8 @@
                                         </td>
                                             <td>
                                                 <span style="margin:0px 5px;cursor:pointer"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
-                                                <span onclick="editlocalization(@localization.localizeId,'@localization.keyName','@localization.value')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            <span onclick="editLocalization(@localization.languageId,@localization.localizeId,'@localization.keyName','@localization.value')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                                <span onclick="addLocalization('@localization.keyName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-plus"></i></span>
                                             </td>
                                         </tr>
                                     }
@@ -74,15 +76,30 @@
                             key
                         </label>
                         @Html.TextBoxFor(m => m.keyName, new { @id = "keyName", @class = "form-control", disabled="disabled" })
+                        <span id="keyNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3" id="languageDiv">
+                        <label class="form-label" for="language">
+                            language
+                        </label>
+                        @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
+                        <select name="language" class="form-select" id="language">
+                            @foreach (var language in languages)
+                            {
+                                <option value="@language.languageId">@language.languageName</option>
+                            }
+                        </select>
+                        <span id="languageRequired" style="color:red"></span>
                     </div>
                         <div class="mb-3">
                         <label class="form-label" for="value">
                             value
                             </label>
                         @Html.TextBoxFor(m => m.value, new { @id = "value", @class = "form-control", placeholder = "Enter  Value " })
-                        </div>
+                        <span id="valueRequired" style="color:red"></span>
+                    </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
                     </div>
                 }
             </div>
@@ -94,13 +111,120 @@
 </div>
 
 <script>
+    var cleickedEvent;
     $(document).ready(function () {
         $('#demoGrid').dataTable({
+        }); $(document).on('change', '#language', function () {
+            $(".modal-body #languageId").val($(this).val());
+        });
+
+        $('#formUserBtn').on("click", function (e) {
+            //validation
+            if ($(".modal-body #keyName").val() == '') {
+                $(".modal-body #keyNameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #keyNameRequired").text("");
+            }
+            if ($(".modal-body #language").val() == '') {
+                $(".modal-body #languageRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #languageRequired").text("");
+            }
+            if ($(".modal-body #value").val() == '') {
+                $(".modal-body #valueRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #valueRequired").text("");
+            }
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.languageId = $(".modal-body #language").val();
+            userUpdate.keyName = $(".modal-body #keyName").val();
+            userUpdate.value = $(".modal-body #value").val();
+            if ($(".modal-body #localizeId").val() != '')
+                userUpdate.localizeId = $(".modal-body #localizeId").val();
+            if ($(".modal-body #localizeId").val() == "") {
+                $.ajax({
+                    url: "/Localization/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        if (message == "Added") {
+                            Swal.fire({
+                                title: "Added",
+                                text: "User deleted",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else if (message == "exsits") {
+                            Swal.fire({
+                                title: "exstis",
+                                text: "this tranlation exsits before.",
+                                icon: "warning",
+                                timer: 1500
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Error!",
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                    }
+                });
+            } else {
+                userUpdate.localizeId = $(".modal-body #localizeId").val();
+                $.ajax({
+                    url: "/Localization/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (message) {
+                        if (message == "Updated") {
+                            Swal.fire({
+                                title: "Edit",
+                                text: "User updated",
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "You clicked the button!",
+                                icon: "success",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+
         });
     });
-    function editlocalization(id,key,name) {
-        $(".modal-body #localizeId").val(id);
-        $(".modal-body #keyName").val(key)
-        $(".modal-body #value").val(name);
+    function editLocalization(langId,id, key, name) {
+        $("#languageDiv").hide();
+            cleickedEvent = "edit";
+             $(".modal-body #languageId").val(langId)
+            $(".modal-body #localizeId").val(id);
+            $(".modal-body #keyName").val(key)
+            $(".modal-body #value").val(name);
         }
+    function addLocalization(key) {
+        $("#languageDiv").show();
+        cleickedEvent = "add";
+        $(".modal-body #keyName").val(key)
+    }
 </script>

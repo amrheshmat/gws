@@ -181,13 +181,13 @@
         })
         $('#formUserBtn').on("click",function (e) {
             //validation
-            if ($(".modal-body #hotelId").val() == '') {
+            if ($(".modal-body #hotel").val() == '') {
                 $(".modal-body #hotelRequired").text("required");
                 return false;
             } else {
                 $(".modal-body #hotelRequired").text("");
             }
-            if ($(".modal-body #roomId").val() == '') {
+            if ($(".modal-body #room").val() == '') {
                 $(".modal-body #roomRequired").text("required");
                 return false;
             } else {

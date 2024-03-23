@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="container" style="margin:30px 0px;">
-	<div style="margin:50px 0px;">
+	<div style="margin:20px 0px;">
 		
 <section class="gallery">
   <div class="gallery__item">
@@ -178,7 +178,7 @@
 										@foreach (var i in Model.includes)
 										{
 											<li>
-												<h3>@i.includeText</h3>
+												<i class="fa fa-check" style="margin:0px 7px;color:#03a84e;"></i>@i.includeText
 											</li>
 										}
 									</ul>
@@ -198,7 +198,7 @@
 										@foreach(var e in Model.excludes)
 										{
 											<li>
-												<h3>@e.excludeText</h3>
+												<i class="fa fa-times" style="margin:0px 7px;color:#e04f67;"></i>@e.excludeText
 											</li>
 										}
 									</ul>
@@ -261,7 +261,7 @@
 									foreach(var e in Model.expects)
 									{
 										
-										<div class="card">
+										<div class="card" style="margin-bottom:10px;">
 											<div class="card-header">
 												<h4>
 													<a class="accordion-toggle" data-bs-toggle="collapse" href="#collapse_@e.expectId" aria-controls="collapse_@e.expectId">

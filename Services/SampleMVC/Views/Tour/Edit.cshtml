@@ -30,21 +30,21 @@
         <label class="form-label" for="tourLocation">
             Tour Location
         </label>
-                @Html.TextBoxFor(m => m.Tour.tourLocation, new {  @id = "tourLocation", @class = "form-control", placeholder = "Enter Tour Location " })
+                @Html.TextAreaFor(m => m.Tour.tourLocation, new { @id = "tourLocation", @class = "form-control", placeholder = "Enter Tour Location " })
         <span id="tourLocationRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="pickupLocation">
             Pickup Location
         </label>
-                @Html.TextBoxFor(m => m.Tour.pickupLocation, new { @id = "pickupLocation", @class = "form-control", placeholder = "Enter Pickup Location " })
+                @Html.TextAreaFor(m => m.Tour.pickupLocation, new { @id = "pickupLocation", @class = "form-control", placeholder = "Enter Pickup Location " })
                 <span id="pickupLocationRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="dropOff">
             Drop Off
         </label>
-                @Html.TextBoxFor(m => m.Tour.dropOff, new {  @id = "dropOff", @class = "form-control", placeholder = "Enter Drop Off " })
+                @Html.TextAreaFor(m => m.Tour.dropOff, new { @id = "dropOff", @class = "form-control", placeholder = "Enter Drop Off " })
                 <span id="dropOffRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
@@ -58,14 +58,14 @@
         <label class="form-label" for="overview">
             Overview
         </label>
-                @Html.TextBoxFor(m => m.Tour.overview, new { @id = "overview", @class = "form-control", placeholder = "Enter Overview" })
+                @Html.TextAreaFor(m => m.Tour.overview, new { @id = "overview", @class = "form-control", placeholder = "Enter Overview" })
                 <span id="overviewRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="highlights">
             Highlights
         </label>
-                @Html.TextBoxFor(m => m.Tour.highlights, new { @id = "highlights", @class = "form-control", placeholder = "Enter highlights" })
+                @Html.TextAreaFor(m => m.Tour.highlights, new { @id = "highlights", @class = "form-control", placeholder = "Enter highlights" })
                 <span id="highlightsRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
@@ -107,13 +107,6 @@
                 <span id="dayRequired" style="color:red"></span>
 
              </div>
-            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
-                <label class="form-label" for="tourDays">
-                    Number Of Days
-                </label>
-                @Html.TextBoxFor(m => m.Tour.tourDays, new { type = "text", @id = "tourDays", @class = "form-control", placeholder = "Enter number of days" })
-                <span id="tourDaysRequired" style="color:red"></span>
-            </div>
             <div  class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="include" style="width:80%">
                     includes
@@ -270,12 +263,7 @@
                 return false;
             } else {
                 $("#capacityRequired").text("");
-            } if ($("#tourDays").val() == '') {
-                $("#tourDaysRequired").text("required");
-                return false;
-            } else {
-                $("#tourDaysRequired").text("");
-            }
+            } 
             if ($("#field2").val() == '') {
                 $("#dayRequired").text("required");
                 return false;
@@ -368,7 +356,6 @@
             }
             var id = $("#tourId").val();
             var tour = {};
-            alert($("#title").val());
             tour.tour = {};
             tour.tour.tourId = id;
             tour.tour.title = $("#title").val();
@@ -380,7 +367,6 @@
             tour.tour.highlights = $("#highlights").val();
             tour.tour.overview = $("#overview").val();
             tour.tour.capacity = $("#capacity").val();
-            tour.tour.tourDays = $("#tourDays").val();
             tour.tour.price = $("#price").val();
             tour.tour.tourType = $("#tourType").val();
             tour.includes = includes;

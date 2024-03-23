@@ -19,7 +19,7 @@ namespace MWS.Data.Entities
 		public string? overview { get; set; }
 		public decimal? includeId { get; set; }
 		public decimal? exculdeId { get; set; }
-		public decimal? highlights { get; set; }
+		public string? highlights { get; set; }
 		public decimal? expectId { get; set; }
 		public decimal? packId { get; set; }
 		public decimal? price { get; set; }

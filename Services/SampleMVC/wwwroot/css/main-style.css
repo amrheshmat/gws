@@ -42,7 +42,7 @@
 :root {
     --remix-icon: "remixicon";
     --Kaushan: "Kaushan Script", cursive;
-    --Dm: "DM Sans", sans-serif;
+    --Dm: "Montserrat", sans-serif;
     --white: #fff;
     --light: #d8dbe0;
     --dark: #28292c;
@@ -30600,4 +30600,11 @@ button.applyBtn.btn.btn-sm.btn-primary {
 .lan.shape-one {
     top: auto;
     z-index: -1;
+}
+
+#whyBookingUs li{
+    line-height:40px;
+}
+#whyBookingUs i{
+    margin:0px 10px;
 }

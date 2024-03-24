@@ -23,6 +23,9 @@
                                     <th scope="col">
                                         value
                                     </th>
+                                    <th scope="col">
+                                        Language Name
+                                    </th>
                                         <th scope="col">
                                             Actions
                                         </th>
@@ -41,8 +44,11 @@
                                         <td>
                                             @localization.value
                                         </td>
+                                        <td>
+                                            @localization.languageName
+                                        </td>
                                             <td>
-                                                <span style="margin:0px 5px;cursor:pointer"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLocalization(@localization.localizeId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
                                             <span onclick="editLocalization(@localization.languageId,@localization.localizeId,'@localization.keyName','@localization.value')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
                                                 <span onclick="addLocalization('@localization.keyName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-plus"></i></span>
                                             </td>
@@ -140,12 +146,12 @@
             }
             e.preventDefault();
             var userUpdate = {};
-            userUpdate.languageId = $(".modal-body #language").val();
             userUpdate.keyName = $(".modal-body #keyName").val();
             userUpdate.value = $(".modal-body #value").val();
             if ($(".modal-body #localizeId").val() != '')
                 userUpdate.localizeId = $(".modal-body #localizeId").val();
             if ($(".modal-body #localizeId").val() == "") {
+            userUpdate.languageId = $(".modal-body #language").val();
                 $.ajax({
                     url: "/Localization/Add",
                     type: "POST",
@@ -155,7 +161,7 @@
                         if (message == "Added") {
                             Swal.fire({
                                 title: "Added",
-                                text: "User deleted",
+                                text: "tranlation Added",
                                 icon: "success",
                                 timer: 1500
                             });
@@ -169,6 +175,9 @@
                                 icon: "warning",
                                 timer: 1500
                             });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
                         } else {
                             Swal.fire({
                                 title: "Error!",
@@ -184,6 +193,7 @@
                 });
             } else {
                 userUpdate.localizeId = $(".modal-body #localizeId").val();
+                userUpdate.languageId = $(".modal-body #languageId").val();
                 $.ajax({
                     url: "/Localization/Edit",
                     type: "POST",
@@ -214,7 +224,34 @@
 
         });
     });
+    function DeleteLocalization(id) {
+        $.ajax({
+            url: "/Localization/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (message) {
+                if (message == "Deleted") {
+                    Swal.fire({
+                        title: "Delete",
+                        text: "Localization deleted",
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error When Delete Localization!",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    }
     function editLocalization(langId,id, key, name) {
+        alert(langId);
         $("#languageDiv").hide();
             cleickedEvent = "edit";
              $(".modal-body #languageId").val(langId)

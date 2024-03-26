@@ -26,6 +26,7 @@
     <meta name="email" content="support@shreethemes.in">
     <meta name="version" content="1.0.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
     <!-- favicon -->
     <link rel="shortcut icon" href="~/images/favicon.ico">
@@ -52,6 +53,43 @@
         <link rel="stylesheet" href="~/css/homestyle-ar.css" data-n-g="">
         <script src="~/js/website-ar.js"></script>
     }
+    <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            opacity:1;
+        }
+
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 1;
+                bottom: 150%;
+                left: 50%;
+                margin-left: -60px;
+            }
+
+                .tooltip .tooltiptext::after {
+                    content: "";
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    margin-left: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: black transparent transparent transparent;
+                }
+
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
+    </style>
 </head>
 <body class="dark:bg-slate-900">
     <!-- Loader Start -->

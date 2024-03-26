@@ -12,7 +12,7 @@ namespace MWS.Data.Entities
         public string? phone { get; set; }
         public string? email { get; set; }
         public string? name { get; set; }
-        public string? countryId { get; set; }
+        public string? countryName { get; set; }
         public string? message { get; set; }
         public DateTime? arriveDate { get; set; }
         public DateTime? leaveDate { get; set; }

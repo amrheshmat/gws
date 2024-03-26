@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared;
+using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;
+using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
 {
     public class LocalizationController : Controller
     {
         private IRepository _repo;
-        public LocalizationController(IRepositoryFactory repo)
+        private ILocalizationService _localizationService;
+        public LocalizationController(ILocalizationService localizationService, IRepositoryFactory repo)
         {
             _repo = repo.Create("AGGRDB");
+            _localizationService = localizationService;
         }
         [AuthAttribute("Localization", "Localization")]
         public async Task<IActionResult> Localization()//index page
@@ -38,8 +42,10 @@ namespace SampleMVC.Controllers
         [AuthAttribute("edit", "Localization")]
         [HttpPost]
         [Route("Localization/Edit")]
-        public async Task<IActionResult> Edit([FromBody] Localization localizationModel)
+        public async Task<Response> Edit([FromBody] Localization localizationModel)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Update");
             var oldLocalize = await _repo.Filter<Localization>(e => e.localizeId == localizationModel.localizeId).FirstOrDefaultAsync();
             if (oldLocalize != null)
             {
@@ -47,22 +53,28 @@ namespace SampleMVC.Controllers
                 await _repo.SaveChangesAsync();
                 if (localize?.localizeId != null)
                 {
-                    return Ok("Updated");
+                    response.Message = _localizationService.Localize("UpdatedLocalization");
+                    response.Status = true;
+                    return response;
                 }
             }
-            return Ok("Error");
+            response.Message = _localizationService.Localize("UpdatedLocalizationError");
+            response.Status = false;
+            return response;
         }
         [AuthAttribute("add", "Localization")]
         [HttpPost]
         [Route("Localization/Add")]
-        public async Task<IActionResult> Add([FromBody] Localization localizationModel)
+        public async Task<Response> Add([FromBody] Localization localizationModel)
         {
-
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Add");
             var oldLocalize = await _repo.Filter<Localization>(e => e.languageId == localizationModel.languageId && e.keyName == localizationModel.keyName).FirstOrDefaultAsync();
             if (oldLocalize != null)
             {
-
-                return Ok("exsits");
+                response.Message = _localizationService.Localize("Exsits");
+                response.Status = false;
+                return response;
             }
             else
             {
@@ -70,24 +82,35 @@ namespace SampleMVC.Controllers
                 await _repo.SaveChangesAsync();
                 if (localize?.localizeId != null)
                 {
-                    return Ok("Added");
+                    response.Message = _localizationService.Localize("AddLocalization");
+                    response.Status = true;
+                    return response;
                 }
             }
-            return Ok("Error");
+            response.Message = _localizationService.Localize("AddLocalizationError");
+            response.Status = false;
+            return response;
+
         }
         [AuthAttribute("delete", "Localization")]
         [HttpGet]
         [Route("Localization/Delete/{id}")]
-        public async Task<string> Delete(int id)
+        public async Task<Response> Delete(int id)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Delete");
             var localization = _repo.Filter<Localization>(e => e.localizeId == id).FirstOrDefault();
             if (localization != null)
             {
                 _repo.Delete<Localization>(localization);
                 await _repo.context.SaveChangesAsync();
-                return "Deleted";
+                response.Message = _localizationService.Localize("DeleteLocalization");
+                response.Status = true;
+                return response;
             }
-            return "NotFond";
+            response.Message = _localizationService.Localize("DeleteLocalizationError");
+            response.Status = false;
+            return response;
         }
     }
 }

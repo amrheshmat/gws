@@ -8,7 +8,7 @@
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
         <div id="contextual-classes" class="row">
             <h2 class="col-11">Language</h2>
-            <span class="col-1 btn btn-primary">Add</span>
+            <span class="col-1 btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</span>
         </div>
             <div class="card">
                 <div class="p-0 card-body">
@@ -20,6 +20,9 @@
                                         <th scope="col">
                                             Language Name
                                         </th>
+                                    <th scope="col">
+                                        Language Code
+                                    </th>
                                         <th scope="col">
                                             Actions
                                         </th>
@@ -35,9 +38,12 @@
                                             <td>
                                             @language.languageName
                                             </td>
+                                        <td>
+                                            @language.code
+                                        </td>
                                             <td>
-                                                <span style="margin:0px 5px;cursor:pointer"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
-                                            <span onclick="editlanguage(@language.languageId,@language.languageName)" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLanguage(@language.languageId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            <span onclick="editlanguage(@language.languageId,'@language.languageName','@language.code')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
                                             </td>
                                         </tr>
                                     }
@@ -61,7 +67,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @using (Html.BeginForm("edit", "Language", FormMethod.Post))
+                @using (Html.BeginForm("edit", "Language", FormMethod.Post, new { @id = "formUser" }))
                 {
                     @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
 
@@ -70,9 +76,17 @@
                             languageName
                             </label>
                         @Html.TextBoxFor(m => m.languageName, new { @id = "languageName", @class = "form-control", placeholder = "Enter Language Name " })
-                        </div>
+                        <span id="languageNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="code">
+                            code <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank"> Get Code</a>
+                        </label>
+                        @Html.TextBoxFor(m => m.code, new { @id = "code", @class = "form-control", placeholder = "Enter Language code " })
+                        <span id="codeRequired" style="color:red"></span>
+                    </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
                     </div>
                 }
             </div>
@@ -84,12 +98,128 @@
 </div>
 
 <script>
+    function clearData() {
+        $(".modal-body #languageId").val("");
+        $(".modal-body #languageName").val("");
+        $(".modal-body #code").val("");
+    }
     $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            clearData();
+        })
         $('#demoGrid').dataTable({
         });
+        $('#formUserBtn').on("click", function (e) {
+            //validation
+            if ($(".modal-body #languageName").val() == '') {
+                $(".modal-body #languageNameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #languageNameRequired").text("");
+            }
+            if ($(".modal-body #code").val() == '') {
+                $(".modal-body #codeRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #codeRequired").text("");
+            }
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.languageName = $(".modal-body #languageName").val();
+            userUpdate.code = $(".modal-body #code").val();
+            if ($(".modal-body #languageId").val() != '')
+                userUpdate.languageId = $(".modal-body #languageId").val();
+            if ($(".modal-body #languageId").val() == "") {
+                $.ajax({
+                    url: "/language/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                    }
+                });
+            } else {
+                userUpdate.languageId = $(".modal-body #languageId").val();
+                $.ajax({
+                    url: "/language/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+
+        });
     });
-    function editlanguage(id,name) {
+    function editlanguage(id,name,code) {
         $(".modal-body #languageId").val(id);
         $(".modal-body #languageName").val(name);
+        $(".modal-body #code").val(code);
         }
+    function DeleteLanguage(id) {
+        $.ajax({
+            url: "/language/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                if (data.status == true) {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error When Delete Localization!",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    }
 </script>

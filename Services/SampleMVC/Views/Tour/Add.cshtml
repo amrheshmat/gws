@@ -100,7 +100,7 @@
                 </label>
                 <i class="fa fa-plus" id="addIncludeBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addInclude">
-                <input type="text" id="include" class="form-control" />
+                <textarea type="text" id="include" class="form-control"></textarea>
                 </div>
                 <span id="includeRequired" style="color:red"></span>
             </div>
@@ -110,7 +110,7 @@
                 </label>
                 <i class="fa fa-plus" id="addExcludeBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addExclude">
-                    <input type="text" id="exclude" class="form-control" cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%; />
+                    <textarea type="text" id="exclude" class="form-control" cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;></textarea>
                 </div>
                 <span id="excludeRequired" style="color:red"></span>
 
@@ -121,7 +121,7 @@
                 </label>
                 <i class="fa fa-plus" id="addExpectBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addExpect">
-                    <input type="text" id="expect" class="form-control" style="cursor:pointer;" />
+                    <textarea type="text" id="expect" class="form-control" style="cursor:pointer;"></textarea>
                 </div>
                 <span id="expectRequired" style="color:red"></span>
             </div>
@@ -131,7 +131,7 @@
                 </label>
                 <i class="fa fa-plus" id="addPackBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addPack">
-                    <input type="text" id="pack" class="form-control" style="cursor:pointer;" />
+                    <textarea type="text" id="pack" class="form-control" style="cursor:pointer;"></textarea>
                 </div>
                 <span id="packRequired" style="color:red"></span>
             </div>
@@ -251,50 +251,50 @@
             var excludes = [];
             var packs = [];
             var expects = [];
-            $('#addInclude').children('input').each(function () {
+            $('#addInclude').children('textarea').each(function () {
                 var include = {
                     "includeText": this.value,
                 };
                 includes.push(include);
             });
-            $('#addInclude div').children('input').each(function () {
+            $('#addInclude div').children('textarea').each(function () {
                 var include = {
                     "includeText": this.value,
                 };
                 includes.push(include);
             });
-            $('#addExclude').children('input').each(function () {
+            $('#addExclude').children('textarea').each(function () {
                 var exclude = {
                     "excludeText": this.value,
                 };
                 excludes.push(exclude);
             });
-            $('#addExclude div').children('input').each(function () {
+            $('#addExclude div').children('textarea').each(function () {
                 var exclude = {
                     "excludeText": this.value,
                 };
                 excludes.push(exclude);
             });
-             $('#addExpect').children('input').each(function () {
+            $('#addExpect').children('textarea').each(function () {
                 var expect = {
                     "details": this.value,
                 };
                 expects.push(expect);
             });
-            $('#addExpect div').children('input').each(function () {
+            $('#addExpect div').children('textarea').each(function () {
                 var expect = {
                     "details": this.value,
                 };
                 expects.push(expect);
             });
-             $('#addPack').children('input').each(function () {
+            $('#addPack').children('textarea').each(function () {
                  debugger;
                 var pack = {
                     "title": this.value,
                 };
                 packs.push(pack);
             });
-            $('#addPack div').children('input').each(function () {
+            $('#addPack div').children('textarea').each(function () {
                 debugger;
                 var pack = {
                     "title": this.value,
@@ -355,17 +355,17 @@
             });
         });
         $("#addIncludeBtn").click(function () {
-            $("#addInclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <input type='text'  class='form-control' style='margin:5px 0px'></div>");
+            $("#addInclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <textarea  class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         $("#addExcludeBtn").click(function () {
-            $("#addExclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <input type='text'  class='form-control' style='margin:5px 0px'/></div>");
+            $("#addExclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <textarea class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         $("#addExpectBtn").click(function () {
-            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input type='text'  class='form-control' style='margin:5px 0px'/></div>");
+            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea  class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         $("#addPackBtn").click(function () {
             // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
-            $("#addPack").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <input type='text' class='form-control' style='margin: 5px 0px'></div>");
+            $("#addPack").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea class='form-control' style='margin: 5px 0px'></textarea></div>");
         });
     });
     function remove(e){

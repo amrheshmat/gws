@@ -112,7 +112,9 @@
                             type = "text",
                              disabled="disabled"
                         } )
-                    <div><i class="fa fa-calendar-alt" onclick="showDatePicker()" id="showDatePicker"></i></div>
+                    <div>
+                        <i class="fa fa-calendar-alt" onclick="showDatePicker()" id="showDatePicker"></i>
+                    </div>
                         <div class="mb-3">
                             <label class="form-label" for="username">
                                 Username
@@ -166,9 +168,16 @@
 </div>
 
 <script>
-    
+    function clearData() {
+        $(".modal-body #userId").val("");
+        $(".modal-body #userName").val("");
+        $(".modal-body #mobile").val("");
+        $(".modal-body #email").val("");
+    }
     $(document).ready(function () {
-       
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            clearData();
+        })
         $('#formUserBtn').on("click",function (e) {
             //validation
             if ($(".modal-body #email").val() == '') {
@@ -273,16 +282,17 @@
             }
            
         });
+        
         $("#datepicker").datepicker({
             beforeShowDay: noMondays
         });
-       
         function noMondays(date) {
             if (date.getDay() === 0)  /* Monday */
                 return [false, "closed", "Closed on Monday"]
             else
                 return [true, "", ""]
         }
+       
         $('#demoGrid').dataTable({
             // "processing": true, // for show progress bar
             // "serverSide": true, // for process server side

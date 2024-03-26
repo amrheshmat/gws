@@ -117,8 +117,15 @@
 </div>
 
 <script>
+    function clearData() {
+        $(".modal-body #value").val("");
+        $(".modal-body #localizeId").val("");
+    }
     var cleickedEvent;
     $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            clearData();
+        })
         $('#demoGrid').dataTable({
         }); $(document).on('change', '#language', function () {
             $(".modal-body #languageId").val($(this).val());
@@ -157,11 +164,11 @@
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(userUpdate),
-                    success: function (message) {
-                        if (message == "Added") {
+                    success: function (data) {
+                        if (data.status == true) {
                             Swal.fire({
-                                title: "Added",
-                                text: "tranlation Added",
+                                title: data.title,
+                                text: data.message,
                                 icon: "success",
                                 timer: 1500
                             });
@@ -229,11 +236,11 @@
             url: "/Localization/Delete/" + id,
             type: "GET",
             cache: false,
-            success: function (message) {
-                if (message == "Deleted") {
+            success: function (data) {
+                if (data.status == true) {
                     Swal.fire({
-                        title: "Delete",
-                        text: "Localization deleted",
+                        title: data.title,
+                        text: data.message,
                         icon: "success",
                         timer: 1500
                     });
@@ -251,7 +258,6 @@
         });
     }
     function editLocalization(langId,id, key, name) {
-        alert(langId);
         $("#languageDiv").hide();
             cleickedEvent = "edit";
              $(".modal-body #languageId").val(langId)

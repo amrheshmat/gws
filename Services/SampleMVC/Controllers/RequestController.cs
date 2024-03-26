@@ -16,16 +16,16 @@ namespace SampleMVC.Controllers
         [AuthAttribute("request", "request")]
         public async Task<IActionResult> Request()//index page
         {
-            List<Request> requests = await _repo.GetAll<Request>().ToListAsync();
+            List<Booking> requests = await _repo.GetAll<Booking>().ToListAsync();
             ViewBag.requests = requests;
             return View();
 
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Request requestModel)
+        public async Task<IActionResult> Edit(Booking requestModel)
         {
-            var rolePermissions = _repo.Filter<Request>(e => e.requestId == requestModel.requestId).ToList();
-            var Request = _repo.Update<Request>(requestModel);
+            var rolePermissions = _repo.Filter<Booking>(e => e.requestId == requestModel.requestId).ToList();
+            var Request = _repo.Update<Booking>(requestModel);
             _repo.SaveChanges();
             if (Request != null)
             {

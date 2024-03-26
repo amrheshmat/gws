@@ -42,9 +42,43 @@ namespace SampleMVC.Controllers
 		}
 		[HttpPost]
 		[Route("TourDetails/Add")]
-		public async Task<Response> Add([FromBody] Request userModel)
+		public async Task<Response> Add([FromBody] Booking bookModel)
 		{
 			Response response = new Response();
+			int? maxAdultForSingleRoom = 0;
+			int? maxAdultForDoubleRoom = 0;
+			int? maxAdultForTripleRoom = 0;
+			int? maxChildForSingleRoom = 0;
+			int? maxChildForDoubleRoom = 0;
+			int? maxChildForTripleRoom = 0;
+			int? maxInfantForSingleRoom = 0;
+			int? maxInfantForDoubleRoom = 0;
+			int? maxInfantForTripleRoom = 0;
+			if (bookModel.numberOfSingleRoom.Value > 0)
+			{
+				maxAdultForSingleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 1).FirstOrDefault()?.numberOfAdult * bookModel.numberOfSingleRoom.Value;
+				maxChildForSingleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 1).FirstOrDefault()?.numberOfChild * bookModel.numberOfSingleRoom.Value;
+				maxInfantForSingleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 1).FirstOrDefault()?.numberOfInfant * bookModel.numberOfSingleRoom.Value;
+			}
+			if (bookModel.numberOfDoubleRoom.Value > 0)
+			{
+				maxAdultForDoubleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 2).FirstOrDefault()?.numberOfAdult * bookModel.numberOfDoubleRoom.Value;
+				maxChildForDoubleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 2).FirstOrDefault()?.numberOfChild * bookModel.numberOfDoubleRoom.Value;
+				maxInfantForDoubleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 2).FirstOrDefault()?.numberOfInfant * bookModel.numberOfDoubleRoom.Value;
+			}
+			if (bookModel.numberOfTripleRoom.Value > 0)
+			{
+				maxAdultForTripleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 3).FirstOrDefault()?.numberOfAdult * bookModel.numberOfTripleRoom.Value;
+				maxChildForTripleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 3).FirstOrDefault()?.numberOfChild * bookModel.numberOfTripleRoom.Value;
+				maxInfantForTripleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 3).FirstOrDefault()?.numberOfInfant * bookModel.numberOfTripleRoom.Value;
+			}
+			var maxAdult = maxAdultForSingleRoom + maxAdultForDoubleRoom + maxAdultForTripleRoom;
+			var maxChild = maxChildForSingleRoom + maxChildForDoubleRoom + maxChildForTripleRoom;
+			var maxInfant = maxInfantForSingleRoom + maxInfantForDoubleRoom + maxInfantForTripleRoom;
+			if (maxAdult < bookModel.numberOfAdult && maxChild < bookModel.numberOfChild && maxInfant < bookModel.numberOfInfant)
+			{
+				response.Status = false;
+			}
 			response.Title = _localizationService.Localize("Update");
 			response.Status = true;
 			return response;

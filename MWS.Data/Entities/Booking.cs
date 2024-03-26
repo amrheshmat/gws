@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MWS.Data.Entities
 {
-	public partial class Request
+	public partial class Booking
 	{
 		[Key, Column(Order = 1)]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,7 +15,8 @@ namespace MWS.Data.Entities
 		public string? name { get; set; }
 		public string? countryName { get; set; }
 		public string? pickup { get; set; }
-		public DateTime? tourDate { get; set; }
+		public string? tourDate { get; set; }
+		public int? hotelTypeId { get; set; }
 		public int? numberOfAdult { get; set; }
 		public int? numberOfChild { get; set; }
 		public int? numberOfInfant { get; set; }

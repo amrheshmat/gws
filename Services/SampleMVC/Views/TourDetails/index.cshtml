@@ -889,6 +889,12 @@
 					Book now
 				</button>
 			</form>
+			<ul id="tourDayList" style="display:none">
+				@foreach(var item in Model.tourDays)
+				{
+					<li id="@item.dayId">@item.dayId</li>
+				}
+			</ul>
        </div>
    </div>
 </div>
@@ -898,14 +904,32 @@
 		$("#datepicker").datepicker('show'); //Show on click of button
 	}
 	function noMondays(date) {
-			if (date.getDay(). === 0 || date.getDay() == 1)
-				return [false, "closed", "Closed on Monday"]
-			else
-				return [true, "", ""]
+			$( "#tourDayList li" ).each( function( index, element ){
+				var dayId = $( this ).text();
+				console.log(dayId);
+			
+			});
+				if (date.getDay() === 0)
+					return [false, "closed", "Closed on Monday"]
+				else
+					return [true, "", ""]
 		}
     $(document).ready(function () {
+		var disallowed =[];
+		$( "#tourDayList li" ).each( function( index, element ){
+			var dayId = $(this).attr('id');
+			disallowed.push(parseInt(dayId))
+		});
+		console.log(disallowed);
 		$("#datepicker").datepicker({
-			beforeShowDay: noMondays
+			beforeShowDay: function(date){
+				day = date.getDay(); 
+				if (disallowed.indexOf(day) !== -1) {
+					     return [true];
+            } else {
+                return [false];
+            }
+			}
 		});
 		$("#hotel").on("change", function () {
 			if($(this).val() != "0"){

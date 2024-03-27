@@ -46,19 +46,20 @@
                     <label class="form-label" for="numberOfAdult">
                         Number Of Adult
                     </label>
-                    @Html.TextBoxFor(m => m.numberOfAdult, new { @id = "numberOfAdult", @class = "form-control" })
+                    <input type="number" value="0" class="form-control" id="numberOfAdult" />
+                    <span id="numberOfAdultRequired" style="color:red"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="numberOfChild">
                         Number Of Child
                     </label>
-                    @Html.TextBoxFor(m => m.numberOfChild, new { @id = "numberOfChild", @class = "form-control" })
+                    <input type="number" value="0" class="form-control" id="numberOfChild" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="numberOfInfant">
                         Number Of Infant
                     </label>
-                    @Html.TextBoxFor(m => m.numberOfInfant, new { @id = "numberOfInfant", @class = "form-control" })
+                    <input type="number" value="0" class="form-control" id="numberOfInfant" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="message">
@@ -99,6 +100,12 @@
             } else {
                 $(".modal-body #phoneRequired").text("");
             }
+            if ($(".modal-body #numberOfAdult").val() == '0') {
+                $(".modal-body #numberOfAdultRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #numberOfAdultRequired").text("");
+            }
             if ($(".modal-body #message").val() == '') {
                 $(".modal-body #messageRequired").text("required");
                 return false;
@@ -113,13 +120,14 @@
             userUpdate.numberOfAdult = $(".modal-body #numberOfAdult").val();
             userUpdate.numberOfChild = $(".modal-body #numberOfChild").val();
             userUpdate.numberOfInfant = $(".modal-body #numberOfInfant").val();
-            location.href = "/";
+            $("#preloader").css({ "visibility": "visible", "opacity": 1 });
             $.ajax({
                 url: "/ContactUs/Add",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(userUpdate),
                 success: function (message) {
+                    $("#preloader").css({ "visibility": "hidden", "opacity":0});
                     if (message == "created") {
                         $.toast({
                             heading: 'Contact',
@@ -129,9 +137,9 @@
                             icon: 'success',
                             bgColor: '#0f172a',
                         });
-                        // setTimeout(function () {
-                        //     location.href = "/";
-                        // }, 1500);
+                        setTimeout(function () {
+                            location.href = "/";
+                        }, 500);
                     } else {
                         $.toast({
                             heading: 'Contact',

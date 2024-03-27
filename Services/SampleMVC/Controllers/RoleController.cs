@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared;
+using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;
+using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
 {
     public class RoleController : Controller
     {
+        private ILocalizationService _localizationService;
         private IRepository _repo;
-        public RoleController(IRepositoryFactory repo)
+        public RoleController(ILocalizationService localizationService, IRepositoryFactory repo)
         {
             _repo = repo.Create("AGGRDB");
+            _localizationService = localizationService;
         }
         [AuthAttribute("role", "role")]
         public async Task<IActionResult> Role()//index page
@@ -43,8 +47,10 @@ namespace SampleMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] Role roleModel)
+        public async Task<Response> Add([FromBody] Role roleModel)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Add");
             Role role = new Role();
             role.roleName = roleModel.roleName;
             var createdRole = _repo.Create(role);
@@ -61,13 +67,19 @@ namespace SampleMVC.Controllers
                 }
                 await _repo.context.AddRangeAsync(rolePermissions);
                 await _repo.SaveChangesAsync();
-                return Ok("Added");
+                response.Message = _localizationService.Localize("Added");
+                response.Status = true;
+                return response;
             }
-            return NotFound("NotFound");
+            response.Message = _localizationService.Localize("AddedError");
+            response.Status = false;
+            return response;
         }
         [HttpPost]
-        public async Task<IActionResult> Edit([FromBody] Role roleModel)
+        public async Task<Response> Edit([FromBody] Role roleModel)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Update");
             var rolePermissions = _repo.Filter<RolePermission>(e => e.roleId == roleModel.roleId).ToList();
             foreach (var rolePermission in rolePermissions)
             {
@@ -85,9 +97,13 @@ namespace SampleMVC.Controllers
             _repo.SaveChanges();
             if (Role != null)
             {
-                return Ok("Updated");
+                response.Message = _localizationService.Localize("Updated");
+                response.Status = true;
+                return response;
             }
-            return NotFound("NotFound");
+            response.Message = _localizationService.Localize("UpdatedError");
+            response.Status = false;
+            return response;
         }
 
         [Route("Role/Edit/{id}")]
@@ -110,16 +126,22 @@ namespace SampleMVC.Controllers
 
         [HttpGet]
         [Route("Role/Delete/{roleId}")]
-        public async Task<string> Delete(int roleId)
+        public async Task<Response> Delete(int roleId)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Delete");
             var role = _repo.Filter<Role>(e => e.roleId == roleId).FirstOrDefault();
             if (role != null)
             {
                 _repo.Delete<Role>(role);
                 await _repo.context.SaveChangesAsync();
-                return "Deleted";
+                response.Message = _localizationService.Localize("Deleted");
+                response.Status = true;
+                return response;
             }
-            return "NotFond";
+            response.Message = _localizationService.Localize("DeletedError");
+            response.Status = false;
+            return response;
         }
     }
 }

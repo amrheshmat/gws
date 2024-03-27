@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared;
+using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;
@@ -13,12 +14,15 @@ namespace SampleMVC.Controllers
         private readonly ILogger<PricingController> _logger;
         private IRepository _repo;
         private readonly IMailService mailService;
+        private ILocalizationService _localizationService;
+
         public PricingController(IMailService mailService, ILanguageService languageService, ILocalizationService localizationService, ILogger<PricingController> logger, IRepositoryFactory repo)
        : base(languageService, localizationService)
         {
             _logger = logger;
             _repo = repo.Create("AGGRDB");
             this.mailService = mailService;
+            _localizationService = localizationService;
         }
         [AuthAttribute("pricing", "pricing")]
         public async Task<IActionResult> pricing()
@@ -52,30 +56,61 @@ namespace SampleMVC.Controllers
         [AuthAttribute("edit", "pricing")]
         [HttpPost]
         [Route("Pricing/Edit")]
-        public async Task<IActionResult> Edit([FromBody] HotelRoomPricing pricingModel)
+        public async Task<Response> Edit([FromBody] HotelRoomPricing pricingModel)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Update");
             var oldPricing = _repo.Filter<HotelRoomPricing>(e => e.hotelRoomId == pricingModel.hotelRoomId).FirstOrDefault();
             if (oldPricing != null)
             {
                 var user = _repo.context.Update(pricingModel);
                 await _repo.context.SaveChangesAsync();
-                return Ok("Updated");
+                response.Message = _localizationService.Localize("Updated");
+                response.Status = true;
+                return response;
             }
-            return NotFound("notFound");
+            response.Message = _localizationService.Localize("UpdatedError");
+            response.Status = false;
+            return response;
+        }
+        [AuthAttribute("add", "pricing")]
+        [HttpPost]
+        [Route("Pricing/Add")]
+        public async Task<Response> Add([FromBody] HotelRoomPricing pricingModel)
+        {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Add");
+            var pricing = _repo.context.Add(pricingModel);
+            await _repo.context.SaveChangesAsync();
+            if (pricing != null)
+            {
+                response.Message = _localizationService.Localize("Added");
+                response.Status = true;
+                return response;
+            }
+            response.Message = _localizationService.Localize("AddedError");
+            response.Status = false;
+            return response;
         }
         [AuthAttribute("delete", "pricing")]
         [HttpGet]
         [Route("Pricing/Delete/{id}")]
-        public async Task<string> Delete(int id)
+        public async Task<Response> Delete(int id)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Delete");
             var hotelRoomPricing = _repo.Filter<HotelRoomPricing>(e => e.hotelRoomId == id).FirstOrDefault();
             if (hotelRoomPricing != null)
             {
                 _repo.Delete<HotelRoomPricing>(hotelRoomPricing);
                 await _repo.context.SaveChangesAsync();
-                return "Deleted";
+                response.Message = _localizationService.Localize("Deleted");
+                response.Status = true;
+                return response;
             }
-            return "NotFond";
+            response.Message = _localizationService.Localize("DeletedError");
+            response.Status = false;
+            return response;
         }
     }
 }

@@ -18,22 +18,31 @@
 	<div style="margin:20px 0px;">
 		
 <section class="gallery">
-  <div class="gallery__item">
-    <input type="radio" id="img-1" checked name="gallery" class="gallery__selector"/>
-    <img class="gallery__img" src="~/Files/@attachments[0].attachmentPath" alt=""/>
-				<label for="img-1" class="gallery__thumb"><img src="~/Files/@attachments[0].attachmentPath" alt="" /></label>
-  </div>
-  @{
-	attachments.RemoveAt(0);
+	@if (attachments.Count > 0){
+		<div class="gallery__item">
+		<input type="radio" id="img-1" checked name="gallery" class="gallery__selector"/>
+		<img class="gallery__img" src="~/Files/@attachments[0].attachmentPath" alt=""/>
+					<label for="img-1" class="gallery__thumb"><img src="~/Files/@attachments[0].attachmentPath" alt="" /></label>
+		</div>
 	}
-@foreach (var att in attachments)
-{
-  <div class="gallery__item">
-	<input type="radio" id="img-@att.tourAttachmentId" name="gallery" class="gallery__selector" />
-	<img class="gallery__img" src="~/Files/@att.attachmentPath" alt="" />
-	<label for="img-@att.tourAttachmentId" class="gallery__thumb"><img src="~/Files/@att.attachmentPath" alt="" /></label>
-  </div>
-}
+	@{
+		if (attachments.Count > 0)
+		{
+			attachments.RemoveAt(0);
+		}
+	}
+	@if(attachments.Count > 0)
+	{
+		foreach (var att in attachments)
+		{
+			<div class="gallery__item">
+				<input type="radio" id="img-@att.tourAttachmentId" name="gallery" class="gallery__selector" />
+				<img class="gallery__img" src="~/Files/@att.attachmentPath" alt="" />
+				<label for="img-@att.tourAttachmentId" class="gallery__thumb"><img src="~/Files/@att.attachmentPath" alt="" /></label>
+			</div>
+		}
+	}
+			
 </section>
 	</div>
    <div class="row">

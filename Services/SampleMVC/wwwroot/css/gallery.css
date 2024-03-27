@@ -30,7 +30,8 @@ img {
 }
 
 .gallery__thumb {
-    padding-top: 6px;
+    width: 112px;
+    /*padding-top: 6px;*/
     margin: 6px;
     display: block;
 }

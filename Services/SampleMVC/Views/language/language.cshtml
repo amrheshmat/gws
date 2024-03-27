@@ -1,14 +1,27 @@
-﻿@model MWS.Data.Entities.Language;
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model MWS.Data.Entities.Language;
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "language").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "language").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "language").ToList().Count;
+
     var languages = ViewBag.languages;
 }
     <div class="row">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
         <div id="contextual-classes" class="row">
-            <h2 class="col-11">Language</h2>
+            <h2 class="col-11">@_localizationService.Localize("Langauge")</h2>
+            @if (hasAddPermission > 0)
+            {
             <span class="col-1 btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</span>
+            }
         </div>
             <div class="card">
                 <div class="p-0 card-body">
@@ -18,13 +31,13 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                            Language Name
+                                        @_localizationService.Localize("LangaugeName")
                                         </th>
                                     <th scope="col">
-                                        Language Code
+                                        @_localizationService.Localize("LangaugeCode")
                                     </th>
                                         <th scope="col">
-                                            Actions
+                                        @_localizationService.Localize("Actions")
                                         </th>
                                     </tr>
                                 </thead>
@@ -42,9 +55,15 @@
                                             @language.code
                                         </td>
                                             <td>
-                                            <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLanguage(@language.languageId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            @if (hasDeletePermission > 0)
+                                            {
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLanguage(@language.languageId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            }
+                                            @if (hasEditPermission > 0)
+                                            {
                                             <span onclick="editlanguage(@language.languageId,'@language.languageName','@language.code')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
-                                            </td>
+                                            }    
+                                        </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -61,7 +80,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                <h5 class="modal-title" id="exampleModalLabel"> @_localizationService.Localize("Langauge")</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -73,25 +92,25 @@
 
                         <div class="mb-3">
                         <label class="form-label" for="languageName">
-                            languageName
+                            @_localizationService.Localize("LangaugeName")
                             </label>
-                        @Html.TextBoxFor(m => m.languageName, new { @id = "languageName", @class = "form-control", placeholder = "Enter Language Name " })
+                        @Html.TextBoxFor(m => m.languageName, new { @id = "languageName", @class = "form-control" })
                         <span id="languageNameRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="code">
-                            code <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank"> Get Code</a>
+                            @_localizationService.Localize("LangaugeCode") <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank"> @_localizationService.Localize("GetCode")</a>
                         </label>
-                        @Html.TextBoxFor(m => m.code, new { @id = "code", @class = "form-control", placeholder = "Enter Language code " })
+                        @Html.TextBoxFor(m => m.code, new { @id = "code", @class = "form-control" })
                         <span id="codeRequired" style="color:red"></span>
                     </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
                     </div>
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
             </div>
         </div>
     </div>

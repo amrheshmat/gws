@@ -1,4 +1,6 @@
-﻿@model SampleMVC.Models.TourModel;
+﻿@using TripBusiness.Ibusiness
+@model SampleMVC.Models.TourModel;
+@inject ILocalizationService _localizationService;
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -14,77 +16,77 @@
     <div class="row">
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="title">
-            title
+                    @_localizationService.Localize("Title")
         </label>
-                @Html.TextBoxFor(m => m.Tour.title, new {  @id = "title", @class = "form-control", placeholder = "Enter Tour Name " })
+                @Html.TextBoxFor(m => m.Tour.title, new {  @id = "title", @class = "form-control"})
         <span id="titleRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="duration">
-            Duration
+                    @_localizationService.Localize("Duration")
         </label>
-                @Html.TextBoxFor(m => m.Tour.duration, new {type = "number", @id = "duration", @class = "form-control", placeholder = "Enter Tour duration " })
+                @Html.TextBoxFor(m => m.Tour.duration, new {type = "number", @id = "duration", @class = "form-control"})
                 <span id="durationRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="tourLocation">
-            Tour Location
+                    @_localizationService.Localize("TourLocation")
         </label>
-                @Html.TextAreaFor(m => m.Tour.tourLocation, new { @id = "tourLocation", @class = "form-control", placeholder = "Enter Tour Location " })
+                @Html.TextAreaFor(m => m.Tour.tourLocation, new { @id = "tourLocation", @class = "form-control"})
         <span id="tourLocationRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="pickupLocation">
-            Pickup Location
+                    @_localizationService.Localize("PickupLocation")
         </label>
-                @Html.TextAreaFor(m => m.Tour.pickupLocation, new { @id = "pickupLocation", @class = "form-control", placeholder = "Enter Pickup Location " })
+                @Html.TextAreaFor(m => m.Tour.pickupLocation, new { @id = "pickupLocation", @class = "form-control" })
                 <span id="pickupLocationRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="dropOff">
-            Drop Off
-        </label>
-                @Html.TextAreaFor(m => m.Tour.dropOff, new { @id = "dropOff", @class = "form-control", placeholder = "Enter Drop Off " })
+                    @_localizationService.Localize("DropOff")
+                </label>
+                @Html.TextAreaFor(m => m.Tour.dropOff, new { @id = "dropOff", @class = "form-control" })
                 <span id="dropOffRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="tourType">
-            Tour Type
+                    @_localizationService.Localize("TourType")
         </label>
-                @Html.TextBoxFor(m => m.Tour.tourType, new {  @id = "tourType", @class = "form-control", placeholder = "Enter Tour Type " })
+                @Html.TextBoxFor(m => m.Tour.tourType, new {  @id = "tourType", @class = "form-control"})
         <span id="tourTypeRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="overview">
-            Overview
+                    @_localizationService.Localize("Overview")
         </label>
-                @Html.TextAreaFor(m => m.Tour.overview, new { @id = "overview", @class = "form-control", placeholder = "Enter Overview" })
+                @Html.TextAreaFor(m => m.Tour.overview, new { @id = "overview", @class = "form-control" })
                 <span id="overviewRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="highlights">
-            Highlights
+                    @_localizationService.Localize("Highlights")
         </label>
-                @Html.TextAreaFor(m => m.Tour.highlights, new { @id = "highlights", @class = "form-control", placeholder = "Enter highlights" })
+                @Html.TextAreaFor(m => m.Tour.highlights, new { @id = "highlights", @class = "form-control"})
                 <span id="highlightsRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="price">
-            Price
+                    @_localizationService.Localize("Price")
         </label>
-                @Html.TextBoxFor(m => m.Tour.price, new {  type = "number", @id = "price", @class = "form-control", placeholder = "Enter price" })
+                @Html.TextBoxFor(m => m.Tour.price, new {  type = "number", @id = "price", @class = "form-control" })
                 <span id="priceRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="capacity">
-            Capacity
-        </label>
-                @Html.TextBoxFor(m => m.Tour.capacity, new { type = "number", @id = "capacity", @class = "form-control", placeholder = "Enter Capacity" })
+                    @_localizationService.Localize("Capacity")
+                </label>
+                @Html.TextBoxFor(m => m.Tour.capacity, new { type = "number", @id = "capacity", @class = "form-control" })
                 <span id="capacityRequired" style="color:red"></span>
     </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="capacity" style="display:block">
-                    avaliable days
+                    @_localizationService.Localize("AvaliableDays")
                 </label>
                 <select class="form-control" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
                     @{
@@ -109,7 +111,7 @@
              </div>
             <div  class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="include" style="width:80%">
-                    includes
+                    @_localizationService.Localize("Includes")
                 </label>
                 <i class="fa fa-plus" id="addIncludeBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addInclude">
@@ -128,7 +130,7 @@
             </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="exclude" style="width:80%">
-                    excludes
+                    @_localizationService.Localize("Excludes")
                 </label>
                 <i class="fa fa-plus" id="addExcludeBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addExclude">
@@ -148,7 +150,7 @@
             </div>
             <div  class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="Expect" style="width:80%">
-                    Expects
+                    @_localizationService.Localize("Expects")
                 </label>
                 <i class="fa fa-plus" id="addExpectBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addExpect">
@@ -166,7 +168,7 @@
             </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="packup" style="width:80%">
-                    packups
+                    @_localizationService.Localize("Packups")
                 </label>
                 <i class="fa fa-plus" id="addPackBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addPack">
@@ -184,7 +186,7 @@
             </div>
            
             <div>
-                <button type="submit" class="btn btn-primary" id="addTourBtn">Save</button>
+                <button type="submit" class="btn btn-primary" id="addTourBtn">@_localizationService.Localize("Save")</button>
             </div>
         </div>
     </div>

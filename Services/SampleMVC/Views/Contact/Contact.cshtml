@@ -1,4 +1,6 @@
-﻿@model MWS.Data.Entities.Contact;
+﻿@using TripBusiness.Ibusiness
+@model MWS.Data.Entities.Contact;
+@inject ILocalizationService _localizationService;
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -7,7 +9,7 @@
     <div class="row">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
             <div id="contextual-classes" class="mb-4">
-                <h2>Role</h2>
+            <h2>@_localizationService.Localize("Contact")</h2>
             </div>
             <div class="card">
                 <div class="p-0 card-body">
@@ -17,16 +19,16 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                            name
+                                        @_localizationService.Localize("Name")
                                         </th>
                                     <th scope="col">
-                                        emial
+                                        @_localizationService.Localize("Email")
                                     </th>
                                     <th scope="col">
-                                        phone
+                                        @_localizationService.Localize("Phone")
                                     </th>
                                         <th scope="col">
-                                            Actions
+                                        @_localizationService.Localize("Actions")
                                         </th>
                                     </tr>
                                 </thead>
@@ -77,44 +79,44 @@
 
                         <div class="mb-3">
                         <label class="form-label" for="name">
-                            contactName
+                            @_localizationService.Localize("Name")
                             </label>
                         @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control", disabled = "disabled" })
                         </div>
                     <div class="mb-3">
                         <label class="form-label" for="email">
-                            email
+                            @_localizationService.Localize("Email")
                         </label>
                         @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", disabled = "disabled" })
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="phone">
-                            phone
+                            @_localizationService.Localize("Phone")
                         </label>
                         @Html.TextBoxFor(m => m.phone, new { @id = "phone", @class = "form-control", disabled = "disabled" })
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfAdult">
-                            Number Of Adult
+                            @_localizationService.Localize("NumberOfAdult")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfAdult, new { @id = "numberOfAdult", @class = "form-control", disabled = "disabled" })
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfChild">
-                            Number Of Child
+                            @_localizationService.Localize("NumberOfChild")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfChild, new { @id = "numberOfChild", @class = "form-control", disabled = "disabled" })
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfInfant">
-                            Number Of Infant
+                            @_localizationService.Localize("NumberOfInfant")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfInfant, new { @id = "numberOfInfant", @class = "form-control", disabled = "disabled" })
                     </div>
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
             </div>
         </div>
     </div>

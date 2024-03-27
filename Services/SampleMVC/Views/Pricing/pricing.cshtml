@@ -1,5 +1,7 @@
 ﻿@using MWS.Business.Shared.Data.Models
 @using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
 @model MWS.Data.Entities.HotelRoomPricing;
 @{
     ViewData["Title"] = "Admin Page";
@@ -24,7 +26,7 @@
             <h2 class="col-11">User</h2>
             @if (hasAddPermission > 0)
             {
-                <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">Add</span>
+                <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">@_localizationService.Localize("Add")</span>
             }
         </div>
 
@@ -36,17 +38,17 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                            Hotel Type
+                                        @_localizationService.Localize("HotelType")
                                         </th>
                                         <th scope="col">
-                                            Room Type
+                                        @_localizationService.Localize("RoomType")
                                         </th>
                                         <th scope="col">
-                                            Price
+                                        @_localizationService.Localize("Price")
                                         </th>
                                         <th scope="col">
-                                            Actions
-                                        </th>
+                                        @_localizationService.Localize("Actions")
+                                    </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -108,7 +110,7 @@
                     @Html.TextBoxFor(m => m.hotelRoomId, new { @id = "hotelRoomId", @class = "form-control", style = "display:none" })
                     <div class="mb-3">
                         <label class="form-label" for="hotel">
-                            hotel
+                            @_localizationService.Localize("Hotel")
                         </label>
                         @Html.TextBoxFor(m => m.hotelTypeId, new { @id = "hotelId", @class = "form-control", style = "display:none" })
                         <select name="hotel" class="form-select" id="hotel">
@@ -121,7 +123,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="room">
-                            room
+                            @_localizationService.Localize("Room")
                         </label>
                         @Html.TextBoxFor(m => m.roomTypeId, new { @id = "roomId", @class = "form-control", style = "display:none" })
                         <select name="room" class="form-select" id="room">
@@ -134,39 +136,41 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="price">
-                            price
+                            @_localizationService.Localize("Price")
                         </label>
                         @Html.TextBoxFor(m => m.price, new {type="number", @id = "price", @class = "form-control", placeholder = "Enter Price ", required = "required" })
                         <span id="priceRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfAdult">
-                            max number of adult
+                            @_localizationService.Localize("MaxNumberOfAdult")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfAdult, new { type = "number" ,@id = "numberOfAdult", @class = "form-control", required = "required" })
                         <span id="numberOfAdultRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfChild">
-                            max number of child
+                            @_localizationService.Localize("MaxNumberOfChild")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfChild, new { type = "number", @id = "numberOfChild", @class = "form-control", required = "required" })
                         <span id="numberOfChildRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfInfant">
-                            max number of infant
+                            @_localizationService.Localize("MaxNumberOfInfant")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfInfant, new { type = "number", @id = "numberOfInfant", @class = "form-control", required = "required" })
                         <span id="numberOfInfantRequired" style="color:red"></span>
                     </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">
+                            @_localizationService.Localize("Save")
+                        </button>
                     </div>
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
             </div>
         </div>
     </div>
@@ -217,12 +221,10 @@
             } else {
                 $(".modal-body #numberOfInfantRequired").text("");
             }
-            
-           
             e.preventDefault();
             var userUpdate = {};
-            userUpdate.hotelTypeId = $(".modal-body #hotelId").val();
-            userUpdate.roomTypeId = $(".modal-body #roomId").val();
+            userUpdate.hotelTypeId = $(".modal-body #hotel").val();
+            userUpdate.roomTypeId = $(".modal-body #room").val();
             userUpdate.price = $(".modal-body #price").val();
             userUpdate.numberOfAdult = $(".modal-body #numberOfAdult").val();
             userUpdate.numberOfChild = $(".modal-body #numberOfChild").val();
@@ -231,16 +233,18 @@
                 userUpdate.hotelRoomId = $(".modal-body #hotelRoomId").val();
 
             if ($(".modal-body #hotelRoomId").val() == "") {
+                alert($(".modal-body #room").val());
+                alert($(".modal-body #hotel").val());
                 $.ajax({
                     url: "/Pricing/Add",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(userUpdate),
-                    success: function (message) {
-                        if (message == "Added") {
+                    success: function (data) {
+                        if (data.status == true) {
                             Swal.fire({
-                                title: "Added",
-                                text: "User deleted",
+                                title: data.title,
+                                text: data.message,
                                 icon: "success",
                                 timer: 1500
                             });
@@ -249,16 +253,15 @@
                             }, 1500);
                         } else {
                             Swal.fire({
-                                title: "Good job!",
-                                text: "You clicked the button!",
-                                icon: "success",
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
                                 timer: 1500
                             });
                         }
                     },
                     error: function (error) {
                         console.log("e");
-                        alert();
                     }
                 });
             } else {
@@ -268,11 +271,11 @@
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(userUpdate),
-                    success: function (message) {
-                        if (message == "Updated") {
+                    success: function (data) {
+                        if (data.status == true) {
                             Swal.fire({
-                                title: "Edit",
-                                text: "User updated",
+                                title: data.title,
+                                text: data.message,
                                 icon: "success",
                                 timer: 1500
                             });
@@ -281,9 +284,9 @@
                             }, 1500);
                         } else {
                             Swal.fire({
-                                title: "Good job!",
-                                text: "You clicked the button!",
-                                icon: "success",
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
                                 timer: 1500
                             });
                         }
@@ -307,11 +310,11 @@
             url: "/Pricing/Delete/" + id,
             type: "GET",
             cache: false,
-            success: function (message) {
-                if (message == "Deleted") {
+            success: function (data) {
+                if (data.status == true) {
                     Swal.fire({
-                        title: "Delete",
-                        text: "User deleted",
+                        title: data.title,
+                        text: data.message,
                         icon: "success",
                         timer: 1500
                     });
@@ -320,9 +323,10 @@
                     }, 1500);
                 } else {
                     Swal.fire({
-                        title: "Error!",
-                        text: "Error When Delete User!",
+                        title: data.title,
+                        text: data.message,
                         icon: "error",
+                        timer: 1500
                     });
                 }
             }

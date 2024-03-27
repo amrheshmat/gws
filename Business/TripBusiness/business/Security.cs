@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MWS.Business.Shared;
 using MWS.Business.Shared.Data.Models;
 using MWS.Business.Shared.IBusiness;
 using MWS.Data.Entities;
@@ -35,9 +36,8 @@ namespace TripBusiness.business
             User user = chachedUsers.FirstOrDefault(u => u.userName!.ToLower() == name.ToLower());
             if (user == null) return "404";
             //verify password with hashing...
-            //var isCorrectPassword = MPSSecurity.Verify(user.password!, password);
-            //if (!isCorrectPassword)
-            if (password != user.password)
+            var isCorrectPassword = MPSSecurity.Verify(user.password!, password);
+            if (!isCorrectPassword)
             {
                 return "404";
             }

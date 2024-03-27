@@ -18,7 +18,7 @@ namespace SampleMVC.Controllers
             _repo = repo.Create("AGGRDB");
             _localizationService = localizationService;
         }
-        [AuthAttribute("Localization", "Localization")]
+        [AuthAttribute("localization", "localization")]
         public async Task<IActionResult> Localization()//index page
         {
             List<Localization> localizations = await _repo.GetAll<Localization>().ToListAsync();
@@ -39,9 +39,9 @@ namespace SampleMVC.Controllers
             return View();
 
         }
-        [AuthAttribute("edit", "Localization")]
+        [AuthAttribute("edit", "localization")]
         [HttpPost]
-        [Route("Localization/Edit")]
+        [Route("localization/Edit")]
         public async Task<Response> Edit([FromBody] Localization localizationModel)
         {
             Response response = new Response();
@@ -62,9 +62,9 @@ namespace SampleMVC.Controllers
             response.Status = false;
             return response;
         }
-        [AuthAttribute("add", "Localization")]
+        [AuthAttribute("add", "localization")]
         [HttpPost]
-        [Route("Localization/Add")]
+        [Route("localization/Add")]
         public async Task<Response> Add([FromBody] Localization localizationModel)
         {
             Response response = new Response();
@@ -92,9 +92,9 @@ namespace SampleMVC.Controllers
             return response;
 
         }
-        [AuthAttribute("delete", "Localization")]
+        [AuthAttribute("delete", "localization")]
         [HttpGet]
-        [Route("Localization/Delete/{id}")]
+        [Route("localization/Delete/{id}")]
         public async Task<Response> Delete(int id)
         {
             Response response = new Response();

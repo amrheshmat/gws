@@ -1,14 +1,23 @@
-﻿@model MWS.Data.Entities.Localization;
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model MWS.Data.Entities.Localization;
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "localization").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "localization").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "localization").ToList().Count;
     var localizations = ViewBag.localizations;
     var languages = ViewBag.languages;
 }
     <div class="row">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
             <div id="contextual-classes" class="mb-4">
-                <h2>Translations</h2>
+            <h2>@_localizationService.Localize("Translations")</h2>
             </div>
             <div class="card">
                 <div class="p-0 card-body">
@@ -18,17 +27,17 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                            key
+                                        @_localizationService.Localize("Key")
                                         </th>
                                     <th scope="col">
-                                        value
+                                        @_localizationService.Localize("Value")
                                     </th>
                                     <th scope="col">
-                                        Language Name
+                                        @_localizationService.Localize("Language")
                                     </th>
                                         <th scope="col">
-                                            Actions
-                                        </th>
+                                        @_localizationService.Localize("Actions")
+                                    </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,10 +57,19 @@
                                             @localization.languageName
                                         </td>
                                             <td>
-                                            <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLocalization(@localization.localizeId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
-                                            <span onclick="editLocalization(@localization.languageId,@localization.localizeId,'@localization.keyName','@localization.value')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
-                                                <span onclick="addLocalization('@localization.keyName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-plus"></i></span>
-                                            </td>
+                                            @if (hasDeletePermission > 0)
+                                            {
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLocalization(@localization.localizeId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            }
+                                            @if (hasEditPermission > 0)
+                                            {
+                                                <span onclick="editLocalization(@localization.languageId,@localization.localizeId,'@localization.keyName','@localization.value')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            }
+                                            @if (hasAddPermission > 0)
+                                            {
+                                            <span onclick="addLocalization('@localization.keyName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-plus"></i></span>
+                                            }    
+                                        </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -79,14 +97,14 @@
                     @Html.TextBoxFor(m => m.localizeId, new { @id = "localizeId", @class = "form-control", style = "display:none" })
                     <div class="mb-3">
                         <label class="form-label" for="keyName">
-                            key
+                            @_localizationService.Localize("Key")
                         </label>
                         @Html.TextBoxFor(m => m.keyName, new { @id = "keyName", @class = "form-control", disabled="disabled" })
                         <span id="keyNameRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3" id="languageDiv">
                         <label class="form-label" for="language">
-                            language
+                            @_localizationService.Localize("Language")
                         </label>
                         @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
                         <select name="language" class="form-select" id="language">
@@ -99,18 +117,18 @@
                     </div>
                         <div class="mb-3">
                         <label class="form-label" for="value">
-                            value
+                            @_localizationService.Localize("Value")
                             </label>
                         @Html.TextBoxFor(m => m.value, new { @id = "value", @class = "form-control", placeholder = "Enter  Value " })
                         <span id="valueRequired" style="color:red"></span>
                     </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary" id="formUserBtn">Save</button>
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
                     </div>
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
             </div>
         </div>
     </div>

@@ -2,9 +2,11 @@
 
 namespace TripBusiness.Ibusiness
 {
-    public interface IMailService
-    {
-        Task SendContactEmailAsync(MailRequest mailRequest);
-        Task SendContactThankEmailAsync(MailRequest mailRequest);
-    }
+	public interface IMailService
+	{
+		Task SendContactEmailAsync(MailRequest mailRequest);
+		Task SendSpecialEmailAsync(MailRequest mailRequest);
+		Task SendContactThankEmailAsync(MailRequest mailRequest);
+		Task SendSpecialThankEmailAsync(MailRequest mailRequest);
+	}
 }

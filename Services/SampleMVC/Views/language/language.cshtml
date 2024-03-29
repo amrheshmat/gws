@@ -31,7 +31,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                        @_localizationService.Localize("LangaugeName")
+                                        @_localizationService.Localize("Langauge")
                                         </th>
                                     <th scope="col">
                                         @_localizationService.Localize("LangaugeCode")
@@ -92,7 +92,7 @@
 
                         <div class="mb-3">
                         <label class="form-label" for="languageName">
-                            @_localizationService.Localize("LangaugeName")
+                            @_localizationService.Localize("Langauge")
                             </label>
                         @Html.TextBoxFor(m => m.languageName, new { @id = "languageName", @class = "form-control" })
                         <span id="languageNameRequired" style="color:red"></span>

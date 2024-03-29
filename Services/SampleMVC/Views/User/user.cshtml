@@ -22,7 +22,7 @@
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
 
         <div id="contextual-classes" class="row">
-            <h2 class="col-11">@_localizationService.Localize("Users")</h2>
+            <h2 class="col-11">@_localizationService.Localize("User")</h2>
             @if (hasAddPermission > 0)
             {
                 <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">Add</span>
@@ -147,7 +147,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="email">
-                            @_localizationService.Localize("Roles")
+                            @_localizationService.Localize("Role")
                         </label>
                         @Html.TextBoxFor(m => m.roleId, new { @id = "roleId", @class = "form-control", style = "display:none" })
                         <select name="role" class="form-select" id="role">

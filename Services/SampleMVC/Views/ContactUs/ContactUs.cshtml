@@ -126,12 +126,12 @@
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(userUpdate),
-                success: function (message) {
-                    $("#preloader").css({ "visibility": "hidden", "opacity":0});
-                    if (message == "created") {
+                success: function (data) {
+                    $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+                    if (data.status == true) {
                         $.toast({
-                            heading: 'Contact',
-                            text: 'Message Sent',
+                            heading: data.title,
+                            text: data.message,
                             showHideTransition: 'slide',
                             position: 'top-right',
                             icon: 'success',
@@ -142,11 +142,11 @@
                         }, 500);
                     } else {
                         $.toast({
-                            heading: 'Contact',
-                            text: 'Message Not Sent',
+                            heading: data.title,
+                            text: data.message,
                             showHideTransition: 'slide',
                             position: 'top-right',
-                            icon: 'error', 
+                            icon: 'error',
                             bgColor: '#007bff',
                         });
                     }

@@ -110,7 +110,7 @@
                     @Html.TextBoxFor(m => m.hotelRoomId, new { @id = "hotelRoomId", @class = "form-control", style = "display:none" })
                     <div class="mb-3">
                         <label class="form-label" for="hotel">
-                            @_localizationService.Localize("Hotel")
+                            @_localizationService.Localize("HotelType")
                         </label>
                         @Html.TextBoxFor(m => m.hotelTypeId, new { @id = "hotelId", @class = "form-control", style = "display:none" })
                         <select name="hotel" class="form-select" id="hotel">
@@ -123,7 +123,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="room">
-                            @_localizationService.Localize("Room")
+                            @_localizationService.Localize("RoomType")
                         </label>
                         @Html.TextBoxFor(m => m.roomTypeId, new { @id = "roomId", @class = "form-control", style = "display:none" })
                         <select name="room" class="form-select" id="room">

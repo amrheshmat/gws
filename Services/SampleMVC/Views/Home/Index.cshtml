@@ -585,3 +585,19 @@
     </div>
 </section>
 @* End who we are *@
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (localStorage.getItem("spcialRequestTitle")) {
+            $.toast({
+                heading: localStorage.getItem("spcialRequestTitle"),
+                text: localStorage.getItem("spcialRequestMessage"),
+                showHideTransition: 'slide',
+                position: 'top-right',
+                icon: 'success',
+                bgColor: '#0f172a',
+                hideAfter: 5000
+            });
+            localStorage.clear();
+        }
+    });
+</script>

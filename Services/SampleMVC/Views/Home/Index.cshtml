@@ -594,7 +594,19 @@
                 showHideTransition: 'slide',
                 position: 'top-right',
                 icon: 'success',
-                bgColor: '#0f172a',
+                bgColor: '#1e7506',
+                hideAfter: 5000
+            });
+            localStorage.clear();
+        }
+        if (localStorage.getItem("contactTitle")) {
+            $.toast({
+                heading: localStorage.getItem("contactTitle"),
+                text: localStorage.getItem("contactMessage"),
+                showHideTransition: 'slide',
+                position: 'top-right',
+                icon: 'success',
+                bgColor: '#1e7506',
                 hideAfter: 5000
             });
             localStorage.clear();

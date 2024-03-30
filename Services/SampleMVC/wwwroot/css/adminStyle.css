@@ -71,3 +71,7 @@
         opacity: 0;
     }
 }
+
+table.dataTable.nowrap th, table.dataTable.nowrap td{
+    white-space:normal!important;
+}

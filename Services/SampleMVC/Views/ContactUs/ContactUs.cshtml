@@ -129,17 +129,9 @@
                 success: function (data) {
                     $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
                     if (data.status == true) {
-                        $.toast({
-                            heading: data.title,
-                            text: data.message,
-                            showHideTransition: 'slide',
-                            position: 'top-right',
-                            icon: 'success',
-                            bgColor: '#0f172a',
-                        });
-                        setTimeout(function () {
-                            location.href = "/";
-                        }, 500);
+                        localStorage.setItem("contactTitle", data.title);
+                        localStorage.setItem("contactMessage", data.message);
+                        location.href = "/";
                     } else {
                         $.toast({
                             heading: data.title,

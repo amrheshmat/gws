@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_layout.cshtml";
+    var terms = ViewBag.terms;
 }
 <!--Start image section-->
 <div  class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
@@ -14,82 +15,16 @@
     <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6 relative">
         <div class="md:col-span-12">
             <h1 class="md:text-3xl" style="color:#333;margin-bottom:30px;font-size:2.5rem!important;">Terms and conditions</h1>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">@_localizationService.Localize("Cancellation"):</p>
-                <p>
-                    @_localizationService.Localize("CancellationText"):
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">@_localizationService.Localize("Refunds"):</p>
-                <p>
-                    @_localizationService.Localize("RefundsText")
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">@_localizationService.Localize("Accommodation"):</p>
-                <p>
-                    @_localizationService.Localize("AccommodationText")
-                 </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">
-                    @_localizationService.Localize("Responsibility"):
-                </p>
-                <p>
-                    @_localizationService.Localize("ResponsibilityText")
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">
-                    @_localizationService.Localize("SpecialRequests"):
-                </p>
-                <p>
-                    @_localizationService.Localize("SpecialRequestsText")
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">
-                    @_localizationService.Localize("ChildrenPolicy"):
-                </p>
-                <p>
-                    @Html.Raw(@_localizationService.Localize("ChildrenPolicyText"))
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">
-                    @_localizationService.Localize("Tipping"):
-                </p>
-                <p>
-                    @_localizationService.Localize("TippingText")
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">
-                    @_localizationService.Localize("Complaints"):
-                </p>
-                <p>
-                    @_localizationService.Localize("ComplaintsText")
-                </p>
-                <br />
-            </div>
-            <div class="lg:ms-12">
-                <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold">
-                    @_localizationService.Localize("AcceptanceAagreement"):
-                </p>
-                <p>
-                    @_localizationService.Localize("AcceptanceAagreementText")
-                    <br>
-                </p>
-                <br />
-            </div>
+            @foreach(var term in terms)
+            {
+                <div class="lg:ms-12">
+                    <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold"> @Html.Raw(term.title):</p>
+                    <p>
+                       @Html.Raw(term.subject)
+                    </p>
+                    <br />
+                </div>
+            }
         </div>
     </div>
 </div>

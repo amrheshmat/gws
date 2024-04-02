@@ -5,6 +5,7 @@
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var days = ViewBag.days;
+    var languages = ViewBag.languages;
 }
     
 <!-- Modal -->
@@ -15,7 +16,7 @@
     <div class="row">
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="title">
-                    @_localizationService.Localize("Title")
+                    @_localizationService.Localize("title")
         </label>
         @Html.TextBoxFor(m => m.title, new { @id = "title", @class = "form-control"})
         <span id="titleRequired" style="color:red"></span>
@@ -55,14 +56,26 @@
                 @Html.TextAreaFor(m => m.dropOff, new { @id = "dropOff", @class = "form-control"})
                 <span id="dropOffRequired" style="color:red"></span>
             </div>
-    
-    
-    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
-        <label class="form-label" for="price">
-                    @_localizationService.Localize("Price")
-        </label>
-        @Html.TextBoxFor(m => m.price, new { type = "number", @id = "price", @class = "form-control" })
-                <span id="priceRequired" style="color:red"></span>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="adultPrice">
+                    @_localizationService.Localize("adultPrice")
+                </label>
+                @Html.TextBoxFor(m => m.adultPrice, new { type = "number", @id = "adultPrice", @class = "form-control" })
+                <span id="adultPriceRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="childPrice">
+                    @_localizationService.Localize("childPrice")
+                </label>
+                @Html.TextBoxFor(m => m.childPrice, new { type = "number", @id = "childPrice", @class = "form-control" })
+                <span id="childPriceRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="infantPrice">
+                    @_localizationService.Localize("infantPrice")
+                </label>
+                @Html.TextBoxFor(m => m.infantPrice, new { type = "number", @id = "infantPrice", @class = "form-control" })
+                <span id="infantPriceRequired" style="color:red"></span>
             </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="capacity">
@@ -84,6 +97,19 @@
                 <span id="dayRequired" style="color:red"></span>
 
              </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;" id="languageDiv">
+                <label class="form-label" for="language">
+                    @_localizationService.Localize("Language")
+                </label>
+                @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
+                <select name="language" class="form-select" id="language">
+                    @foreach (var language in languages)
+                    {
+                        <option value="@language.languageId">@language.languageName</option>
+                    }
+                </select>
+                <span id="languageRequired" style="color:red"></span>
+            </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="overview">
                     @_localizationService.Localize("Overview")
@@ -139,6 +165,16 @@
                 </div>
                 <span id="packRequired" style="color:red"></span>
             </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="additionalInformation" style="width:80%">
+                    @_localizationService.Localize("AdditionalInformation")
+                </label>
+                <i class="fa fa-plus" id="addadditionalInformationBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
+                <div id="addadditionalInformation">
+                    <textarea type="text" id="additionalInformation" class="form-control" style="cursor:pointer;"></textarea>
+                </div>
+                <span id="additionalInformationRequired" style="color:red"></span>
+            </div>
            
             <div>
                 <button type="submit" class="btn btn-primary" id="addTourBtn">@_localizationService.Localize("Save")</button>
@@ -157,7 +193,9 @@
         }
     }
     $(document).ready(function () {
-       
+        $(document).on('change', '#language', function () {
+            $("#languageId").val($(this).val());
+        });
         $('#addTourBtn').on("click", function (e) {
             e.preventDefault();
             //validation
@@ -197,6 +235,12 @@
             } else {
                 $("#tourTypeRequired").text("");
             }
+            if ($("#language").val() == '') {
+                $("#languageRequired").text("required");
+                return false;
+            } else {
+                $("#languageRequired").text("");
+            }
             if ($("#overview").val() == '') {
                 $("#overviewRequired").text("required");
                 return false;
@@ -209,11 +253,23 @@
             } else {
                 $("#highlightsRequired").text("");
             }
-            if ($("#price").val() == '') {
-                $("#priceRequired").text("required");
+            if ($("#adultPrice").val() == '') {
+                $("#adultPriceRequired").text("required");
                 return false;
             } else {
-                $("#priceRequired").text("");
+                $("#adultPriceRequired").text("");
+            }
+            if ($("#childPrice").val() == '') {
+                $("#childPriceRequired").text("required");
+                return false;
+            } else {
+                $("#childPriceRequired").text("");
+            }
+            if ($("#infantPrice").val() == '') {
+                $("#infantPriceRequired").text("required");
+                return false;
+            } else {
+                $("#infantPriceRequired").text("");
             }
             if ($("#capacity").val() == '') {
                 $("#capacityRequired").text("required");
@@ -251,9 +307,16 @@
             } else {
                 $("#packRequired").text("");
             }
+            if ($("#additionalInformation").val() == '') {
+                $("#additionalInformationRequired").text("required");
+                return false;
+            } else {
+                $("#additionalInformationRequired").text("");
+            }
             var includes = [];
             var excludes = [];
             var packs = [];
+            var additionalInformations = [];
             var expects = [];
             $('#addInclude').children('textarea').each(function () {
                 var include = {
@@ -305,6 +368,20 @@
                 };
                 packs.push(pack);
             });
+            $('#addadditionalInformation').children('textarea').each(function () {
+                debugger;
+                var additionalInformation = {
+                    "details": this.value,
+                };
+                additionalInformations.push(additionalInformation);
+            });
+            $('#addadditionalInformation div').children('textarea').each(function () {
+                debugger;
+                var additionalInformation = {
+                    "details": this.value,
+                };
+                additionalInformations.push(additionalInformation);
+            });
             var selectedDays = [];
           
             for (var i = 0; i < $("#field2").val().length; i++) {
@@ -323,12 +400,16 @@
             tour.tour.dropOff = $("#dropOff").val();
             tour.tour.tourType = $("#tourType").val();
             tour.tour.overview = $("#overview").val();
-            tour.capacity = $("#capacity").val();
-            tour.price = $("#price").val();
+            tour.tour.languageId = $("#language").val();
+            tour.tour.capacity = $("#capacity").val();
+            tour.tour.adultPrice = $("#adultPrice").val();
+            tour.tour.childPrice = $("#childPrice").val();
+            tour.tour.infantPrice = $("#infantPrice").val();
             tour.includes = includes;
             tour.excludes = excludes;
             tour.expects = expects;
             tour.packs = packs;
+            tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;
             $.ajax({
                 url: "/Tour/Add",
@@ -370,6 +451,10 @@
         $("#addPackBtn").click(function () {
             // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
             $("#addPack").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea class='form-control' style='margin: 5px 0px'></textarea></div>");
+        });
+        $("#addadditionalInformationBtn").click(function () {
+            // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
+            $("#addadditionalInformation").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea class='form-control' style='margin: 5px 0px'></textarea></div>");
         });
     });
     function remove(e){

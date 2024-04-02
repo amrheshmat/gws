@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_layout.cshtml";
+    var faqs = ViewBag.faqs;
 }
 <!--Start image section-->
 <div  class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
@@ -9,21 +10,30 @@
     </div>
 </div>
 <div class="container">
-    <div class="question" style="margin-bottom:15px;">
-            <div class="fqaTitle" style="margin:30px 0px;">
-                <h1 style="font-size:25px;font-weight:bold;">FQA</h1>
+    <div class="fqaTitle" style="margin:30px 0px;">
+        <h1 style="font-size:25px;font-weight:bold;">FQA</h1>
+    </div>
+    @{
+        var i = 0;
+    }
+    @foreach (var faq in faqs)
+    {
+        var target = "#collapseExample" + i;
+        var id = "collapseExample" + i;
+        <div class="question" style="margin-bottom:15px;">
+            <div style="background-color:#eee;padding:15px 0px;" data-bs-toggle="collapse" data-bs-target="@target" aria-expanded="false" aria-controls="collapseExample">
+                <h1 class="col-10" style="margin: 0px 35px;padding:0px 10px;display: inline-block;">@Html.Raw(faq.question) ? </h1>
+                <i id="collapseExampleIcon" style="margin: 0px 9px;" class="fa fa-plus col-1"></i>
             </div>
-            <div style="background-color:#eee;padding:15px 0px;" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                <h1 class="col-10" style="margin: 0px 35px;padding:0px 10px;display: inline-block;">Is Egypt considered a safe destination? </h1>
-            <i id="collapseExampleIcon" style="margin: 0px 9px;" class="fa fa-plus col-1"></i>
-            </div>
-            <div class="collapse" id="collapseExample">
+            <div class="collapse" id="@id">
                 <div class="card card-body">
-                    Egypt has served as one of the best and safest tourist destinations for decades. Surrounded by warm Egyptian hospitality, courteous and kind-hearted locals you're gonna feel at home and as safe as you'll ever be. With some Sensible precautions and preparations, you will be able to explore Egypt tours and trips and enjoy Egypt's generally very safe cities with your mind at ease. Boasting a usually low crime rate visitors will be more than safe especially in areas frequently visited by tourists.
+                    @Html.Raw(faq.answer)
                 </div>
             </div>
-    </div>
-    <div class="question" style="margin-bottom:15px;">
+        </div>
+        i++;
+    }
+   @*  <div class="question" style="margin-bottom:15px;">
         <div style="background-color:#eee;padding:15px 0px;" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
             <h1 class="col-10" style="margin: 0px 35px;padding:0px 10px;display: inline-block;">Is Egypt considered a safe destination? </h1>
             <i style="margin: 0px 9px;" class="fa fa-plus col-1"></i>
@@ -44,18 +54,12 @@
                 Egypt has served as one of the best and safest tourist destinations for decades. Surrounded by warm Egyptian hospitality, courteous and kind-hearted locals you're gonna feel at home and as safe as you'll ever be. With some Sensible precautions and preparations, you will be able to explore Egypt tours and trips and enjoy Egypt's generally very safe cities with your mind at ease. Boasting a usually low crime rate visitors will be more than safe especially in areas frequently visited by tourists.
             </div>
         </div>
-    </div>
+    </div> *@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".fa-plus").on("click", function () {
-            $(this).removeClass("fa-plus");
-            $(this).addClass("fa-user");
-        });
-        $(".fa-user").on("click", function () {
-            alert();
-            $(this).removeClass("fa-user");
-            $(this).addClass("fa-plus");
+        $(".question div").on("click", function () {
+            $(this).find("i").toggleClass("fa-plus fa-minus");
         });
     });
     function viewcontact(id,name) {

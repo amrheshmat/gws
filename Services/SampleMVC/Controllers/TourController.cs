@@ -1,26 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared;
+using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;
+using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
 {
     public class TourController : Controller
     {
         private IRepository _repo;
+        private ILocalizationService _localizationService;
         IWebHostEnvironment _appEnvironment;
-        public TourController(IRepositoryFactory repo, IWebHostEnvironment appEnvironment)
+        public TourController(IRepositoryFactory repo, IWebHostEnvironment appEnvironment, ILocalizationService localizationService)
         {
             _repo = repo.Create("AGGRDB");
             _appEnvironment = appEnvironment;
+            _localizationService = localizationService;
         }
         [AuthAttribute("tour", "tour")]
         public async Task<IActionResult> Tour()//index page
         {
             List<Tour> tours = await _repo.GetAll<Tour>().ToListAsync();
-            ViewBag.tours = tours;
+            List<TourViewModel> list = new List<TourViewModel>();
+            foreach (Tour tour in tours)
+            {
+                TourViewModel tourViewModel = new TourViewModel();
+                var lang = _repo.Filter<Language>(e => e.languageId == tour.languageId).FirstOrDefault()?.languageName;
+                tourViewModel.languageName = lang;
+                tourViewModel.title = tour.title;
+                tourViewModel.tourId = tour.tourId;
+                list.Add(tourViewModel);
+            }
+            ViewBag.tours = list;
             return View();
 
         }
@@ -36,10 +50,11 @@ namespace SampleMVC.Controllers
         }
         [AuthAttribute("add", "tour")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] TourModel tour)//index page
+        public async Task<Response> Add([FromBody] TourModel tour)//index page
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Add");
             Tour? myTour = tour.Tour;
-
             var createdTour = _repo.Create(myTour);
             _repo.SaveChanges();
 
@@ -48,9 +63,13 @@ namespace SampleMVC.Controllers
             {
                 tour.Tour.tourId = id;
                 await CreateLists(tour);
-                return Ok("Added");
+                response.Status = true;
+                response.Message = _localizationService.Localize("Added");
+                return response;
             }
-            return NotFound("NotFound");
+            response.Status = false;
+            response.Message = _localizationService.Localize("AddedError");
+            return response;
 
         }
         [AuthAttribute("Edit", "tour")]
@@ -85,8 +104,10 @@ namespace SampleMVC.Controllers
         }
         [AuthAttribute("Edit", "tour")]
         [HttpPost]
-        public async Task<IActionResult> Edit([FromBody] TourModel tourModel)
+        public async Task<Response> Edit([FromBody] TourModel tourModel)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Update");
             var rolePermissions = _repo.Filter<Tour>(e => e.tourId == tourModel.Tour.tourId).ToList();
             var Tour = _repo.Update<Tour>(tourModel.Tour);
             _repo.SaveChanges();
@@ -107,9 +128,13 @@ namespace SampleMVC.Controllers
                 _repo.context.RemoveRange(days);
                 await _repo.context.SaveChangesAsync();
                 await CreateLists(tourModel);
-                return Ok("Updated");
+                response.Status = true;
+                response.Message = _localizationService.Localize("Updated");
+                return response;
             }
-            return NotFound("NotFound");
+            response.Status = false;
+            response.Message = _localizationService.Localize("UpdatedError");
+            return response;
         }
         [HttpPost]
         [Route("Tour/Upload")]
@@ -156,8 +181,10 @@ namespace SampleMVC.Controllers
         }
         [HttpGet]
         [Route("Tour/Delete/{tourId}")]
-        public async Task<string> Delete(int tourId)
+        public async Task<Response> Delete(int tourId)
         {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Delete");
             var tour = _repo.Filter<Tour>(e => e.tourId == tourId).FirstOrDefault();
             if (tour != null)
             {
@@ -177,9 +204,13 @@ namespace SampleMVC.Controllers
                 _repo.context.RemoveRange(days);
                 _repo.context.RemoveRange(attchments);
                 await _repo.context.SaveChangesAsync();
-                return "Deleted";
+                response.Status = true;
+                response.Message = _localizationService.Localize("Deleted");
+                return response;
             }
-            return "NotFond";
+            response.Status = false;
+            response.Message = _localizationService.Localize("DeletedError");
+            return response;
         }
         public async Task CreateLists(TourModel tour)
         {

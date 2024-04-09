@@ -13,6 +13,7 @@ namespace MWS.Data.Entities
 		public string? phone { get; set; }
 		public string? email { get; set; }
 		public string? name { get; set; }
+		public string? status { get; set; }
 		public string? countryName { get; set; }
 		public string? pickup { get; set; }
 		public string? tourDate { get; set; }

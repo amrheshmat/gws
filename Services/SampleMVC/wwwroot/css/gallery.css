@@ -27,20 +27,26 @@ img {
     left: 0;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    height: 400px;
+    width: 600px;
 }
 
 .gallery__thumb {
     width: 112px;
     /*padding-top: 6px;*/
-    margin: 6px;
+    margin: 5px;
     display: block;
+    max-height: 90px;
+    height: 90px;
 }
-
-.gallery__selector {
-    position: absolute;
-    opacity: 0;
-    visibility: hidden;
-}
+    .gallery__thumb img{
+        height:100% !important;
+    }
+    .gallery__selector {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+    }
 
     .gallery__selector:checked + .gallery__img {
         opacity: 1;

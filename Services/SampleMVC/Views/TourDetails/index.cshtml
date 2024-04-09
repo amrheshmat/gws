@@ -14,6 +14,7 @@
         <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;" />
     </div>
 </div>
+<span class="container" style=" position: absolute; font-size: 36px; text-transform: uppercase; font-weight: bold; color: #fff; font-family: 'Montserrat', Arial, sans-serif; margin-top: -50px;">@Model.Tour.title </span>
 <div class="container" style="margin:30px auto;">
 	<div style="margin:20px 0px;">
 		
@@ -140,7 +141,7 @@
 										<span class="me-3" style="font-weight: 700;">Pickup</span>
 									</td>
 									<td>
-										<p class="value" style="margin:0;">@Model.Tour.pickupLocation</p>
+									<p class="value" style="margin:0;">@Html.Raw(Model.Tour.pickupLocation)</p>
 									</td>
 								</tr>
 								<tr>
@@ -152,7 +153,7 @@
 										<span class="me-3" style="font-weight: 700;">Dropoff</span>
 									</td>
 									<td>
-										<p class="value" style="margin:0;">@Model.Tour.dropOff</p>
+										<p class="value" style="margin:0;">@Html.Raw(Model.Tour.dropOff)</p>
 									</td>
 								</tr>
 								<tr style="
@@ -166,7 +167,7 @@
 										<span class="me-3" style="font-weight: 700;">Tour Type</span>
 									</td>
 									<td>
-										<p class="value" style="margin:0;">@Model.Tour.tourType</p>
+										<p class="value" style="margin:0;">@Html.Raw(Model.Tour.tourType)</p>
 									</td>
 								</tr>
 							</tbody>
@@ -190,7 +191,7 @@
 										@foreach (var i in Model.includes)
 										{
 											<li>
-												<i class="fa fa-check" style="margin:0px 7px;color:#03a84e;"></i>@i.includeText
+												<i class="fa fa-check" style="margin:0px 7px;color:#03a84e;"></i>@Html.Raw(i.includeText)
 											</li>
 										}
 									</ul>
@@ -210,7 +211,7 @@
 										@foreach(var e in Model.excludes)
 										{
 											<li>
-												<i class="fa fa-times" style="margin:0px 7px;color:#e04f67;"></i>@e.excludeText
+												<i class="fa fa-times" style="margin:0px 7px;color:#e04f67;"></i>@Html.Raw(e.excludeText)
 											</li>
 										}
 									</ul>
@@ -283,212 +284,16 @@
 											</div>
 											<div id="collapse_@e.expectId" class="collapse" data-parent="#transfers">
 												<div class="card-body">
-													<h3>@e.details</h3>
+													<h3>@Html.Raw(e.details)</h3>
 												</div>
 											</div>
 										</div>
 										i++;
 									}
 								}
-								
-									
-									@* <div class="card">
-										<div class="card-header">
-											<h4>
-											<a class="accordion-toggle" data-bs-toggle="collapse"  href="#collapse236" aria-controls="collapse236"><strong>Day 2</strong><i class="indicator fa fa-plus float-right"></i></a>
-											</h4>
-										</div>
-										<div id="collapse236" class="collapse" data-parent="#transfers">
-											<div class="card-body">
-												<h3>After breakfast our expert egyptologist guide will pick you up from your hotel to star our amazing day tour in Cairo,</h3>
-
-												<h3>
-													our first tour will be the 3 great pyramids of Giza ( Cheops, Chephren and Mykerinus)<br>
-													listen well to your expert tour guide who will inform you by details the history of the great pyramids,
-												</h3>
-
-												<h3>Visit the famous sphinx and the amazing valley temple,</h3>
-
-												<h3>Eat your delicious lunch in local restaurant,</h3>
-
-												<h3>Move to visit the splendid Egyptian museum one of the most important museums in the world and see the famous treasures there such as Tutankhamon treasures,</h3>
-
-												<h3>Drive over and visit the famous old market of Khan El Khalili,</h3>
-
-												<h3>Drink your warm Egyptian tea at public coffee shop and discover the amazing Egyptian culture,</h3>
-
-												<h3>After the splendid day tour drive in comfort to your hotel</h3>
-
-												<h3>Over night Cairo hotel</h3>
-											</div>
-										</div>
-									</div>
-
-									<div class="card">
-										<div class="card-header">
-											<h4>
-											<a class="accordion-toggle" data-bs-toggle="collapse"  href="#collapse237"><strong>Day 3</strong><i class="indicator fa fa-plus float-right"></i></a>
-											</h4>
-										</div>
-										<div id="collapse237" class="collapse" data-parent="#transfers">
-											<div class="card-body">
-												<h3>Our expert representative will pick you up from your hotel on time and drive to Cairo airport to take the flight to Luxor,</h3>
-
-												<h3>Arrive to Luxor the great city which has the most ancient temples in the world,</h3>
-
-												<h3>Our first tour will be the famous west bank of Luxor,</h3>
-
-												<h3>
-													Visit the most famous site of Luxor valley of the kings,<br>
-													listen well to your expert tour guide who will inform you by details the details of the tombs there such as the famous tomb of Tutankhamon,
-												</h3>
-
-												<h3>Drive over and visit queen Hatshepsut temple and know her attractive story,</h3>
-
-												<h3>stop at colossi of Memnon,</h3>
-
-												<h3>Now it is time to relax and enjoy the great Egyptian river Nile by traditional sailing Felucca,</h3>
-
-												<h3>Sail deeply into the Nile where you can take unique photos of the splendid views at the both sides of the river Nile,</h3>
-
-												<h3>Visit the famous banana island and walk around to discover the most famous types of fruits in Egypt,</h3>
-
-												<h3>Sail again and have your typical Egyptian lunch during sailing,</h3>
-
-												<h3>After lunch ride a camel and explore the local villages of Luxor and touch the hidden cultural side of Egypt,</h3>
-
-												<h3>next stop will be Karnak temple the largest temple in Egypt,</h3>
-
-												<h3>Drive over to visit the beautiful Luxor temple,</h3>
-
-												<h3>After the unique day tour drive to your hotel,</h3>
-
-												<h3>Have your welcome drink with smooth check in,</h3>
-
-												<h3>Over night hotel in Luxor</h3>
-											</div>
-										</div>
-									</div>
-
-									<div class="card">
-										<div class="card-header">
-											<h4>
-												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse238"><strong>Day 4</strong><i class="indicator fa fa-plus float-right"></i></a>
-											</h4>
-										</div>
-										<div id="collapse238" class="collapse" data-parent="#transfers">
-											<div class="card-body">
-												<h3>Our expert tour guide will pick you up from your hotel on time,</h3>
-
-												<h3>Drive through the daily life and the natural views all over the way to Edfu,</h3>
-
-												<h3>Arrive Edfu and visit the majestic temple dedicated to Horus known as Edfu Temple which is considered to be the best preserved cult temple in Egypt,</h3>
-
-												<h3>Drive over and arrive to Kom ombo city and visit Temple of Kom Ombo which is an unusual double temple,</h3>
-
-												<h3>Now we are now close to Aswan such charming city famous by the Nubian culture,</h3>
-
-												<h3>Have your delicious lunch at local restaurant,</h3>
-
-												<h3>Start our first tour in Aswan and visit the great Philae island temple by sailing motor boat,</h3>
-
-												<h3>Philae was built in the honor of Goddess Isis the chief deity of the island,</h3>
-
-												<h3>Move to visit the famous Aswan high dam,an engineering miracle built in 1960 protecting Egypt from annual floods from the Nile,</h3>
-
-												<h3>Next we going to visit the unfinished obelisk which shows the techniques used by the ancient Egyptians to cut obelisks. Most probably this obelisk belongs to Queen Hatshepsut,one of the rulers of the 18th Dynasty and the royal wife of king Tuthmosis II. This queen was the owner of her Temple in the eastern bank of Luxor,</h3>
-
-												<h3>Drive in comfort to your hotel,</h3>
-
-												<h3>Over night hotel in Aswan</h3>
-											</div>
-										</div>
-									</div>
-
-									<div class="card">
-										<div class="card-header">
-											<h4>
-												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse239"><strong>Day 5</strong><i class="indicator fa fa-plus float-right"></i></a>
-											</h4>
-										</div>
-										<div id="collapse239" class="collapse" data-parent="#transfers">
-											<div class="card-body">
-												<h3>Morning after breakfast it is time to visit the most important temple in Egypt Abu simbel temples,</h3>
-
-												<h3>Upon arrival your guide will show you the world renowned site where Ramses II (1290-1223 B.C.) ordered two sun temples carved from the Limestone Mountains The great temple of Amon Re and Ra-Harakhte where the four famous colossal statues of Ramses II sit majestically over 20 meters high,staring out across the desert. Walk to the small temple of Hathor dedicated to the cow-headed goddess of love, happiness, joy and music built in honor of Ramses favorite wife Queen Nefertari,</h3>
-
-												<h3>Have your lunch in local restaurant,</h3>
-
-												<h3>After the amazing day tour drive back in comfort to Aswan airport and fly back to Cairo,</h3>
-
-												<h3>You will find our expert representative and our qualified driver waiting for you at Cairo airport,</h3>
-
-												<h3>Drive in comfort to your hotel,</h3>
-
-												<h3>Rest and refresh,</h3>
-
-												<h3>Over night hotel in Cairo</h3>
-											</div>
-										</div>
-									</div>
-
-									<div class="card">
-										<div class="card-header">
-											<h4>
-												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse240"><strong>Day 6</strong><i class="indicator fa fa-plus float-right"></i></a>
-											</h4>
-										</div>
-										<div id="collapse240" class="collapse" data-parent="#transfers">
-											<div class="card-body">
-												<h3>Enjoy your breakfast,</h3>
-
-												<h3>your egyptolgist guide will pick you up from your hotel to visit the second capital of Egypt and home to Alexander the great which is Alexandria,</h3>
-
-												<h3>Drive through the daily life and arrive to Alexandria which located on Mediterranean sea,</h3>
-
-												<h3>Our first tour will be the famous Pompey's Pillar and watch the highest monument in the world,</h3>
-
-												<h3>Next stop will be the modern library of Alexandria which has groups of museums and it has the oldest books and manuscripts in the world,</h3>
-
-												<h3>Drive over and visit the roman amphitheater which is considered to be one of the famous monuments belonging the Grego-roman period,</h3>
-
-												<h3>Our last stop will be sultan Qaitbay citadel(from outside) which is considered to be one of the most famous sightseeing in Alexandria,</h3>
-
-												<h3>Have your delicious lunch which definitely will be fish the most famous food in Alexandria,</h3>
-
-												<h3>After the amazing day tour drive back in comfort to your hotel in Cairo,</h3>
-
-												<h3>over night hotel in Cairo</h3>
-											</div>
-										</div>
-									</div>
-
-									<div class="card">
-										<div class="card-header">
-											<h4>
-												<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#transfers" href="#collapse241"><strong>Day 7</strong><i class="indicator fa fa-plus float-right"></i></a>
-											</h4>
-										</div>
-										<div id="collapse241" class="collapse" data-parent="#transfers">
-											<div class="card-body">
-												<h3>Enjoy your breakfast then our expert representative will pick you up from your hotel,</h3>
-
-												<h3>transfer in comfort to Cairo international airport,</h3>
-
-												<h3>our representative will assist with the formalities and bags,</h3>
-
-												<h3>it is time to say goodbye but of course with unique photos and unforgettable memories</h3>
-											</div>
-										</div>
-									</div> *@
-
 								</div>
-
-
 							</div>
-
 						</div>
-
 					</div>
 				</div>
 				<hr>
@@ -516,7 +321,7 @@
 							{
 								<li class="col-lg-6">
 									<p>
-										@p.title
+										@Html.Raw(p.title)
 									</p>
 								</li>
 							}
@@ -525,69 +330,30 @@
 					</div>
 				</div>
 				<hr>
-				@* <div class="row" style="border-bottom: 1px solid #d7dce3;
+			@if (Model.additionalInformations != null && Model.additionalInformations.Count > 0)
+			{
+				 <div class="row" style="border-bottom: 1px solid #d7dce3;
     margin-bottom: 10px;
     border-radius: 4px;
-    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
-    padding: 25px 12px 20px;
-    background: #f2fcff;">
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);padding: 25px 12px 20px;background: #f2fcff;">
+				
 					<div class="col-lg-3">
 						<h3 style="font-weight: 800;">
-							<i class="   icon_set_1_icon-92
-
-" style="
-    color: #e04f67;
-"></i>Additional Info
+							<i class="icon_set_1_icon-92" style="color: #e04f67;"></i>Additional Info
 						</h3>
 
 					</div>
 					<div class="col-lg-9">
-
-
-						<p>
-							<strong>Prices</strong><br>
-							Prices are quoted in US Dollars per person per trip except during Christmas, New Year &amp; Easter holidays.
-						</p>
-
-
-						<strong>Children Policy</strong>
-
-						<ul>
-							<li>Up to 2 years: FREE</li>
-							<li>Age from 2 and below 5 years: 25% of adult price</li>
-							<li>Age from 5 up to 11 years: 60% of adult price</li>
-							<li>Ages 12 and Up: adult price.</li>
-						</ul>
-
-
-
-
-						<p>
-							<strong>Notes :</strong><br>
-							Child pricing applies to children who share rooms with their parents (Max 2 Children in one Room)
-						</p>
+						@foreach (var p in Model.additionalInformations)
+						{
+							<p>
+								@Html.Raw(p.details)
+							</p>
+						}
 					</div>
-				</div> *@
-				@* <div class="row" style="border-bottom: 1px solid #d7dce3;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
-    padding: 25px 12px 20px;
-    background: #f2fcff;">
-					<div class="col-lg-3">
-						<h3>Reviews </h3>
-
 					</div>
-					<div class="col-lg-9">
-
-
-						<div class="hidden-xs hidden-sm">
-							<iframe frameborder="0" height="100%" src="https://www.tripadvisor.com/WidgetEmbed-cdspropertydetail?locationId=16811093&amp;partnerId=D6282B2F6A53462795614F9FCD066B22&amp;display=true" style="height: 1240px;" width="100%"></iframe>
-
-						</div>
-					</div>
-				</div> *@
-       </div>
+				}
+			</div>
        <div class="col-xs-12 col-md-5">
 		   <div>
 				<h3 style="background: #393939;color: #fff; padding: 10px;margin: auto;" class="inner">
@@ -909,11 +675,15 @@
    </div>
 </div>
 <script type="text/javascript">
+	
 	var arr;
 	function showDatePicker() {
 		$("#datepicker").datepicker('show'); //Show on click of button
 	}
     $(document).ready(function () {
+		$(".card-header h4 a").on("click", function () {
+			$(this).find("i").toggleClass("fa-plus fa-minus");
+		});
 		var disallowed =[];
 		$( "#tourDayList li" ).each( function( index, element ){
 			var dayId = $(this).attr('id');
@@ -1019,34 +789,65 @@
 				type: "POST",
 				contentType: "application/json",
 				data: JSON.stringify(userUpdate),
-				success: function (message) {
-					console.log("s");
-					if (message == "Added") {
+				success: function (data) {
+					if (data.status == true) {
 						Swal.fire({
-							title: "Added",
-							text: "User deleted",
-							icon: "success",
+							title: data.title,
+							html: data.message + `<p>` + data.total + `</p>`,
+							showCancelButton: true,
+							confirmButtonText: data.title,
+							cancelButtonText:data.cancel,
+							timer: 600000
+						}).then((result) => {
+							if (result.isConfirmed) {
+								addBookRequestAndCheckOut(userUpdate);
+							}
+						});
+					} else {
+						Swal.fire({
+							title: data.title,
+							text: data.message,
+							icon: "error",
 							timer: 1500
 						});
 						setTimeout(function () {
-							location.reload();
+							location.href = document.referrer;
 						}, 1500);
-					} else {
-						Swal.fire({
-							title: "Good job!",
-							text: "You clicked the button!",
-							icon: "success",
-							timer: 1500
-						});
 					}
 				},
 				error: function (error) {
-					console.log("e");
-					alert();
 				}
 			});
 
 		});
     });
-   
+	function addBookRequestAndCheckOut(userUpdate) {
+		$.ajax({
+			url: "/TourDetails/addBookRequestAndCheckOut",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(userUpdate),
+			success: function (data) {
+				if (data.status == true) {
+					Swal.fire({
+						title: "payment",
+						text: "waiting for payment method",
+						timer: 1500
+					})
+				} else {
+					Swal.fire({
+						title: data.title,
+						text: data.message,
+						icon: "error",
+						timer: 1500
+					});
+					setTimeout(function () {
+						location.href = document.referrer;
+					}, 1500);
+				}
+			},
+			error: function (error) {
+			}
+		});
+	}
 </script>

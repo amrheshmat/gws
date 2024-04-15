@@ -747,12 +747,12 @@
                                     <div class="simplebar-content" style="padding: 0px;">
 
                                         <div class="nav-scroller">
-                                            <a class="navbar-brand" href="/"><img src="/images/brand/logo/logo.svg" alt="" class=""></a>
+                                            <a class="navbar-brand" href="/"><img src="/images/brand/logo/logo.svg" alt="logo" class=""></a>
                                         </div>
                                         <ul class="navbar-nav flex-column accordion">
                                             <li class="logo" style="margin-bottom: 30px;margin-left: 20px; cursor: pointer;">
                                                 <a href="/admin">
-                                                    <img style="width: 70px;height: 70px !important;" src="~/images/logo-white.png" class="hidden dark:inline-block" alt="">
+                                                    <img style="width: 70px;height: 70px !important;" src="~/images/logo-white.png" class="hidden dark:inline-block" alt="white logo">
                                                 </a>
                                             </li>
                                             @foreach (var item in otherPages)
@@ -836,20 +836,11 @@
                                         </a>
 
                                         <div data-bs-popper="static" class="dropdown-menu dropdown-menu-end  dropdown-menu show dropdown-menu-end" aria-labelledby="dropdownUser">
-
-                                            <div data-rr-ui-dropdown-item="" class="px-4 pb-0 pt-2  ">
-
-                                                <div class="lh-1 ">
-                                                    <h5 class="mb-1"> John E. Grainger</h5><a class="text-inherit fs-6" href="/#">View my profile</a>
-                                                </div>
-
-                                                <div class=" dropdown-divider mt-3 mb-2">
-                                                </div>
-                                            </div>
                                             <a aria-selected="false" data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="/admin/changePassword">
-                                                <i class="fe fe-user me-2"></i> Change Password</a>
-                                                <a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="#"><i class="fe fe-settings me-2"></i> Account Settings</a>
-                                            <a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="/admin/Logout"><i class="fe fe-power me-2"></i>Sign Out</a>
+                                                <i class="fe fe-user me-2"></i> @_localizationService.Localize("ChangePassword")
+                                            </a>
+                                            <a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="/admin/setting"><i class="fe fe-settings me-2"></i>@_localizationService.Localize("AccountSettings") </a>
+                                            <a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="/admin/Logout"><i class="fe fe-power me-2"></i>@_localizationService.Localize("SignOut")</a>
                                         </div>
                                     </li>
                                 </ul>

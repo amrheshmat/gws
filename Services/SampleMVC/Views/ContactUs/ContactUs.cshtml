@@ -1,4 +1,6 @@
 ﻿@model MWS.Data.Entities.Contact;
+@using TripBusiness.Ibusiness;
+@inject ILocalizationService _localizationService;
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_layout.cshtml";
@@ -7,14 +9,14 @@
 <!--Start image section-->
 <div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
     <div class="animated fadeInDown">
-        <img src="~/images/16599949550wiki1.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;"/>
+        <img alt="contact us" src="~/images/16599949550wiki1.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;"/>
     </div>
 </div>
 <!--Start form-->
 <div class="col-xs-12 col-md-6" style="margin:60px auto; border: 1px solid #eee;  border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
             <div id="contextual-classes" class="mb-4" style="margin:40px;">
-            <h1 style="font-size:25px;font-weight: bold;">Contact Us</h1>
+            <h1 style="font-size:25px;font-weight: bold;"> @_localizationService.Localize("ContactUs")</h1>
             </div>
         <div class="modal-body">
             @using (Html.BeginForm("Add", "ContactUs", FormMethod.Post))
@@ -23,53 +25,53 @@
 
                 <div class="mb-3">
                     <label class="form-label" for="name">
-                       Name
+                        @_localizationService.Localize("Name")
                     </label>
                     @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control", required = "required" })
                     <span id="nameRequired" style="color:red"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="email">
-                        email
+                        @_localizationService.Localize("Email")
                     </label>
                     @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", required = "required" })
                     <span id="emailRequired" style="color:red"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="phone">
-                        phone
+                        @_localizationService.Localize("Phone")
                     </label>
                     @Html.TextBoxFor(m => m.phone, new { @id = "phone", type="number", @class = "form-control", required = "required" })
                     <span id="phoneRequired" style="color:red"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="numberOfAdult">
-                        Number Of Adult
+                        @_localizationService.Localize("NumberOfAdult")
                     </label>
                     <input type="number" value="0" class="form-control" id="numberOfAdult" />
                     <span id="numberOfAdultRequired" style="color:red"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="numberOfChild">
-                        Number Of Child
+                        @_localizationService.Localize("NumberOfChild")
                     </label>
                     <input type="number" value="0" class="form-control" id="numberOfChild" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="numberOfInfant">
-                        Number Of Infant
+                        @_localizationService.Localize("NumberOfInfant")
                     </label>
                     <input type="number" value="0" class="form-control" id="numberOfInfant" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="message">
-                        message
+                        @_localizationService.Localize("Message")
                     </label>
                     @Html.TextAreaFor(m => m.message, new { @id = "message", @class = "form-control", required = "required" })
                     <span id="messageRequired" style="color:red"></span>
                 </div>
                 <div class="d-grid">
-                    <button id="formUserBtn" style="background-color:#007bff" type="submit" class="btn btn-primary" id="formUserBtn">Send</button>
+                    <button style="background-color:#007bff" type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Send")</button>
                 </div>
             }
         </div>

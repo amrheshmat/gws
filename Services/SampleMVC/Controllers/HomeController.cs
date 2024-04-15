@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
+using Newtonsoft.Json;
 using SampleMVC.Models;
 using System.Diagnostics;
 using TripBusiness.Ibusiness;
@@ -36,6 +37,12 @@ namespace SampleMVC.Controllers
                     tourAttachments.Add(attachment);
                 }
             }
+            List<Setting> settings = await _repo.GetAll<Setting>().ToListAsync();
+            foreach (var setting in settings)
+            {
+                HttpContext.Session.SetString(setting.keyName, JsonConvert.SerializeObject(setting.value));
+            }
+            ViewBag.settings = settings;
             ViewBag.tours = tours;
             ViewBag.toursAttachments = tourAttachments;
             return View(tourAttachments);

@@ -43,7 +43,7 @@ namespace TripBusiness.business
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
+                "<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.spcialRequest?.name + "</p>" +
                 "<p> <b>" + _localizationService.Localize("Phone") + "</b> : " + mailRequest.spcialRequest?.phone + "</p>" +
                 "<p> <b>" + _localizationService.Localize("NumberOfAdult") + "</b> : " + mailRequest.spcialRequest?.numberOfAdult + "</p>" +
@@ -117,7 +117,7 @@ namespace TripBusiness.business
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
+                "<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'> <p> <b>Name</b> : " + mailRequest.Contact?.name + "</p>" +
                 "<p> <b>Phone</b> : " + mailRequest.Contact?.phone + "</p>" +
                 "<p> <b>Number Of Adult</b> : " + mailRequest.Contact?.numberOfAdult + "</p>" +
@@ -187,7 +187,7 @@ namespace TripBusiness.business
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
+                "<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'>" +
                 "<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.Contact?.name + "</b> ,</p><p> " + mailRequest.Contact?.message + "</p>" +
                 "</div>" +
@@ -258,7 +258,7 @@ namespace TripBusiness.business
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
+                "<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'>" +
                 "<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.spcialRequest?.name + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
                 "</div>" +

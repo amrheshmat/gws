@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using MWS.Data.Entities;
+using MWS.Infrustructure.Repositories;
 using TripBusiness.Ibusiness;
 
 namespace TripBusiness.business
@@ -8,9 +10,11 @@ namespace TripBusiness.business
     public class MailService : IMailService
     {
         private ILocalizationService _localizationService;
+        private IRepository _repo;
         private readonly MailSettings _mailSettings;
-        public MailService(IOptions<MailSettings> mailSettings, ILocalizationService localizationService)
+        public MailService(IRepositoryFactory repo, IOptions<MailSettings> mailSettings, ILocalizationService localizationService)
         {
+            _repo = repo.Create("AGGRDB");
             _mailSettings = mailSettings.Value;
             _localizationService = localizationService;
         }
@@ -35,11 +39,11 @@ namespace TripBusiness.business
                 ".body{border: 1px solid#0f172a;}" +
                 ".body p{padding: 0px 20px;}" +
                 ".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-                ".footer a{margin: 0px 40%; color: #fff;}" +
+                ".footer p{margin: 0px 30%; color: #fff;}" +
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='/'><img src='https://shreethemes.in/travosy/layouts/assets/images/logo-light.png'></a></div>" +
+                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.spcialRequest?.name + "</p>" +
                 "<p> <b>" + _localizationService.Localize("Phone") + "</b> : " + mailRequest.spcialRequest?.phone + "</p>" +
                 "<p> <b>" + _localizationService.Localize("NumberOfAdult") + "</b> : " + mailRequest.spcialRequest?.numberOfAdult + "</p>" +
@@ -47,7 +51,9 @@ namespace TripBusiness.business
                 "<p> <b>" + _localizationService.Localize("NumberOfInfant") + "</b> : " + mailRequest.spcialRequest?.numberOfInfant + "</p>" +
                 "<p> <b>" + _localizationService.Localize("Message") + "</b> : " + mailRequest.spcialRequest?.message + "</p>" +
                 "</div>" +
-                "<div class='container footer'> <a href=''> Social Link</a></div>" +
+                "<div class='container footer'> " +
+               "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
+                "</div>" +
                 "</div></body</html>";
             //using (StreamReader SourceReader = System.IO.File.OpenText(path to your file))
             //{
@@ -83,6 +89,11 @@ namespace TripBusiness.business
         }
         public async Task SendContactEmailAsync(MailRequest mailRequest)
         {
+            List<Setting> settings = await _repo.GetAll<Setting>().ToListAsync();
+            var facebook = settings.Where(e => e.keyName == "facebook").FirstOrDefault()?.value;
+            var instgram = settings.Where(e => e.keyName == "instgram").FirstOrDefault()?.value;
+            var youtube = settings.Where(e => e.keyName == "youtube").FirstOrDefault()?.value;
+            var twitter = settings.Where(e => e.keyName == "twitter").FirstOrDefault()?.value;
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             List<InternetAddress> internetAddresses = new List<InternetAddress>();
@@ -102,11 +113,11 @@ namespace TripBusiness.business
                 ".body{border: 1px solid#0f172a;}" +
                 ".body p{padding: 0px 20px;}" +
                 ".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-                ".footer a{margin: 0px 40%; color: #fff;}" +
+                ".footer p{margin: 0px 30%; color: #fff;}" +
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='/'><img src='https://shreethemes.in/travosy/layouts/assets/images/logo-light.png'></a></div>" +
+                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'> <p> <b>Name</b> : " + mailRequest.Contact?.name + "</p>" +
                 "<p> <b>Phone</b> : " + mailRequest.Contact?.phone + "</p>" +
                 "<p> <b>Number Of Adult</b> : " + mailRequest.Contact?.numberOfAdult + "</p>" +
@@ -114,7 +125,9 @@ namespace TripBusiness.business
                 "<p> <b>Number Of Infant</b> : " + mailRequest.Contact?.numberOfInfant + "</p>" +
                 "<p> <b>Message</b> : " + mailRequest.Contact?.message + "</p>" +
                 "</div>" +
-                "<div class='container footer'> <a href=''> Social Link</a></div>" +
+                "<div class='container footer'>" +
+                "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
+                "</div>" +
                 "</div></body</html>";
             //using (StreamReader SourceReader = System.IO.File.OpenText(path to your file))
             //{
@@ -150,6 +163,7 @@ namespace TripBusiness.business
         }
         public async Task SendContactThankEmailAsync(MailRequest mailRequest)
         {
+
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             List<InternetAddress> internetAddresses = new List<InternetAddress>();
@@ -169,15 +183,17 @@ namespace TripBusiness.business
                 ".body{border: 1px solid#0f172a;}" +
                 ".body p{padding: 0px 20px;}" +
                 ".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-                ".footer a{margin: 0px 40%; color: #fff;}" +
+                ".footer p{margin: 0px 30%; color: #fff;}" +
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='/'><img src='https://shreethemes.in/travosy/layouts/assets/images/logo-light.png'></a></div>" +
+                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'>" +
                 "<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.Contact?.name + "</b> ,</p><p> " + mailRequest.Contact?.message + "</p>" +
                 "</div>" +
-                "<div class='container footer'> <a href=''> Social Link</a></div>" +
+                "<div class='container footer'>" +
+                "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
+                "</div>" +
                 "</div></body</html>";
             //using (StreamReader SourceReader = System.IO.File.OpenText(path to your file))
             //{
@@ -213,6 +229,12 @@ namespace TripBusiness.business
         }
         public async Task SendSpecialThankEmailAsync(MailRequest mailRequest)
         {
+            //List<Setting> settings = await _repo.GetAll<Setting>().ToListAsync();
+            //var facebook = settings.Where(e => e.keyName == "facebook").FirstOrDefault()?.value;
+            //var instgram = settings.Where(e => e.keyName == "instgram").FirstOrDefault()?.value;
+            //var youtube = settings.Where(e => e.keyName == "youtube").FirstOrDefault()?.value;
+            //var twitter = settings.Where(e => e.keyName == "twitter").FirstOrDefault()?.value;
+
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             List<InternetAddress> internetAddresses = new List<InternetAddress>();
@@ -232,15 +254,17 @@ namespace TripBusiness.business
                 ".body{border: 1px solid#0f172a;}" +
                 ".body p{padding: 0px 20px;}" +
                 ".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-                ".footer a{margin: 0px 40%; color: #fff;}" +
+                ".footer p{margin: 0px 30%; color: #fff;}" +
                 "@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
                 "<div class='container header' style ='color:red>" +
-                "<div class='container'><a href='/'><img src='https://shreethemes.in/travosy/layouts/assets/images/logo-light.png'></a></div>" +
+                "<div class='container'><a href='https://anoushdahabiya.com'><img style='width:40px;height: 40px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
                 "<div class='container body'>" +
                 "<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.spcialRequest?.name + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
                 "</div>" +
-                "<div class='container footer'> <a href=''> Social Link</a></div>" +
+                "<div class='container footer'> " +
+                "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
+                "</div>" +
                 "</div></body</html>";
             //using (StreamReader SourceReader = System.IO.File.OpenText(path to your file))
             //{

@@ -16,7 +16,8 @@
     var youtube = ViewContext.HttpContext.Session.GetString("youtube");
     var twitter = ViewContext.HttpContext.Session.GetString("twitter");
     var address = ViewContext.HttpContext.Session.GetString("address");
-    var whatsapp = ViewContext.HttpContext.Session.GetString("whatsapp");
+    var whatsappSection = ViewContext.HttpContext.Session.GetString("whatsapp");
+    var whatsapp = whatsappSection?.Replace("\"", "");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -208,8 +209,8 @@
                                     <li class="inline"><a href="@youtube" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i class="fab fa-youtube"></i></a></li>
                                 </ul><!--end icon-->
                                 <div style="margin-top:50px;">
-                                    <a href="https://api.whatsapp.com/send?phone=@whatsapp&amp;text=Hi." class="floatwa" target="_blank">
-                                        <img src="~/images/WhatsApp_icon.png" style="height: 50px;" alt="whatsapp">
+                                    <a style="position: fixed; inset-inline-start: 0px; inset-inline-end: 0px; bottom: -10px; z-index: 999; width: 100px;" href="https://api.whatsapp.com/send?phone=@whatsapp&amp;text=Hi." class="floatwa" target="_blank">
+                                        <img src="~/images/WhatsApp_icon.png" style="height: 65px;width: 65px;" alt="whatsapp">
                                         <i class="fa fa-whatsapp my-floatwa icon-whatsapp" style="width: 20px;height: 20px;"></i>
                                     </a>
                                 </div>
@@ -264,6 +265,21 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
+                            <div class="lg:col-span-3 md:col-span-4">
+                                <!--Start of Tawk.to Script-->
+                                <script type="text/javascript">
+                                var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+                                (function(){
+                                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                                s1.async=true;
+                                s1.src='https://embed.tawk.to/661ec89da0c6737bd12c9ea2/1hrk3vb7t';
+                                s1.charset='UTF-8';
+                                s1.setAttribute('crossorigin','*');
+                                s0.parentNode.insertBefore(s1,s0);
+                                })();
+                                </script>
+                                <!--End of Tawk.to Script-->
+                            </div>
                         </div><!--end grid-->
                     </div><!--end col-->
                 </div>
@@ -274,7 +290,7 @@
             <div class="container relative text-center">
                 <div class="grid grid-cols-1">
                     <div class="text-center">
-                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="/" target="_blank" class="text-reset">A.Heshmat</a></p>
+                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://www.facebook.com/amr9531" target="_blank" class="text-reset">A.Heshmat</a></p>
                     </div>
                 </div><!--end grid-->
             </div><!--end container-->
@@ -306,7 +322,7 @@
     </div> *@
     <!-- LTR & RTL Mode Code -->
     <!-- Back to top -->
-    <a href="#" onclick="topFunction()" id="back-to-top" class="back-to-top fixed text-lg rounded-md z-10 bottom-5 end-5 size-8 text-center bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white justify-center items-center hidden"><i class="fa fa-arrow-up"></i></a>
+    <a style="margin:0px 120px;" href="#" onclick="topFunction()" id="back-to-top" class="back-to-top fixed text-lg rounded-md z-10 bottom-5 end-5 size-8 text-center bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white justify-center items-center hidden"><i class="fa fa-arrow-up"></i></a>
     <!-- Back to top -->
     <!-- JAVASCRIPTS -->
     <script src="~/js/swiper.min.js"></script>

@@ -34,6 +34,18 @@ namespace MWS.Business.Shared.Business
             }
             return (this._memoryCache.Get(key) as T);
         }
+        public void Remove<T>(string key) where T : class
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new RuntimeBinderException("Messages.RuntimeStorageNullKeyException");
+            }
+            if (this._memoryCache == null)
+            {
+                throw new RuntimeBinderException("Messages.RuntimeStorageNoContextException");
+            }
+            _memoryCache.Remove(key);
+        }
         public void Set<T>(string key, T t, double lcachingMinutes) where T : class
         {
             if (string.IsNullOrEmpty(key))

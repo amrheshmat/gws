@@ -31,6 +31,7 @@ namespace TripBusiness.business
             {
                 return cachedLookup;
             }
+
             var expiration = double.Parse(_config.GetSection("CacheExpirationTime").Value ?? "1");
             cachedLookup = _repo.Filter<Localization>(e => e.languageId == languageId).ToList();
             _customCache.Set("LanguageId_" + languageId, cachedLookup, expiration);
@@ -47,6 +48,11 @@ namespace TripBusiness.business
             cachedLookup = await _repo.GetAll<User>().ToListAsync();
             _customCache.Set("usrs", cachedLookup, expiration);
             return cachedLookup;
+        }
+        public void UpdateTranlsation(decimal languageId)
+        {
+            _customCache.Remove<List<Localization>>("LanguageId_" + languageId);
+            var translations = getTrandlationBasedOnLanguage(languageId);
         }
         #endregion
     }

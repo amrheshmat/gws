@@ -12,10 +12,12 @@ namespace SampleMVC.Controllers
 	{
 		private ILocalizationService _localizationService;
 		private IRepository _repo;
-		public TourDetailsController(ILocalizationService localizationService, IRepositoryFactory repo)
+		private IMailService _mailService;
+		public TourDetailsController(IMailService mailService, ILocalizationService localizationService, IRepositoryFactory repo)
 		{
 			_repo = repo.Create("AGGRDB");
 			_localizationService = localizationService;
+			_mailService = mailService;
 		}
 		[Route("TourDetails/{id}")]
 		public async Task<IActionResult> index(int id)//index page
@@ -52,8 +54,52 @@ namespace SampleMVC.Controllers
 			{
 				var bookRequest = await _repo.CreateAsync<Booking>(bookModel);
 				await _repo.SaveChangesAsync();
+				SpecialRequest specialRequest = new SpecialRequest();
 				if (bookRequest.requestId != null)
 				{
+					Tour tour = _repo.Filter<Tour>(e => e.tourId == bookModel.tourId).FirstOrDefault();
+					#region email
+					MailRequest mailRequest = new MailRequest();
+					mailRequest.booking = bookModel;
+					mailRequest.Subject = _localizationService.Localize("BookTour");
+					mailRequest.tourName = tour?.title;
+					mailRequest.ToEmail = new List<string>();
+					List<User> users = new List<User>();
+					decimal? permissionId = _repo.Filter<Permission>(permission => permission.permissionArea.ToLower() == "request".ToLower()).FirstOrDefault().permissionId;
+					if (permissionId != null)
+					{
+						List<RolePermission> role = _repo.Filter<RolePermission>(e => e.permissionId == permissionId).ToList();
+						if (role != null)
+						{
+							foreach (RolePermission rolePermission in role)
+							{
+								List<User> usersForRole = new List<User>();
+								usersForRole = _repo.Filter<User>(e => e.roleId == rolePermission.roleId).ToList();
+								foreach (User user in usersForRole)
+								{
+									if (!users.Contains(user))
+										users.Add(user);
+								}
+							}
+						}
+					}
+					//get mails from user table base on permission ...
+					if (users != null && users.Count > 0)
+					{
+						foreach (var user in users)
+						{
+							mailRequest.ToEmail?.Add(user.email);
+						}
+					}
+					//send email to website users that have permission contacts ...
+					await _mailService.SendBookEmailAsync(mailRequest);
+					//send email to client ....
+					mailRequest.ToEmail = new List<string>();
+					mailRequest.ToEmail?.Add(bookModel.email);
+					mailRequest.Subject = _localizationService.Localize("ThankYou");
+					mailRequest.Body = _localizationService.Localize("ThanksForBookTour") + ",<p>" + _localizationService.Localize("wishHappyTour") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
+					await _mailService.SendBookThanksEmailAsync(mailRequest);
+					#endregion
 					response.Message = _localizationService.Localize("Added");
 					response.Status = true;
 					return response;
@@ -118,6 +164,20 @@ namespace SampleMVC.Controllers
 			decimal singleRoomPrice = 0;
 			decimal doubleRoomPrice = 0;
 			decimal tripleRoomPrice = 0;
+			var capacity = tour?.capacity;
+			List<Booking> bookingList = await _repo.Filter<Booking>(e => e.tourId == tour.tourId && e.tourDate == bookModel.tourDate).ToListAsync();
+			var selectecCapcity = 0;
+			foreach (var book in bookingList)
+			{
+				selectecCapcity += book.numberOfSingleRoom.Value + book.numberOfDoubleRoom.Value + book.numberOfTripleRoom.Value;
+			}
+			var remainingRoom = capacity - selectecCapcity;
+			if (bookModel.numberOfSingleRoom.Value + bookModel.numberOfDoubleRoom.Value + bookModel.numberOfTripleRoom.Value > remainingRoom)
+			{
+				response.Message = _localizationService.Localize("exceededCapcity");
+				response.Status = false;
+				return response;
+			}
 			if (tour != null)
 			{
 				adultPrice = tour.adultPrice.Value * bookModel.numberOfAdult.Value;

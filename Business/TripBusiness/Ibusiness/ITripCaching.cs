@@ -6,5 +6,6 @@ namespace TripBusiness.Ibusiness
     {
         public List<Localization> getTrandlationBasedOnLanguage(decimal languageId);
         public Task<List<User>> getUsers();
+        public void UpdateTranlsation(decimal languageId);
     }
 }

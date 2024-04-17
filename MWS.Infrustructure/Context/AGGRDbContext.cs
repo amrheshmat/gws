@@ -32,6 +32,7 @@ namespace MWS.Infrustructure.Context
         public DbSet<Tour> tours { get; set; }
         public DbSet<Booking> booking { get; set; }
         public DbSet<Setting> settings { get; set; }
+        public DbSet<WhyChooseUs> whyChooseUs { get; set; }
         public DbSet<Faq> faqs { get; set; }
         public DbSet<About> abouts { get; set; }
         public DbSet<Term> terms { get; set; }
@@ -61,6 +62,7 @@ namespace MWS.Infrustructure.Context
             modelBuilder.Entity<Expect>().ToTable("expects");
             modelBuilder.Entity<Booking>().ToTable("booking");
             modelBuilder.Entity<Setting>().ToTable("settings");
+            modelBuilder.Entity<WhyChooseUs>().ToTable("whyChooseUs");
             modelBuilder.Entity<Faq>().ToTable("faqs");
             modelBuilder.Entity<About>().ToTable("abouts");
             modelBuilder.Entity<Term>().ToTable("terms");

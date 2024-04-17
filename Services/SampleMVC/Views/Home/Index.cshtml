@@ -11,6 +11,7 @@
     var t = l.FirstOrDefault()?.value;
     ViewData["Title"] = @ViewData["Title"];
     var tours = ViewBag.tours;
+    var whyChooseUs = ViewBag.whyChooseUs;
     var toursAttachments = ViewBag.toursAttachments;
 }
 
@@ -197,10 +198,10 @@
                     Why Booking With Us?
                 </p>
             <ul id="whyBookingUs">
-                    <li><i class="fa fa-angle-double-right"></i>Excellence in service guarantee. </li>
-                    <li><i class="fa fa-angle-double-right"></i>Free cancellation up to 48 hours before your tour starts </li>
-                    <li><i class="fa fa-angle-double-right"></i>Experienced in what we do </li>
-                    <li><i class="fa fa-angle-double-right"></i>We are Official travel agency</li>
+                    @foreach(var c in whyChooseUs)
+                    {
+                        <li><i class="fa fa-angle-double-right"></i>@c.title</li>
+                    }
             </ul>
         </div>
     </div>

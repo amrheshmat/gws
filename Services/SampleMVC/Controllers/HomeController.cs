@@ -14,6 +14,7 @@ namespace SampleMVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private IRepository _repo;
+        private readonly ILanguageService _languageService;
         private readonly IMailService mailService;
         public HomeController(IMailService mailService, ILanguageService languageService, ILocalizationService localizationService, ILogger<HomeController> logger, IRepositoryFactory repo)
        : base(languageService, localizationService)
@@ -21,12 +22,15 @@ namespace SampleMVC.Controllers
             _logger = logger;
             _repo = repo.Create("AGGRDB");
             this.mailService = mailService;
+            _languageService = languageService;
         }
         public async Task<IActionResult> Index()
         {
             var t = _repo.Filter<User>(e => e.mobile == "1").ToList();
             ViewData["Title"] = await Localize("users");
-            List<Tour> tours = await _repo.GetAll<Tour>().ToListAsync();
+            var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
+            var language = _languageService.GetLanguageByCulture(currentCulture);
+            List<Tour> tours = await _repo.Filter<Tour>(e => e.languageId == language.languageId).ToListAsync();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
             foreach (var tour in tours)
             {
@@ -42,6 +46,8 @@ namespace SampleMVC.Controllers
             {
                 HttpContext.Session.SetString(setting.keyName, JsonConvert.SerializeObject(setting.value));
             }
+            List<WhyChooseUs> whyChooseUs = await _repo.Filter<WhyChooseUs>(e => e.languageId == language.languageId).ToListAsync();
+            ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.settings = settings;
             ViewBag.tours = tours;
             ViewBag.toursAttachments = tourAttachments;

@@ -19,8 +19,14 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                        @_localizationService.Localize("RequestName")
+                                        @_localizationService.Localize("Name")
                                         </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Phone")
+                                    </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Email")
+                                    </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Actions")
                                         </th>
@@ -34,11 +40,16 @@
                                 {
                                         <tr>
                                             <td>
-                                            @request.title
+                                            @request.name
                                             </td>
+                                        <td>
+                                            @request.phone
+                                        </td>
+                                        <td>
+                                            @request.email
+                                        </td>
                                             <td>
-                                                <span style="margin:0px 5px;cursor:pointer"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
-                                            <span onclick="editrequest(@request.requestId,@request.title)" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            <span onclick="viewcontact(@request.requestId,'@request.name','@request.email','@request.phone','@request.numberOfAdult','@request.numberOfChild','@request.numberOfInfant','@request.countryName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-eye"></i></span>
                                             </td>
                                         </tr>
                                     }
@@ -65,13 +76,48 @@
                 @using (Html.BeginForm("edit", "Request", FormMethod.Post))
                 {
                     @Html.TextBoxFor(m => m.requestId, new { @id = "requestId", @class = "form-control", style = "display:none" })
-
                         <div class="mb-3">
                         <label class="form-label" for="name">
                             @_localizationService.Localize("Name")
-                            </label>
-                        @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control", placeholder = "Enter Request Name " })
+                        </label>
+                        @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control",disabled="disabled"})
                         </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="phone">
+                            @_localizationService.Localize("Phone")
+                        </label>
+                        @Html.TextBoxFor(m => m.phone, new { @id = "phone", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">
+                            @_localizationService.Localize("Email")
+                        </label>
+                        @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfAdult">
+                            @_localizationService.Localize("NumberOfAdult")
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfAdult, new { @id = "numberOfAdult", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfChild">
+                            @_localizationService.Localize("NumberOfChild")
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfChild, new { @id = "numberOfChild", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfInfant">
+                            @_localizationService.Localize("NumberOfInfant")
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfInfant, new { @id = "numberOfInfant", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="countryName">
+                            @_localizationService.Localize("CountryName")
+                        </label>
+                        @Html.TextBoxFor(m => m.countryName, new { @id = "countryName", @class = "form-control", disabled = "disabled" })
+                    </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">@_localizationService.Localize("Save")</button>
                     </div>
@@ -89,8 +135,13 @@
         $('#demoGrid').dataTable({
         });
     });
-    function editrequest(id,name) {
-        $(".modal-body #requestId").val(id);
+    function viewcontact(id, name, email, phone, adult, child, infant, countryName) {
         $(".modal-body #name").val(name);
-        }
+        $(".modal-body #email").val(email);
+        $(".modal-body #phone").val(phone);
+        $(".modal-body #countryName").val(countryName);
+        $(".modal-body #numberOfAdult").val(adult);
+        $(".modal-body #numberOfChild").val(child);
+        $(".modal-body #numberOfInfant").val(infant);
+    }
 </script>

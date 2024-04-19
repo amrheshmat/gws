@@ -758,7 +758,10 @@
                                                 </li>
                                             }
                                             <li class="nav-item has-submenu">
-                                                <a class="nav-link" href="#"> <i class="fa fa-file-alt" style="margin:0px 8px;"></i> pages  </a>
+                                                @if (fixedPages.Count > 1)
+                                                {
+                                                    <a class="nav-link" href="#"> <i class="fa fa-file-alt" style="margin:0px 8px;"></i> pages  </a>
+                                                }
                                                 <ul class="submenu collapse">
                                                     @foreach(var item in fixedPages)
                                             {

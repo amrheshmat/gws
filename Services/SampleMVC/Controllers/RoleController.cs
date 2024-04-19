@@ -134,6 +134,10 @@ namespace SampleMVC.Controllers
             if (role != null)
             {
                 _repo.Delete<Role>(role);
+                var users = _repo.Filter<User>(e => e.roleId == roleId).ToList();
+                _repo.context.RemoveRange(users);
+                var rolePermission = _repo.Filter<RolePermission>(e => e.roleId == roleId).ToList();
+                _repo.context.RemoveRange(rolePermission);
                 await _repo.context.SaveChangesAsync();
                 response.Message = _localizationService.Localize("Deleted");
                 response.Status = true;

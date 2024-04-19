@@ -107,16 +107,7 @@
                 @using (Html.BeginForm("add", "user", FormMethod.Post, new { @id = "formUser" }))
                 {
                     @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
-                    @Html.TextBoxFor(model => model.userId, new
-                        {
-                            @id = "datepicker",
-                            @class = "form-control",
-                            type = "text",
-                             disabled="disabled"
-                        } )
-                    <div>
-                        <i class="fa fa-calendar-alt" onclick="showDatePicker()" id="showDatePicker"></i>
-                    </div>
+                    
                         <div class="mb-3">
                             <label class="form-label" for="username">
                             @_localizationService.Localize("UserName")

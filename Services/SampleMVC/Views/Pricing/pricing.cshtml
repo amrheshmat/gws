@@ -233,8 +233,6 @@
                 userUpdate.hotelRoomId = $(".modal-body #hotelRoomId").val();
 
             if ($(".modal-body #hotelRoomId").val() == "") {
-                alert($(".modal-body #room").val());
-                alert($(".modal-body #hotel").val());
                 $.ajax({
                     url: "/Pricing/Add",
                     type: "POST",

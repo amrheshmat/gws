@@ -786,6 +786,7 @@
 			userUpdate.numberOfSingleRoom = $("#single").val();
 			userUpdate.numberOfDoubleRoom = $("#double").val();
 			userUpdate.numberOfTripleRoom = $("#triple").val();
+			$("#preloader").css({ "visibility": "visible", "opacity": 1 });
 			console.log(userUpdate);
 			$.ajax({
 				url: "/TourDetails/Add",
@@ -793,6 +794,7 @@
 				contentType: "application/json",
 				data: JSON.stringify(userUpdate),
 				success: function (data) {
+					$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
 					if (data.status == true) {
 						Swal.fire({
 							title: data.title,
@@ -822,12 +824,14 @@
 		});
     });
 	function addBookRequestAndCheckOut(userUpdate) {
+		$("#preloader").css({ "visibility": "visible", "opacity": 1 });
 		$.ajax({
 			url: "/TourDetails/addBookRequestAndCheckOut",
 			type: "POST",
 			contentType: "application/json",
 			data: JSON.stringify(userUpdate),
 			success: function (data) {
+				$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
 				if (data.status == true) {
 					Swal.fire({
 						title: "payment",

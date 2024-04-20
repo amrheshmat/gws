@@ -129,12 +129,13 @@
                 contentType: "application/json",
                 data: JSON.stringify(userUpdate),
                 success: function (data) {
-                    $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
                     if (data.status == true) {
                         localStorage.setItem("contactTitle", data.title);
                         localStorage.setItem("contactMessage", data.message);
+                        $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
                         location.href = "/";
                     } else {
+                        $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
                         $.toast({
                             heading: data.title,
                             text: data.message,

@@ -1,5 +1,6 @@
 ﻿using GWS.Service;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Rewrite;
 using MWS.Shared;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -40,6 +41,10 @@ builder.Services.AddAuthentication().AddCookie(options => options.LoginPath = "/
 var app = builder.Build();
 // enable the localization middleware
 app.UseRequestLocalization();
+app.UseRewriter(new RewriteOptions()
+            .AddRedirectToHttps()
+            .AddRedirectToWww()
+         );
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

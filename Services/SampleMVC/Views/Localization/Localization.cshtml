@@ -193,7 +193,7 @@
                             setTimeout(function () {
                                 location.reload();
                             }, 1500);
-                        } else if (message == "exsits") {
+                        } else if (data.message == "exsits") {
                             Swal.fire({
                                 title: "exstis",
                                 text: "this tranlation exsits before.",
@@ -226,6 +226,7 @@
                     data: JSON.stringify(userUpdate),
                     success: function (data) {
                         if (data.status == true) {
+                            console.log(data);
                             Swal.fire({
                                 title: data.title,
                                 text: data.message,

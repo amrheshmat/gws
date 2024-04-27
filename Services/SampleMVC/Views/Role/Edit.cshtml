@@ -22,6 +22,9 @@
                         <span id="roleNameRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
+            <label class="form-label" for="permission">
+                @_localizationService.Localize("Permission")
+            </label>
             <select class="form-select" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
                             @foreach (var permission in permissions)
                             {

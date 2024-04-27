@@ -17,7 +17,7 @@
     <div class="row">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
         <div id="contextual-classes" class="row">
-            <h2 class="col-11">@_localizationService.Localize("Langauge")</h2>
+            <h2 class="col-11">@_localizationService.Localize("language")</h2>
             @if (hasAddPermission > 0)
             {
             <span class="col-1 btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</span>
@@ -31,10 +31,10 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                        @_localizationService.Localize("Langauge")
+                                        @_localizationService.Localize("language")
                                         </th>
                                     <th scope="col">
-                                        @_localizationService.Localize("LangaugeCode")
+                                        @_localizationService.Localize("LanguageCode")
                                     </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Actions")
@@ -92,14 +92,14 @@
 
                         <div class="mb-3">
                         <label class="form-label" for="languageName">
-                            @_localizationService.Localize("Langauge")
+                            @_localizationService.Localize("language")
                             </label>
                         @Html.TextBoxFor(m => m.languageName, new { @id = "languageName", @class = "form-control" })
                         <span id="languageNameRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="code">
-                            @_localizationService.Localize("LangaugeCode") <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank"> @_localizationService.Localize("GetCode")</a>
+                            @_localizationService.Localize("LanguageCode") <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank"> @_localizationService.Localize("GetCode")</a>
                         </label>
                         @Html.TextBoxFor(m => m.code, new { @id = "code", @class = "form-control" })
                         <span id="codeRequired" style="color:red"></span>

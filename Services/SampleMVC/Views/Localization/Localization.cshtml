@@ -33,7 +33,7 @@
                                         @_localizationService.Localize("Value")
                                     </th>
                                     <th scope="col">
-                                        @_localizationService.Localize("Language")
+                                        @_localizationService.Localize("language")
                                     </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Actions")
@@ -104,7 +104,7 @@
                     </div>
                     <div class="mb-3" id="languageDiv">
                         <label class="form-label" for="language">
-                            @_localizationService.Localize("Language")
+                            @_localizationService.Localize("language")
                         </label>
                         @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
                         <select name="language" class="form-select" id="language">

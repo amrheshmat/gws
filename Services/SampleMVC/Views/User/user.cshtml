@@ -117,7 +117,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="mobile">
-                            @_localizationService.Localize("Mobile")
+                            @_localizationService.Localize("Phone")
                         </label>
                         @Html.TextBoxFor(m => m.mobile, new { @id = "mobile", @class = "form-control", placeholder = "Enter Mobile ", required = "required" })
                         <span id="mobileRequired" style="color:red"></span>
@@ -138,7 +138,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="email">
-                            @_localizationService.Localize("Role")
+                            @_localizationService.Localize("role")
                         </label>
                         @Html.TextBoxFor(m => m.roleId, new { @id = "roleId", @class = "form-control", style = "display:none" })
                         <select name="role" class="form-select" id="role">

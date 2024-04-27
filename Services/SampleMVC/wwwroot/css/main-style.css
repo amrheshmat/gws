@@ -13774,8 +13774,9 @@ a,
     }
 
 a {
-    color: var(--primary-color);
+    /*color: var(--primary-color);*/
     text-decoration: none;
+    color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
 }
 
 .f-left {
@@ -21926,7 +21927,7 @@ button.applyBtn.btn.btn-sm.btn-primary {
     .package-card .package-img {
         position: relative;
         overflow: hidden;
-        height: 200px;
+        height: 250px;
     }
 
         .package-card .package-img img {
@@ -22110,7 +22111,23 @@ button.applyBtn.btn.btn-sm.btn-primary {
     top: 16px;
     left: 16px;
 }
-
+.price-badge{
+    right: 16px!important;
+    left: auto!important;
+}
+.day-badge {
+    top: auto;
+    bottom: 5px;
+    position: absolute;
+    left: 16px;
+    color: #fff;
+}
+    .day-badge p {
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+    }
+}
     .image-badge .pera {
         color: var(--priamry-title);
         font-size: 14px;
@@ -30614,4 +30631,14 @@ button.applyBtn.btn.btn-sm.btn-primary {
     right: 6%;
     cursor: pointer;
     font-size: 18px;
+}
+.need_help {
+    color: #fdf7ac!important;
+}
+.need_help:hover{
+    text-decoration:none;
+    color:#fff !important;
+}
+.tourDetailsBody p, .tourDetailsBody span{
+    color:#000;
 }

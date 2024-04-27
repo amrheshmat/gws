@@ -125,10 +125,10 @@
             <div class="md:col-span-7">
                 <div class="lg:ms-8">
                     <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold">@_localizationService.Localize("WhoWeAre")</h3>
-                    <p class="text-slate-400 max-w-xl mb-6">
+                    <p style="font-weight: 400; font-size: 18px; color: #000; font-family: Arial, Helvetica, sans-serif;">
                         @_localizationService.Localize("WhoWeAreDesc")
                     </p>
-                    <a href="/aboutUs" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Read More <i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a>
+                    @* <a href="/aboutUs" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Read More <i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a> *@
                 </div>
             </div>
 
@@ -148,7 +148,7 @@
                         foreach (var tour in tours)
                         {
 
-                            <div class="col-xs-12 col-lg-4 col-sm-6">
+                            <div class="col-xs-12 col-lg-4 col-sm-6" style="margin-bottom:25px;">
                                     <div class="package-card h-calc">
                                         <div class="package-img imgEffect4">
                                             <a href="/tourDetails/@tour.tourId">
@@ -165,31 +165,23 @@
                                             <div class="image-badge">
                                                 <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">Book Now</a></p>
                                             </div>
+                                        <div class="price-badge image-badge">
+                                            <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">@tour.adultPrice $</a></p>
+                                        </div>
+                                        <div class="day-badge">
+                                            <p class="pera"> <i class="fa fa-calendar-alt"></i>
+                                                @tour.duration Days
+                                            </p>
+                                        </div>
                                         </div>
                                         <div class="package-content">
                                             <p class="area-name">
-                                                <a href="tour-details.html">@tour.title</a>
+                                                <span>@tour.title</span>
                                             </p>
-                                            <div class="location">
+                                            @* <div class="location">
                                                 <i class="ri-map-pin-line"></i>
                                             <div class="name">@tour.tourLocation</div>
-                                            </div>
-                                            <div class="packages-person">
-                                                <div class="count">
-                                                    <i class="fa fa-clock"></i>
-                                                <p class="pera">@tour.duration Days</p>
-                                                </div>
-                                                <div class="count">
-                                                    <i class="fa fa-home"></i>
-                                                <p class="pera">@tour.capacity Rooms</p>
-                                                </div>
-                                            </div>
-                                            <div class="price-review">
-                                                <div class="d-flex gap-10">
-                                                    <p class="light-pera">From</p>
-                                                <p class="pera">@tour.adultPrice</p>
-                                                </div>
-                                            </div>
+                                            </div> *@
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +201,7 @@
             <ul id="whyBookingUs">
                     @foreach(var c in whyChooseUs)
                     {
-                        <li><i class="fa fa-angle-double-right"></i>@c.title</li>
+                        <li style="color: #425166; font-size: 19px; font-family: Arial, Helvetica, sans-serif;"><i class="fa fa-angle-double-right"></i>@c.title</li>
                     }
             </ul>
         </div>

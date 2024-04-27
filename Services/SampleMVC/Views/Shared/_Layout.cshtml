@@ -17,7 +17,9 @@
     var twitterSection = ViewContext.HttpContext.Session.GetString("twitter");
     var address = ViewContext.HttpContext.Session.GetString("address");
     var whatsappSection = ViewContext.HttpContext.Session.GetString("whatsapp");
+    var mailSection = ViewContext.HttpContext.Session.GetString("email");
     var whatsapp = whatsappSection?.Replace("\"", "");
+    var mail = mailSection?.Replace("\"", "");
     var facebook = facebookSection?.Replace("\"", "");
     var instgram = instgramSection?.Replace("\"", "");
     var youtube = youtubeSection?.Replace("\"", "");
@@ -54,6 +56,7 @@
     <link href="~/css/gallery.css" rel="stylesheet" type="text/css">
     <link href="~/css/main-style.css" rel="stylesheet" type="text/css">
     <script src="~/js/sweetAlert.js"></script>
+    <link href="~/css/vendor.css" type="text/css" rel="stylesheet"/>
     @if (lang.Contains("ar"))
     {
         <link rel="stylesheet" href="~/css/homestyle-ar.css" data-n-g="">
@@ -203,6 +206,15 @@
                     <div class="py-[60px] px-0">
                         <div class="grid md:grid-cols-12 grid-cols-1 gap-6">
                             <div class="lg:col-span-3 md:col-span-12">
+                                <span >
+                                    NEED HELP?
+                                </span>
+                                <ul class="list-none mt-6">
+                                    <li><a class="need_help" href="tel:@whatsapp" target="_blank"><i class="fas fa-phone" style="margin:0px 1px;"></i> @whatsapp</a></li>
+                                    <li><a class="need_help" href="mailto:@mail" target="_blank"> <i class="far fa-envelope" style="margin:0px 1px;"></i>@mail</a></li>
+                                </ul><!--end icon-->
+                            </div><!--end col-->
+                            <div class="lg:col-span-3 md:col-span-12" style="margin:auto">
                                 <a href="#" class="text-[22px] focus:outline-none">
                                     <img style="width: 90px;height: 90px !important;" src="~/images/logo-white.png" alt="white logo">
                                 </a>
@@ -215,7 +227,6 @@
                                 <div style="margin-top:50px;">
                                     <a style="position: fixed; inset-inline-start: 0px; inset-inline-end: 0px; bottom: -10px; z-index: 999; width: 100px;" href="https://api.whatsapp.com/send?phone=@whatsapp&amp;text=Hi." class="floatwa" target="_blank">
                                         <img src="~/images/WhatsApp_icon.png" style="height: 65px;width: 65px;" alt="whatsapp">
-                                        <i class="fa fa-whatsapp my-floatwa icon-whatsapp" style="width: 20px;height: 20px;"></i>
                                     </a>
                                 </div>
                             </div><!--end col-->
@@ -224,9 +235,9 @@
                                 <div class="lg:ms-8">
                                     <h5 class="tracking-[1px] text-gray-100 font-semibold">@_localizationService.Localize("About")</h5>
                                     <ul class="list-none footer-list mt-6">
-                                        <li><a href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("AboutUs")</a></li>
-                                        <li class="mt-[10px]"><a href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("faq")</a></li>
-                                        <li class="mt-[10px]"><a href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> @_localizationService.Localize("TermsAndconditions")</a></li>
+                                        <li><a style="font-size: 13px;line-height: 1.5;" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("AboutUs")</a></li>
+                                        <li><a style="font-size: 13px;line-height: 1.5;" href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("faq")</a></li>
+                                        <li><a style="font-size: 13px;line-height: 1.5;" href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> @_localizationService.Localize("TermsAndconditions")</a></li>
                                         @* <li class="mt-[10px]"><a href="pricing.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Pricing</a></li> *@
                                     </ul>
                                 </div>
@@ -282,6 +293,7 @@
                                 s0.parentNode.insertBefore(s1,s0);
                                 })();
                                 </script>
+
                                 <!--End of Tawk.to Script-->
                             </div>
                         </div><!--end grid-->

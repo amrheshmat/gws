@@ -26565,14 +26565,19 @@ textarea.form-control-lg {
 
         .navbar-classic .nav-top-wrap .dropdown-menu {
             position: absolute;
-            margin: .25rem .75rem !important
+            margin: .25rem .75rem !important;
+            visibility:hidden;
         }
-
-            .navbar-classic .nav-top-wrap .dropdown-menu .dropdown-submenu .dropdown-menu {
-                position: relative;
-                top: -7px !important;
-                padding: 0 !important
-            }
+    .navbar-classic .dropdown-submenu:hover > .dropdown-menu, .navbar-classic .dropdown:hover > .dropdown-menu {
+        transform: scaleY(1);
+        opacity: 1;
+        visibility: visible
+    }
+    .navbar-classic .nav-top-wrap .dropdown-menu .dropdown-submenu .dropdown-menu {
+        position: relative;
+        top: -7px !important;
+        padding: 0 !important
+    }
 }
 
 .header .navbar {

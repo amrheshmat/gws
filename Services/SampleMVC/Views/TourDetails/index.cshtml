@@ -49,7 +49,7 @@
 </section>
 	</div>
    <div class="row">
-       <div class="col-xs-12 col-md-8">
+       <div class="col-xs-12 col-lg-8">
 				<p class="d-none d-md-block d-block d-lg-none"><a class="btn_map" data-bs-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map">View on map</a></p>
 				<!-- Map button for tablets/mobiles -->
 				<div class="row" style="border-bottom: 1px solid #d7dce3;
@@ -60,7 +60,7 @@
     background: #f2fcff;">
 					<div class="col-lg-3">
 					<h3 style="font-weight: 800!important;font-size: 22px;">
-						<i class="fa fa-edit" style="color: #e04f67;"></i>Description
+						<i class="far fa-edit" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("Description")
 						</h3>
 					</div>
 					<div class="col-lg-9">
@@ -72,26 +72,17 @@
 							<tbody class="tourDetailsBody">
 								<tr>
 									<td>
-										<i class=" icon-back-in-time" style="
-    color: #03a84e;
-    font-size: 16px;
-"> </i>
-										<span class="me-3"></span><span style="font-weight: 700;">Duration</span>
+										<i class="fas fa-history" style="color: #03a84e;font-size: 16px;"> </i>
+									<span class="me-3"></span><span style="font-weight: 700;">@_localizationService.Localize("Duration")</span>
 									</td>
 									<td>
 										<p class="value" style="margin:0;">@Model.Tour.duration Days</p>
 									</td>
 								</tr>
-								<tr style="
-    background-color: #00848929;
-">
-
-
+								<tr style="background-color: #00848929;">
 									<td>
-										<i class=" icon_set_1_icon-41" style="
-    color: #03a84e;
-    font-size: 16px;
-"></i><span class="me-3"></span><span style="font-weight: 700;">Tour Location</span>
+									<i class="fa fa-map-marked" style=" color: #03a84e;font-size: 16px;"></i><span class="me-3"></span>
+									<span style="font-weight: 700;">@_localizationService.Localize("TourLocation")</span>
 									</td>
 									<td>
 									<p class="value" style="margin:0;">@Model.Tour.tourLocation</p>
@@ -99,11 +90,8 @@
 								</tr>
 								<tr>
 									<td>
-										<i class="  icon-calendar-outlilne
-" style="
-    color: #03a84e;
-    font-size: 16px;
-"> </i><span class="me-3"></span><span style="font-weight: 700;">Tour Availability</span>
+									<i class="fa fa-calendar-alt" style="color: #03a84e;font-size: 16px;"> </i>
+									<span class="me-3"></span><span style="font-weight: 700;">@_localizationService.Localize("TourAvailability")</span>
 									</td>
 									<td>
 										<div class="weekDays-selector">
@@ -119,7 +107,7 @@
 												{
 													<input type="checkbox" id="weekday-@day.dayName" value="@day.dayId" onclick="return false;" name="@day.dayName" class="weekday">
 												}
-												<label style="width:40px" for="weekday-@day.dayName">@day.dayName</label>
+												<label style="width:40px;margin:2px;" for="weekday-@day.dayName">@day.dayName</label>
 											}
 										}
 										
@@ -128,15 +116,10 @@
 
 									</td>
 								</tr>
-								<tr style="
-    background-color: #00848929;
-">
+								<tr style="background-color: #00848929;">
 									<td>
-										<i class="icon-location-inv" style="
-    color: #03a84e;
-    font-size: 16px;
-"></i>
-										<span class="me-3" style="font-weight: 700;">Pickup</span>
+										<i class="fa fa-map-marker-alt" style="color: #03a84e;font-size: 16px;"></i>
+									<span class="me-3" style="font-weight: 700;">@_localizationService.Localize("PickupLocation")</span>
 									</td>
 									<td>
 									<p class="value" style="margin:0;">@Html.Raw(Model.Tour.pickupLocation)</p>
@@ -144,25 +127,17 @@
 								</tr>
 								<tr>
 									<td>
-										<i class="icon-location-inv" style="
-    color: #03a84e;
-    font-size: 16px;
-"></i>
-										<span class="me-3" style="font-weight: 700;">Dropoff</span>
+									<i class="fa fa-map-marker-alt" style="color: #03a84e;font-size: 16px;"></i>
+									<span class="me-3" style="font-weight: 700;">@_localizationService.Localize("DropOff")</span>
 									</td>
 									<td>
 										<p class="value" style="margin:0;">@Html.Raw(Model.Tour.dropOff)</p>
 									</td>
 								</tr>
-								<tr style="
-    background-color: #00848929;
-">
+								<tr style="background-color: #00848929;">
 									<td>
-										<i class="icon-group" style="
-    color: #03a84e;
-    font-size: 16px;
-"></i>
-										<span class="me-3" style="font-weight: 700;">Tour Type</span>
+										<i class="fa fa-users" style="color: #03a84e; font-size: 16px;"></i>
+									<span class="me-3" style="font-weight: 700;">@_localizationService.Localize("TourType")</span>
 									</td>
 									<td>
 										<p class="value" style="margin:0;">@Html.Raw(Model.Tour.tourType)</p>
@@ -171,14 +146,14 @@
 							</tbody>
 						</table>
 						<hr>
-						<h4 style="font-weight: bold!important;">Overview:</h4>
-						<p style="color:#000;">
+					<h4 style="font-weight: bold!important;">@_localizationService.Localize("Overview"):</h4>
+					<p style="color:#000;font-size: 16px;">
 							@Model.Tour.overview
 						</p>
 						<p></p>
 						@if(Model.includes != null && Model.includes.Count>0)
 					{
-						<h4 style="font-weight: bold!important;">What's include:</h4>
+						<h4 style="font-weight: bold!important;color:#000">@_localizationService.Localize("WhatIncludes"):</h4>
 
 						<div class="row">
 							<div class="col-md-12">
@@ -187,7 +162,7 @@
 										@foreach (var i in Model.includes)
 										{
 											<li>
-												<i class="fa fa-check" style="margin:0px 7px;color:#03a84e;"></i>@Html.Raw(i.includeText)
+												<i class="fa fa-check" style="margin:0px 7px;color:#03a84e;"></i><span style="color:#000">@Html.Raw(i.includeText)</span>
 											</li>
 										}
 									</ul>
@@ -198,7 +173,7 @@
 					}
 					@if(Model.excludes != null && Model.excludes.Count > 0)
 					{
-						<h4 style="font-weight: bold!important;">What's not included:</h4>
+						<h4 style="font-weight: bold!important;color:#000">@_localizationService.Localize("WhatNotIncludes"):</h4>
 
 						<div class="row">
 							<div class="col-md-12">
@@ -207,7 +182,7 @@
 										@foreach(var e in Model.excludes)
 										{
 											<li>
-												<i class="fa fa-times" style="margin:0px 7px;color:#e04f67;"></i>@Html.Raw(e.excludeText)
+												<i class="fa fa-times" style="margin:0px 7px;color:#e04f67;"></i><span style="color:#000">@Html.Raw(e.excludeText)</span>
 											</li>
 										}
 									</ul>
@@ -230,15 +205,11 @@
     background: #f2fcff;">
 					<div class="col-lg-3">
 					<h3 style="font-weight: bold!important;">
-							<i class="  pe-7s-info
-
-" style="
-    color: #e04f67;
-"></i>Highlights
+						<i class="fa fa-info-circle" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("Highlights")
 						</h3>
 					</div>
 					<div class="col-lg-9">
-						<p>
+					<p style="color:#000;font-size: 16px;">
 							@Model.Tour.highlights
 						</p>
 					</div>
@@ -252,9 +223,7 @@
     background: #f2fcff;">
 					<div class="col-lg-3">
 					<h3 style="font-weight: bold!important;">
-							<i class=" icon_set_1_icon-68
-" style="
-    color: #e04f67;"></i>What To Expect (Itinerary)
+						<i class="far fa-edit" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("WhatExpects")
 						</h3>
 					</div>
 					<div class="col-lg-9">
@@ -272,7 +241,7 @@
 										<div class="card" style="margin-bottom:10px;">
 											<div class="card-header">
 												<h4>
-													<a class="accordion-toggle" data-bs-toggle="collapse" href="#collapse_@e.expectId" aria-controls="collapse_@e.expectId">
+													<a style="color:#000 !important;" class="accordion-toggle" data-bs-toggle="collapse" href="#collapse_@e.expectId" aria-controls="collapse_@e.expectId">
 														<strong>Day @i</strong><i class="indicator fa fa-plus float-right"></i>
 													</a>
 												</h4>
@@ -301,14 +270,14 @@
 				
 					<div class="col-lg-3">
 						<h3 style="font-weight: bold!important;">
-							<i class="icon_set_1_icon-92" style="color: #e04f67;"></i>Additional Info
+							<i class="far fa-file-alt" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("AdditionalInformation")
 						</h3>
 
 					</div>
 					<div class="col-lg-9">
 						@foreach (var p in Model.additionalInformations)
 						{
-							<p>
+							<p style="color:#000;font-size: 16px;">
 								@Html.Raw(p.details)
 							</p>
 						}
@@ -316,10 +285,10 @@
 					</div>
 				}
 			</div>
-       <div class="col-xs-12 col-md-4">
+       <div class="col-xs-12 col-lg-4">
 		   <div>
 				<h3 style="background: #393939;color: #fff; padding: 10px;margin: auto;" class="inner">
-					<strong>- @_localizationService.Localize("Booking") -</strong>
+					<strong style="margin:auto">- @_localizationService.Localize("Booking") -</strong>
 				</h3>
 			</div>
 			<form style="border: 1px solid #eee;padding: 10px;" id="booking" method="post" novalidate="novalidate">

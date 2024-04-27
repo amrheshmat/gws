@@ -202,7 +202,7 @@
                 </div>
                 <span id="expectRequired" style="color:red"></span>
             </div>
-            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+         @*    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="packup" style="width:80%">
                     @_localizationService.Localize("Packups")
                 </label>
@@ -219,7 +219,7 @@
                     }
                 </div>
                 <span id="packRequired" style="color:red"></span>
-            </div>
+            </div> *@
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="additionalInformation" style="width:80%">
                     @_localizationService.Localize("AdditionalInformation")
@@ -363,12 +363,12 @@
             } else {
                 $("#expectRequired").text("");
             }
-            if ($("#pack").val() == '') {
-                $("#packRequired").text("required");
-                return false;
-            } else {
-                $("#packRequired").text("");
-            }
+            // if ($("#pack").val() == '') {
+            //     $("#packRequired").text("required");
+            //     return false;
+            // } else {
+            //     $("#packRequired").text("");
+            // }
             if ($("#additionalInformation").val() == '') {
                 $("#additionalInformationRequired").text("required");
                 return false;
@@ -377,7 +377,7 @@
             }
             var includes = [];
             var excludes = [];
-            var packs = [];
+            // var packs = [];
             var additionalInformations = [];
             var expects = [];
             $('#addInclude').children('textarea').each(function () {
@@ -416,18 +416,18 @@
                 };
                 expects.push(expect);
             });
-            $('#addPack').children('textarea').each(function () {
-                var pack = {
-                    "title": this.value,
-                };
-                packs.push(pack);
-            });
-            $('#addPack div').children('textarea').each(function () {
-                var pack = {
-                    "title": this.value,
-                };
-                packs.push(pack);
-            });
+            // $('#addPack').children('textarea').each(function () {
+            //     var pack = {
+            //         "title": this.value,
+            //     };
+            //     packs.push(pack);
+            // });
+            // $('#addPack div').children('textarea').each(function () {
+            //     var pack = {
+            //         "title": this.value,
+            //     };
+            //     packs.push(pack);
+            // });
             $('#addadditionalInformation').children('textarea').each(function () {
                 var additionalInformation = {
                     "details": this.value,
@@ -469,7 +469,7 @@
             tour.includes = includes;
             tour.excludes = excludes;
             tour.expects = expects;
-            tour.packs = packs;
+            // tour.packs = packs;
             tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;
             $.ajax({
@@ -508,12 +508,11 @@
         $("#addExpectBtn").click(function () {
             $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea  class='form-control' style='margin:5px 0px'></textarea></div>");
         });
-        $("#addPackBtn").click(function () {
-            // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
-            $("#addPack").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea class='form-control' style='margin: 5px 0px'></textarea></div>");
-        });
+        // $("#addPackBtn").click(function () {
+        //     // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
+        //     $("#addPack").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea class='form-control' style='margin: 5px 0px'></textarea></div>");
+        // });
         $("#addadditionalInformationBtn").click(function () {
-            // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
             $("#addadditionalInformation").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea class='form-control' style='margin: 5px 0px'></textarea></div>");
         });
     });

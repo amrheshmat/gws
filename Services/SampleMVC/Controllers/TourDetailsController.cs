@@ -28,7 +28,7 @@ namespace SampleMVC.Controllers
 			tourModel.includes = await _repo.Filter<Include>(e => e.tourId == id).ToListAsync();
 			tourModel.excludes = await _repo.Filter<Exclude>(e => e.tourId == id).ToListAsync();
 			tourModel.expects = await _repo.Filter<Expect>(e => e.tourId == id).ToListAsync();
-			tourModel.packs = await _repo.Filter<Pack>(e => e.tourId == id).ToListAsync();
+			//tourModel.packs = await _repo.Filter<Pack>(e => e.tourId == id).ToListAsync();
 			tourModel.additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == id).ToListAsync();
 			tourModel.tourDays = await _repo.Filter<TourDay>(e => e.tourId == id).ToListAsync();
 			List<Day> days = await _repo.GetAll<Day>().ToListAsync();

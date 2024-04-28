@@ -29,8 +29,8 @@
                                 <div class="text-center">
                                     <h1 class="font-bold text-white lg:leading-normal leading-normal text-4xl lg:text-6xl mb-6 mt-5">@_localizationService.Localize("Find") <br> @_localizationService.Localize("TravelPackage")</h1>
                                     <p class="text-white/70 text-xl max-w-xl mx-auto">@_localizationService.Localize("PlanningForTrip")</p>
-                                    <div class="mt-6">
-                                        <a href="" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">@_localizationService.Localize("SeeMore")</a>
+                                <div class="mt-6" id="seeMore">
+                                    <a href="/" class="sub-menu-item py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">@_localizationService.Localize("SeeMore")</a>
                                     </div>
                                 </div>
                         </div><!--end grid-->
@@ -163,7 +163,7 @@
                                                 }
                                             </a>
                                             <div class="image-badge">
-                                                <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">Book Now</a></p>
+                                            <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">Book Now</a></p>
                                             </div>
                                         <div class="price-badge image-badge">
                                             <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">@tour.adultPrice $</a></p>
@@ -211,6 +211,12 @@
 @* End who we are *@
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#seeMore").on("click", function (e) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: $("#tourPackages").offset().top - 70
+            }, 2000);
+        });
         if (localStorage.getItem("spcialRequestTitle")) {
             $.toast({
                 heading: localStorage.getItem("spcialRequestTitle"),

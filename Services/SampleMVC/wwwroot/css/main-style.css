@@ -13693,7 +13693,7 @@ p {
     line-height: 1.6;
     margin-bottom: 0px;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 svg {
@@ -13774,9 +13774,9 @@ a,
     }
 
 a {
-    /*color: var(--primary-color);*/
+    color: var(--primary-color);
     text-decoration: none;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
+    /*color: rgb(239 68 68 / var(--tw-text-opacity)) !important;*/
 }
 
 .f-left {

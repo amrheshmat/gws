@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
+using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
@@ -43,65 +47,40 @@ namespace SampleMVC.Controllers
 			return View(tourModel);
 
 		}
-
+		private Booking buildBooking(BookingModel model)
+		{
+			Booking booking = new Booking();
+			booking.requestId = model.requestId;
+			booking.name = model.name;
+			booking.email = model.email;
+			booking.tourId = model.tourId;
+			booking.status = model.status;
+			booking.countryName = model.countryName;
+			booking.pickup = model.pickup;
+			booking.tourDate = model.tourDate;
+			booking.numberOfAdult = model.numberOfAdult;
+			booking.numberOfChild = model.numberOfChild;
+			booking.numberOfInfant = model.numberOfInfant;
+			booking.numberOfRoom = model.roomCountList?.Where(e => e.count > 0).Select(e => e.count).Sum();
+			return booking;
+		}
 		[HttpPost]
-		[Route("TourDetails/addBookRequestAndCheckOut")]
-		public async Task<Response> addBookRequestAndCheckOut([FromBody] Booking bookModel)
+		[Route("TourDetails/addBookRequest")]
+		public async Task<Response> addBookRequest([FromBody] BookingModel bookModel)
 		{
 			Response response = new Response();
 			response.Title = _localizationService.Localize("CheckOut");
 			if (bookModel != null)
 			{
-				var bookRequest = await _repo.CreateAsync<Booking>(bookModel);
+				var booking = buildBooking(bookModel);
+				var bookRequest = await _repo.CreateAsync<Booking>(booking);
 				await _repo.SaveChangesAsync();
 				SpecialRequest specialRequest = new SpecialRequest();
 				if (bookRequest.requestId != null)
 				{
-					Tour tour = _repo.Filter<Tour>(e => e.tourId == bookModel.tourId).FirstOrDefault();
-					#region email
-					MailRequest mailRequest = new MailRequest();
-					mailRequest.booking = bookModel;
-					mailRequest.Subject = _localizationService.Localize("BookTour");
-					mailRequest.tourName = tour?.title;
-					mailRequest.ToEmail = new List<string>();
-					List<User> users = new List<User>();
-					decimal? permissionId = _repo.Filter<Permission>(permission => permission.permissionArea.ToLower() == "request".ToLower()).FirstOrDefault().permissionId;
-					if (permissionId != null)
-					{
-						List<RolePermission> role = _repo.Filter<RolePermission>(e => e.permissionId == permissionId).ToList();
-						if (role != null)
-						{
-							foreach (RolePermission rolePermission in role)
-							{
-								List<User> usersForRole = new List<User>();
-								usersForRole = _repo.Filter<User>(e => e.roleId == rolePermission.roleId).ToList();
-								foreach (User user in usersForRole)
-								{
-									if (!users.Contains(user))
-										users.Add(user);
-								}
-							}
-						}
-					}
-					//get mails from user table base on permission ...
-					if (users != null && users.Count > 0)
-					{
-						foreach (var user in users)
-						{
-							mailRequest.ToEmail?.Add(user.email);
-						}
-					}
-					//send email to website users that have permission contacts ...
-					await _mailService.SendBookEmailAsync(mailRequest);
-					//send email to client ....
-					mailRequest.ToEmail = new List<string>();
-					mailRequest.ToEmail?.Add(bookModel.email);
-					mailRequest.Subject = _localizationService.Localize("ThankYou");
-					mailRequest.Body = _localizationService.Localize("ThanksForBookTour") + ",<p>" + _localizationService.Localize("wishHappyTour") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
-					await _mailService.SendBookThanksEmailAsync(mailRequest);
-					#endregion
 					response.Message = _localizationService.Localize("Added");
 					response.Status = true;
+					response.Id = bookRequest.requestId.ToString();
 					return response;
 				}
 			}
@@ -109,47 +88,150 @@ namespace SampleMVC.Controllers
 			response.Status = false;
 			return response;
 		}
+		[HttpGet]
+		[Route("TourDetails/checkOut/{id}")]
+		public async Task<Response> checkOut(long id)
+		{
+
+			Response response = new Response();
+			response.Title = _localizationService.Localize("CheckOut");
+
+			var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
+			if (bookRequest.requestId != null)
+			{
+				PaymentSessionRequest paymentSessionRequest = new PaymentSessionRequest();
+				paymentSessionRequest.apiOperation = "INITIATE_CHECKOUT";
+				paymentSessionRequest.interaction = new Interaction();
+				paymentSessionRequest.interaction.operation = "AUTHORIZE";
+				paymentSessionRequest.interaction.displayControl = new DisplayControl();
+				paymentSessionRequest.interaction.displayControl.billingAddress = "OPTIONAL";
+				paymentSessionRequest.interaction.displayControl.customerEmail = "OPTIONAL";
+				paymentSessionRequest.interaction.displayControl.shipping = "HIDE";
+				paymentSessionRequest.interaction.merchant = new Merchant();
+				paymentSessionRequest.interaction.merchant.name = "Nbe Test";
+				paymentSessionRequest.order = new Order();
+				paymentSessionRequest.order.currency = "EGP";
+				paymentSessionRequest.order.amount = "1.00";
+				paymentSessionRequest.order.id = id.ToString();
+				paymentSessionRequest.order.description = "test";
+				string sessionId = await createPaymentSession(paymentSessionRequest);
+				response.Message = _localizationService.Localize("Added");
+				response.Status = true;
+				response.Id = sessionId;
+				return response;
+			}
+			else
+			{
+				response.Message = _localizationService.Localize("AddedError");
+				response.Status = false;
+				return response;
+			}
+		}
+		public async Task<string> createPaymentSession(PaymentSessionRequest request)
+		{
+			HttpClient client = new HttpClient();
+
+
+			var url = "https://test-nbe.gateway.mastercard.com/api/rest/version/73/merchant/TESTEGPTEST/session";
+			client.DefaultRequestHeaders.Accept.Clear();
+			var byteArray = Encoding.ASCII.GetBytes("merchant.TESTEGPTEST:c622b7e9e550292df400be7d3e846476");
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+			client.DefaultRequestHeaders.Accept.Add(
+			new MediaTypeWithQualityHeaderValue("text/plain"));
+			HttpResponseMessage response = await client.PostAsJsonAsync(url, request);
+			var result = await response.Content.ReadAsStringAsync();
+			PaymentSession paymentSession = JsonSerializer.Deserialize<PaymentSession>(result)!;
+			return paymentSession.session.id;
+		}
+		[HttpPost]
+		[Route("TourDetails/updateRequestStatusAndSendEmail/{id}")]
+		public async Task<Response> updateRequestStatusAndSendEmail(long id)
+		{
+			Response response = new Response();
+			response.Title = _localizationService.Localize("CheckOut");
+
+			var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
+			if (bookRequest.requestId != null)
+			{
+				//TODO
+				//update request ...
+				Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
+				#region email
+				MailRequest mailRequest = new MailRequest();
+				mailRequest.booking = bookRequest;
+				mailRequest.Subject = _localizationService.Localize("BookTour");
+				mailRequest.tourName = tour?.title;
+				mailRequest.ToEmail = new List<string>();
+				List<User> users = new List<User>();
+				decimal? permissionId = _repo.Filter<Permission>(permission => permission.permissionArea.ToLower() == "request".ToLower()).FirstOrDefault().permissionId;
+				if (permissionId != null)
+				{
+					List<RolePermission> role = _repo.Filter<RolePermission>(e => e.permissionId == permissionId).ToList();
+					if (role != null)
+					{
+						foreach (RolePermission rolePermission in role)
+						{
+							List<User> usersForRole = new List<User>();
+							usersForRole = _repo.Filter<User>(e => e.roleId == rolePermission.roleId).ToList();
+							foreach (User user in usersForRole)
+							{
+								if (!users.Contains(user))
+									users.Add(user);
+							}
+						}
+					}
+				}
+				//get mails from user table base on permission ...
+				if (users != null && users.Count > 0)
+				{
+					foreach (var user in users)
+					{
+						mailRequest.ToEmail?.Add(user.email);
+					}
+				}
+				//send email to website users that have permission contacts ...
+				await _mailService.SendBookEmailAsync(mailRequest);
+				//send email to client ....
+				mailRequest.ToEmail = new List<string>();
+				mailRequest.ToEmail?.Add(bookRequest.email);
+				mailRequest.Subject = _localizationService.Localize("ThankYou");
+				mailRequest.Body = _localizationService.Localize("ThanksForBookTour") + ",<p>" + _localizationService.Localize("wishHappyTour") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
+				await _mailService.SendBookThanksEmailAsync(mailRequest);
+				#endregion
+				response.Message = _localizationService.Localize("Added");
+				response.Status = true;
+				return response;
+			}
+			else
+			{
+				response.Message = _localizationService.Localize("AddedError");
+				response.Status = false;
+				return response;
+			}
+		}
 		[HttpPost]
 		[Route("TourDetails/Add")]
-		public async Task<Response> Add([FromBody] Booking bookModel)
+		public async Task<Response> Add([FromBody] BookingModel bookModel)
 		{
 			Response response = new Response();
 			response.Title = _localizationService.Localize("CheckOut");
 			response.Cancel = _localizationService.Localize("Cancel");
-			int? maxAdultForSingleRoom = 0;
-			int? maxAdultForDoubleRoom = 0;
-			int? maxAdultForTripleRoom = 0;
-			int? maxChildForSingleRoom = 0;
-			int? maxChildForDoubleRoom = 0;
-			int? maxChildForTripleRoom = 0;
-			int? maxInfantForSingleRoom = 0;
-			int? maxInfantForDoubleRoom = 0;
-			int? maxInfantForTripleRoom = 0;
+			int? maxAdult = 0;
+			int? maxChild = 0;
+			int? maxInfant = 0;
 			List<HotelRoomPricing> singleRooms = _repo.GetAll<HotelRoomPricing>().ToList();
-			var singleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 1).FirstOrDefault();
-			var doubleRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 2).FirstOrDefault();
-			var trileRoom = _repo.Filter<HotelRoomPricing>(e => e.hotelTypeId == bookModel.hotelTypeId && e.roomTypeId == 3).FirstOrDefault();
-			if (bookModel.numberOfSingleRoom.Value > 0)
+			var roomLimitAndPricing = _repo.GetAll<HotelRoomPricing>().ToList();
+			if (bookModel.roomCountList != null && bookModel.roomCountList.Count > 0)
 			{
-				maxAdultForSingleRoom = singleRoom?.numberOfAdult * bookModel.numberOfSingleRoom.Value;
-				maxChildForSingleRoom = singleRoom?.numberOfChild * bookModel.numberOfSingleRoom.Value;
-				maxInfantForSingleRoom = singleRoom?.numberOfInfant * bookModel.numberOfSingleRoom.Value;
+				var selectedRoomType = bookModel.roomCountList.Where(e => e.count > 0).ToList();
+				foreach (var room in selectedRoomType)
+				{
+					var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
+					maxAdult += t?.numberOfAdult * room.count;
+					maxChild += t?.numberOfChild * room.count;
+					maxInfant += t?.numberOfInfant * room.count;
+				}
 			}
-			if (bookModel.numberOfDoubleRoom.Value > 0)
-			{
-				maxAdultForDoubleRoom = doubleRoom?.numberOfAdult * bookModel.numberOfDoubleRoom.Value;
-				maxChildForDoubleRoom = doubleRoom?.numberOfChild * bookModel.numberOfDoubleRoom.Value;
-				maxInfantForDoubleRoom = doubleRoom?.numberOfInfant * bookModel.numberOfDoubleRoom.Value;
-			}
-			if (bookModel.numberOfTripleRoom.Value > 0)
-			{
-				maxAdultForTripleRoom = trileRoom?.numberOfAdult * bookModel.numberOfTripleRoom.Value;
-				maxChildForTripleRoom = trileRoom?.numberOfChild * bookModel.numberOfTripleRoom.Value;
-				maxInfantForTripleRoom = trileRoom?.numberOfInfant * bookModel.numberOfTripleRoom.Value;
-			}
-			var maxAdult = maxAdultForSingleRoom + maxAdultForDoubleRoom + maxAdultForTripleRoom;
-			var maxChild = maxChildForSingleRoom + maxChildForDoubleRoom + maxChildForTripleRoom;
-			var maxInfant = maxInfantForSingleRoom + maxInfantForDoubleRoom + maxInfantForTripleRoom;
 			if (maxAdult < bookModel.numberOfAdult || maxChild < bookModel.numberOfChild || maxInfant < bookModel.numberOfInfant)
 			{
 				response.Status = false;
@@ -169,10 +251,10 @@ namespace SampleMVC.Controllers
 			var selectecCapcity = 0;
 			foreach (var book in bookingList)
 			{
-				selectecCapcity += book.numberOfSingleRoom.Value + book.numberOfDoubleRoom.Value + book.numberOfTripleRoom.Value;
+				selectecCapcity += book.numberOfRoom.Value;
 			}
 			var remainingRoom = capacity - selectecCapcity;
-			if (bookModel.numberOfSingleRoom.Value + bookModel.numberOfDoubleRoom.Value + bookModel.numberOfTripleRoom.Value > remainingRoom)
+			if (bookModel.roomCountList.Where(e => e.count > 0).Select(e => e.count).Sum() > remainingRoom)
 			{
 				response.Message = _localizationService.Localize("exceededCapcity");
 				response.Status = false;
@@ -183,10 +265,7 @@ namespace SampleMVC.Controllers
 				adultPrice = tour.adultPrice.Value * bookModel.numberOfAdult.Value;
 				childPrice = tour.childPrice.Value * bookModel.numberOfChild.Value;
 				infantPrice = tour.infantPrice.Value * bookModel.numberOfInfant.Value;
-				singleRoomPrice = bookModel.numberOfSingleRoom.Value * singleRoom.price.Value;
-				doubleRoomPrice = bookModel.numberOfDoubleRoom.Value * doubleRoom.price.Value;
-				tripleRoomPrice = bookModel.numberOfTripleRoom.Value * trileRoom.price.Value;
-				totalPrice = adultPrice + childPrice + infantPrice + singleRoomPrice + doubleRoomPrice + tripleRoomPrice;
+				totalPrice = adultPrice + childPrice + infantPrice;
 				response.Message = _localizationService.Localize("Calculated");
 				response.Status = true;
 				response.Total = totalPrice;

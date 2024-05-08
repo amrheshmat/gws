@@ -564,13 +564,14 @@
 						@foreach (var room in rooms)
 						{
 							<div class="col-sm-6">
-							<span style="width: 95px; display: inline-block; height: 45px;background: #017b6e; padding: 10px 5px; border-radius: 10px; color: #fff;margin: 0px 5px;">
-								@Html.Raw(@room.icon)  @room.roomTypeName 
+							<span style="display: inline-block; height: 45px;background: #017b6e; padding: 10px 5px; border-radius: 10px; color: #fff;margin: 0px 5px;">
+								@* @Html.Raw(@room.icon)  *@ 
+								@room.roomTypeName 
 							</span>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<input type="number" class="form-control" id="@room.roomTypeName" value="0"/>
+								<input type="number" class="form-control roomTypeCount" id="@room.roomTypeId" value="0" />
 								</div>
 							</div>
 						}
@@ -594,7 +595,16 @@
    </div>
 </div>
 <script type="text/javascript">
-	
+	var datetime;
+	function errorCallback(error) {
+		console.log(JSON.stringify(error));
+	}
+	function cancelCallback() {
+		console.log('Payment cancelled');
+	}
+	function completeCallback() {
+		console.log('Payment completed');
+	}
 	var arr;
 	function showDatePicker() {
 		$("#datepicker").datepicker('show'); //Show on click of button
@@ -612,23 +622,30 @@
 		var dateToday = new Date();
 		$("#datepicker").datepicker({
 			minDate: dateToday,
-				beforeShowDay: function(date){
-				day = date.getDay(); 
+			beforeShowDay: function (date) {
+				day = date.getDay();
 				if (disallowed.indexOf(day) !== -1) {
-					     return [true];
-            } else {
-                return [false];
-            }
+					return [true];
+				} else {
+					return [false];
+				}
 			}
+		}).on("change", function () {
+			datetime = $("#datepicker").datepicker("getDate").toISOString();
+			console.log(datetime);
 		});
-		$("#hotel").on("change", function () {
-			if($(this).val() != "0"){
-				$("#roomDiv").show();
-			}else{
-				$("#roomDiv").hide();
-			}
-		})
 		$('#formBookingBtn').on("click", function (e) {
+			var selectedRoom = $('.roomTypeCount').map((_, el) => el.value).get()
+			var selectedRoomId = $('.roomTypeCount').map((_, el) => el.id).get()
+			console.log(selectedRoom)
+			var selectedRoomList = [];
+			for (i = 0; i < selectedRoom.length; i++) {
+				var roomCount = {};
+				roomCount.count = selectedRoom[i];
+				roomCount.roomTypeId = selectedRoomId[i];
+				selectedRoomList.push(roomCount);
+			}
+			console.log(selectedRoomList)
 			//validation
 			if ($("#nameBooking").val() == '') {
 				$("#nameRequired").text("required");
@@ -689,19 +706,20 @@
 
 			var userUpdate = {};
 			userUpdate.tourId = $("#tourId").val();
-			userUpdate.hotelTypeId = $("#hotel").val();
+			//userUpdate.hotelTypeId = $("#hotel").val();
 			userUpdate.name = $("#nameBooking").val();
 			userUpdate.email = $("#emailBooking").val();
 			userUpdate.phone = $("#phoneBooking").val();
 			userUpdate.pickup = $("#pickup").val();
 			userUpdate.countryName = $("#nationality").val();
-			userUpdate.tourDate = $("#datepicker").val();
+			userUpdate.tourDate = datetime;
 			userUpdate.numberOfAdult = $("#adults").val();
 			userUpdate.numberOfChild = $("#children").val();
 			userUpdate.numberOfInfant = $("#infant").val();
-			userUpdate.numberOfSingleRoom = $("#single").val();
-			userUpdate.numberOfDoubleRoom = $("#double").val();
-			userUpdate.numberOfTripleRoom = $("#triple").val();
+			userUpdate.roomCountList = selectedRoomList;
+			// userUpdate.numberOfSingleRoom = $("#single").val();
+			// userUpdate.numberOfDoubleRoom = $("#double").val();
+			// userUpdate.numberOfTripleRoom = $("#triple").val();
 			$("#preloader").css({ "visibility": "visible", "opacity": 1 });
 			console.log(userUpdate);
 			$.ajax({
@@ -742,18 +760,57 @@
 	function addBookRequestAndCheckOut(userUpdate) {
 		$("#preloader").css({ "visibility": "visible", "opacity": 1 });
 		$.ajax({
-			url: "/TourDetails/addBookRequestAndCheckOut",
+			url: "/TourDetails/addBookRequest",
 			type: "POST",
 			contentType: "application/json",
 			data: JSON.stringify(userUpdate),
 			success: function (data) {
 				$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
 				if (data.status == true) {
+					// location.href = "/checkout";
+					console.log(data.id);
+					checkout(data.id);
+				} else {
 					Swal.fire({
-						title: "payment",
-						text: "waiting for payment method",
+						title: data.title,
+						text: data.message,
+						icon: "error",
 						timer: 1500
-					})
+					});
+					setTimeout(function () {
+						location.href = document.referrer;
+					}, 1500);
+				}
+			},
+			error: function (error) {
+			}
+		});
+	}
+	function checkout(requestId) {
+		$.ajax({
+			url: "/TourDetails/checkOut/" + requestId,
+			cache: false,
+			type: "GET",
+			success: function (data) {
+				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					Checkout.configure({
+						session: {
+							id: data.id
+						},
+						interaction: {
+							merchant:{
+								name: 'Nbe Test',
+								address: {
+									line1: 'test',
+									line2: 'test'
+								}
+							}
+						}
+					});
+					console.log(data.id);
+					debugger;
+					Checkout.showPaymentPage();
 				} else {
 					Swal.fire({
 						title: data.title,

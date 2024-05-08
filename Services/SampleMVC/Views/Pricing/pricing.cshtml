@@ -38,13 +38,10 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
-                                        @_localizationService.Localize("HotelType")
-                                        </th>
-                                        <th scope="col">
                                         @_localizationService.Localize("RoomType")
                                         </th>
                                         <th scope="col">
-                                        @_localizationService.Localize("Price")
+                                        @_localizationService.Localize("NumberOfAdult")
                                         </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Actions")
@@ -59,13 +56,10 @@
                                     {
                                         <tr>
                                             <td>
-                                                @user.hotelTypeName
-                                            </td>
-                                            <td>
                                                 @user.roomTypeName
                                             </td>
                                             <td>
-                                                @user.price
+                                            @user.numberOfAdult
                                             </td>
                                             <td>
                                             @if (hasDeletePermission > 0)
@@ -74,7 +68,7 @@
                                             }
                                             @if (hasEditPermission > 0)
                                             {
-                                                <span onclick="editUser(@user.hotelRoomId,'@user.hotelTypeId','@user.roomTypeId','@user.price','@user.numberOfAdult','@user.numberOfChild','@user.numberOfInfant')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                                <span onclick="editUser(@user.hotelRoomId,'@user.roomTypeId','@user.numberOfAdult','@user.numberOfChild','@user.numberOfInfant')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
                                             }    
                                         </td>
                                         </tr>
@@ -109,19 +103,6 @@
                 {
                     @Html.TextBoxFor(m => m.hotelRoomId, new { @id = "hotelRoomId", @class = "form-control", style = "display:none" })
                     <div class="mb-3">
-                        <label class="form-label" for="hotel">
-                            @_localizationService.Localize("HotelType")
-                        </label>
-                        @Html.TextBoxFor(m => m.hotelTypeId, new { @id = "hotelId", @class = "form-control", style = "display:none" })
-                        <select name="hotel" class="form-select" id="hotel">
-                            @foreach (var hotel in hotels)
-                            {
-                              <option value="@hotel.hotelTypeId">@hotel.hotelTypeName</option>
-                            }
-                        </select>
-                        <span id="hotelRequired" style="color:red"></span>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label" for="room">
                             @_localizationService.Localize("RoomType")
                         </label>
@@ -133,13 +114,6 @@
                             }
                         </select>
                         <span id="roomRequired" style="color:red"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="price">
-                            @_localizationService.Localize("Price")
-                        </label>
-                        @Html.TextBoxFor(m => m.price, new {type="number", @id = "price", @class = "form-control", placeholder = "Enter Price ", required = "required" })
-                        <span id="priceRequired" style="color:red"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="numberOfAdult">
@@ -185,24 +159,14 @@
         })
         $('#formUserBtn').on("click",function (e) {
             //validation
-            if ($(".modal-body #hotel").val() == '') {
-                $(".modal-body #hotelRequired").text("required");
-                return false;
-            } else {
-                $(".modal-body #hotelRequired").text("");
-            }
+          
             if ($(".modal-body #room").val() == '') {
                 $(".modal-body #roomRequired").text("required");
                 return false;
             } else {
                 $(".modal-body #roomRequired").text("");
             }
-            if ($(".modal-body #price").val() == '') {
-                $(".modal-body #priceRequired").text("required");
-                return false;
-            } else {
-                $(".modal-body #priceRequired").text("");
-            }
+           
             if ($(".modal-body #numberOfAdult").val() == '') {
                 $(".modal-body #numberOfAdultRequired").text("required");
                 return false;
@@ -223,9 +187,9 @@
             }
             e.preventDefault();
             var userUpdate = {};
-            userUpdate.hotelTypeId = $(".modal-body #hotel").val();
+            // userUpdate.hotelTypeId = $(".modal-body #hotel").val();
             userUpdate.roomTypeId = $(".modal-body #room").val();
-            userUpdate.price = $(".modal-body #price").val();
+            // userUpdate.price = $(".modal-body #price").val();
             userUpdate.numberOfAdult = $(".modal-body #numberOfAdult").val();
             userUpdate.numberOfChild = $(".modal-body #numberOfChild").val();
             userUpdate.numberOfInfant = $(".modal-body #numberOfInfant").val();
@@ -330,20 +294,18 @@
             }
         });
     }
-    function editUser(id,hotTypeId,roomTypeId,price,numberOfAdult,numberOfChild,numberOfInfant) {
+    function editUser(id,roomTypeId,numberOfAdult,numberOfChild,numberOfInfant) {
         $(".modal-body #hotelRoomId").val(id);
-        $(".modal-body #hotelId").val(hotTypeId);
         $(".modal-body #roomId").val(roomTypeId);
-        $(".modal-body #price").val(price);
+        // $(".modal-body #price").val(price);
         $(".modal-body #numberOfAdult").val(numberOfAdult);
         $(".modal-body #numberOfChild").val(numberOfChild);
         $(".modal-body #numberOfInfant").val(numberOfInfant);
         $("#room").val(roomTypeId);
-        $("#hotel").val(hotTypeId);
         }
     function clearData() {
             $(".modal-body #hotelRoomId").val("");
-            $(".modal-body #price").val("");
+            // $(".modal-body #price").val("");
             $(".modal-body #numberOfAdult").val("");
             $(".modal-body #numberOfChild").val("");
             $(".modal-body #numberOfInfant").val("");

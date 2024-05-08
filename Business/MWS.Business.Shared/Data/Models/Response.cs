@@ -17,5 +17,6 @@
 		public string Title { get; set; }
 		public decimal? Total { get; set; }
 		public string? Cancel { get; set; }
+		public string? Id { get; set; }
 	}
 }

@@ -1,0 +1,26 @@
+﻿<!--Start image section-->
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+	<script src="https://eu-gateway.mastercard.com/static/checkout/checkout.min.js" data-error="errorCallback" data-cancel="cancelCallback"></script>
+	<script type="text/javascript">
+		function errorCallback(error) {
+			console.log(JSON.stringify(error));
+			console.log("error");
+		}
+		function cancelCallback() {
+			console.log('Payment cancelled');
+		}
+		Checkout.configure({
+			session: {
+				id: "SESSION0002025484471L53486496I7",
+				version: "c5bfc99d01"
+			}
+		});
+		Checkout.showPaymentPage();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

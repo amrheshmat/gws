@@ -30,7 +30,7 @@ namespace TripBusiness.business
 			}
 			email.To.AddRange(internetAddresses);
 
-			email.Subject = mailRequest.Subject;
+			email.Subject = mailRequest.Subject == null ? "Booking Request" : mailRequest.Subject;
 
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
@@ -78,7 +78,7 @@ namespace TripBusiness.business
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "ojkc hazm loth ylbn");
+			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -142,7 +142,7 @@ namespace TripBusiness.business
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "ojkc hazm loth ylbn");
+			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -211,7 +211,7 @@ namespace TripBusiness.business
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "ojkc hazm loth ylbn");
+			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -272,7 +272,7 @@ namespace TripBusiness.business
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "ojkc hazm loth ylbn");
+			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -338,7 +338,7 @@ namespace TripBusiness.business
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "ojkc hazm loth ylbn");
+			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -396,7 +396,7 @@ namespace TripBusiness.business
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "ojkc hazm loth ylbn");
+			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}

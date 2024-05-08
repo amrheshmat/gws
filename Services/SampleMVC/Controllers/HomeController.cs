@@ -48,6 +48,7 @@ namespace SampleMVC.Controllers
             }
             List<WhyChooseUs> whyChooseUs = await _repo.Filter<WhyChooseUs>(e => e.languageId == language.languageId).ToListAsync();
             ViewBag.whyChooseUs = whyChooseUs;
+            ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.settings = settings;
             ViewBag.tours = tours;
             ViewBag.toursAttachments = tourAttachments;

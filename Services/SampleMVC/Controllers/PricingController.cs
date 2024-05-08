@@ -34,13 +34,13 @@ namespace SampleMVC.Controllers
 			{
 				TourPricingModel tourPricingModel = new TourPricingModel();
 				var room = _repo.Filter<RoomType>(e => e.roomTypeId == pricing.roomTypeId).FirstOrDefault();
-				var hotel = _repo.Filter<HotelType>(e => e.hotelTypeId == pricing.hotelTypeId).FirstOrDefault();
-				tourPricingModel.hotelTypeId = hotel?.hotelTypeId;
-				tourPricingModel.hotelTypeName = hotel?.hotelTypeName;
+				//var hotel = _repo.Filter<HotelType>(e => e.hotelTypeId == pricing.hotelTypeId).FirstOrDefault();
+				//tourPricingModel.hotelTypeId = hotel?.hotelTypeId;
+				//tourPricingModel.hotelTypeName = hotel?.hotelTypeName;
 				tourPricingModel.roomTypeId = room?.roomTypeId;
 				tourPricingModel.roomTypeName = room?.roomTypeName;
 				tourPricingModel.hotelRoomId = pricing.hotelRoomId;
-				tourPricingModel.price = double.Parse(pricing.price.ToString());
+				//tourPricingModel.price = double.Parse(pricing.price.ToString());
 				tourPricingModel.numberOfAdult = pricing.numberOfAdult;
 				tourPricingModel.numberOfChild = pricing.numberOfChild;
 				tourPricingModel.numberOfInfant = pricing.numberOfInfant;

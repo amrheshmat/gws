@@ -162,6 +162,8 @@
 
 <script>
     $(document).ready(function () {
+        $('#demoGrid').dataTable({
+        });
         $('#exampleModal').on('hidden.bs.modal', function () {
             // do something…
             clearData();
@@ -265,8 +267,7 @@
 
         });
 
-        $('#demoGrid').dataTable({
-        });
+        
         $(document).on('change', '#language', function () {
             $(".modal-body #language").val($(this).val());
         });

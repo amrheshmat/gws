@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var NumberOfRequest = ViewBag.NumberOfRequest;
+    var NumberOfSuccessRequest = ViewBag.NumberOfSuccessRequest;
 }
 
 <div class="bg-primary pt-10 pb-21"></div>
@@ -17,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-6 col-xl-3 col-lg-6 col-md-12 col-12">
+      @*   <div class="mt-6 col-xl-3 col-lg-6 col-md-12 col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -34,7 +36,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> *@
         <div class="mt-6 col-xl-3 col-lg-6 col-md-12 col-12">
             <div class="card">
                 <div class="card-body">
@@ -44,12 +46,12 @@
                             <i class="fa fa-plane"></i>
                         </div>
                     </div>
-                    <div>
-                        <h1 class="fw-bold">76</h1>
+                     <div>
+                        <h1 class="fw-bold">@NumberOfRequest</h1>
                         <p class="mb-0">
-                            <span classname="text-dark me-2">90%</span>@_localizationService.Localize("Completed")
+                            <span classname="text-dark me-2">@NumberOfSuccessRequest% </span>@_localizationService.Localize("Completed")
                         </p>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>

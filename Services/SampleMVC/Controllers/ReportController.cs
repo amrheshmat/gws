@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using TripBusiness.Ibusiness;
@@ -33,8 +34,29 @@ namespace SampleMVC.Controllers
         [Route("Report/RequestReport/{startDate}/{endDate}")]
         public async Task<IActionResult> RequestReport(DateTime startDate, DateTime endDate)
         {
-            var model = _repo.Filter<Booking>(e => e.tourDate >= startDate && e.tourDate <= endDate).ToList();
-            return RedirectToAction("RequestResult", "Report", model);
+            var model = await _repo.Filter<Booking>(e => e.tourDate >= startDate && e.tourDate <= endDate).ToListAsync();
+            List<RequestReportModel> requestReportModelList = new List<RequestReportModel>();
+            if (model != null && model.Count > 0)
+            {
+                foreach (var booking in model)
+                {
+                    RequestReportModel requestReportModel = new RequestReportModel();
+                    requestReportModel.id = booking.requestId;
+                    requestReportModel.tourDate = booking.tourDate.Value.ToString("dd/MM/yyyy");
+                    requestReportModel.countryName = booking.countryName;
+                    requestReportModel.tourName = _repo.Filter<Tour>(e => e.tourId == booking.tourId).FirstOrDefault()?.title;
+                    requestReportModel.name = booking.name;
+                    requestReportModel.email = booking.email;
+                    requestReportModel.phone = booking.phone;
+                    requestReportModel.numberOfAdult = booking.numberOfAdult;
+                    requestReportModel.numberOfChild = booking.numberOfChild;
+                    requestReportModel.numberOfInfant = booking.numberOfInfant;
+                    requestReportModel.status = booking.status;
+                    requestReportModelList.Add(requestReportModel);
+                }
+            }
+            var peopleArray = requestReportModelList.ToArray();
+            return Ok(peopleArray);
         }
 
     }

@@ -131,13 +131,13 @@
                 </select>
                 <span id="languageRequired" style="color:red"></span>
             </div>
-            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+         @*    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="overview">
                     @_localizationService.Localize("Overview")
                 </label>
                 @Html.TextAreaFor(m => m.Tour.overview, new { @id = "overview", @class = "form-control" })
                 <span id="overviewRequired" style="color:red"></span>
-            </div>
+            </div> *@
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="highlights">
                     @_localizationService.Localize("Highlights")
@@ -303,12 +303,12 @@
             } else {
                 $("#languageRequired").text("");
             }
-            if ($("#overview").val() == '') {
-                $("#overviewRequired").text("required");
-                return false;
-            } else {
-                $("#overviewRequired").text("");
-            }
+            // if ($("#overview").val() == '') {
+            //     $("#overviewRequired").text("required");
+            //     return false;
+            // } else {
+            //     $("#overviewRequired").text("");
+            // }
             if ($("#highlights").val() == '') {
                 $("#highlightsRequired").text("required");
                 return false;
@@ -459,7 +459,7 @@
             tour.tour.dropOff = $("#dropOff").val();
             tour.tour.tourType = $("#tourType").val();
             tour.tour.highlights = $("#highlights").val();
-            tour.tour.overview = $("#overview").val();
+            // tour.tour.overview = $("#overview").val();
             tour.tour.languageId = $("#language").val();
             tour.tour.capacity = $("#capacity").val();
             tour.tour.adultPrice = $("#adultPrice").val();

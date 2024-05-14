@@ -2897,7 +2897,8 @@ p {
 }
 
 #topnav.nav-sticky.tagline-height {
-    top: 0 !important
+    top: 0 !important;
+    border-bottom: 1px solid #dbdbdb !important;
 }
 
 #topnav.nav-sticky .buy-button .btn-icon-dark, #topnav.nav-sticky .buy-button .login-btn-primary {

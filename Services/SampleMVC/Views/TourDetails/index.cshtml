@@ -210,7 +210,7 @@
 					</div>
 					<div class="col-lg-9">
 					<p style="color:#000;font-size: 16px;">
-							@Model.Tour.highlights
+							@Html.Raw(Model.Tour.highlights)
 						</p>
 					</div>
 				</div>
@@ -603,7 +603,22 @@
 		console.log('Payment cancelled');
 	}
 	function completeCallback() {
-		console.log('Payment completed');
+		var requestId = localStorage.getItem("PaymentRequestId");
+		$.ajax({
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId,
+			cache: false,
+			type: "GET",
+			success: function (data) {
+				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					localStorage.removeItem("PaymentRequestId");
+				} 
+			},
+			error: function (error) {
+			}
+		});
+		// location.href = "/";
+		// console.log(requestId);
 	}
 	var arr;
 	function showDatePicker() {
@@ -794,20 +809,13 @@
 			success: function (data) {
 				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
 				if (data.status == true) {
+					localStorage.setItem("PaymentRequestId", requestId);
 					Checkout.configure({
 						session: {
 							id: data.id
-						},
-						interaction: {
-							merchant:{
-								name: 'Nbe Test',
-								address: {
-									line1: 'test',
-									line2: 'test'
-								}
-							}
 						}
 					});
+					console.log("sessionId");
 					console.log(data.id);
 					debugger;
 					Checkout.showPaymentPage();

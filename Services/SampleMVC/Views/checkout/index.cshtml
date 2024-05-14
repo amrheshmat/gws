@@ -2,19 +2,24 @@
 <html>
 <head>
 	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-	<script src="https://eu-gateway.mastercard.com/static/checkout/checkout.min.js" data-error="errorCallback" data-cancel="cancelCallback"></script>
+	@* <script src="https://eu-gateway.mastercard.com/static/checkout/checkout.min.js" data-error="errorCallback" data-cancel="cancelCallback"></script> *@
+	<script src="https://test-nbe.gateway.mastercard.com/static/checkout/checkout.min.js" data-complete="completeCallback" data-error="errorCallback" data-cancel="cancelCallback"></script>
 	<script type="text/javascript">
+		function completeCallback(error) {
+			location.href = "https://www.facebook.com/"
+		}
 		function errorCallback(error) {
 			console.log(JSON.stringify(error));
 			console.log("error");
+			location.href = "https://localhost:7254/"
 		}
 		function cancelCallback() {
 			console.log('Payment cancelled');
+			location.href = "https://localhost:7254/"
 		}
 		Checkout.configure({
 			session: {
-				id: "SESSION0002025484471L53486496I7",
-				version: "c5bfc99d01"
+				id: "SESSION0002343621241N4182544L41"
 			}
 		});
 		Checkout.showPaymentPage();

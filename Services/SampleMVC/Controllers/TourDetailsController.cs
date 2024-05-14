@@ -95,10 +95,17 @@ namespace SampleMVC.Controllers
 
 			Response response = new Response();
 			response.Title = _localizationService.Localize("CheckOut");
-
+			decimal adultPrice = 0;
+			decimal childPrice = 0;
+			decimal infantPrice = 0;
 			var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
 			if (bookRequest.requestId != null)
 			{
+				var tour = await _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefaultAsync();
+				adultPrice = tour.adultPrice.Value * bookRequest.numberOfAdult.Value;
+				childPrice = tour.childPrice.Value * bookRequest.numberOfChild.Value;
+				infantPrice = tour.infantPrice.Value * bookRequest.numberOfInfant.Value;
+				var totalPrice = adultPrice + childPrice + infantPrice;
 				PaymentSessionRequest paymentSessionRequest = new PaymentSessionRequest();
 				paymentSessionRequest.apiOperation = "INITIATE_CHECKOUT";
 				paymentSessionRequest.interaction = new Interaction();
@@ -111,7 +118,7 @@ namespace SampleMVC.Controllers
 				paymentSessionRequest.interaction.merchant.name = "Nbe Test";
 				paymentSessionRequest.order = new Order();
 				paymentSessionRequest.order.currency = "EGP";
-				paymentSessionRequest.order.amount = "1.00";
+				paymentSessionRequest.order.amount = totalPrice.ToString();
 				paymentSessionRequest.order.id = id.ToString();
 				paymentSessionRequest.order.description = "test";
 				string sessionId = await createPaymentSession(paymentSessionRequest);
@@ -132,7 +139,7 @@ namespace SampleMVC.Controllers
 			HttpClient client = new HttpClient();
 
 
-			var url = "https://test-nbe.gateway.mastercard.com/api/rest/version/73/merchant/TESTEGPTEST/session";
+			var url = "https://test-nbe.gateway.mastercard.com/api/rest/version/72/merchant/TESTEGPTEST/session";
 			client.DefaultRequestHeaders.Accept.Clear();
 			var byteArray = Encoding.ASCII.GetBytes("merchant.TESTEGPTEST:c622b7e9e550292df400be7d3e846476");
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
@@ -143,7 +150,7 @@ namespace SampleMVC.Controllers
 			PaymentSession paymentSession = JsonSerializer.Deserialize<PaymentSession>(result)!;
 			return paymentSession.session.id;
 		}
-		[HttpPost]
+		[HttpGet]
 		[Route("TourDetails/updateRequestStatusAndSendEmail/{id}")]
 		public async Task<Response> updateRequestStatusAndSendEmail(long id)
 		{
@@ -153,8 +160,10 @@ namespace SampleMVC.Controllers
 			var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
 			if (bookRequest.requestId != null)
 			{
-				//TODO
 				//update request ...
+				bookRequest.status = "Y";
+				_repo.Update(bookRequest);
+				_repo.SaveChanges();
 				Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
 				#region email
 				MailRequest mailRequest = new MailRequest();

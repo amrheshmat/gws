@@ -623,9 +623,11 @@
 	var arr;
 	function showDatePicker() {
 		$("#datepicker").datepicker('show'); //Show on click of button
+		
 		//$(".ui-datepicker-next").append("<i class='fa fa-chevron-right'></i>");
 	}
     $(document).ready(function () {
+		
 		$(".card-header h4 a").on("click", function () {
 			$(this).find("i").toggleClass("fa-plus fa-minus");
 		});
@@ -637,6 +639,7 @@
 		console.log(disallowed);
 		var dateToday = new Date();
 		$("#datepicker").datepicker({
+			dateFormat: "DD, dd - mm - yy",
 			minDate: dateToday,
 			beforeShowDay: function (date) {
 				day = date.getDay();

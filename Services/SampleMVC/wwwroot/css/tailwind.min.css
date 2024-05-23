@@ -3992,7 +3992,8 @@ html[dir=rtl] .tns-visually-hidden {
     }
 
     .range-slider input[type=number]::-webkit-inner-spin-button, .range-slider input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none
+        /*-webkit-appearance: none*/
+        opacity: 1;
     }
 
 .error {

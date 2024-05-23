@@ -66,6 +66,20 @@
                 <span id="adultPriceRequired" style="color:red"></span>
             </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="adultPriceForDouble">
+                    @_localizationService.Localize("adultPriceForDouble")
+                </label>
+                @Html.TextBoxFor(m => m.Tour.adultPriceForDouble, new { type = "number", @id = "adultPriceForDouble", @class = "form-control" })
+                <span id="adultPriceForDoubleRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="adultPriceForSuite">
+                    @_localizationService.Localize("adultPriceForSuite")
+                </label>
+                @Html.TextBoxFor(m => m.Tour.adultPriceForSuite, new { type = "number", @id = "adultPriceForSuite", @class = "form-control" })
+                <span id="adultPriceForSuiteRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="childPrice">
                     @_localizationService.Localize("childPrice")
                 </label>
@@ -86,31 +100,54 @@
                 @Html.TextBoxFor(m => m.Tour.capacity, new { type = "number", @id = "capacity", @class = "form-control" })
                 <span id="capacityRequired" style="color:red"></span>
     </div>
+          
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="capacity" style="display:block">
                     @_localizationService.Localize("AvaliableDays")
                 </label>
                 <select class="form-control" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
-                    @{
-                        var i = 0;
-                    }
+                    
                     @foreach (var day in days)
                     {
                         if (Model.tourDays != null)
                         {
-                            if(Model.tourDays.Where(e => e.dayId == day.dayId).ToList().Count>0)
+                            if (Model.tourDays.Where(e => e.dayId == day.dayId).ToList().Count > 0)
                             {
                                 <option value="@day.dayId" id="@day.dayId" selected>@day.dayName</option>
                             }
-                            else{
+                            else
+                            {
                                 <option value="@day.dayId" id="@day.dayId">@day.dayName</option>
                             }
-                    }
+                        }
                     }
                 </select>
                 <span id="dayRequired" style="color:red"></span>
 
-             </div>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="AvaliableLanguages" style="display:block">
+                    @_localizationService.Localize("AvaliableLanguages")
+                </label>
+                <select class="form-control" name="field3" id="field3" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                    @foreach (var language in languages)
+                    {
+                        if (Model.tourLanguages != null)
+                        {
+                            if (Model.tourLanguages.Where(e => e.languageId == language.languageId).ToList().Count > 0)
+                            {
+                                <option value="@language.languageId" id="@language.languageId" selected>@language.languageName</option>
+                            }
+                            else
+                            {
+                                <option value="@language.languageId" id="@language.languageId">@language.languageName</option>
+                            }
+                        }
+                    }
+                </select>
+                <span id="availablelanguageRequired" style="color:red"></span>
+
+            </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;" id="languageDiv">
                 <label class="form-label" for="language">
                     @_localizationService.Localize("language")
@@ -119,14 +156,7 @@
                 <select name="language" class="form-select" id="language">
                     @foreach (var language in languages)
                     {
-                        if(tour.languageId == language.languageId)
-                        {
-                            <option value="@language.languageId" selected>@language.languageName</option>
-                        }
-                        else
-                        {
                         <option value="@language.languageId">@language.languageName</option>
-                        }
                     }
                 </select>
                 <span id="languageRequired" style="color:red"></span>
@@ -321,6 +351,18 @@
             } else {
                 $("#adultPriceRequired").text("");
             }
+            if ($("#adultPriceForDouble").val() == '') {
+                $("#adultPriceForDoubleRequired").text("required");
+                return false;
+            } else {
+                $("#adultPriceForDoubleRequired").text("");
+            }
+            if ($("#adultPriceForSuite").val() == '') {
+                $("#adultPriceForSuiteRequired").text("required");
+                return false;
+            } else {
+                $("#adultPriceForSuiteRequired").text("");
+            }
             if ($("#childPrice").val() == '') {
                 $("#childPriceRequired").text("required");
                 return false;
@@ -344,6 +386,12 @@
                 return false;
             } else {
                 $("#dayRequired").text("");
+            }
+            if ($("#field3").val() == '') {
+                $("#availablelanguageRequired").text("required");
+                return false;
+            } else {
+                $("#availablelanguageRequired").text("");
             }
             if ($("#include").val() == '') {
                 $("#includeRequired").text("required");
@@ -448,6 +496,14 @@
                 };
                 selectedDays.push(day);
             }
+            var selectedLanguages = [];
+
+            for (var i = 0; i < $("#field3").val().length; i++) {
+                var Language = {
+                    "LanguageId": $("#field3").val()[i],
+                };
+                selectedLanguages.push(Language);
+            }
             var id = $("#tourId").val();
             var tour = {};
             tour.tour = {};
@@ -463,6 +519,8 @@
             tour.tour.languageId = $("#language").val();
             tour.tour.capacity = $("#capacity").val();
             tour.tour.adultPrice = $("#adultPrice").val();
+            tour.tour.adultPriceForDouble = $("#adultPriceForDouble").val();
+            tour.tour.adultPriceForSuite = $("#adultPriceForSuite").val();
             tour.tour.childPrice = $("#childPrice").val();
             tour.tour.infantPrice = $("#infantPrice").val();
             tour.tour.tourType = $("#tourType").val();
@@ -472,6 +530,7 @@
             // tour.packs = packs;
             tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;
+            tour.languages = selectedLanguages;
             $.ajax({
                 url: "/Tour/Edit",
                 type: "POST",

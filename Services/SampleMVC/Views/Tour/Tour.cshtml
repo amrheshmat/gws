@@ -220,30 +220,41 @@
         $("#tourId").val(id);
      }
     function DeleteTour(id) {
-        $.ajax({
-            url: "/Tour/Delete/" + id,
-            type: "GET",
-            cache: false,
-            success: function (data) {
-                if (data.status == true) {
-                    Swal.fire({
-                        title: data.title,
-                        text: data.message,
-                        icon: "success",
-                        timer: 1500
-                    });
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    Swal.fire({
-                        title: data.title,
-                        text: data.message,
-                        icon: "error",
-                        timer: 1500
-                    });
-                }
+        Swal.fire({
+            title: "Delete",
+            html: "are you sure delete this tour?",
+            showCancelButton: true,
+            confirmButtonText: "yes",
+            cancelButtonText: "cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Tour/Delete/" + id,
+                    type: "GET",
+                    cache: false,
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
             }
         });
+        
     }
 </script>

@@ -11,6 +11,8 @@ namespace SampleMVC.Models
         public List<Expect>? expects { get; set; }
         public List<Pack>? packs { get; set; }
         public List<Day>? days { get; set; }
+        public List<Language>? Languages { get; set; }
         public List<TourDay>? tourDays { get; set; }
+        public List<TourLanguage>? tourLanguages { get; set; }
     }
 }

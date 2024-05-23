@@ -41,6 +41,7 @@ namespace MWS.Infrustructure.Context
         public DbSet<Role> roles { get; set; }
         public DbSet<Permission> permissions { get; set; }
         public DbSet<RolePermission> rolePermissions { get; set; }
+        public DbSet<TourLanguage> tourLanguages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,6 +53,7 @@ namespace MWS.Infrustructure.Context
             modelBuilder.Entity<Contact>().ToTable("contacts");
             modelBuilder.Entity<Day>().ToTable("days");
             modelBuilder.Entity<TourDay>().ToTable("tourDays");
+            modelBuilder.Entity<TourLanguage>().ToTable("tourLanguages");
             modelBuilder.Entity<Include>().ToTable("includes");
             modelBuilder.Entity<Exclude>().ToTable("excludes");
             modelBuilder.Entity<Pack>().ToTable("packs");

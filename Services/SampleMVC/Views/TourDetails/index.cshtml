@@ -5,6 +5,7 @@
 	ViewData["Title"] = "Admin Page";
 	Layout = "~/Views/Shared/_layout.cshtml";
 	var days = ViewBag.days;
+	var languages = ViewBag.languages;
 	var attachments = ViewBag.attachments;
 	var hotels = ViewBag.hotels;
 	var rooms = ViewBag.rooms;
@@ -116,6 +117,24 @@
 
 									</td>
 								</tr>
+							<tr>
+								<td>
+									<i class="fa fa-globe" style="color: #03a84e;font-size: 16px;"> </i>
+									<span class="me-3"></span><span style="font-weight: 700;">@_localizationService.Localize("TourAvailableLangauges")</span>
+								</td>
+								<td>
+									<div class="weekDays-selector">
+										@if (Model.tourLanguages != null && Model.tourLanguages.Count > 0)
+											{
+												foreach (var lang in Model.tourLanguages)
+												{
+													<input type="checkbox" id="weekday-@lang.languageName" value="@lang.languageId" onclick="return false;" name="@lang.languageName" class="weekday" checked>
+													<label style="width:80px;margin:2px;" for="weekday-@lang.languageName">@lang.languageName</label>
+												}
+											}
+									</div>
+								</td>
+							</tr>
 								<tr style="background-color: #00848929;">
 									<td>
 										<i class="fa fa-map-marker-alt" style="color: #03a84e;font-size: 16px;"></i>
@@ -205,7 +224,8 @@
     background: #f2fcff;">
 					<div class="col-lg-3">
 					<h3 style="font-weight: bold!important;">
-						<i class="fa fa-info-circle" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("Highlights")
+						@* <i class="fa fa-info-circle" style="color: #e04f67;margin:0px 5px;"></i> *@
+						@_localizationService.Localize("Highlights")
 						</h3>
 					</div>
 					<div class="col-lg-9">
@@ -317,6 +337,18 @@
 					<label>@_localizationService.Localize("PickupDetails")</label>
 					<input class="form-control required" type="text" name="pickup" id="pickup">
 					<span id="pickupRequired" style="color:red"></span>
+				</div>
+				<div style="margin-bottom:20px;">
+					<label>@_localizationService.Localize("language")</label>
+					<select id="language" class="form-control" name="language" required="">
+						<option value="" selected="selected"> @_localizationService.Localize("language")</option>
+						@foreach(var lang in languages)
+						{
+							<option value="@lang.languageName">@lang.languageName</option>
+						}
+					</select>
+					<span id="languageRequired" style="color:red"></span>
+
 				</div>
 				<div>
 					<label>@_localizationService.Localize("Nationality")</label>
@@ -696,6 +728,12 @@
 			} else {
 				$("#nationalityRequired").text("");
 			}
+			if ($("#langauge").val() == '') {
+				$("#langaugeRequired").text("required");
+				return false;
+			} else {
+				$("#langaugeRequired").text("");
+			}
 			if ($("#datepicker").val() == '') {
 				$("#dateRequired").text("required");
 				return false;
@@ -731,6 +769,7 @@
 			userUpdate.phone = $("#phoneBooking").val();
 			userUpdate.pickup = $("#pickup").val();
 			userUpdate.countryName = $("#nationality").val();
+			userUpdate.languageName = $("#langauge").val();
 			userUpdate.tourDate = datetime;
 			userUpdate.numberOfAdult = $("#adults").val();
 			userUpdate.numberOfChild = $("#children").val();

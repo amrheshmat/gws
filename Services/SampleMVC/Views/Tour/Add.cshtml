@@ -64,6 +64,20 @@
                 <span id="adultPriceRequired" style="color:red"></span>
             </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="adultPriceForDouble">
+                    @_localizationService.Localize("adultPriceForDouble")
+                </label>
+                @Html.TextBoxFor(m => m.adultPriceForDouble, new { type = "number", @id = "adultPriceForDouble", @class = "form-control" })
+                <span id="adultPriceForDoubleRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="adultPriceForSuite">
+                    @_localizationService.Localize("adultPriceForSuite")
+                </label>
+                @Html.TextBoxFor(m => m.adultPriceForSuite, new { type = "number", @id = "adultPriceForSuite", @class = "form-control" })
+                <span id="adultPriceForSuiteRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="childPrice">
                     @_localizationService.Localize("childPrice")
                 </label>
@@ -97,6 +111,19 @@
                 <span id="dayRequired" style="color:red"></span>
 
              </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="capacity" style="display:block">
+                    @_localizationService.Localize("AvaliableLanguages")
+                </label>
+                <select class="form-control" name="field3" id="field3" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                    @foreach (var language in languages)
+                    {
+                        <option value="@language.languageId" id="@language.languageId">@language.languageName</option>
+                    }
+                </select>
+                <span id="availablelanguageRequired" style="color:red"></span>
+
+            </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;" id="languageDiv">
                 <label class="form-label" for="language">
                     @_localizationService.Localize("language")
@@ -259,6 +286,18 @@
             } else {
                 $("#adultPriceRequired").text("");
             }
+            if ($("#adultPriceForDouble").val() == '') {
+                $("#adultPriceForDoubleRequired").text("required");
+                return false;
+            } else {
+                $("#adultPriceForDoubleRequired").text("");
+            }
+            if ($("#adultPriceForSuite").val() == '') {
+                $("#adultPriceForSuiteRequired").text("required");
+                return false;
+            } else {
+                $("#adultPriceForSuiteRequired").text("");
+            }
             if ($("#childPrice").val() == '') {
                 $("#childPriceRequired").text("required");
                 return false;
@@ -282,6 +321,12 @@
                 return false;
             } else {
                 $("#dayRequired").text("");
+            }
+            if ($("#field3").val() == '') {
+                $("#availablelanguageRequired").text("required");
+                return false;
+            } else {
+                $("#availablelanguageRequired").text("");
             }
             if ($("#include").val() == '') {
                 $("#includeRequired").text("required");
@@ -390,6 +435,14 @@
                 };
                 selectedDays.push(day);
             }
+            var selectedLanguages = [];
+
+            for (var i = 0; i < $("#field3").val().length; i++) {
+                var Language = {
+                    "LanguageId": $("#field3").val()[i],
+                };
+                selectedLanguages.push(Language);
+            }
             var tour = {};
             tour.tour = {};
             tour.tour.title = $("#title").val();
@@ -403,6 +456,8 @@
             tour.tour.languageId = $("#language").val();
             tour.tour.capacity = $("#capacity").val();
             tour.tour.adultPrice = $("#adultPrice").val();
+            tour.tour.adultPriceForSuite = $("#adultPriceForSuite").val();
+            tour.tour.adultPriceForDouble = $("#adultPriceForDouble").val();
             tour.tour.childPrice = $("#childPrice").val();
             tour.tour.infantPrice = $("#infantPrice").val();
             tour.includes = includes;
@@ -411,6 +466,7 @@
             // tour.packs = packs;
             tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;
+            tour.languages = selectedLanguages;
             $.ajax({
                 url: "/Tour/Add",
                 type: "POST",

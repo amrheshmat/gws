@@ -27,6 +27,8 @@ namespace MWS.Data.Entities
 		public decimal? infantPrice { get; set; }
 		public decimal? capacity { get; set; }
 		public int? languageId { get; set; }
+		public decimal? adultPriceForDouble { get; set; }
+		public decimal? adultPriceForSuite { get; set; }
 
 		//public string? createdBy { get; set; }
 

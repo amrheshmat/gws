@@ -7,6 +7,7 @@
     var days = ViewBag.days;
     var tour = ViewBag.tour;
     var languages = ViewBag.languages;
+    var activities = ViewBag.activities;
 }
     
 <!-- Modal -->
@@ -106,7 +107,6 @@
                     @_localizationService.Localize("AvaliableDays")
                 </label>
                 <select class="form-control" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
-                    
                     @foreach (var day in days)
                     {
                         if (Model.tourDays != null)
@@ -123,7 +123,6 @@
                     }
                 </select>
                 <span id="dayRequired" style="color:red"></span>
-
             </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="AvaliableLanguages" style="display:block">
@@ -160,6 +159,27 @@
                     }
                 </select>
                 <span id="languageRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="additionalActivity" style="display:block">
+                    @_localizationService.Localize("additionalActivity")
+                </label>
+                <select class="form-control" name="field4" id="field4" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                    @foreach (var activity in activities)
+                    {
+                        if (Model.tourAdditionalActivities != null)
+                        {
+                            if (Model.tourAdditionalActivities.Where(e => e.activityId == activity.additionalActivityId).ToList().Count > 0)
+                            {
+                                <option value="@activity.additionalActivityId" id="@activity.additionalActivityId" selected>@activity.title</option>
+                            }
+                            else
+                            {
+                                <option value="@activity.additionalActivityId" id="@activity.additionalActivityId">@activity.title</option>
+                            }
+                        }
+                    }
+                </select>
             </div>
          @*    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="overview">
@@ -504,6 +524,13 @@
                 };
                 selectedLanguages.push(Language);
             }
+            var selectedActivities = [];
+            for (var i = 0; i < $("#field4").val().length; i++) {
+                var activity = {
+                    "additionalActivityId": $("#field4").val()[i],
+                };
+                selectedActivities.push(activity);
+            }
             var id = $("#tourId").val();
             var tour = {};
             tour.tour = {};
@@ -531,6 +558,7 @@
             tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;
             tour.languages = selectedLanguages;
+            tour.activities = selectedActivities;
             $.ajax({
                 url: "/Tour/Edit",
                 type: "POST",

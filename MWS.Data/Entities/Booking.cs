@@ -24,6 +24,7 @@ namespace MWS.Data.Entities
 		public int? numberOfInfant { get; set; }
 		// List<HotelRoomPricing>? hotelRooms { get; set; }
 		public int? numberOfRoom { get; set; }
+		public decimal? totalPrice { get; set; }
 		//public int? numberOfDoubleRoom { get; set; }
 		//public int? numberOfTripleRoom { get; set; }
 

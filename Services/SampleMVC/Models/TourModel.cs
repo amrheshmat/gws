@@ -14,5 +14,7 @@ namespace SampleMVC.Models
         public List<Language>? Languages { get; set; }
         public List<TourDay>? tourDays { get; set; }
         public List<TourLanguage>? tourLanguages { get; set; }
+        public List<AdditionalActivity>? activities { get; set; }
+        public List<TourAdditionalActivity>? tourAdditionalActivities { get; set; }
     }
 }

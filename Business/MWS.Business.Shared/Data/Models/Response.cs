@@ -1,4 +1,6 @@
-﻿namespace MWS.Business.Shared.Data.Models
+﻿using MWS.Data.Entities;
+
+namespace MWS.Business.Shared.Data.Models
 {
 	public class Response
 	{
@@ -15,8 +17,10 @@
 		public bool Status { get; set; }
 		public string Message { get; set; }
 		public string Title { get; set; }
+		public string? SubTitle { get; set; }
 		public decimal? Total { get; set; }
 		public string? Cancel { get; set; }
+		public List<AdditionalActivity>? Activities { get; set; }
 		public string? Id { get; set; }
 	}
 }

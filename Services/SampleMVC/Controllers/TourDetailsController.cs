@@ -80,8 +80,28 @@ namespace SampleMVC.Controllers
 				var bookRequest = await _repo.CreateAsync<Booking>(booking);
 				await _repo.SaveChangesAsync();
 				SpecialRequest specialRequest = new SpecialRequest();
+				List<BookAdditionalActivity> additionalActivities = new List<BookAdditionalActivity>();
+				decimal additionalPrice = 0;
 				if (bookRequest.requestId != null)
 				{
+					if (bookModel.bookAdditionalActivities != null && bookModel.bookAdditionalActivities.Count > 0)
+					{
+						var distinctActivities = bookModel.bookAdditionalActivities.Select(e => e.tourActivityId).Distinct().ToList();
+						foreach (var activity in distinctActivities)
+						{
+							BookAdditionalActivity bookAdditionalActivity = new BookAdditionalActivity();
+							additionalPrice += _repo.Filter<AdditionalActivity>(e => e.additionalActivityId == activity).FirstOrDefault().adultPrice.Value;
+							bookAdditionalActivity.bookId = bookRequest.requestId;
+							bookAdditionalActivity.tourActivityId = activity;
+							additionalActivities.Add(bookAdditionalActivity);
+						}
+						await _repo.context.AddRangeAsync(additionalActivities);
+						await _repo.SaveChangesAsync();
+					}
+					bookModel.totalPrice += additionalPrice;
+					bookRequest.totalPrice = bookModel.totalPrice;
+					_repo.Update<Booking>(bookRequest);
+					await _repo.SaveChangesAsync();
 					response.Message = _localizationService.Localize("Added");
 					response.Status = true;
 					response.Id = bookRequest.requestId.ToString();
@@ -122,7 +142,7 @@ namespace SampleMVC.Controllers
 				paymentSessionRequest.interaction.merchant.name = "Nbe Test";
 				paymentSessionRequest.order = new Order();
 				paymentSessionRequest.order.currency = "EGP";
-				paymentSessionRequest.order.amount = totalPrice.ToString();
+				paymentSessionRequest.order.amount = bookRequest.totalPrice.ToString();
 				paymentSessionRequest.order.id = id.ToString();
 				paymentSessionRequest.order.description = "test";
 				string sessionId = await createPaymentSession(paymentSessionRequest);
@@ -245,7 +265,7 @@ namespace SampleMVC.Controllers
 					maxInfant += t?.numberOfInfant * room.count;
 				}
 			}
-			if (maxAdult != bookModel.numberOfAdult || maxChild != bookModel.numberOfChild || maxInfant != bookModel.numberOfInfant)
+			if (maxAdult != bookModel.numberOfAdult || maxChild != bookModel.numberOfChild)
 			{
 				response.Status = false;
 				response.Message = _localizationService.Localize("NumberOfSelectedRoomNotMatched");
@@ -275,13 +295,68 @@ namespace SampleMVC.Controllers
 			}
 			if (tour != null)
 			{
-				adultPrice = tour.adultPrice.Value * bookModel.numberOfAdult.Value;
+				var selectedRoomType = bookModel.roomCountList.Where(e => e.count > 0).ToList();
+				foreach (var room in selectedRoomType)
+				{
+					if (room.roomTypeId == 1)//single
+					{
+						var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
+						var adultforsingle = t?.numberOfAdult * room.count;
+						bookModel.numberOfAdult = bookModel.numberOfAdult.Value - adultforsingle.Value;
+						adultPrice += tour.adultPrice.Value * adultforsingle.Value;
+					}
+					if (bookModel.numberOfAdult.Value > 0)
+					{
+						if (room.roomTypeId == 3)//double
+						{
+							var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
+							var adultfordouble = t?.numberOfAdult * room.count;
+							if (t?.numberOfAdult < bookModel.numberOfAdult)
+							{
+								bookModel.numberOfAdult = bookModel.numberOfAdult.Value - adultfordouble.Value;
+								adultPrice += tour.adultPriceForDouble.Value * adultfordouble.Value;
+							}
+							else
+							{
+								adultPrice += tour.adultPriceForDouble.Value * bookModel.numberOfAdult.Value;
+							}
+						}
+					}
+					if (bookModel.numberOfAdult.Value > 0)
+					{
+						if (room.roomTypeId == 5)//suite
+						{
+							var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
+							var adultforsuite = t?.numberOfAdult * room.count;
+							if (t?.numberOfAdult < bookModel.numberOfAdult)
+							{
+								bookModel.numberOfAdult = bookModel.numberOfAdult.Value - adultforsuite.Value;
+								adultPrice += tour.adultPriceForDouble.Value * adultforsuite.Value;
+							}
+							else
+							{
+								adultPrice += tour.adultPriceForDouble.Value * bookModel.numberOfAdult.Value;
+							}
+						}
+					}
+
+				}
+				var tourActivities = await _repo.Filter<TourAdditionalActivity>(e => e.tourId == tour.tourId).ToListAsync();
+				List<AdditionalActivity> additionalActivities = new List<AdditionalActivity>();
+				foreach (var activity in tourActivities)
+				{
+					AdditionalActivity additionalActivity = new AdditionalActivity();
+					additionalActivity = await _repo.Filter<AdditionalActivity>(e => e.additionalActivityId == activity.activityId).FirstOrDefaultAsync();
+					additionalActivities.Add(additionalActivity);
+				}
 				childPrice = tour.childPrice.Value * bookModel.numberOfChild.Value;
 				infantPrice = tour.infantPrice.Value * bookModel.numberOfInfant.Value;
 				totalPrice = adultPrice + childPrice + infantPrice;
 				response.Message = _localizationService.Localize("Calculated");
 				response.Status = true;
 				response.Total = totalPrice;
+				response.SubTitle = _localizationService.Localize("SelectAdditionalActivities");
+				response.Activities = additionalActivities;
 				return response;
 			}
 			response.Message = _localizationService.Localize("CalculatedError");

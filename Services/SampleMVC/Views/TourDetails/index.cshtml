@@ -628,6 +628,8 @@
 </div>
 <script type="text/javascript">
 	var datetime;
+	var bookAdditionalActivities = [];
+
 	function errorCallback(error) {
 		console.log(JSON.stringify(error));
 	}
@@ -775,6 +777,7 @@
 			userUpdate.numberOfChild = $("#children").val();
 			userUpdate.numberOfInfant = $("#infant").val();
 			userUpdate.roomCountList = selectedRoomList;
+			userUpdate.bookAdditionalActivities = bookAdditionalActivities;
 			// userUpdate.numberOfSingleRoom = $("#single").val();
 			// userUpdate.numberOfDoubleRoom = $("#double").val();
 			// userUpdate.numberOfTripleRoom = $("#triple").val();
@@ -788,15 +791,21 @@
 				success: function (data) {
 					$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
 					if (data.status == true) {
+						var html = "<hr> <p style='margin-bottom: 15px; text-align: left; font-size: 20px; font-weight: bold; '>" + data.subTitle + "</p><div style='position: relative;'>";
+						for (var i = 0; i< data.activities.length ; i++) {
+							html += "<p style='text-align: left;'><input onclick='selectActivities(" + data.activities[i].additionalActivityId + ")' type='checkbox' id ='" + data.activities[i].additionalActivityId + "' name='" + data.activities[i].additionalActivityId + "' value='" + data.activities[i].additionalActivityId + "' ><label for='" + data.activities[i].additionalActivityId + "'><span style='color:#017b6e;margin: 0px 10px;'>" + data.activities[i].adultPrice + "$</span>" + " - " + data.activities[i].title + "</label></p>";
+						};
+						html += "</div>";
 						Swal.fire({
 							title: data.title,
-							html: data.message + `<p>` + data.total + `</p>`,
+							html: data.message + `<p>` + data.total + `</p>` + html,
 							showCancelButton: true,
 							confirmButtonText: data.title,
 							cancelButtonText:data.cancel,
-							timer: 600000
+							timer: 180000000
 						}).then((result) => {
 							if (result.isConfirmed) {
+								userUpdate.totalPrice = data.total;
 								addBookRequestAndCheckOut(userUpdate);
 							}
 						});
@@ -815,6 +824,24 @@
 
 		});
     });
+	function selectActivities(id){
+		debugger;
+		var selectedBefor = 0;
+		var activity = {};
+		activity.tourActivityId = id;
+		if (bookAdditionalActivities.length > 0) {
+			for (var i = 0; i < bookAdditionalActivities.length; i++) {
+				if (bookAdditionalActivities[i].tourActivityId == id) {
+					bookAdditionalActivities.pop(activity);
+					selectedBefor = 1;
+					break;
+				}
+			}
+		}
+		if (selectedBefor == 0) {
+		bookAdditionalActivities.push(activity);
+		}
+	}
 	function addBookRequestAndCheckOut(userUpdate) {
 		$("#preloader").css({ "visibility": "visible", "opacity": 1 });
 		$.ajax({

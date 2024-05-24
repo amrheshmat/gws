@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var days = ViewBag.days;
     var languages = ViewBag.languages;
+    var activities = ViewBag.activities;
 }
     
 <!-- Modal -->
@@ -136,6 +137,17 @@
                     }
                 </select>
                 <span id="languageRequired" style="color:red"></span>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="capacity" style="display:block">
+                    @_localizationService.Localize("additionalActivity")
+                </label>
+                <select class="form-control" name="field4" id="field4" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                    @foreach (var activity in activities)
+                    {
+                        <option value="@activity.additionalActivityId" id="@activity.additionalActivityId">@activity.title</option>
+                    }
+                </select>
             </div>
           @*   <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="overview">
@@ -436,13 +448,21 @@
                 selectedDays.push(day);
             }
             var selectedLanguages = [];
-
             for (var i = 0; i < $("#field3").val().length; i++) {
                 var Language = {
                     "LanguageId": $("#field3").val()[i],
                 };
                 selectedLanguages.push(Language);
             }
+
+            var selectedActivities = [];
+            for (var i = 0; i < $("#field4").val().length; i++) {
+                var activity = {
+                    "additionalActivityId": $("#field4").val()[i],
+                };
+                selectedActivities.push(activity);
+            }
+
             var tour = {};
             tour.tour = {};
             tour.tour.title = $("#title").val();
@@ -467,6 +487,7 @@
             tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;
             tour.languages = selectedLanguages;
+            tour.activities = selectedActivities;
             $.ajax({
                 url: "/Tour/Add",
                 type: "POST",

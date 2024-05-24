@@ -43,7 +43,9 @@ namespace SampleMVC.Controllers
         {
             List<Day> days = await _repo.GetAll<Day>().ToListAsync();
             List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            List<AdditionalActivity> activities = await _repo.GetAll<AdditionalActivity>().ToListAsync();
             ViewBag.languages = languages;
+            ViewBag.activities = activities;
             ViewBag.days = days;
             return View();
 
@@ -85,10 +87,13 @@ namespace SampleMVC.Controllers
             tourModel.additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == id).ToListAsync();
             tourModel.tourDays = await _repo.Filter<TourDay>(e => e.tourId == id).ToListAsync();
             tourModel.tourLanguages = await _repo.Filter<TourLanguage>(e => e.tourId == id).ToListAsync();
+            tourModel.tourAdditionalActivities = await _repo.Filter<TourAdditionalActivity>(e => e.tourId == id).ToListAsync();
             List<Day> days = await _repo.GetAll<Day>().ToListAsync();
             List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            List<AdditionalActivity> activities = await _repo.GetAll<AdditionalActivity>().ToListAsync();
             ViewBag.days = days;
             ViewBag.languages = languages;
+            ViewBag.activities = activities;
             ViewBag.tour = tourModel.Tour;
             return View(tourModel);
 
@@ -121,6 +126,7 @@ namespace SampleMVC.Controllers
                 List<AdditionalInformation>? additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<TourDay>? days = await _repo.Filter<TourDay>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<TourLanguage>? languages = await _repo.Filter<TourLanguage>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
+                List<TourAdditionalActivity>? activities = await _repo.Filter<TourAdditionalActivity>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<TourAttachment>? attchments = await _repo.Filter<TourAttachment>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 _repo.context.RemoveRange(includes);
                 _repo.context.RemoveRange(excludes);
@@ -129,6 +135,7 @@ namespace SampleMVC.Controllers
                 //_repo.context.RemoveRange(packs);
                 _repo.context.RemoveRange(days);
                 _repo.context.RemoveRange(languages);
+                _repo.context.RemoveRange(activities);
                 await _repo.context.SaveChangesAsync();
                 await CreateLists(tourModel);
                 response.Status = true;
@@ -198,6 +205,7 @@ namespace SampleMVC.Controllers
                 List<AdditionalInformation>? additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == tourId).ToListAsync();
                 List<TourDay>? days = await _repo.Filter<TourDay>(e => e.tourId == tourId).ToListAsync();
                 List<TourLanguage>? languages = await _repo.Filter<TourLanguage>(e => e.tourId == tourId).ToListAsync();
+                List<TourAdditionalActivity>? activities = await _repo.Filter<TourAdditionalActivity>(e => e.tourId == tourId).ToListAsync();
                 List<TourAttachment>? attchments = await _repo.Filter<TourAttachment>(e => e.tourId == tourId).ToListAsync();
                 _repo.Delete<Tour>(tour);
                 _repo.context.RemoveRange(includes);
@@ -207,6 +215,7 @@ namespace SampleMVC.Controllers
                 _repo.context.RemoveRange(additionalInformations);
                 _repo.context.RemoveRange(days);
                 _repo.context.RemoveRange(languages);
+                _repo.context.RemoveRange(activities);
                 _repo.context.RemoveRange(attchments);
                 await _repo.context.SaveChangesAsync();
                 response.Status = true;
@@ -226,6 +235,7 @@ namespace SampleMVC.Controllers
             List<AdditionalInformation>? additionalInformations = tour.additionalInformations;
             List<Day>? days = tour.days;
             List<Language>? languages = tour.Languages;
+            List<AdditionalActivity>? activities = tour.activities;
             foreach (var include in includes)
             {
                 include.tourId = tour.Tour.tourId;
@@ -271,6 +281,15 @@ namespace SampleMVC.Controllers
                 tourLanguages.Add(tourLanguage);
             }
             _repo.context.AddRange(tourLanguages);
+            List<TourAdditionalActivity> tourActivities = new List<TourAdditionalActivity>();
+            foreach (var activity in activities)
+            {
+                TourAdditionalActivity tourActivity = new TourAdditionalActivity();
+                tourActivity.tourId = (int)tour.Tour.tourId.Value;
+                tourActivity.activityId = int.Parse(activity.additionalActivityId.ToString());
+                tourActivities.Add(tourActivity);
+            }
+            _repo.context.AddRange(tourActivities);
             _repo.SaveChanges();
         }
     }

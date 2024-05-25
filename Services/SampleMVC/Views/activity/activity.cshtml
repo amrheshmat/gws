@@ -11,7 +11,7 @@
     var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "activity").ToList().Count;
     var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "activity").ToList().Count;
     var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "activity").ToList().Count;
-
+    var languages = ViewBag.languages;
     var activitys = ViewBag.activitys;
 }
     <div class="row">
@@ -42,9 +42,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{
-                                        int i = 0;
-                                    }
                                 @foreach (var activity in activitys)
                                     {
                                         <tr>
@@ -61,7 +58,7 @@
                                             }
                                             @if (hasEditPermission > 0)
                                             {
-                                                <span onclick="editactivity(@activity.additionalActivityId,'@activity.title','@activity.adultPrice')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                                <span onclick="editactivity(@activity.additionalActivityId,'@activity.title','@activity.adultPrice','@activity.languageId')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
                                             }    
                                         </td>
                                         </tr>
@@ -101,8 +98,21 @@
                         <label class="form-label" for="adultPrice">
                             @_localizationService.Localize("adultPrice")
                         </label>
-                        @Html.TextBoxFor(m => m.adultPrice, new { @id = "adultPrice", @class = "form-control" })
+                        @Html.TextBoxFor(m => m.adultPrice, new {@type = "number", @id = "adultPrice", @class = "form-control" })
                         <span id="adultPriceRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3" id="languageDiv">
+                        <label class="form-label" for="language">
+                            @_localizationService.Localize("language")
+                        </label>
+                        @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
+                        <select name="language" class="form-select" id="language">
+                            @foreach (var language in languages)
+                            {
+                                <option value="@language.languageId">@language.languageName</option>
+                            }
+                        </select>
+                        <span id="languageRequired" style="color:red"></span>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
@@ -143,19 +153,21 @@
             } else {
                 $(".modal-body #adultPriceRequired").text("");
             }
-            if ($(".modal-body #code").val() == '') {
-                $(".modal-body #codeRequired").text("required");
+            if ($(".modal-body #language").val() == '') {
+                $(".modal-body #languageRequired").text("required");
                 return false;
             } else {
-                $(".modal-body #codeRequired").text("");
+                $(".modal-body #languageRequired").text("");
             }
             e.preventDefault();
             var userUpdate = {};
             userUpdate.title = $(".modal-body #activityName").val();
             userUpdate.adultPrice = $(".modal-body #adultPrice").val();
-            if ($(".modal-body #activityId").val() != '')
+            if ($(".modal-body #activityId").val() != '') {
                 userUpdate.additionalActivityId = $(".modal-body #activityId").val();
+            }
             if ($(".modal-body #activityId").val() == "") {
+                userUpdate.languageId = $(".modal-body #language").val();
                 $.ajax({
                     url: "/activity/Add",
                     type: "POST",
@@ -186,6 +198,7 @@
                     }
                 });
             } else {
+                userUpdate.languageId = $(".modal-body #language").val();
                 userUpdate.activityId = $(".modal-body #activityId").val();
                 $.ajax({
                     url: "/activity/Edit",
@@ -216,11 +229,15 @@
             }
 
         });
+        $(document).on('change', '#language', function () {
+            $(".modal-body #language").val($(this).val());
+        });
     });
-    function editactivity(id, name, adultPrice) {
+    function editactivity(id, name, adultPrice, languageId) {
         $(".modal-body #activityId").val(id);
         $(".modal-body #activityName").val(name);
         $(".modal-body #adultPrice").val(adultPrice);
+        $(".modal-body #language").val(languageId);
         }
     function DeleteActivity(id) {
         $.ajax({
@@ -248,4 +265,5 @@
             }
         });
     }
+
 </script>

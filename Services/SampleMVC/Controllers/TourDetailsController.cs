@@ -55,7 +55,9 @@ namespace SampleMVC.Controllers
 			Booking booking = new Booking();
 			booking.requestId = model.requestId;
 			booking.name = model.name;
+			booking.totalPrice = model.totalPrice;
 			booking.email = model.email;
+			booking.phone = model.phone;
 			booking.tourId = model.tourId;
 			booking.status = model.status;
 			booking.countryName = model.countryName;

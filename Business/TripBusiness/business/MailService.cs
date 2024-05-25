@@ -44,8 +44,11 @@ namespace TripBusiness.business
 				"</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
-				"<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.spcialRequest?.name + "</p>" +
+				"<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.booking?.name + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.booking?.email + "</p>" +
 				"<p> <b>" + _localizationService.Localize("TourName") + "</b> : " + mailRequest.tourName + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Date") + "</b> : " + mailRequest.booking?.tourDate.Value.ToString("dddd, dd MMMM yyyy") + "</p>" +
+				"<p> <b>" + _localizationService.Localize("CountryName") + "</b> : " + mailRequest.booking?.countryName + "</p>" +
 				"<p> <b>" + _localizationService.Localize("Phone") + "</b> : " + mailRequest.booking?.phone + "</p>" +
 				"<p> <b>" + _localizationService.Localize("NumberOfAdult") + "</b> : " + mailRequest.booking?.numberOfAdult + "</p>" +
 				"<p> <b>" + _localizationService.Localize("NumberOfChild") + "</b> : " + mailRequest.booking?.numberOfChild + "</p>" +
@@ -367,7 +370,7 @@ namespace TripBusiness.business
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
-				"<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.Body + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.booking.name + "<br>" + mailRequest.Body + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
 				"</div>" +
 				"<div class='container footer'> " +
 				"<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +

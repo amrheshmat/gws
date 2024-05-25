@@ -30638,10 +30638,19 @@ button.applyBtn.btn.btn-sm.btn-primary {
     text-decoration:none;
     color:#fff !important;
 }
-.tourDetailsBody p, .tourDetailsBody span{
-    color:#000;
+#ui-datepicker-div {
+    border: 0px!important;
 }
-
+.tourDetailsBody p, .tourDetailsBody span {
+    color: #000;
+}
+.ui-datepicker {
+    border: 0px !important;
+}
+.ui-datepicker-header {
+    background: #03a84e;
+    color: #fff;
+}
 .ui-state-default {
     border: none !important;
     border-radius: 50% !important;

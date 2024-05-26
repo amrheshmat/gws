@@ -121,9 +121,12 @@
 								</tr>
 							<tr>
 								<td>
+									@if (Model.tourLanguages != null && Model.tourLanguages.Count > 0)
+											{
 									<i class="fa fa-globe" style="color: #03a84e;font-size: 16px;"> </i>
 									
 									<span style="font-weight: 700;">@_localizationService.Localize("TourAvailableLangauges")</span>
+											}
 								</td>
 								<td>
 									<div class="weekDays-selector">

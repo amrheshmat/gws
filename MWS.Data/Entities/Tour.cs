@@ -10,6 +10,7 @@ namespace MWS.Data.Entities
 		public decimal? tourId { get; set; }
 
 		public string? title { get; set; }
+		public string? isActive { get; set; }
 		public string? duration { get; set; }
 		public string? tourLocation { get; set; }
 		public string? tourDays { get; set; }

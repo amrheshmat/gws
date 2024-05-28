@@ -226,6 +226,29 @@ namespace SampleMVC.Controllers
             response.Message = _localizationService.Localize("DeletedError");
             return response;
         }
+        [HttpGet]
+        [Route("Tour/Active/{tourId}")]
+        public async Task<Response> Active(int tourId)
+        {
+            Response response = new Response();
+            response.Title = _localizationService.Localize("Active");
+            var tour = _repo.Filter<Tour>(e => e.tourId == tourId).FirstOrDefault();
+            if (tour != null)
+            {
+                if (tour.isActive == null || tour.isActive == "N")
+                    tour.isActive = "Y";
+                else
+                    tour.isActive = "N";
+                _repo.context.Update(tour);
+                await _repo.context.SaveChangesAsync();
+                response.Status = true;
+                response.Message = _localizationService.Localize("Done");
+                return response;
+            }
+            response.Status = false;
+            response.Message = _localizationService.Localize("AciveError");
+            return response;
+        }
         public async Task CreateLists(TourModel tour)
         {
             List<Include>? includes = tour.includes;

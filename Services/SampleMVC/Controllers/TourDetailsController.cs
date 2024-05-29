@@ -100,6 +100,7 @@ namespace SampleMVC.Controllers
                         await _repo.context.AddRangeAsync(additionalActivities);
                         await _repo.SaveChangesAsync();
                     }
+                    additionalPrice = additionalPrice * bookRequest.numberOfAdult.Value;
                     bookModel.totalPrice += additionalPrice;
                     bookRequest.totalPrice = bookModel.totalPrice;
                     _repo.Update<Booking>(bookRequest);

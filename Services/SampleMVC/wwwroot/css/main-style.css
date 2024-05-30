@@ -13658,6 +13658,9 @@ table tbody .border-bottom-warning td {
 }
 
 * {
+    -webkit-user-select: none;
+    -moz-user-select:none;
+    user-select: none;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     outline: none;

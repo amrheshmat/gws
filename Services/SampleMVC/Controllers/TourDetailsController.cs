@@ -136,18 +136,18 @@ namespace SampleMVC.Controllers
                 PaymentSessionRequest paymentSessionRequest = new PaymentSessionRequest();
                 paymentSessionRequest.apiOperation = "INITIATE_CHECKOUT";
                 paymentSessionRequest.interaction = new Interaction();
-                paymentSessionRequest.interaction.operation = "AUTHORIZE";
+                paymentSessionRequest.interaction.operation = "PURCHASE";
                 paymentSessionRequest.interaction.displayControl = new DisplayControl();
                 paymentSessionRequest.interaction.displayControl.billingAddress = "OPTIONAL";
                 paymentSessionRequest.interaction.displayControl.customerEmail = "OPTIONAL";
                 paymentSessionRequest.interaction.displayControl.shipping = "HIDE";
                 paymentSessionRequest.interaction.merchant = new Merchant();
-                paymentSessionRequest.interaction.merchant.name = "Nbe Test";
+                paymentSessionRequest.interaction.merchant.name = "OCEANUSTOURS";
                 paymentSessionRequest.order = new Order();
-                paymentSessionRequest.order.currency = "EGP";
+                paymentSessionRequest.order.currency = "USD";
                 paymentSessionRequest.order.amount = bookRequest.totalPrice.ToString();
                 paymentSessionRequest.order.id = id.ToString();
-                paymentSessionRequest.order.description = "test";
+                paymentSessionRequest.order.description = "live";
                 string sessionId = await createPaymentSession(paymentSessionRequest);
                 response.Message = _localizationService.Localize("Added");
                 response.Status = true;
@@ -166,9 +166,9 @@ namespace SampleMVC.Controllers
             HttpClient client = new HttpClient();
 
 
-            var url = "https://test-nbe.gateway.mastercard.com/api/rest/version/72/merchant/TESTEGPTEST/session";
+            var url = "https://nbe.gateway.mastercard.com/api/rest/version/73/merchant/OCEANUSTOURS/session";
             client.DefaultRequestHeaders.Accept.Clear();
-            var byteArray = Encoding.ASCII.GetBytes("merchant.TESTEGPTEST:c622b7e9e550292df400be7d3e846476");
+            var byteArray = Encoding.ASCII.GetBytes("merchant.OCEANUSTOURS:978995a3445047724f87d14f000ae056");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("text/plain"));

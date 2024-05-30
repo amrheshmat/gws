@@ -147,7 +147,7 @@ namespace SampleMVC.Controllers
                 paymentSessionRequest.order.currency = "USD";
                 paymentSessionRequest.order.amount = bookRequest.totalPrice.ToString();
                 paymentSessionRequest.order.id = id.ToString();
-                paymentSessionRequest.order.description = "live";
+                paymentSessionRequest.order.description = "enjoy your tour";
                 string sessionId = await createPaymentSession(paymentSessionRequest);
                 response.Message = _localizationService.Localize("Added");
                 response.Status = true;

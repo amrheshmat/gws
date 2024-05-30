@@ -30,7 +30,7 @@ namespace SampleMVC.Controllers
             ViewData["Title"] = await Localize("users");
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
             var language = _languageService.GetLanguageByCulture(currentCulture);
-            List<Tour> tours = await _repo.Filter<Tour>(e => e.languageId == language.languageId).ToListAsync();
+            List<Tour> tours = await _repo.Filter<Tour>(e => e.languageId == language.languageId && e.isActive == "Y  ").ToListAsync();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
             foreach (var tour in tours)
             {

@@ -32,6 +32,7 @@ namespace SampleMVC.Controllers
                 tourViewModel.languageName = lang;
                 tourViewModel.title = tour.title;
                 tourViewModel.tourId = tour.tourId;
+                tourViewModel.isActive = tour.isActive;
                 list.Add(tourViewModel);
             }
             ViewBag.tours = list;

@@ -58,13 +58,12 @@
                                             @tour.languageName
                                         </td>
                                         <td>
-                                            @if(@tour.isActive == 'Y')
+                                            @if(tour.isActive == "Y")
                                             {
                                                 <input type='checkbox' onclick="ActiveTour(@tour.tourId)" checked />
                                             }else{
                                                 <input type='checkbox' onclick="ActiveTour(@tour.tourId)" />
                                             }
-                                            <span style="margin:0px 5px;cursor:pointer" onclick="ActiveTour(@tour.tourId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
                                         </td>
                                             <td>
                                             @if (hasDeletePermission > 0)

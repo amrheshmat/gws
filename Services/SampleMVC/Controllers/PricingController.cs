@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
+using MWS.Data.Entities.anoush;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;
 using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
 {
-	public class PricingController : BaseController
+    public class PricingController : BaseController
 	{
 		private readonly ILogger<PricingController> _logger;
 		private IRepository _repo;

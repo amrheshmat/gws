@@ -1,8 +1,8 @@
-﻿using MWS.Data.Entities;
+﻿using MWS.Data.Entities.anoush;
 
 namespace MWS.Business.Shared.Data.Models
 {
-	public class Response
+    public class Response
 	{
 		public Response()
 		{

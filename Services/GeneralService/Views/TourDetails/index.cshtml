@@ -1,0 +1,929 @@
+﻿@using TripBusiness.Ibusiness;
+@model SampleMVC.Models.TourModel;
+@inject ILocalizationService _localizationService;
+@{
+	ViewData["Title"] = "Admin Page";
+	Layout = "~/Views/Shared/_layout.cshtml";
+	var days = ViewBag.days;
+	var languages = ViewBag.languages;
+	var attachments = ViewBag.attachments;
+	var hotels = ViewBag.hotels;
+	var rooms = ViewBag.rooms;
+	var currentId = ViewBag.currentId;
+}
+<!--Start image section-->
+<div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;" alt="main tour image"/>
+    </div>
+</div>
+<span class="container" style=" position: absolute; font-size: 30px; text-transform: uppercase; font-weight: bold; color: #fff; font-family: 'Montserrat', Arial, sans-serif; margin-top: -90px;">@Model.Tour.title </span>
+<div class="container" style="margin:30px auto;">
+	<div style="margin:20px 0px;">
+		
+<section class="gallery">
+	@if (attachments.Count > 0){
+		<div class="gallery__item">
+		<input type="radio" id="img-1" checked name="gallery" class="gallery__selector"/>
+		<img class="gallery__img" src="~/Files/@attachments[0].attachmentPath" alt="gallery"/>
+					<label for="img-1" class="gallery__thumb"><img src="~/Files/@attachments[0].attachmentPath" alt="" /></label>
+		</div>
+	}
+	@{
+		if (attachments.Count > 0)
+		{
+			attachments.RemoveAt(0);
+		}
+	}
+	@if(attachments.Count > 0)
+	{
+		foreach (var att in attachments)
+		{
+			<div class="gallery__item">
+				<input type="radio" id="img-@att.tourAttachmentId" name="gallery" class="gallery__selector" />
+				<img class="gallery__img" src="~/Files/@att.attachmentPath" alt="gallery image" />
+				<label for="img-@att.tourAttachmentId" class="gallery__thumb"><img src="~/Files/@att.attachmentPath" alt="tour" /></label>
+			</div>
+		}
+	}
+			
+</section>
+	</div>
+   <div class="row">
+       <div class="col-xs-12 col-lg-8">
+					
+				<!-- Map button for tablets/mobiles -->
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+					<h3 style="font-weight: 800!important;font-size: 22px;">
+						<i class="far fa-edit" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("Description")
+						</h3>
+					</div>
+					<div class="col-lg-9">
+						<table class="table tour-info-table" style="
+    background-color: #d5eaeb45;
+    border-radius: 10px;
+
+">
+							<tbody class="tourDetailsBody">
+								<tr>
+									<td>
+										<i class="fas fa-history" style="color: #03a84e;font-size: 16px;"> </i>
+									<span style="font-weight: 700;">@_localizationService.Localize("Duration")</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Model.Tour.duration Days</p>
+									</td>
+								</tr>
+								<tr style="background-color: #00848929;">
+									<td>
+									<i class="fa fa-map-marked" style=" color: #03a84e;font-size: 16px;"></i>
+									
+									<span style="font-weight: 700;">@_localizationService.Localize("TourLocation")</span>
+									</td>
+									<td>
+									<p class="value" style="margin:0;">@Model.Tour.tourLocation</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<i class="fa fa-calendar-alt" style="color: #03a84e;font-size: 16px;"> </i>
+									
+									<span style="font-weight: 700;">@_localizationService.Localize("TourAvailability")</span>
+									</td>
+									<td>
+										<div class="weekDays-selector">
+										@foreach(var day in days)
+										{
+											if(Model.tourDays != null && Model.tourDays.Count > 0)
+											{
+												if (Model.tourDays.Where(e => e.dayId == day.dayId).ToList().Count > 0)
+												{
+													<input type="checkbox" id="weekday-@day.dayName" value="@day.dayId" onclick="return false;" name="@day.dayName" class="weekday" checked>
+												}
+												else
+												{
+													<input type="checkbox" id="weekday-@day.dayName" value="@day.dayId" onclick="return false;" name="@day.dayName" class="weekday">
+												}
+												<label style="width:40px;margin:2px;" for="weekday-@day.dayName">@day.dayName</label>
+											}
+										}
+										
+										</div>
+
+
+									</td>
+								</tr>
+							<tr>
+								<td>
+									@if (Model.tourLanguages != null && Model.tourLanguages.Count > 0)
+											{
+									<i class="fa fa-globe" style="color: #03a84e;font-size: 16px;"> </i>
+									
+									<span style="font-weight: 700;">@_localizationService.Localize("TourAvailableLangauges")</span>
+											}
+								</td>
+								<td>
+									<div class="weekDays-selector">
+										@if (Model.tourLanguages != null && Model.tourLanguages.Count > 0)
+											{
+												foreach (var lang in Model.tourLanguages)
+												{
+													<input type="checkbox" id="weekday-@lang.languageName" value="@lang.languageId" onclick="return false;" name="@lang.languageName" class="weekday" checked>
+													<label style="width:80px;margin:2px;" for="weekday-@lang.languageName">@lang.languageName</label>
+												}
+											}
+									</div>
+								</td>
+							</tr>
+								<tr style="background-color: #00848929;">
+									<td>
+										<i class="fa fa-map-marker-alt" style="color: #03a84e;font-size: 16px;"></i>
+									<span class="me-3" style="font-weight: 700;">@_localizationService.Localize("PickupLocation")</span>
+									</td>
+									<td>
+									<p class="value" style="margin:0;">@Html.Raw(Model.Tour.pickupLocation)</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<i class="fa fa-map-marker-alt" style="color: #03a84e;font-size: 16px;"></i>
+									<span class="me-3" style="font-weight: 700;">@_localizationService.Localize("DropOff")</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Html.Raw(Model.Tour.dropOff)</p>
+									</td>
+								</tr>
+								<tr style="background-color: #00848929;">
+									<td>
+										<i class="fa fa-users" style="color: #03a84e; font-size: 16px;"></i>
+									<span class="me-3" style="font-weight: 700;">@_localizationService.Localize("TourType")</span>
+									</td>
+									<td>
+										<p class="value" style="margin:0;">@Html.Raw(Model.Tour.tourType)</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<hr>
+					@* <h4 style="font-weight: bold!important;">@_localizationService.Localize("Overview"):</h4>
+					<p style="color:#000;font-size: 16px;">
+							@Model.Tour.overview
+						</p> *@
+						<p></p>
+						@if(Model.includes != null && Model.includes.Count>0)
+					{
+						<h4 style="font-weight: bold!important;color:#000">@_localizationService.Localize("WhatIncludes"):</h4>
+
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="list_ok">
+									<ul>
+										@foreach (var i in Model.includes)
+										{
+											<li>
+												<i class="fa fa-check" style="margin:0px 7px;color:#03a84e;"></i><span style="color:#000">@Html.Raw(i.includeText)</span>
+											</li>
+										}
+									</ul>
+								</ul>
+							</div>
+
+						</div>
+					}
+					@if(Model.excludes != null && Model.excludes.Count > 0)
+					{
+						<h4 style="font-weight: bold!important;color:#000">@_localizationService.Localize("WhatNotIncludes"):</h4>
+
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="list_no">
+									<ul>
+										@foreach(var e in Model.excludes)
+										{
+											<li>
+												<i class="fa fa-times" style="margin:0px 7px;color:#e04f67;"></i><span style="color:#000">@Html.Raw(e.excludeText)</span>
+											</li>
+										}
+									</ul>
+								</ul>
+							</div>
+
+						</div>
+					}
+					
+						<!-- End row  -->
+					</div>
+				</div>
+				<!-- End row  -->
+				<hr>
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+					<h3 style="font-weight: bold!important;">
+						@* <i class="fa fa-info-circle" style="color: #e04f67;margin:0px 5px;"></i> *@
+						@_localizationService.Localize("Highlights")
+						</h3>
+					</div>
+					<div class="col-lg-9">
+					<p style="color:#000;font-size: 16px;">
+							@Html.Raw(Model.Tour.highlights)
+						</p>
+					</div>
+				</div>
+				<hr>
+				<div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);
+    padding: 25px 12px 20px;
+    background: #f2fcff;">
+					<div class="col-lg-3">
+					<h3 style="font-weight: bold!important;">
+						<i class="far fa-edit" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("WhatExpects")
+						</h3>
+					</div>
+					<div class="col-lg-9">
+						<div id="itinerary" class="form-box page-scroll">
+
+							<div class="form-content contact-form-action">
+								<div id="transfers" class="accordion_styled">
+
+								@if (Model.expects != null && Model.expects.Count > 0)
+								{
+									var i = 1;
+									foreach(var e in Model.expects)
+									{
+										
+										<div class="card" style="margin-bottom:10px;">
+											<div class="card-header">
+												<h4>
+													<a style="color:#000 !important;" class="accordion-toggle" data-bs-toggle="collapse" href="#collapse_@e.expectId" aria-controls="collapse_@e.expectId">
+														<strong>Day @i</strong><i class="indicator fa fa-plus float-right"></i>
+													</a>
+												</h4>
+											</div>
+											<div id="collapse_@e.expectId" class="collapse" data-parent="#transfers">
+												<div class="card-body">
+													<h3>@Html.Raw(e.details)</h3>
+												</div>
+											</div>
+										</div>
+										i++;
+									}
+								}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+			@if (Model.additionalInformations != null && Model.additionalInformations.Count > 0)
+			{
+				 <div class="row" style="border-bottom: 1px solid #d7dce3;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 11px 0 rgb(155 155 155 / 42%);padding: 25px 12px 20px;background: #f2fcff;">
+				
+					<div class="col-lg-3">
+						<h3 style="font-weight: bold!important;">
+							<i class="far fa-file-alt" style="color: #e04f67;margin:0px 5px;"></i>@_localizationService.Localize("AdditionalInformation")
+						</h3>
+
+					</div>
+					<div class="col-lg-9">
+						@foreach (var p in Model.additionalInformations)
+						{
+							<p style="color:#000;font-size: 16px;">
+								@Html.Raw(p.details)
+							</p>
+						}
+					</div>
+					</div>
+				}
+			</div>
+       <div class="col-xs-12 col-lg-4">
+		   <div>
+				<h3 style="background: #393939;color: #fff; padding: 10px;margin: auto;" class="inner">
+					<strong style="margin:auto">- @_localizationService.Localize("Booking") -</strong>
+				</h3>
+			</div>
+			<form style="border: 1px solid #eee;padding: 10px;" id="booking" method="post" novalidate="novalidate">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>@_localizationService.Localize("Name")</label>
+							<input class="form-control required" name="name" id="nameBooking" type="text">
+							<span id="nameRequired" style="color:red"></span>
+							<input class="form-control required" name="tourid" value="@currentId" id="tourId" type="hidden">
+						</div>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label>@_localizationService.Localize("Email") </label>
+					<input class="form-control required" type="email" name="email" id="emailBooking">
+					<span id="emailRequired" style="color:red"></span>
+				</div>
+				<div class="form-group">
+					<label> @_localizationService.Localize("Phone")</label>
+					<input class="form-control required" type="text" name="phone" id="phoneBooking">
+					<span id="phoneRequired" style="color:red"></span>
+				</div>
+				<div class="form-group">
+					<label>@_localizationService.Localize("PickupDetails")</label>
+					<input class="form-control required" type="text" name="pickup" id="pickup">
+					<span id="pickupRequired" style="color:red"></span>
+				</div>
+				<div style="margin-bottom:20px;">
+					<label>@_localizationService.Localize("language")</label>
+					<select id="language" class="form-control" name="language" required="">
+						<option value="" selected="selected"> @_localizationService.Localize("language")</option>
+						@foreach(var lang in languages)
+						{
+							<option value="@lang.languageName">@lang.languageName</option>
+						}
+					</select>
+					<span id="languageRequired" style="color:red"></span>
+
+				</div>
+				<div>
+					<label>@_localizationService.Localize("Nationality")</label>
+					<select id="nationality" class="form-control" name="nationality" required="">
+						<option value="" selected="selected"> @_localizationService.Localize("Nationality")</option>
+						<option value="American">American</option>
+						<option value="Afghan">Afghan</option>
+						<option value="Albanian">Albanian</option>
+						<option value="Algerian">Algerian</option>
+						<option value="Andorran">Andorran</option>
+						<option value="Angolan">Angolan</option>
+						<option value="Argentinian">Argentinian</option>
+						<option value="Armenian">Armenian</option>
+						<option value="Australian">Australian</option>
+						<option value="Austrian">Austrian</option>
+						<option value="Azerbaijani">Azerbaijani</option>
+						<option value="Bahamian">Bahamian</option>
+						<option value="Bahraini">Bahraini</option>
+						<option value="Bangladeshi">Bangladeshi</option>
+						<option value="Barbadian">Barbadian</option>
+						<option value="Belarusian">Belarusian</option>
+						<option value="Belgian">Belgian</option>
+						<option value="Belizean">Belizean</option>
+						<option value="Beninese">Beninese</option>
+						<option value="Bhutanese">Bhutanese</option>
+						<option value="Bolivian">Bolivian</option>
+						<option value="Bosnian">Bosnian</option>
+						<option value="Botswanan">Botswanan</option>
+						<option value="Brazilian">Brazilian</option>
+						<option value="British&nbsp;Indian Ocean">British&nbsp;Indian Ocean</option>
+						<option value="British Virgin">British Virgin</option>
+						<option value="Bruneian">Bruneian</option>
+						<option value="Bulgarian">Bulgarian</option>
+						<option value="Burkinese">Burkinese</option>
+						<option value="Burundian">Burundian</option>
+						<option value="Cambodian">Cambodian</option>
+						<option value="Cameroonian">Cameroonian</option>
+						<option value="Canadian">Canadian</option>
+						<option value="Cape Verdean">Cape Verdean</option>
+						<option value="Chadian">Chadian</option>
+						<option value="Chilean">Chilean</option>
+						<option value="Chinese">Chinese</option>
+						<option value="Colombian">Colombian</option>
+						<option value="Congolese">Congolese</option>
+						<option value="Costa Rican">Costa Rican</option>
+						<option value="Croatian">Croatian</option>
+						<option value="Cuban">Cuban</option>
+						<option value="Cypriot">Cypriot</option>
+						<option value="Czech">Czech</option>
+						<option value="Danish">Danish</option>
+						<option value="Djiboutian">Djiboutian</option>
+						<option value="Dominican">Dominican</option>
+						<option value="East Timorese">East Timorese</option>
+						<option value="Ecuadorean">Ecuadorean</option>
+						<option value="Egyptian">Egyptian</option>
+						<option value="Salvadorean">Salvadorean</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Eritrean">Eritrean</option>
+						<option value="Estonian">Estonian</option>
+						<option value="Ethiopian">Ethiopian</option>
+						<option value="Fijian">Fijian</option>
+						<option value="Finnish">Finnish</option>
+						<option value="French">French</option>
+						<option value="Guyanese">Guyanese</option>
+						<option value="Gabonese">Gabonese</option>
+						<option value="Gambian">Gambian</option>
+						<option value="Georgian">Georgian</option>
+						<option value="German">German</option>
+						<option value="Ghanaian">Ghanaian</option>
+						<option value="Greek">Greek</option>
+						<option value="Grenadian">Grenadian</option>
+						<option value="Guatemalan">Guatemalan</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Haitian">Haitian</option>
+						<option value="Honduran">Honduran</option>
+						<option value="Hungarian">Hungarian</option>
+						<option value="Icelander">Icelander</option>
+						<option value="Indian">Indian</option>
+						<option value="Indonesian">Indonesian</option>
+						<option value="Iranian">Iranian</option>
+						<option value="Iraqi">Iraqi</option>
+						<option value="Irish">Irish</option>
+						<option value="Israeli">Israeli</option>
+						<option value="Italian">Italian</option>
+						<option value="Jamaican">Jamaican</option>
+						<option value="Japanese">Japanese</option>
+						<option value="Jordanian">Jordanian</option>
+						<option value="Kazakh">Kazakh</option>
+						<option value="Kenyan">Kenyan</option>
+						<option value="Kuwaiti">Kuwaiti</option>
+						<option value="Laotian">Laotian</option>
+						<option value="Latvian">Latvian</option>
+						<option value="Lebanese">Lebanese</option>
+						<option value="Liberian">Liberian</option>
+						<option value="Libyan">Libyan</option>
+						<option value="Lithuanian">Lithuanian</option>
+						<option value="Macedonian">Macedonian</option>
+						<option value="Madagascan">Madagascan</option>
+						<option value="Malawian">Malawian</option>
+						<option value="Malaysian">Malaysian</option>
+						<option value="Maldivian">Maldivian</option>
+						<option value="Malian">Malian</option>
+						<option value="Maltese">Maltese</option>
+						<option value="Mauritanian">Mauritanian</option>
+						<option value="Mauritian">Mauritian</option>
+						<option value="Mexican">Mexican</option>
+						<option value="Moldovan">Moldovan</option>
+						<option value="Monacan">Monacan</option>
+						<option value="Mongolian">Mongolian</option>
+						<option value="Moroccan">Moroccan</option>
+						<option value="Mozambican">Mozambican</option>
+						<option value="Namibian">Namibian</option>
+						<option value="Nepalese">Nepalese</option>
+						<option value="Dutch">Dutch</option>
+						<option value="New Zealand">New Zealand</option>
+						<option value="Nicaraguan">Nicaraguan</option>
+						<option value="Nigerien">Nigerien</option>
+						<option value="Nigerian">Nigerian</option>
+						<option value="North Korean">North Korean</option>
+						<option value="Norwegian">Norwegian</option>
+						<option value="Omani">Omani</option>
+						<option value="Pakistani">Pakistani</option>
+						<option value="Panamanian">Panamanian</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Paraguayan">Paraguayan</option>
+						<option value="Peruvian">Peruvian</option>
+						<option value="Filipino">Filipino</option>
+						<option value="Polish">Polish</option>
+						<option value="Portuguese">Portuguese</option>
+						<option value="Qatari">Qatari</option>
+						<option value="Romanian">Romanian</option>
+						<option value="Russian">Russian</option>
+						<option value="Rwandan">Rwandan</option>
+						<option value="Saudi">Saudi</option>
+						<option value="Senegalese">Senegalese</option>
+						<option value="Serbian">Serbian</option>
+						<option value="Sierra Leonian">Sierra Leonian</option>
+						<option value="Singaporean">Singaporean</option>
+						<option value="Slovak">Slovak</option>
+						<option value="Slovenian">Slovenian</option>
+						<option value="Somali">Somali</option>
+						<option value="South African">South African</option>
+						<option value="South Korean">South Korean</option>
+						<option value="Spanish">Spanish</option>
+						<option value="Sri Lankan">Sri Lankan</option>
+						<option value="Sudanese">Sudanese</option>
+						<option value="Surinamese">Surinamese</option>
+						<option value="Swazi">Swazi</option>
+						<option value="Swedish">Swedish</option>
+						<option value="Swiss">Swiss</option>
+						<option value="Syrian">Syrian</option>
+						<option value="Taiwanese">Taiwanese</option>
+						<option value="Tajik">Tajik</option>
+						<option value="Tanzanian">Tanzanian</option>
+						<option value="Thai">Thai</option>
+						<option value="Togolese">Togolese</option>
+						<option value="Trinidadian">Trinidadian</option>
+						<option value="Tunisian">Tunisian</option>
+						<option value="Turkish">Turkish</option>
+						<option value="Turkmen">Turkmen</option>
+						<option value="Tuvaluan">Tuvaluan</option>
+						<option value="Ugandan">Ugandan</option>
+						<option value="Ukrainian">Ukrainian</option>
+						<option value="Emirati">Emirati</option>
+						<option value="British">British</option>
+						<option value="Uruguayan">Uruguayan</option>
+						<option value="Uzbek">Uzbek</option>
+						<option value="Vanuatuan">Vanuatuan</option>
+						<option value="Venezuelan">Venezuelan</option>
+						<option value="Vietnamese">Vietnamese</option>
+						<option value="Yemeni">Yemeni</option>
+						<option value="Zambian">Zambian</option>
+						<option value="Zimbabwean">Zimbabwean</option>
+					</select>
+					<span id="nationalityRequired" style="color:red"></span>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>@_localizationService.Localize("Date")</label>
+							<div>
+								<i class="fa fa-calendar-alt" onclick="showDatePicker()" id="showDatePicker"></i>
+							</div>
+							<input class="date-pick form-control required valid" disabled="disabled"
+								   type="text" name="dateBooking" id="datepicker">
+							<span id="dateRequired" style="color:red"></span>
+						</div>
+					</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label>@_localizationService.Localize("Adults")</label>
+							<div class="numbers-row">
+								<input type="number" min="0" value="0" id="adults" class="form-control" name="adults">
+								<span id="adultsRequired" style="color:red"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<label>
+								@_localizationService.Localize("Children")
+								<span class="tooltip">
+									<i class="fa fa-info-circle"></i>
+									<span class="tooltiptext"> @_localizationService.Localize("MaxChildrenAge")</span>
+								</span>							</label>
+							<div class="numbers-row">
+								<input type="number" min="0" value="0" id="children" class="qty2 form-control " name="children">
+								<span id="childrenRequired" style="color:red"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label>
+								@_localizationService.Localize("Infant")
+								<span class="tooltip">
+									<i class="fa fa-info-circle"></i>
+									<span class="tooltiptext">@_localizationService.Localize("MaxInfantAge")</span>
+								</span>
+							</label>
+							<div class="numbers-row">
+								<input type="number" min="0" id="infant" value="0" class="qty2 form-control " name="infant">
+								<span id="infantRequired" style="color:red"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" id="roomDiv">
+					<div class="col-6">
+						<div class="form-group">
+							<p><b>@_localizationService.Localize("RoomType") </b></p>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<p><b>@_localizationService.Localize("NumberOfRoom") </b></p>
+						</div>
+					</div>
+						@foreach (var room in rooms)
+						{
+							<div class="col-sm-6">
+							<span style="display: inline-block; height: 45px;background: #017b6e; padding: 10px 5px; border-radius: 10px; color: #fff;margin: 0px 5px;">
+								@* @Html.Raw(@room.icon)  *@ 
+								@room.roomTypeName 
+							</span>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+								<input type="number" min="0" class="form-control roomTypeCount" id="@room.roomTypeId" value="0" />
+								</div>
+							</div>
+						}
+					<div class="col-sm-12" id="Room_Required" style="color:red"></div>
+
+				</div>
+				<p>
+					<small>* @_localizationService.Localize("PriceForPerson")</small>
+				</p>
+				<button id="formBookingBtn" type="submit" class="btn_full" style="background: #017b6e;color: #fff;padding: 10px;border-radius: 5px;width: 100%;">
+					@_localizationService.Localize("BookNow")
+				</button>
+			</form>
+			<ul id="tourDayList" style="display:none">
+				@foreach(var item in Model.tourDays)
+				{
+					<li id="@item.dayId">@item.dayId</li>
+				}
+			</ul>
+       </div>
+   </div>
+</div>
+<script type="text/javascript">
+	var datetime;
+	var bookAdditionalActivities = [];
+
+	function errorCallback(error) {
+		console.log(JSON.stringify(error));
+	}
+	function cancelCallback() {
+		console.log('Payment cancelled');
+	}
+	function completeCallback() {
+		var requestId = localStorage.getItem("PaymentRequestId");
+		$.ajax({
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId,
+			cache: false,
+			type: "GET",
+			success: function (data) {
+				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					localStorage.removeItem("PaymentRequestId");
+				} 
+			},
+			error: function (error) {
+			}
+		});
+		// location.href = "/";
+		// console.log(requestId);
+	}
+	var arr;
+	function showDatePicker() {
+		$("#datepicker").datepicker('show'); //Show on click of button
+		
+		//$(".ui-datepicker-next").append("<i class='fa fa-chevron-right'></i>");
+	}
+    $(document).ready(function () {
+		
+		$(".card-header h4 a").on("click", function () {
+			$(this).find("i").toggleClass("fa-plus fa-minus");
+		});
+		var disallowed =[];
+		$( "#tourDayList li" ).each( function( index, element ){
+			var dayId = $(this).attr('id');
+			disallowed.push(parseInt(dayId))
+		});
+		console.log(disallowed);
+		var dateToday = new Date();
+		$("#datepicker").datepicker({
+			dateFormat: "DD, dd-mm- yy",
+			minDate: dateToday,
+			beforeShowDay: function (date) {
+				day = date.getDay();
+				if (disallowed.indexOf(day) !== -1) {
+					return [true];
+				} else {
+					return [false];
+				}
+			}
+		}).on("change", function () {
+			datetime = $("#datepicker").datepicker("getDate") ;
+			//datetime = datetime.substring(0, datetime.indexOf("T"));
+			var year = $("#datepicker").datepicker("getDate").getFullYear() ;
+			var month = $("#datepicker").datepicker("getDate").getMonth() +1 ;
+			var day = $("#datepicker").datepicker("getDate").getDate() ;
+			debugger;
+			if (parseInt(day) < 10)
+				day = "0" + day;
+			if (parseInt(month) < 10)
+				month = "0" + month;
+			datetime = year + "-" + month + "-" + day;
+			console.log(year);
+			console.log(month);
+			console.log(day);
+			console.log(datetime);
+		});
+		$('#formBookingBtn').on("click", function (e) {
+			var selectedRoom = $('.roomTypeCount').map((_, el) => el.value).get()
+			var selectedRoomId = $('.roomTypeCount').map((_, el) => el.id).get()
+			console.log(selectedRoom)
+			var selectedRoomList = [];
+			for (i = 0; i < selectedRoom.length; i++) {
+				var roomCount = {};
+				roomCount.count = selectedRoom[i];
+				roomCount.roomTypeId = selectedRoomId[i];
+				selectedRoomList.push(roomCount);
+			}
+			console.log(selectedRoomList)
+			//validation
+			if ($("#nameBooking").val() == '') {
+				$("#nameRequired").text("required");
+				return false;
+			} else {
+				$("#nameRequired").text("");
+			}
+			if ($("#emailBooking").val() == '') {
+				$("#emailRequired").text("required");
+				return false;
+			} else {
+				$("#emailRequired").text("");
+			}
+			if ($("#phoneBooking").val() == '') {
+				$("#phoneRequired").text("required");
+				return false;
+			} else {
+				$("#phoneRequired").text("");
+			}
+			if ($("#pickup").val() == '') {
+				$("#pickupRequired").text("required");
+				return false;
+			} else {
+				$("#pickupRequired").text("");
+			}
+			if ($("#nationality").val() == '') {
+				$("#nationalityRequired").text("required");
+				return false;
+			} else {
+				$("#nationalityRequired").text("");
+			}
+			if ($("#language").val() == '') {
+				$("#languageRequired").text("required");
+				return false;
+			} else {
+				$("#languageRequired").text("");
+			}
+			if ($("#datepicker").val() == '') {
+				$("#dateRequired").text("required");
+				return false;
+			} else {
+				$("#dateRequired").text("");
+			}
+			if ($("#adults").val() == '0') {
+				$("#adultsRequired").text("required");
+				return false;
+			} else {
+				$("#adultsRequired").text("");
+			}
+			if ($("#hotel").val() == '') {
+				$("#hotelRequired").text("required");
+				return false;
+			} else {
+				$("#hotelRequired").text("");
+			}
+			if ($("#single").val() == "0" && $("#double").val() =="0" && $("#triple").val() == "0") {
+				$("#Room_Required").text("required");
+				return false;
+			} else {
+				$("#Room_Required").text("");
+			}
+			e.preventDefault();
+			console.log($("#nameBooking").val());
+
+			var userUpdate = {};
+			userUpdate.tourId = $("#tourId").val();
+			//userUpdate.hotelTypeId = $("#hotel").val();
+			userUpdate.name = $("#nameBooking").val();
+			userUpdate.email = $("#emailBooking").val();
+			userUpdate.phone = $("#phoneBooking").val();
+			userUpdate.pickup = $("#pickup").val();
+			userUpdate.countryName = $("#nationality").val();
+			userUpdate.languageName = $("#language").val();
+			userUpdate.tourDate = datetime;
+			userUpdate.numberOfAdult = $("#adults").val();
+			userUpdate.numberOfChild = $("#children").val();
+			userUpdate.numberOfInfant = $("#infant").val();
+			userUpdate.roomCountList = selectedRoomList;
+			userUpdate.bookAdditionalActivities = bookAdditionalActivities;
+			// userUpdate.numberOfSingleRoom = $("#single").val();
+			// userUpdate.numberOfDoubleRoom = $("#double").val();
+			// userUpdate.numberOfTripleRoom = $("#triple").val();
+			$("#preloader").css({ "visibility": "visible", "opacity": 1 });
+			console.log(userUpdate);
+			$.ajax({
+				url: "/TourDetails/Add",
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify(userUpdate),
+				success: function (data) {
+					$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+					if (data.status == true) {
+						if (data.activities.length > 0) { 
+						var html = "<hr> <p style='margin-bottom: 15px; text-align: left; font-size: 20px; font-weight: bold; '>" + data.subTitle + "</p><div style='position: relative;'>";
+						for (var i = 0; i < data.activities.length; i++) {
+							html += "<p style='text-align: left;'><input onclick='selectActivities(" + data.activities[i].additionalActivityId + ")' type='checkbox' id ='" + data.activities[i].additionalActivityId + "' name='" + data.activities[i].additionalActivityId + "' value='" + data.activities[i].additionalActivityId + "' ><label style='display:inline' for='" + data.activities[i].additionalActivityId + "'><span style='color:#017b6e;margin: 0px 10px;'>" + data.activities[i].adultPrice + "$</span>" + " - " + data.activities[i].title + "</label></p>";
+						};
+						html += "</div>";
+					};
+						Swal.fire({
+							title: data.title,
+							html: data.message + `<p>` + data.total + `</p>` + html,
+							showCancelButton: true,
+							confirmButtonText: data.title,
+							cancelButtonText:data.cancel,
+							timer: 180000000
+						}).then((result) => {
+							if (result.isConfirmed) {
+								userUpdate.totalPrice = data.total;
+								addBookRequestAndCheckOut(userUpdate);
+							}
+						});
+					} else {
+						Swal.fire({
+							title: data.title,
+							text: data.message,
+							icon: "error",
+							timer: 60000
+						});
+					}
+				},
+				error: function (error) {
+				}
+			});
+
+		});
+    });
+	function selectActivities(id){
+		debugger;
+		var selectedBefor = 0;
+		var activity = {};
+		activity.tourActivityId = id;
+		if (bookAdditionalActivities.length > 0) {
+			for (var i = 0; i < bookAdditionalActivities.length; i++) {
+				if (bookAdditionalActivities[i].tourActivityId == id) {
+					bookAdditionalActivities.pop(activity);
+					selectedBefor = 1;
+					break;
+				}
+			}
+		}
+		if (selectedBefor == 0) {
+		bookAdditionalActivities.push(activity);
+		}
+	}
+	function addBookRequestAndCheckOut(userUpdate) {
+		$("#preloader").css({ "visibility": "visible", "opacity": 1 });
+		$.ajax({
+			url: "/TourDetails/addBookRequest",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(userUpdate),
+			success: function (data) {
+				$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					// location.href = "/checkout";
+					console.log(data.id);
+					checkout(data.id);
+				} else {
+					Swal.fire({
+						title: data.title,
+						text: data.message,
+						icon: "error",
+						timer: 1500
+					});
+					setTimeout(function () {
+						location.href = document.referrer;
+					}, 1500);
+				}
+			},
+			error: function (error) {
+			}
+		});
+	}
+	function checkout(requestId) {
+		$.ajax({
+			url: "/TourDetails/checkOut/" + requestId,
+			cache: false,
+			type: "GET",
+			success: function (data) {
+				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					localStorage.setItem("PaymentRequestId", requestId);
+					Checkout.configure({
+						session: {
+							id: data.id
+						}
+					});
+					console.log("sessionId");
+					console.log(data.id);
+					debugger;
+					Checkout.showPaymentPage();
+				} else {
+					Swal.fire({
+						title: data.title,
+						text: data.message,
+						icon: "error",
+						timer: 1500
+					});
+					setTimeout(function () {
+						location.href = document.referrer;
+					}, 1500);
+				}
+			},
+			error: function (error) {
+			}
+		});
+	}
+</script>

@@ -1,0 +1,147 @@
+﻿@using TripBusiness.Ibusiness
+@model MWS.Data.Entities.Booking;
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var requests = ViewBag.requests;
+}
+    <div class="row">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+            <div id="contextual-classes" class="mb-4">
+            <h2>@_localizationService.Localize("Request")</h2>
+            </div>
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                        @_localizationService.Localize("Name")
+                                        </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Phone")
+                                    </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Email")
+                                    </th>
+                                        <th scope="col">
+                                        @_localizationService.Localize("Actions")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                @foreach (var request in requests)
+                                {
+                                        <tr>
+                                            <td>
+                                            @request.name
+                                            </td>
+                                        <td>
+                                            @request.phone
+                                        </td>
+                                        <td>
+                                            @request.email
+                                        </td>
+                                            <td>
+                                            <span onclick="viewcontact(@request.requestId,'@request.name','@request.email','@request.phone','@request.numberOfAdult','@request.numberOfChild','@request.numberOfInfant','@request.countryName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-eye"></i></span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("edit", "Request", FormMethod.Post))
+                {
+                    @Html.TextBoxFor(m => m.requestId, new { @id = "requestId", @class = "form-control", style = "display:none" })
+                        <div class="mb-3">
+                        <label class="form-label" for="name">
+                            @_localizationService.Localize("Name")
+                        </label>
+                        @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control",disabled="disabled"})
+                        </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="phone">
+                            @_localizationService.Localize("Phone")
+                        </label>
+                        @Html.TextBoxFor(m => m.phone, new { @id = "phone", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">
+                            @_localizationService.Localize("Email")
+                        </label>
+                        @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfAdult">
+                            @_localizationService.Localize("NumberOfAdult")
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfAdult, new { @id = "numberOfAdult", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfChild">
+                            @_localizationService.Localize("NumberOfChild")
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfChild, new { @id = "numberOfChild", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfInfant">
+                            @_localizationService.Localize("NumberOfInfant")
+                        </label>
+                        @Html.TextBoxFor(m => m.numberOfInfant, new { @id = "numberOfInfant", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="countryName">
+                            @_localizationService.Localize("CountryName")
+                        </label>
+                        @Html.TextBoxFor(m => m.countryName, new { @id = "countryName", @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">@_localizationService.Localize("Save")</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#demoGrid').dataTable({
+        });
+    });
+    function viewcontact(id, name, email, phone, adult, child, infant, countryName) {
+        $(".modal-body #name").val(name);
+        $(".modal-body #email").val(email);
+        $(".modal-body #phone").val(phone);
+        $(".modal-body #countryName").val(countryName);
+        $(".modal-body #numberOfAdult").val(adult);
+        $(".modal-body #numberOfChild").val(child);
+        $(".modal-body #numberOfInfant").val(infant);
+    }
+</script>

@@ -1,0 +1,395 @@
+﻿@model MWS.Data.Entities.Contact;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var contacts = ViewBag.contacts;
+}
+<!--Start image section-->
+<div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img src="~/images/slide7.jpeg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:80vh;" alt="special request"/>
+    </div>
+</div>
+<!--Start form-->
+<div class="col-xs-12 col-md-8" style="margin:60px auto; border: 1px solid #eee;  border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+            <div id="contextual-classes" class="mb-4" style="margin:40px;">
+            <h1 style="font-size:25px;font-weight: bold;">Special Request</h1>
+            </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("Add", "ContactUs", FormMethod.Post))
+            {
+                @Html.TextBoxFor(m => m.contactId, new { @id = "contactId", @class = "form-control", style = "display:none" })
+				<div class="row">
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+                    <label class="form-label" for="name">
+                       Name
+                    </label>
+                    @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control", required = "required" })
+                    <span id="nameRequired" style="color:red"></span>
+                </div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+                    <label class="form-label" for="email">
+                        email
+                    </label>
+                    @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", required = "required" })
+                    <span id="emailRequired" style="color:red"></span>
+                </div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+                    <label class="form-label" for="phone">
+                        phone
+                    </label>
+                    @Html.TextBoxFor(m => m.phone, new { @id = "phone", type="number", @class = "form-control", required = "required" })
+                    <span id="phoneRequired" style="color:red"></span>
+                </div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+					<label>Nationality</label>
+					<select id="nationality" class="form-control" name="nationality" required="">
+						<option value="" selected="selected">Select your Nationality</option>
+						<option value="American">American</option>
+						<option value="Afghan">Afghan</option>
+						<option value="Albanian">Albanian</option>
+						<option value="Algerian">Algerian</option>
+						<option value="Andorran">Andorran</option>
+						<option value="Angolan">Angolan</option>
+						<option value="Argentinian">Argentinian</option>
+						<option value="Armenian">Armenian</option>
+						<option value="Australian">Australian</option>
+						<option value="Austrian">Austrian</option>
+						<option value="Azerbaijani">Azerbaijani</option>
+						<option value="Bahamian">Bahamian</option>
+						<option value="Bahraini">Bahraini</option>
+						<option value="Bangladeshi">Bangladeshi</option>
+						<option value="Barbadian">Barbadian</option>
+						<option value="Belarusian">Belarusian</option>
+						<option value="Belgian">Belgian</option>
+						<option value="Belizean">Belizean</option>
+						<option value="Beninese">Beninese</option>
+						<option value="Bhutanese">Bhutanese</option>
+						<option value="Bolivian">Bolivian</option>
+						<option value="Bosnian">Bosnian</option>
+						<option value="Botswanan">Botswanan</option>
+						<option value="Brazilian">Brazilian</option>
+						<option value="British&nbsp;Indian Ocean">British&nbsp;Indian Ocean</option>
+						<option value="British Virgin">British Virgin</option>
+						<option value="Bruneian">Bruneian</option>
+						<option value="Bulgarian">Bulgarian</option>
+						<option value="Burkinese">Burkinese</option>
+						<option value="Burundian">Burundian</option>
+						<option value="Cambodian">Cambodian</option>
+						<option value="Cameroonian">Cameroonian</option>
+						<option value="Canadian">Canadian</option>
+						<option value="Cape Verdean">Cape Verdean</option>
+						<option value="Chadian">Chadian</option>
+						<option value="Chilean">Chilean</option>
+						<option value="Chinese">Chinese</option>
+						<option value="Colombian">Colombian</option>
+						<option value="Congolese">Congolese</option>
+						<option value="Costa Rican">Costa Rican</option>
+						<option value="Croatian">Croatian</option>
+						<option value="Cuban">Cuban</option>
+						<option value="Cypriot">Cypriot</option>
+						<option value="Czech">Czech</option>
+						<option value="Danish">Danish</option>
+						<option value="Djiboutian">Djiboutian</option>
+						<option value="Dominican">Dominican</option>
+						<option value="East Timorese">East Timorese</option>
+						<option value="Ecuadorean">Ecuadorean</option>
+						<option value="Egyptian">Egyptian</option>
+						<option value="Salvadorean">Salvadorean</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Eritrean">Eritrean</option>
+						<option value="Estonian">Estonian</option>
+						<option value="Ethiopian">Ethiopian</option>
+						<option value="Fijian">Fijian</option>
+						<option value="Finnish">Finnish</option>
+						<option value="French">French</option>
+						<option value="Guyanese">Guyanese</option>
+						<option value="Gabonese">Gabonese</option>
+						<option value="Gambian">Gambian</option>
+						<option value="Georgian">Georgian</option>
+						<option value="German">German</option>
+						<option value="Ghanaian">Ghanaian</option>
+						<option value="Greek">Greek</option>
+						<option value="Grenadian">Grenadian</option>
+						<option value="Guatemalan">Guatemalan</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Haitian">Haitian</option>
+						<option value="Honduran">Honduran</option>
+						<option value="Hungarian">Hungarian</option>
+						<option value="Icelander">Icelander</option>
+						<option value="Indian">Indian</option>
+						<option value="Indonesian">Indonesian</option>
+						<option value="Iranian">Iranian</option>
+						<option value="Iraqi">Iraqi</option>
+						<option value="Irish">Irish</option>
+						<option value="Israeli">Israeli</option>
+						<option value="Italian">Italian</option>
+						<option value="Jamaican">Jamaican</option>
+						<option value="Japanese">Japanese</option>
+						<option value="Jordanian">Jordanian</option>
+						<option value="Kazakh">Kazakh</option>
+						<option value="Kenyan">Kenyan</option>
+						<option value="Kuwaiti">Kuwaiti</option>
+						<option value="Laotian">Laotian</option>
+						<option value="Latvian">Latvian</option>
+						<option value="Lebanese">Lebanese</option>
+						<option value="Liberian">Liberian</option>
+						<option value="Libyan">Libyan</option>
+						<option value="Lithuanian">Lithuanian</option>
+						<option value="Macedonian">Macedonian</option>
+						<option value="Madagascan">Madagascan</option>
+						<option value="Malawian">Malawian</option>
+						<option value="Malaysian">Malaysian</option>
+						<option value="Maldivian">Maldivian</option>
+						<option value="Malian">Malian</option>
+						<option value="Maltese">Maltese</option>
+						<option value="Mauritanian">Mauritanian</option>
+						<option value="Mauritian">Mauritian</option>
+						<option value="Mexican">Mexican</option>
+						<option value="Moldovan">Moldovan</option>
+						<option value="Monacan">Monacan</option>
+						<option value="Mongolian">Mongolian</option>
+						<option value="Moroccan">Moroccan</option>
+						<option value="Mozambican">Mozambican</option>
+						<option value="Namibian">Namibian</option>
+						<option value="Nepalese">Nepalese</option>
+						<option value="Dutch">Dutch</option>
+						<option value="New Zealand">New Zealand</option>
+						<option value="Nicaraguan">Nicaraguan</option>
+						<option value="Nigerien">Nigerien</option>
+						<option value="Nigerian">Nigerian</option>
+						<option value="North Korean">North Korean</option>
+						<option value="Norwegian">Norwegian</option>
+						<option value="Omani">Omani</option>
+						<option value="Pakistani">Pakistani</option>
+						<option value="Panamanian">Panamanian</option>
+						<option value="Guinean">Guinean</option>
+						<option value="Paraguayan">Paraguayan</option>
+						<option value="Peruvian">Peruvian</option>
+						<option value="Filipino">Filipino</option>
+						<option value="Polish">Polish</option>
+						<option value="Portuguese">Portuguese</option>
+						<option value="Qatari">Qatari</option>
+						<option value="Romanian">Romanian</option>
+						<option value="Russian">Russian</option>
+						<option value="Rwandan">Rwandan</option>
+						<option value="Saudi">Saudi</option>
+						<option value="Senegalese">Senegalese</option>
+						<option value="Serbian">Serbian</option>
+						<option value="Sierra Leonian">Sierra Leonian</option>
+						<option value="Singaporean">Singaporean</option>
+						<option value="Slovak">Slovak</option>
+						<option value="Slovenian">Slovenian</option>
+						<option value="Somali">Somali</option>
+						<option value="South African">South African</option>
+						<option value="South Korean">South Korean</option>
+						<option value="Spanish">Spanish</option>
+						<option value="Sri Lankan">Sri Lankan</option>
+						<option value="Sudanese">Sudanese</option>
+						<option value="Surinamese">Surinamese</option>
+						<option value="Swazi">Swazi</option>
+						<option value="Swedish">Swedish</option>
+						<option value="Swiss">Swiss</option>
+						<option value="Syrian">Syrian</option>
+						<option value="Taiwanese">Taiwanese</option>
+						<option value="Tajik">Tajik</option>
+						<option value="Tanzanian">Tanzanian</option>
+						<option value="Thai">Thai</option>
+						<option value="Togolese">Togolese</option>
+						<option value="Trinidadian">Trinidadian</option>
+						<option value="Tunisian">Tunisian</option>
+						<option value="Turkish">Turkish</option>
+						<option value="Turkmen">Turkmen</option>
+						<option value="Tuvaluan">Tuvaluan</option>
+						<option value="Ugandan">Ugandan</option>
+						<option value="Ukrainian">Ukrainian</option>
+						<option value="Emirati">Emirati</option>
+						<option value="British">British</option>
+						<option value="Uruguayan">Uruguayan</option>
+						<option value="Uzbek">Uzbek</option>
+						<option value="Vanuatuan">Vanuatuan</option>
+						<option value="Venezuelan">Venezuelan</option>
+						<option value="Vietnamese">Vietnamese</option>
+						<option value="Yemeni">Yemeni</option>
+						<option value="Zambian">Zambian</option>
+						<option value="Zimbabwean">Zimbabwean</option>
+					</select>
+					<span id="nationalityRequired" style="color:red"></span>
+				</div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+					<label class="form-label" for="arriveDate">
+						Arrive Date
+					</label>
+					<input type="date"alue="0" class="form-control" id="arriveDate" min="new Date()"/>
+					<span id="arriveDateRequired" style="color:red"></span>
+				</div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+					<label class="form-label" for="leaveDate">
+						Leave Date
+					</label>
+					<input type="date" alue="0" class="form-control" id="leaveDate" />
+					<span id="leaveDateRequired" style="color:red"></span>
+				</div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+					<label class="form-label" for="nights">
+						Number Of Nights
+					</label>
+					<input type="number" value="0" class="form-control" id="nights" />
+					<span id="nightsRequired" style="color:red"></span>
+				</div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+                    <label class="form-label" for="numberOfAdult">
+                        Number Of Adult
+                    </label>
+                    <input type="number" value="0" class="form-control" id="numberOfAdult" />
+                    <span id="numberOfAdultRequired" style="color:red"></span>
+                </div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+                    <label class="form-label" for="numberOfChild">
+                        Number Of Child
+                    </label>
+                    <input type="number" value="0" class="form-control" id="numberOfChild" />
+                </div>
+					<div class="col-xs-12 col-md-6" style="margin-bottom:20px;">
+                    <label class="form-label" for="numberOfInfant">
+                        Number Of Infant
+                    </label>
+                    <input type="number" value="0" class="form-control" id="numberOfInfant" />
+                </div>
+					<div class="col-xs-12 col-md-12" style="margin-bottom:20px;">
+                    <label class="form-label" for="message">
+                        message
+                    </label>
+                    @Html.TextAreaFor(m => m.message, new { @id = "message", @class = "form-control", required = "required" })
+                    <span id="messageRequired" style="color:red"></span>
+                </div>
+				</div>
+                <div class="d-grid">
+                    <button id="formUserBtn" style="background-color:#007bff" type="submit" class="btn btn-primary" id="formUserBtn">Send</button>
+                </div>
+            }
+        </div>
+        </div>
+    </div>
+<!-- Modal -->
+
+
+<script type="text/javascript">
+	function setMinDate() {
+		var dateToday = new Date();
+		var month = dateToday.getMonth() + 1;
+		var day = dateToday.getDate();
+		var year = dateToday.getFullYear();
+		if (month < 10)
+			month = '0' + month.toString();
+		if (day < 10)
+			day = '0' + day.toString();
+		var maxDate = year + '-' + month + '-' + day;
+		$('#arriveDate').attr('min', maxDate);
+		$('#leaveDate').attr('min', maxDate);
+	}
+    $(document).ready(function () {
+		setMinDate();
+        $('#formUserBtn').on("click", function (e) {
+            e.preventDefault();
+            if ($(".modal-body #name").val() == '') {
+                $(".modal-body #nameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #nameRequired").text("");
+            }
+            if ($(".modal-body #email").val() == '') {
+                $(".modal-body #emailRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #emailRequired").text("");
+            }
+            if ($(".modal-body #phone").val() == '') {
+                $(".modal-body #phoneRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #phoneRequired").text("");
+            }
+			if ($(".modal-body #nationality").val() == '') {
+				$(".modal-body #nationalityRequired").text("required");
+				return false;
+			} else {
+				$(".modal-body #nationalityRequired").text("");
+			}
+			if ($(".modal-body #arriveDate").val() == '') {
+				$(".modal-body #arriveDateRequired").text("required");
+				return false;
+			} else {
+				$(".modal-body #arriveDateRequired").text("");
+			}
+			if ($(".modal-body #leaveDate").val() == '') {
+				$(".modal-body #leaveDateRequired").text("required");
+				return false;
+			} else {
+				$(".modal-body #leaveDateRequired").text("");
+			}
+			if ($(".modal-body #nights").val() == '0') {
+				$(".modal-body #nightsRequired").text("required");
+				return false;
+			} else {
+				$(".modal-body #nightsRequired").text("");
+			}
+            if ($(".modal-body #numberOfAdult").val() == '0') {
+                $(".modal-body #numberOfAdultRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #numberOfAdultRequired").text("");
+            }
+            if ($(".modal-body #message").val() == '') {
+                $(".modal-body #messageRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #messageRequired").text("");
+            }
+            var userUpdate = {};
+            userUpdate.name = $(".modal-body #name").val();
+            userUpdate.email = $(".modal-body #email").val();
+            userUpdate.phone = $(".modal-body #phone").val();
+			userUpdate.countryName = $(".modal-body #nationality").val();
+			userUpdate.arriveDate = $(".modal-body #arriveDate").val();
+			userUpdate.nights = $(".modal-body #nights").val();
+			userUpdate.leaveDate = $(".modal-body #leaveDate").val();
+            userUpdate.message = $(".modal-body #message").val();
+            userUpdate.numberOfAdult = $(".modal-body #numberOfAdult").val();
+            userUpdate.numberOfChild = $(".modal-body #numberOfChild").val();
+            userUpdate.numberOfInfant = $(".modal-body #numberOfInfant").val();
+            $("#preloader").css({ "visibility": "visible", "opacity": 1 });
+            $.ajax({
+				url: "/SpecialRequest/Add",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(userUpdate),
+                success: function (data) {
+					$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+					if (data.status == true) {
+						localStorage.setItem("spcialRequestTitle", data.title);
+						localStorage.setItem("spcialRequestMessage", data.message);
+						location.href = "/";
+                    } else {
+                        $.toast({
+							heading: data.title,
+							text: data.message,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error', 
+                            bgColor: '#007bff',
+                        });
+                    }
+                },
+                error: function (error) {
+					$("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				}
+            });
+        });
+    });
+    function viewcontact(id,name) {
+        $(".modal-body #contactId").val(id);
+        $(".modal-body #contactName").val(name);
+        }
+</script>

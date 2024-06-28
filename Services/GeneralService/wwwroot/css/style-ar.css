@@ -1,0 +1,16 @@
+﻿body{
+    direction:rtl;
+}
+#page-content {
+    margin-right: 15.625rem;
+    margin-left: 0px;
+}
+#db-wrapper.toggled .navbar-vertical {
+    margin-right: -16rem;
+}
+#db-wrapper.toggled #page-content {
+    margin-right: 0px;
+}
+.simplebar-content-wrapper .simplebar-content .navbar-nav {
+    padding:0px;
+}

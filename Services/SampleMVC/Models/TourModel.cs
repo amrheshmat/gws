@@ -1,4 +1,5 @@
 using MWS.Data.Entities;
+using MWS.Data.Entities.anoush;
 
 namespace SampleMVC.Models
 {

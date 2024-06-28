@@ -1,0 +1,120 @@
+﻿@using TripBusiness.Ibusiness
+@model MWS.Data.Entities.Role;
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var permissions = ViewBag.permissions;
+}
+
+<!-- Modal -->
+<div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3"
+     style="margin: 60px auto; border: 1px solid #eee; padding: 50px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+     @using (Html.BeginForm("edit", "Role", FormMethod.Post, new { @id = "formUser" }))
+                {
+                    @Html.TextBoxFor(m => m.roleId, new { @id = "roleId", @class = "form-control", style = "display:none" })
+
+                        <div class="mb-3">
+                            <label class="form-label" for="roleName">
+                @_localizationService.Localize("RoleName")
+                            </label>
+                            @Html.TextBoxFor(m => m.roleName, new { @id="roleName", @class = "form-control", placeholder = "Enter Role Name " })
+                        <span id="roleNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+            <label class="form-label" for="permission">
+                @_localizationService.Localize("Permission")
+            </label>
+            <select class="form-select" name="field2" id="field2" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" onchange="test(this.selectedOptions)">
+                            @foreach (var permission in permissions)
+                            {
+                                
+                                    if (Model.permissions.Where(e => e.permissionId == permission.permissionId).ToList().Count> 0)
+                                    {
+                                         <option value="@permission.permissionId" id="@permission.permissionId" selected>@permission.permissionName</option>
+                                    }
+                                    else{
+                                        <option value="@permission.permissionId" id="@permission.permissionId">@permission.permissionName</option>
+                                    }
+                            }
+                        </select>
+                        <span id="permissionIdRequired" style="color:red"></span>
+                    </div>
+                    <div class="d-grid">
+            <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
+                    </div>
+                }
+</div>
+<script>
+    $(document).ready(function () {
+       
+        $('#demoGrid').dataTable({
+        });
+
+        $('#formUserBtn').on("click", function (e) {
+            //validation
+            if ($("#roleName").val() == '') {
+                $("#roleNameRequired").text("required");
+                return false;
+            } else {
+                $("#roleNameRequired").text("");
+            }
+            if ($("#permissionId").val() == '') {
+                $("#permissionIdRequired").text("required");
+                return false;
+            } else {
+                $("#permissionIdRequired").text("");
+            }
+            e.preventDefault();
+            var selectedPermissions = [];
+            for (var i = 0; i < $("#field2").val().length; i++) {
+                var permission = {
+                    "permissionId": $("#field2").val()[i],
+                };
+                selectedPermissions.push(permission);
+            }
+            var userUpdate = {};
+            userUpdate.roleId = $("#roleId").val();
+            userUpdate.roleName = $("#roleName").val();
+            userUpdate.permissions = selectedPermissions;
+            $.ajax({
+                    url: "/Role/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                    if (data.status == true) {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "success",
+                            timer: 1500
+                        });
+                            setTimeout(function () {
+                            location.href = document.referrer;
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "error",
+                            timer: 1500
+                            });
+                        }
+                    }
+                });
+        });
+    });
+        function editRole(id, name) {
+            $("#roleId").val(id);
+            $("#roleName").val(name);
+        }
+        function test(selectedOptions) {
+            debugger;
+            var val = "";
+            for (var i = 0; i < selectedOptions.length; i++) {
+                val += selectedOptions[i].id + ",";
+            }
+            $("#permissionId").val(val);
+        }
+</script>

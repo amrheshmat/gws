@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
+using MWS.Data.Entities.anoush;
 
 namespace MWS.Infrustructure.Context
 {
-	public class AGGRDbContext : DbContext
+    public class AGGRDbContext : DbContext
 	{
 
 		public AGGRDbContext(DbContextOptions<AGGRDbContext> options) : base(options)

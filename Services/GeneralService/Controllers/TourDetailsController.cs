@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
+using MWS.Data.Entities.anoush;
 using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Models;

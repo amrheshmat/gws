@@ -1,0 +1,60 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using MWS.Data.Entities.anoush
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model HotelRoomPricing;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "pricing").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "pricing").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "pricing").ToList().Count;
+    var models = ViewBag.pricing;
+    var hotels = ViewBag.hotels;
+    var rooms = ViewBag.rooms;
+    }
+
+
+
+    <div class="row">
+
+        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <!-- Additional fields for the model -->
+            <input type="text" name="userName" placeholder="user name" />
+            <input type="number" name="mobile" placeholder="mobile" />
+            <input type="file" id="files" name="files" multiple />
+            <button type="submit">Upload</button>
+        </form>
+        </div>
+    </div>
+
+
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<script>
+    $(document).ready(function () {
+        $('#uploadForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            var formData = new FormData(this); // Create a FormData object
+            $.ajax({
+                url: '/upload', // Your API endpoint
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
+                success: function (response) {
+                    $('#status').html('<p>Files uploaded successfully!</p>');
+                },
+                error: function (xhr, status, error) {
+                    $('#status').html('<p>An error occurred: ' + error + '</p>');
+                }
+            });
+        });
+    });
+</script>

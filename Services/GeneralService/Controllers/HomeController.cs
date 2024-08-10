@@ -26,33 +26,8 @@ namespace SampleMVC.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var t = _repo.Filter<User>(e => e.mobile == "1").ToList();
-            ViewData["Title"] = await Localize("users");
-            var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
-            var language = _languageService.GetLanguageByCulture(currentCulture);
-            List<Tour> tours = await _repo.Filter<Tour>(e => e.languageId == language.languageId && e.isActive == "Y  ").ToListAsync();
-            List<TourAttachment> tourAttachments = new List<TourAttachment>();
-            foreach (var tour in tours)
-            {
-                List<TourAttachment> tourAttachment = new List<TourAttachment>();
-                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == tour.tourId).ToListAsync();
-                foreach (var attachment in tourAttachment)
-                {
-                    tourAttachments.Add(attachment);
-                }
-            }
-            List<Setting> settings = await _repo.GetAll<Setting>().ToListAsync();
-            foreach (var setting in settings)
-            {
-                HttpContext.Session.SetString(setting.keyName, JsonConvert.SerializeObject(setting.value));
-            }
-            List<WhyChooseUs> whyChooseUs = await _repo.Filter<WhyChooseUs>(e => e.languageId == language.languageId).ToListAsync();
-            ViewBag.whyChooseUs = whyChooseUs;
-            ViewBag.whyChooseUs = whyChooseUs;
-            ViewBag.settings = settings;
-            ViewBag.tours = tours;
-            ViewBag.toursAttachments = tourAttachments;
-            return View(tourAttachments);
+            
+            return View();
         }
 
         public IActionResult Privacy()

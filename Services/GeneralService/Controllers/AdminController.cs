@@ -27,10 +27,6 @@ namespace SampleMVC.Controllers
 		{
 			var currentUser = HttpContext.Session.GetString("currentUser");
 			ViewData["users"] = await Localize("users");
-			int successRequest = _repo.Filter<Booking>(e => e.status == "Y").ToList().Count;
-			ViewBag.NumberOfRequest = _repo.GetAll<Booking>().ToList().Count();
-			double NumberOfSuccessRequest = (double)successRequest / ViewBag.NumberOfRequest;
-			ViewBag.NumberOfSuccessRequest = Math.Round(NumberOfSuccessRequest * 100);
 			if (currentUser == null)
 				return RedirectToAction("Login", "admin");
 			return View();

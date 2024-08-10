@@ -3,7 +3,7 @@
 @using Newtonsoft.Json
 @using TripBusiness.Ibusiness
 @inject ILocalizationService _localizationService;
-@model HotelRoomPricing;
+@model UserModel;
 @{
     ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -22,12 +22,30 @@
     <div class="row">
 
         <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
-        <form id="uploadForm" enctype="multipart/form-data">
-            <!-- Additional fields for the model -->
+       
+        <form id="uploadForm" asp-action="Upload" asp-controller="Tour" method="post" enctype="multipart/form-data">
             <input type="text" name="userName" placeholder="user name" />
             <input type="number" name="mobile" placeholder="mobile" />
-            <input type="file" id="files" name="files" multiple />
-            <button type="submit">Upload</button>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <input asp-for="userId" id="tourId" class="form-control" hidden />
+                </div>
+            </div>
+            <div id="imagePreview">
+            </div>
+            <div id="selectedImage">
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <label class="col-form-label">Select File</label>
+                    <input type="file" id="files" name="files" class="form-control" multiple />
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button id="submit" type="submit" class="btn btn-success">@_localizationService.Localize("UploadFile")</button>
+                </div>
+            </div>
         </form>
         </div>
     </div>

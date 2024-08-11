@@ -57,7 +57,7 @@ namespace SampleMVC.Controllers
 					HttpContext.Session.SetString("currentUser", JsonConvert.SerializeObject(t));
 					//var value = HttpContext.Session.GetString("currentUser");
 					//UserDTO m = JsonConvert.DeserializeObject<UserDTO>(value);
-					return RedirectToAction("index", "admin");
+					return RedirectToAction("index", "upload");
 				}
 			}
 			else

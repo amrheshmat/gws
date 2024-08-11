@@ -41,6 +41,9 @@
             <div id="selectedImage">
             </div>
             <div class="row mt-2">
+                <div class="col-12" id="showFiles">
+
+                </div>
                 <div class="col-12">
                     <label class="col-form-label">Select File</label>
                     <input type="file" id="files" name="files" class="form-control" multiple />
@@ -61,7 +64,64 @@
 
 <!-- Modal -->
 <script>
+    // var id = $("#tourId").val();
+    // $.ajax({
+    //     url: "/Tour/GetAttachmentById/" + id,
+    //     type: "GET",
+    //     cache: false,
+    //     success: function (data) {
+    //         validateFile = [];
+    //         $("#imagePreview").children().remove();
+    //         for (var i = 0; i < data.length; i++) {
+    //             $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+    //             $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].tourAttachmentId + '"/>');
+    //             var getLinkFromImage = $("#" + data[i].tourAttachmentId).attr('src');
+    //             console.log(getLinkFromImage);
+    //             fetch(getLinkFromImage)
+    //                 .then((res) => res.blob())
+    //                 .then((myBlob) => {
+    //                     debugger
+    //                     const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
+    //                     console.log(myFile);
+    //                     validateFile.push(myFile);
+    //                 });
+    //         }
+    //     }
+    // });
     $(document).ready(function () {
+        $("#files").on("change", function () {
+            for (var i = 0; i < this.files.length; i++) {
+                var fileName = this.files[i].name;
+                $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"> <i class="fa fa-trash delete" id="'+i+'"></i>' + fileName + '</div>');
+            }
+        });
+        $(document).on('click', '.delete', function () {
+            alert("hey!");
+            var id = $(this).attr('id');
+            alert(document.getElementById("files").files.length);
+            var filesObj = document.getElementById("files").files;
+            var result = Object.keys(filesObj).map((key) => [key, filesObj[key]]);
+            console.log(typeof(result));
+            console.log(result);
+            result.splice(id, 1);
+            console.log(result);
+            console.log(result.length);
+            console.log(document.getElementById("files").files);
+            //document.getElementById("files").files.remove(id);
+            var resultObj = Object.assign({}, result);
+            console.log(JSON.stringify(resultObj));
+           // updatefiles(resultObj);
+        });
+        function updatefiles(result) {
+            console.log("result " + result.length);
+           // console.log(typeof(document.getElementById("files").files));
+            document.getElementById('showFiles').innerHTML = "";
+            for (var i = 0; i < result.length; i++) {
+                var fileName =result[i].name;
+                
+                $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name">' + fileName + '</div>');
+            }
+        }
         $('#uploadForm').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
             var formData = new FormData(this); // Create a FormData object

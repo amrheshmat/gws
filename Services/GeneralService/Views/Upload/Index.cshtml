@@ -23,8 +23,14 @@
         <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
        
         <form id="uploadForm" asp-action="Upload" asp-controller="Tour" method="post" enctype="multipart/form-data">
-            <input type="text" name="userName" placeholder="user name" />
-            <input type="number" name="mobile" placeholder="mobile" />
+            <div class="row">
+                <div class="col-6">
+                    <input type="text" name="userName" placeholder="user name" class="form-control" />
+                </div>
+                <div class="col-6">
+                    <input type="number" name="mobile" placeholder="mobile" class="form-control" />
+                </div>
+            </div>
             <div class="row mt-2">
                 <div class="col-12">
                     <input asp-for="userId" id="tourId" class="form-control" hidden />

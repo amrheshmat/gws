@@ -88,9 +88,12 @@
     //         }
     //     }
     // });
+    var validateFile = [];
     $(document).ready(function () {
+        validateFile = [];
         $("#files").on("change", function () {
             for (var i = 0; i < this.files.length; i++) {
+                validateFile.push(this.files[i]);
                 var fileName = this.files[i].name;
                 $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"> <i class="fa fa-trash delete" id="'+i+'"></i>' + fileName + '</div>');
             }
@@ -98,33 +101,33 @@
         $(document).on('click', '.delete', function () {
             alert("hey!");
             var id = $(this).attr('id');
-            alert(document.getElementById("files").files.length);
-            var filesObj = document.getElementById("files").files;
-            var result = Object.keys(filesObj).map((key) => [key, filesObj[key]]);
-            console.log(typeof(result));
-            console.log(result);
-            result.splice(id, 1);
-            console.log(result);
-            console.log(result.length);
-            console.log(document.getElementById("files").files);
-            //document.getElementById("files").files.remove(id);
-            var resultObj = Object.assign({}, result);
-            console.log(JSON.stringify(resultObj));
-           // updatefiles(resultObj);
+            validateFile.splice(id, 1);
+            updatefiles();
         });
         function updatefiles(result) {
-            console.log("result " + result.length);
+           // console.log("result " + result.length);
            // console.log(typeof(document.getElementById("files").files));
-            document.getElementById('showFiles').innerHTML = "";
-            for (var i = 0; i < result.length; i++) {
-                var fileName =result[i].name;
-                
-                $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name">' + fileName + '</div>');
+           document.getElementById('showFiles').innerHTML = "";
+            for (var i = 0; i < validateFile.length; i++) {
+                var fileName = validateFile[i].name;
+                $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"> <i class="fa fa-trash delete" id="' + i + '"></i>' + fileName + '</div>');
             }
         }
         $('#uploadForm').on('submit', function (e) {
+            
             e.preventDefault(); // Prevent the default form submission
             var formData = new FormData(this); // Create a FormData object
+            for (const key of formData.values()) {
+                console.log(key);
+            }
+            formData.delete("files");
+            for (const key of formData.values()) {
+                console.log("00"+key);
+            }
+            formData.append("files", validateFile);
+            for (const key of formData.values()) {
+                console.log("99 ------" + key);
+            }
             $.ajax({
                 url: '/upload', // Your API endpoint
                 type: 'POST',

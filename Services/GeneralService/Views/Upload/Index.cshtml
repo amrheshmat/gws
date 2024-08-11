@@ -40,13 +40,13 @@
             </div>
             <div id="selectedImage">
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2" style="border: 1px solid #ebe5e5;border-radius: 5px;">
                 <div class="col-12" id="showFiles">
 
                 </div>
                 <div class="col-12">
-                    <label class="col-form-label">Select File</label>
-                    <input type="file" id="files" name="files" class="form-control" multiple />
+                    <input type="file" id="files" name="files" class="form-control" multiple hidden/>
+                    <i class="fa fa-upload" id="uploadIcon" style="cursor: pointer;font-size: 25px; margin: 10px 50%;"></i>
                 </div>
             </div>
             <div class="row mt-2">
@@ -64,69 +64,39 @@
 
 <!-- Modal -->
 <script>
-    // var id = $("#tourId").val();
-    // $.ajax({
-    //     url: "/Tour/GetAttachmentById/" + id,
-    //     type: "GET",
-    //     cache: false,
-    //     success: function (data) {
-    //         validateFile = [];
-    //         $("#imagePreview").children().remove();
-    //         for (var i = 0; i < data.length; i++) {
-    //             $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
-    //             $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].tourAttachmentId + '"/>');
-    //             var getLinkFromImage = $("#" + data[i].tourAttachmentId).attr('src');
-    //             console.log(getLinkFromImage);
-    //             fetch(getLinkFromImage)
-    //                 .then((res) => res.blob())
-    //                 .then((myBlob) => {
-    //                     debugger
-    //                     const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
-    //                     console.log(myFile);
-    //                     validateFile.push(myFile);
-    //                 });
-    //         }
-    //     }
-    // });
+
     var validateFile = [];
     $(document).ready(function () {
+        $("#uploadIcon").on("click", function () {
+            $("#files").click();
+        });
         validateFile = [];
         $("#files").on("change", function () {
             for (var i = 0; i < this.files.length; i++) {
                 validateFile.push(this.files[i]);
                 var fileName = this.files[i].name;
-                $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"> <i class="fa fa-trash delete" id="'+i+'"></i>' + fileName + '</div>');
+                $('#showFiles').append('<div class="row" style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"><span class="col-11">' + fileName + '</span> <span class="col-1"><i class="fa fa-trash delete" id="' + i + '"></i></span></div>');
             }
         });
         $(document).on('click', '.delete', function () {
-            alert("hey!");
             var id = $(this).attr('id');
             validateFile.splice(id, 1);
             updatefiles();
         });
         function updatefiles(result) {
-           // console.log("result " + result.length);
-           // console.log(typeof(document.getElementById("files").files));
            document.getElementById('showFiles').innerHTML = "";
             for (var i = 0; i < validateFile.length; i++) {
                 var fileName = validateFile[i].name;
-                $('#showFiles').append('<div style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"> <i class="fa fa-trash delete" id="' + i + '"></i>' + fileName + '</div>');
+                $('#showFiles').append('<div class="row" style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"><span class="col-11">' + fileName + '</span> <span class="col-1"><i class="fa fa-trash delete" id="' + i + '"></i></span></div>');
             }
         }
         $('#uploadForm').on('submit', function (e) {
             
             e.preventDefault(); // Prevent the default form submission
             var formData = new FormData(this); // Create a FormData object
-            for (const key of formData.values()) {
-                console.log(key);
-            }
             formData.delete("files");
-            for (const key of formData.values()) {
-                console.log("00"+key);
-            }
-            formData.append("files", validateFile);
-            for (const key of formData.values()) {
-                console.log("99 ------" + key);
+            for (var i = 0; i < validateFile.length; i++) {
+                formData.append(i, validateFile[i]);
             }
             $.ajax({
                 url: '/upload', // Your API endpoint

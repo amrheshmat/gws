@@ -31,8 +31,9 @@ namespace SampleMVC.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFiles([FromForm] UserModel model, [FromForm] IList<IFormFile> files)
+        public async Task<IActionResult> UploadFiles([FromForm] UserModel model)
         {
+            var files = Request.Form.Files;
             if (files.Count == 0)
             {
                 return BadRequest("No files uploaded.");

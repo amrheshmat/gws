@@ -39,11 +39,20 @@ namespace SampleMVC.Controllers
 		{
 			return View();
 		}
-		[AuthAttribute("index", "home")]
-		public IActionResult Test()
+        [HttpGet]
+        [Route("admin/chart")]
+        public IActionResult chart()
 		{
-			return View();
-		}
+            ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
+            ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
+            ViewBag.NumberOfLanguage = _repo.GetAll<Language>().ToList().Count();
+			List<int> chartData = new List<int>();
+			chartData.Add(ViewBag.NumberOfUsers);
+			chartData.Add(ViewBag.NumberOfRoles);
+			chartData.Add(ViewBag.NumberOfLanguage);
+            var peopleArray = chartData.ToArray();
+            return Ok(peopleArray);
+        }
 		public IActionResult AccessDenied()
 		{
 			return View();

@@ -27912,3 +27912,6 @@ input:checked + .slide-container .nav label {
     display: block;
 }
 
+.modebar-group {
+    display: none!important;
+}

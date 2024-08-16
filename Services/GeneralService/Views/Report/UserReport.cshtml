@@ -57,13 +57,18 @@
             dom: 'Bfrtip',
             buttons: [
                 'excel', 'print'
+            ],
+            columnDefs: [
+                { targets: 0, title: 'Name', data: 'userName' },
+                    { targets: 1, title: 'mobile', data: 'mobile' },
+                    { targets: 2, title: 'email', data: 'email' },
+                    { targets: 3, title: 'role', data: 'roleName' }
             ]
-    });
+        });
         $.ajax({
-            url: "/Report/UserReportData",
+            url: "/Report/UserReportData/",
             method: 'GET',
             success: function (data) {
-                console.log(data);
                 // Clear existing table data
                 dataTable.clear().draw();
 

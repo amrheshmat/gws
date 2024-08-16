@@ -65,7 +65,23 @@ namespace SampleMVC.Controllers
         {
 
             var model = await _repo.GetAll<User>().ToListAsync();
-            var peopleArray = model.ToArray();
+            List<UserReportModel> userReportModelList = new List<UserReportModel>();
+            if (model != null && model.Count > 0)
+            {
+                foreach (var user in model)
+                {
+                    UserReportModel userReportModel = new UserReportModel();
+                    userReportModel.id = user.userId;
+                    userReportModel.userName = user.userName;
+                    userReportModel.email = user.email;
+                    userReportModel.mobile = user.mobile;
+                    userReportModel.email = user.email;
+                    string role = _repo.Filter<Role>(e => e.roleId == user.roleId).FirstOrDefault().roleName;
+                    userReportModel.roleName = role;
+                    userReportModelList.Add(userReportModel);
+                }
+            }
+            var peopleArray = userReportModelList.ToArray();
             return Ok(peopleArray);
         }
         [Route("Report/UserReport")]

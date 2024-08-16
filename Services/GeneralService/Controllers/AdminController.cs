@@ -29,7 +29,10 @@ namespace SampleMVC.Controllers
 			ViewData["users"] = await Localize("users");
 			if (currentUser == null)
 				return RedirectToAction("Login", "admin");
-			return View();
+			ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
+			ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
+
+            return View();
 		}
 
 		public IActionResult Login()

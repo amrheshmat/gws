@@ -57,12 +57,22 @@
             dom: 'Bfrtip',
             buttons: [
                 'excel', 'print'
-            ],
-            columnDefs: [
-            { targets: 0, title: 'ID', data: 'id' },
-            { targets: 1, userName: 'Date', data: 'userName' },
-        ]
+            ]
     });
-      
+        $.ajax({
+            url: "/Report/UserReportData",
+            method: 'GET',
+            success: function (data) {
+                console.log(data);
+                // Clear existing table data
+                dataTable.clear().draw();
+
+                // Add fetched data to the table
+                dataTable.rows.add(data).draw();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
     });
 </script>

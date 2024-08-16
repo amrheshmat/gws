@@ -60,11 +60,18 @@ namespace SampleMVC.Controllers
         //}
 
         [HttpGet]
+        [Route("Report/UserReportData")]
+        public async Task<IActionResult> UserReportData()
+        {
+
+            var model = await _repo.GetAll<User>().ToListAsync();
+            var peopleArray = model.ToArray();
+            return Ok(peopleArray);
+        }
         [Route("Report/UserReport")]
         public async Task<IActionResult> UserReport()
         {
             return View();
         }
-
     }
 }

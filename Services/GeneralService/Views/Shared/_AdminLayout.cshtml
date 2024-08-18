@@ -694,6 +694,66 @@
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.bxs-chevron-down {
+box-sizing: border-box;
+position: relative;
+display: block;
+transform: scale(var(--ggs, 1));
+width: 26px;
+height: 15px;
+border: 2px solid transparent;
+border-radius: 100px;
+}
+
+.bxs-chevron-down::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+    transform: rotate(-45deg);
+    right: 10px;
+    top: 7px;
+}
+
+.links li:hover .htmlcss-arrow,
+.links li:hover .js-arrow {
+    transform: rotate(90deg);
+}
+
+        .links li .arrow {
+            /* background: red; */
+            height: 20px;
+            width: 20px;
+            line-height: 70px;
+            text-align: center;
+            display: inline-block;
+            color: #637381 !important;
+            transition: all 0.3s ease;
+        }
+.links li .sub-menu {
+   
+    line-height: 40px;
+    /* background: #3E8DA8; */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 4px 4px;
+    display: none;
+    z-index: 2;
+}
+
+.links li:hover .htmlCss-sub-menu,
+.links li:hover .js-sub-menu {
+    display: block;
+}
+.links li:hover .arrow{
+            height: 15px;
+            width: 26px;
+            color: #fff !important;
+}
 </style>
 </head>
 @* <body>
@@ -745,7 +805,7 @@
                                 <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
 
                                     <div class="simplebar-content" style="padding: 0px;">
-                                        <ul class="navbar-nav flex-column accordion">
+                                        <ul class="navbar-nav flex-column accordion links">
                                             <li class="logo" style="margin-bottom: 10px;margin-top:10px;margin-left: 20px; cursor: pointer;">
                                                 <a href="/" target="_blank">
                                                     <img style="width: 70px;height: 70px !important;" src="~/images/logo-white.png" class="hidden dark:inline-block" alt="white logo">
@@ -763,11 +823,11 @@
                                                 </li>
                                             }
                                             <li class="nav-item has-submenu">
-                                                @if (fixedPages.Count > 1)
+                                                @if (fixedPages.Count > 0)
                                                 {
-                                                    <a class="nav-link" href="#"> <i class="fa fa-file-alt" style="margin:0px 8px;"></i> pages  </a>
+                                                    <a class="nav-link" href="#"> <i class="fa fa-file-alt" style="margin:0px 8px;"></i> pages  <i class='bx bxs-chevron-down js-arrow arrow'></i> </a>
                                                 }
-                                                <ul class="submenu collapse">
+                                                <ul class="submenu collapse js-sub-menu sub-menu">
                                                     @foreach(var item in fixedPages)
                                             {
                                                     <li>

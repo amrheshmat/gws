@@ -644,14 +644,16 @@
 	}
 	function completeCallback() {
 		var requestId = localStorage.getItem("PaymentRequestId");
+		var sessionId = localStorage.getItem("SessionId");
 		$.ajax({
-			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId,
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId,
 			cache: false,
 			type: "GET",
 			success: function (data) {
 				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
 				if (data.status == true) {
 					localStorage.removeItem("PaymentRequestId");
+					localStorage.removeItem("SessionId");
 				} 
 			},
 			error: function (error) {
@@ -907,6 +909,7 @@
 						}
 					});
 					console.log("sessionId");
+					localStorage.setItem("SessionId", data.id);
 					console.log(data.id);
 					debugger;
 					Checkout.showPaymentPage();

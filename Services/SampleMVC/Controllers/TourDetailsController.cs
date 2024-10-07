@@ -178,8 +178,8 @@ namespace SampleMVC.Controllers
             return paymentSession.session.id;
         }
         [HttpGet]
-        [Route("TourDetails/updateRequestStatusAndSendEmail/{id}")]
-        public async Task<Response> updateRequestStatusAndSendEmail(long id)
+        [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}")]
+        public async Task<Response> updateRequestStatusAndSendEmail(long id,string sessionId)
         {
             Response response = new Response();
             response.Title = _localizationService.Localize("CheckOut");
@@ -189,6 +189,7 @@ namespace SampleMVC.Controllers
             {
                 //update request ...
                 bookRequest.status = "Y";
+                bookRequest.sessionReference = sessionId;
                 _repo.Update(bookRequest);
                 _repo.SaveChanges();
                 Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
@@ -285,7 +286,7 @@ namespace SampleMVC.Controllers
             var capacity = tour?.capacity;
             List<Booking> bookingList2 = await _repo.GetAll<Booking>().ToListAsync();
 
-            List<Booking> bookingList = await _repo.Filter<Booking>(e => e.tourId == tour.tourId && e.tourDate == bookModel.tourDate).ToListAsync();
+            List<Booking> bookingList = await _repo.Filter<Booking>(e => e.tourId == tour.tourId && e.tourDate == bookModel.tourDate && e.status =="Y").ToListAsync();
             var selectecCapcity = 0;
             foreach (var book in bookingList)
             {

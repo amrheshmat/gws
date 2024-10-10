@@ -637,10 +637,12 @@
 	var bookAdditionalActivities = [];
 
 	function errorCallback(error) {
-		console.log(JSON.stringify(error));
+		localStorage.removeItem("PaymentRequestId");
+		localStorage.removeItem("SessionId");
 	}
 	function cancelCallback() {
-		console.log('Payment cancelled');
+		localStorage.removeItem("PaymentRequestId");
+		localStorage.removeItem("SessionId");
 	}
 	function completeCallback() {
 		var requestId = localStorage.getItem("PaymentRequestId");
@@ -669,7 +671,8 @@
 		//$(".ui-datepicker-next").append("<i class='fa fa-chevron-right'></i>");
 	}
     $(document).ready(function () {
-		
+		localStorage.removeItem("PaymentRequestId");
+		localStorage.removeItem("SessionId");
 		$(".card-header h4 a").on("click", function () {
 			$(this).find("i").toggleClass("fa-plus fa-minus");
 		});

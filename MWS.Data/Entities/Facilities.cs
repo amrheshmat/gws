@@ -3,15 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MWS.Data.Entities
 {
-    public partial class Expect
+    public partial class Facilities
     {
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public decimal? expectId { get; set; }
+        public int? facilitiesId { get; set; }
 
         public string? title { get; set; }
-        public string? details { get; set; }
-        public decimal? tourId { get; set; }
-        public int? order { get; set; }
+        public string? description { get; set; }
+        public string? imagePath { get; set; }
+        public int? orderId { get; set; }
+        public int? languageId { get; set; }
     }
 }

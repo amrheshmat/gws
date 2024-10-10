@@ -30668,3 +30668,6 @@ button.applyBtn.btn.btn-sm.btn-primary {
     border: 1px solid #83dfad !important;
     background: #83dfad !important;
 }
+#tourIdLinke:hover {
+    text-decoration: none;
+}

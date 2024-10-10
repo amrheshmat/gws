@@ -38,7 +38,7 @@ namespace SampleMVC.Controllers
             tourModel.tourLanguages = await _repo.Filter<TourLanguage>(e => e.tourId == id).ToListAsync();
             List<Day> days = await _repo.GetAll<Day>().ToListAsync();
             //List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
-            List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id).ToListAsync();
+            List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type =="tour").ToListAsync();
             List<HotelType> hotels = await _repo.GetAll<HotelType>().ToListAsync();
             List<RoomType> rooms = await _repo.GetAll<RoomType>().ToListAsync();
             ViewBag.days = days;

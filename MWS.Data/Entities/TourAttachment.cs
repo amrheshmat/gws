@@ -12,6 +12,7 @@ namespace MWS.Data.Entities
         public string? attachmentPath { get; set; }
         public string? attachmentName { get; set; }
         public string? isMainAttachment { get; set; }
+        public string? type { get; set; }
         public decimal? tourId { get; set; }
     }
 }

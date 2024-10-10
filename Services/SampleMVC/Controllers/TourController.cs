@@ -103,7 +103,7 @@ namespace SampleMVC.Controllers
         [HttpGet]
         public async Task<List<TourAttachment>> GetAttachmentById(int id)//index page
         {
-            List<TourAttachment> tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == id).ToListAsync();
+            List<TourAttachment> tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type == "tour").ToListAsync();
             List<Tour> tours = await _repo.GetAll<Tour>().ToListAsync();
             ViewBag.tours = tours;
             return tourAttachment;
@@ -128,7 +128,7 @@ namespace SampleMVC.Controllers
                 List<TourDay>? days = await _repo.Filter<TourDay>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<TourLanguage>? languages = await _repo.Filter<TourLanguage>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<TourAdditionalActivity>? activities = await _repo.Filter<TourAdditionalActivity>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
-                List<TourAttachment>? attchments = await _repo.Filter<TourAttachment>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
+                List<TourAttachment>? attchments = await _repo.Filter<TourAttachment>(e => e.tourId == tourModel.Tour.tourId && e.type == "tour").ToListAsync();
                 _repo.context.RemoveRange(includes);
                 _repo.context.RemoveRange(excludes);
                 _repo.context.RemoveRange(expects);
@@ -153,7 +153,7 @@ namespace SampleMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<TourAttachment> attachments = _repo.Filter<TourAttachment>(e => e.tourId == tourId).ToList();
+                List<TourAttachment> attachments = _repo.Filter<TourAttachment>(e => e.tourId == tourId && e.type == "tour").ToList();
                 _repo.context.RemoveRange(attachments);
                 _repo.SaveChanges();
                 var files = Request.Form.Files;
@@ -170,6 +170,7 @@ namespace SampleMVC.Controllers
                     FileInfo fileInfo = new FileInfo(file.FileName);
                     var myUniqueFileName = string.Format(@"{0}", Guid.NewGuid());
                     TourAttachment tourAttachment = new TourAttachment();
+                    tourAttachment.type = "tour";
                     tourAttachment.tourId = tourId;
                     tourAttachment.attachmentName = file.Name;
                     tourAttachment.attachmentPath = myUniqueFileName + fileInfo.Extension;
@@ -207,7 +208,7 @@ namespace SampleMVC.Controllers
                 List<TourDay>? days = await _repo.Filter<TourDay>(e => e.tourId == tourId).ToListAsync();
                 List<TourLanguage>? languages = await _repo.Filter<TourLanguage>(e => e.tourId == tourId).ToListAsync();
                 List<TourAdditionalActivity>? activities = await _repo.Filter<TourAdditionalActivity>(e => e.tourId == tourId).ToListAsync();
-                List<TourAttachment>? attchments = await _repo.Filter<TourAttachment>(e => e.tourId == tourId).ToListAsync();
+                List<TourAttachment>? attchments = await _repo.Filter<TourAttachment>(e => e.tourId == tourId && e.type == "tour").ToListAsync();
                 _repo.Delete<Tour>(tour);
                 _repo.context.RemoveRange(includes);
                 _repo.context.RemoveRange(excludes);

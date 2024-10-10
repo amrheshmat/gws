@@ -22,7 +22,7 @@
     var menuPermission =currentUser?.permissions.Where(e=>e.isMenu == "Y");
     var fixedPages = menuPermission.Where(e => e.permissionAction == "term" || e.permissionAction == "faq" || e.permissionAction == "about").ToList();
     var otherPages = menuPermission.Where(e => e.permissionAction != "term" && e.permissionAction != "faq" && e.permissionAction != "about").ToList();
-    var lang = requestCulture?.RequestCulture.UICulture.Name;
+        var lang = requestCulture?.RequestCulture.UICulture.Name;
 }
 <!DOCTYPE html>
 

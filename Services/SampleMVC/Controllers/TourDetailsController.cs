@@ -32,6 +32,7 @@ namespace SampleMVC.Controllers
             tourModel.includes = await _repo.Filter<Include>(e => e.tourId == id).ToListAsync();
             tourModel.excludes = await _repo.Filter<Exclude>(e => e.tourId == id).ToListAsync();
             tourModel.expects = await _repo.Filter<Expect>(e => e.tourId == id).ToListAsync();
+            tourModel.blockedDates = await _repo.Filter<BlockedDates>(e => e.tourId == id).ToListAsync();
             //tourModel.packs = await _repo.Filter<Pack>(e => e.tourId == id).ToListAsync();
             tourModel.additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == id).ToListAsync();
             tourModel.tourDays = await _repo.Filter<TourDay>(e => e.tourId == id).ToListAsync();
@@ -304,7 +305,7 @@ namespace SampleMVC.Controllers
                 var selectedRoomType = bookModel.roomCountList.Where(e => e.count > 0).ToList();
                 foreach (var room in selectedRoomType)
                 {
-                    if (room.roomTypeId == 1)//single
+                    if (room.roomTypeId == 1 || room.roomTypeId == 1)//single
                     {
                         var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
                         var adultforsingle = t?.numberOfAdult * room.count;
@@ -313,7 +314,7 @@ namespace SampleMVC.Controllers
                     }
                     if (bookModel.numberOfAdult.Value > 0)
                     {
-                        if (room.roomTypeId == 3)//double
+                        if (room.roomTypeId == 3 || room.roomTypeId == 4)//double
                         {
                             var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
                             var adultfordouble = t?.numberOfAdult * room.count;
@@ -330,7 +331,7 @@ namespace SampleMVC.Controllers
                     }
                     if (bookModel.numberOfAdult.Value > 0)
                     {
-                        if (room.roomTypeId == 5)//suite
+                        if (room.roomTypeId == 5 || room.roomTypeId == 6)//suite
                         {
                             var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
                             var adultforsuite = t?.numberOfAdult * room.count;
@@ -341,7 +342,7 @@ namespace SampleMVC.Controllers
                             }
                             else
                             {
-                                adultPrice += tour.adultPriceForDouble.Value * bookModel.numberOfAdult.Value;
+                                adultPrice += tour.adultPriceForSuite.Value * bookModel.numberOfAdult.Value;
                             }
                         }
                     }

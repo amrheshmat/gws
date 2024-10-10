@@ -125,6 +125,28 @@
                 <span id="dayRequired" style="color:red"></span>
             </div>
             <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                <label class="form-label" for="capacity" style="display:block">
+                    @_localizationService.Localize("BlockedDates")
+                </label>
+                <div class="form-group">
+                    <div>
+                        <i class="fa fa-calendar-alt" onclick="showDatePicker()" id="showDatePicker"></i>
+                    </div>
+                    <input class="date-pick form-control required valid" disabled="disabled"
+                           type="text" name="dateBooking" id="datepicker">
+                </div>
+                <div id="addBlockDates">
+                    @if (Model.blockedDates != null && Model.blockedDates.Count > 0)
+                    {
+                        foreach (var include in Model.blockedDates)
+                        {
+                            <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i><input type="text" value="@include.date" id="BlockDates" class="form-control"></div>
+                        }
+                    }
+
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
                 <label class="form-label" for="AvaliableLanguages" style="display:block">
                     @_localizationService.Localize("AvaliableLanguages")
                 </label>
@@ -306,7 +328,32 @@
             val += selectedOptions[i].id + ",";
         }
     }
+    function showDatePicker() {
+        $("#datepicker").datepicker('show'); //Show on click of button
+
+        //$(".ui-datepicker-next").append("<i class='fa fa-chevron-right'></i>");
+    }
     $(document).ready(function () {
+        var dateToday = new Date();
+        $("#datepicker").datepicker({
+            dateFormat: "DD, dd-mm- yy",
+            minDate: dateToday
+        }).on("change", function () {
+            datetime = $("#datepicker").datepicker("getDate");
+            //datetime = datetime.substring(0, datetime.indexOf("T"));
+            var year = $("#datepicker").datepicker("getDate").getFullYear();
+            var month = $("#datepicker").datepicker("getDate").getMonth() + 1;
+            var day = $("#datepicker").datepicker("getDate").getDate();
+            debugger;
+            if (parseInt(day) < 10)
+                day = "0" + day;
+            if (parseInt(month) < 10)
+                month = "0" + month;
+            datetime = day + "-" + month + "-" + year;
+            $("#addBlockDates").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <input type='text' value='"+datetime+"'  class='form-control' style='margin:5px 0px'></div>");
+
+        });
+
         $(document).on('change', '#language', function () {
             $("#languageId").val($(this).val());
         });
@@ -450,6 +497,7 @@
             // var packs = [];
             var additionalInformations = [];
             var expects = [];
+            var blockDates = [];
             $('#addInclude').children('textarea').each(function () {
                 var include = {
                     "includeText": this.value,
@@ -461,6 +509,11 @@
                     "includeText": this.value,
                 };
                 includes.push(include);
+            }); $('#addBlockDates div').children('input').each(function () {
+                var d = {
+                    "date": this.value,
+                };
+                blockDates.push(d);
             });
             $('#addExclude').children('textarea').each(function () {
                 var exclude = {
@@ -556,6 +609,7 @@
             tour.includes = includes;
             tour.excludes = excludes;
             tour.expects = expects;
+            tour.blockedDates = blockDates;
             // tour.packs = packs;
             tour.additionalInformations = additionalInformations;
             tour.days = selectedDays;

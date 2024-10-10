@@ -629,6 +629,12 @@
 					<li id="@item.dayId">@item.dayId</li>
 				}
 			</ul>
+			<ul id="blockedDatesList" style="display:none">
+				@foreach(var item in Model.blockedDates)
+				{
+					<li id="@item.date">@item.date</li>
+				}
+			</ul>
        </div>
    </div>
 </div>
@@ -670,45 +676,48 @@
 		
 		//$(".ui-datepicker-next").append("<i class='fa fa-chevron-right'></i>");
 	}
+	var Blockeddates = [];
+	var disallowed = [];
+
+	function disableDates(date) {
+		console.log("dis" + Blockeddates.length);
+		var string = jQuery.datepicker.formatDate('dd-mm-yy', date);
+		day = date.getDay();
+		let isDefaultDisabled = false;
+		if (disallowed.indexOf(day) !== -1) {
+			isDefaultDisabled = true;
+		}
+		return [isDefaultDisabled && Blockeddates.indexOf(string) == -1];
+	}
     $(document).ready(function () {
 		localStorage.removeItem("PaymentRequestId");
 		localStorage.removeItem("SessionId");
 		$(".card-header h4 a").on("click", function () {
 			$(this).find("i").toggleClass("fa-plus fa-minus");
 		});
-		var disallowed =[];
 		$( "#tourDayList li" ).each( function( index, element ){
 			var dayId = $(this).attr('id');
 			disallowed.push(parseInt(dayId))
+		}); $("#blockedDatesList li").each(function (index, element) {
+			var dayId = $(this).attr('id');
+			Blockeddates.push(dayId)
 		});
-		console.log(disallowed);
 		var dateToday = new Date();
 		$("#datepicker").datepicker({
 			dateFormat: "DD, dd-mm- yy",
 			minDate: dateToday,
-			beforeShowDay: function (date) {
-				day = date.getDay();
-				if (disallowed.indexOf(day) !== -1) {
-					return [true];
-				} else {
-					return [false];
-				}
-			}
+			beforeShowDay: disableDates
 		}).on("change", function () {
 			datetime = $("#datepicker").datepicker("getDate") ;
 			//datetime = datetime.substring(0, datetime.indexOf("T"));
 			var year = $("#datepicker").datepicker("getDate").getFullYear() ;
 			var month = $("#datepicker").datepicker("getDate").getMonth() +1 ;
 			var day = $("#datepicker").datepicker("getDate").getDate() ;
-			debugger;
 			if (parseInt(day) < 10)
 				day = "0" + day;
 			if (parseInt(month) < 10)
 				month = "0" + month;
 			datetime = year + "-" + month + "-" + day;
-			console.log(year);
-			console.log(month);
-			console.log(day);
 			console.log(datetime);
 		});
 		$('#formBookingBtn').on("click", function (e) {

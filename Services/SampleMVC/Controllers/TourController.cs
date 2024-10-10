@@ -84,6 +84,7 @@ namespace SampleMVC.Controllers
             tourModel.includes = await _repo.Filter<Include>(e => e.tourId == id).ToListAsync();
             tourModel.excludes = await _repo.Filter<Exclude>(e => e.tourId == id).ToListAsync();
             tourModel.expects = await _repo.Filter<Expect>(e => e.tourId == id).ToListAsync();
+            tourModel.blockedDates = await _repo.Filter<BlockedDates>(e => e.tourId == id).ToListAsync();
             //tourModel.packs = await _repo.Filter<Pack>(e => e.tourId == id).ToListAsync();
             tourModel.additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == id).ToListAsync();
             tourModel.tourDays = await _repo.Filter<TourDay>(e => e.tourId == id).ToListAsync();
@@ -123,6 +124,7 @@ namespace SampleMVC.Controllers
                 List<Include>? includes = await _repo.Filter<Include>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<Exclude>? excludes = await _repo.Filter<Exclude>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<Expect>? expects = await _repo.Filter<Expect>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
+                List<BlockedDates>? blockedDates = await _repo.Filter<BlockedDates>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 //List<Pack>? packs = await _repo.Filter<Pack>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<AdditionalInformation>? additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
                 List<TourDay>? days = await _repo.Filter<TourDay>(e => e.tourId == tourModel.Tour.tourId).ToListAsync();
@@ -132,6 +134,7 @@ namespace SampleMVC.Controllers
                 _repo.context.RemoveRange(includes);
                 _repo.context.RemoveRange(excludes);
                 _repo.context.RemoveRange(expects);
+                _repo.context.RemoveRange(blockedDates);
                 _repo.context.RemoveRange(additionalInformations);
                 //_repo.context.RemoveRange(packs);
                 _repo.context.RemoveRange(days);
@@ -203,6 +206,7 @@ namespace SampleMVC.Controllers
                 List<Include>? includes = await _repo.Filter<Include>(e => e.tourId == tourId).ToListAsync();
                 List<Exclude>? excludes = await _repo.Filter<Exclude>(e => e.tourId == tourId).ToListAsync();
                 List<Expect>? expects = await _repo.Filter<Expect>(e => e.tourId == tourId).ToListAsync();
+                List<BlockedDates>? blockedDates = await _repo.Filter<BlockedDates>(e => e.tourId == tourId).ToListAsync();
                 //List<Pack>? packs = await _repo.Filter<Pack>(e => e.tourId == tourId).ToListAsync();
                 List<AdditionalInformation>? additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == tourId).ToListAsync();
                 List<TourDay>? days = await _repo.Filter<TourDay>(e => e.tourId == tourId).ToListAsync();
@@ -213,7 +217,7 @@ namespace SampleMVC.Controllers
                 _repo.context.RemoveRange(includes);
                 _repo.context.RemoveRange(excludes);
                 _repo.context.RemoveRange(expects);
-                //_repo.context.RemoveRange(packs);
+                _repo.context.RemoveRange(blockedDates);
                 _repo.context.RemoveRange(additionalInformations);
                 _repo.context.RemoveRange(days);
                 _repo.context.RemoveRange(languages);
@@ -256,6 +260,7 @@ namespace SampleMVC.Controllers
             List<Include>? includes = tour.includes;
             List<Exclude>? excludes = tour.excludes;
             List<Expect>? expects = tour.expects;
+            List<BlockedDates>? blockedDates = tour.blockedDates;
             //List<Pack>? packs = tour.packs;
             List<AdditionalInformation>? additionalInformations = tour.additionalInformations;
             List<Day>? days = tour.days;
@@ -277,11 +282,14 @@ namespace SampleMVC.Controllers
                 expect.tourId = tour.Tour.tourId;
             }
             _repo.context.AddRange(expects);
-            //foreach (var pack in packs)
-            //{
-            //	pack.tourId = tour.Tour.tourId;
-            //}
-            //_repo.context.AddRange(packs);
+            if (blockedDates != null)
+            {
+                foreach (var pack in blockedDates)
+                {
+                    pack.tourId = int.Parse(tour.Tour.tourId.ToString());
+                }
+            }
+            _repo.context.AddRange(blockedDates);
             foreach (var additionalInformation in additionalInformations)
             {
                 additionalInformation.tourId = tour.Tour.tourId;

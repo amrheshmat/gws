@@ -19,6 +19,12 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">
+                                        @_localizationService.Localize("Id")
+                                        </th>
+                                        <th scope="col">
+                                        @_localizationService.Localize("sessionReference")
+                                        </th>
+                                        <th scope="col">
                                         @_localizationService.Localize("Name")
                                         </th>
                                     <th scope="col">
@@ -39,6 +45,12 @@
                                 @foreach (var request in requests)
                                 {
                                         <tr>
+                                            <td>
+                                            @request.requestId
+                                            </td> 
+                                            <td>
+                                            @request.sessionReference
+                                            </td> 
                                             <td>
                                             @request.name
                                             </td>

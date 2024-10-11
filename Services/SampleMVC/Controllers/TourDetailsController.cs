@@ -179,8 +179,8 @@ namespace SampleMVC.Controllers
             return paymentSession.session.id;
         }
         [HttpGet]
-        [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}")]
-        public async Task<Response> updateRequestStatusAndSendEmail(long id,string sessionId)
+        [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}/{status}/{errorDesc}")]
+        public async Task<Response> updateRequestStatusAndSendEmail(long id,string sessionId,string status,string errorDesc)
         {
             Response response = new Response();
             response.Title = _localizationService.Localize("CheckOut");
@@ -189,52 +189,56 @@ namespace SampleMVC.Controllers
             if (bookRequest.requestId != null)
             {
                 //update request ...
-                bookRequest.status = "Y";
+                bookRequest.status = status;
                 bookRequest.sessionReference = sessionId;
+                bookRequest.paymentErrorDesc = errorDesc;
                 _repo.Update(bookRequest);
                 _repo.SaveChanges();
-                Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
                 #region email
-                MailRequest mailRequest = new MailRequest();
-                mailRequest.booking = bookRequest;
-                mailRequest.Subject = _localizationService.Localize("BookTour");
-                mailRequest.tourName = tour?.title;
-                mailRequest.ToEmail = new List<string>();
-                List<User> users = new List<User>();
-                decimal? permissionId = _repo.Filter<Permission>(permission => permission.permissionArea.ToLower() == "request".ToLower()).FirstOrDefault().permissionId;
-                if (permissionId != null)
+                if (status == "complete")
                 {
-                    List<RolePermission> role = _repo.Filter<RolePermission>(e => e.permissionId == permissionId).ToList();
-                    if (role != null)
+                    Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
+                    MailRequest mailRequest = new MailRequest();
+                    mailRequest.booking = bookRequest;
+                    mailRequest.Subject = _localizationService.Localize("BookTour");
+                    mailRequest.tourName = tour?.title;
+                    mailRequest.ToEmail = new List<string>();
+                    List<User> users = new List<User>();
+                    decimal? permissionId = _repo.Filter<Permission>(permission => permission.permissionArea.ToLower() == "request".ToLower()).FirstOrDefault().permissionId;
+                    if (permissionId != null)
                     {
-                        foreach (RolePermission rolePermission in role)
+                        List<RolePermission> role = _repo.Filter<RolePermission>(e => e.permissionId == permissionId).ToList();
+                        if (role != null)
                         {
-                            List<User> usersForRole = new List<User>();
-                            usersForRole = _repo.Filter<User>(e => e.roleId == rolePermission.roleId).ToList();
-                            foreach (User user in usersForRole)
+                            foreach (RolePermission rolePermission in role)
                             {
-                                if (!users.Contains(user))
-                                    users.Add(user);
+                                List<User> usersForRole = new List<User>();
+                                usersForRole = _repo.Filter<User>(e => e.roleId == rolePermission.roleId).ToList();
+                                foreach (User user in usersForRole)
+                                {
+                                    if (!users.Contains(user))
+                                        users.Add(user);
+                                }
                             }
                         }
                     }
-                }
-                //get mails from user table base on permission ...
-                if (users != null && users.Count > 0)
-                {
-                    foreach (var user in users)
+                    //get mails from user table base on permission ...
+                    if (users != null && users.Count > 0)
                     {
-                        mailRequest.ToEmail?.Add(user.email);
+                        foreach (var user in users)
+                        {
+                            mailRequest.ToEmail?.Add(user.email);
+                        }
                     }
+                    //send email to website users that have permission contacts ...
+                    await _mailService.SendBookEmailAsync(mailRequest);
+                    //send email to client ....
+                    mailRequest.ToEmail = new List<string>();
+                    mailRequest.ToEmail?.Add(bookRequest.email);
+                    mailRequest.Subject = _localizationService.Localize("ThankYou");
+                    mailRequest.Body = _localizationService.Localize("ThanksForBookTour") + ",<p>" + _localizationService.Localize("wishHappyTour") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
+                    await _mailService.SendBookThanksEmailAsync(mailRequest);
                 }
-                //send email to website users that have permission contacts ...
-                await _mailService.SendBookEmailAsync(mailRequest);
-                //send email to client ....
-                mailRequest.ToEmail = new List<string>();
-                mailRequest.ToEmail?.Add(bookRequest.email);
-                mailRequest.Subject = _localizationService.Localize("ThankYou");
-                mailRequest.Body = _localizationService.Localize("ThanksForBookTour") + ",<p>" + _localizationService.Localize("wishHappyTour") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
-                await _mailService.SendBookThanksEmailAsync(mailRequest);
                 #endregion
                 response.Message = _localizationService.Localize("Added");
                 response.Status = true;

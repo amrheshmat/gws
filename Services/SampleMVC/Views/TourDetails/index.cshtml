@@ -643,18 +643,52 @@
 	var bookAdditionalActivities = [];
 
 	function errorCallback(error) {
-		localStorage.removeItem("PaymentRequestId");
-		localStorage.removeItem("SessionId");
+		var requestId = localStorage.getItem("PaymentRequestId");
+		var sessionId = localStorage.getItem("SessionId");
+		var status = "error";
+		var errorDesc = error;
+		$.ajax({
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status + "/" + errorDesc,
+			cache: false,
+			type: "GET",
+			success: function (data) {
+				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					localStorage.removeItem("PaymentRequestId");
+					localStorage.removeItem("SessionId");
+				}
+			},
+			error: function (error) {
+			}
+		});
 	}
 	function cancelCallback() {
-		localStorage.removeItem("PaymentRequestId");
-		localStorage.removeItem("SessionId");
+		var requestId = localStorage.getItem("PaymentRequestId");
+		var sessionId = localStorage.getItem("SessionId");
+		var status = "cancel";
+		var errorDesc = "";
+		$.ajax({
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status + "/" + errorDesc,
+			cache: false,
+			type: "GET",
+			success: function (data) {
+				// $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+				if (data.status == true) {
+					localStorage.removeItem("PaymentRequestId");
+					localStorage.removeItem("SessionId");
+				}
+			},
+			error: function (error) {
+			}
+		});
 	}
 	function completeCallback() {
 		var requestId = localStorage.getItem("PaymentRequestId");
 		var sessionId = localStorage.getItem("SessionId");
+		var status = "complete";
+		var errorDesc = "";
 		$.ajax({
-			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId,
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status + "/" + errorDesc,
 			cache: false,
 			type: "GET",
 			success: function (data) {
@@ -667,8 +701,6 @@
 			error: function (error) {
 			}
 		});
-		// location.href = "/";
-		// console.log(requestId);
 	}
 	var arr;
 	function showDatePicker() {

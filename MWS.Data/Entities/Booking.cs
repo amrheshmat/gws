@@ -26,6 +26,7 @@ namespace MWS.Data.Entities
 		public int? numberOfRoom { get; set; }
 		public decimal? totalPrice { get; set; }
 		public string? sessionReference { get; set; }
+		public string? paymentErrorDesc { get; set; }
 		//public int? numberOfDoubleRoom { get; set; }
 		//public int? numberOfTripleRoom { get; set; }
 

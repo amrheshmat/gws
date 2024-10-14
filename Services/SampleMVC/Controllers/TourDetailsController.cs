@@ -309,7 +309,7 @@ namespace SampleMVC.Controllers
                 var selectedRoomType = bookModel.roomCountList.Where(e => e.count > 0).ToList();
                 foreach (var room in selectedRoomType)
                 {
-                    if (room.roomTypeId == 1 || room.roomTypeId == 1)//single
+                    if (room.roomTypeId == 1 || room.roomTypeId == 2)//single
                     {
                         var t = roomLimitAndPricing.Where(e => e.roomTypeId == room.roomTypeId).FirstOrDefault();
                         var adultforsingle = t?.numberOfAdult * room.count;

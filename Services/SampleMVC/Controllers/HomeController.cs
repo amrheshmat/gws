@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using SampleMVC.Models;
 using System.Diagnostics;
 using TripBusiness.Ibusiness;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace SampleMVC.Controllers
 {
@@ -15,14 +16,16 @@ namespace SampleMVC.Controllers
         private readonly ILogger<HomeController> _logger;
         private IRepository _repo;
         private readonly ILanguageService _languageService;
+        private IConfiguration _config;
         private readonly IMailService mailService;
-        public HomeController(IMailService mailService, ILanguageService languageService, ILocalizationService localizationService, ILogger<HomeController> logger, IRepositoryFactory repo)
+        public HomeController(IMailService mailService, IConfiguration config, ILanguageService languageService, ILocalizationService localizationService, ILogger<HomeController> logger, IRepositoryFactory repo)
        : base(languageService, localizationService)
         {
             _logger = logger;
             _repo = repo.Create("AGGRDB");
             this.mailService = mailService;
             _languageService = languageService;
+            _config = config;
         }
         public async Task<IActionResult> Index()
         {
@@ -50,6 +53,7 @@ namespace SampleMVC.Controllers
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.settings = settings;
+            ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString(); ;
             ViewBag.tours = tours.OrderByDescending(e=> int.Parse(e.duration));
             ViewBag.toursAttachments = tourAttachments;
             return View(tourAttachments);

@@ -205,7 +205,7 @@
                 </label>
                 <i class="fa fa-plus" id="addExpectBtn" style="cursor: pointer; background: #624bff; padding: 5px; color: #fff; border-radius: 50%;"></i>
                 <div id="addExpect">
-                    <textarea type="text" id="expect" class="form-control" style="cursor:pointer;"></textarea>
+                    <textarea type="text" id="1" class="form-control expect" style="cursor:pointer;"></textarea>
                 </div>
                 <span id="expectRequired" style="color:red"></span>
             </div>
@@ -253,6 +253,7 @@
     }
     $(document).ready(function () {
         var dateToday = new Date();
+        var dayCount = $("#addExpect textarea:last").attr("id");
         $("#datepicker").datepicker({
             dateFormat: "DD, dd-mm- yy",
             minDate: dateToday
@@ -391,7 +392,7 @@
             } else {
                 $("#excludeRequired").text("");
             }
-             if ($("#expect").val() == '') {
+             if ($(".expect").val() == '') {
                 $("#expectRequired").text("required");
                 return false;
             } else {
@@ -448,12 +449,14 @@
             $('#addExpect').children('textarea').each(function () {
                 var expect = {
                     "details": this.value,
+                    "order": this.id
                 };
                 expects.push(expect);
             });
             $('#addExpect div').children('textarea').each(function () {
                 var expect = {
                     "details": this.value,
+                    "order": this.id
                 };
                 expects.push(expect);
             });
@@ -569,7 +572,8 @@
             $("#addExclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <textarea class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         $("#addExpectBtn").click(function () {
-            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea  class='form-control' style='margin:5px 0px'></textarea></div>");
+            dayCount++;
+            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea id='" + dayCount + "'  class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         // $("#addPackBtn").click(function () {
         //     // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");

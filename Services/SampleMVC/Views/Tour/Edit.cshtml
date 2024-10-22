@@ -264,12 +264,12 @@
                 <div id="addExpect">
                     @if (Model.expects != null && Model.expects.Count > 0)
                     {
-                        <textarea value="@Model.expects[0].details" id="expect" class="form-control">@Model.expects[0].details</textarea>
+                        <textarea value="@Model.expects[0].details" id="1" class="form-control expect">@Model.expects[0].details</textarea>
                         Model.expects.RemoveAt(0);
                         foreach (var expect in Model.expects)
                         {
                             <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> 
-                                <textarea value="@expect.details" type='text' class='form-control' style='margin: 5px 0px'>@expect.details</textarea>
+                                <textarea value="@expect.details" id="@expect.order" type='text' class='form-control' style='margin: 5px 0px'>@expect.details</textarea>
                             </div>
                         }
                     }
@@ -335,6 +335,8 @@
     }
     $(document).ready(function () {
         var dateToday = new Date();
+        console.log("ddd--------" + $("#addExpect textarea:last").val());
+        var dayCount = $("#addExpect textarea:last").attr("id");
         $("#datepicker").datepicker({
             dateFormat: "DD, dd-mm- yy",
             minDate: dateToday
@@ -474,7 +476,7 @@
             } else {
                 $("#excludeRequired").text("");
             }
-             if ($("#expect").val() == '') {
+             if ($(".expect").val() == '') {
                 $("#expectRequired").text("required");
                 return false;
             } else {
@@ -530,12 +532,14 @@
             $('#addExpect').children('textarea').each(function () {
                 var expect = {
                     "details": this.value,
+                    "order": this.id
                 };
                 expects.push(expect);
             });
             $('#addExpect div').children('textarea').each(function () {
                 var expect = {
                     "details": this.value,
+                    "order":this.id
                 };
                 expects.push(expect);
             });
@@ -649,7 +653,8 @@
             $("#addExclude").append("<div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i>  <textarea class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         $("#addExpectBtn").click(function () {
-            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea  class='form-control' style='margin:5px 0px'></textarea></div>");
+            dayCount++;
+            $("#addExpect").append(" <div style='position: relative; '> <i onclick='remove(event)' class='fa fa-trash' style='position: absolute; right: -15px; top: 15px; '></i> <textarea id='"+dayCount+"' class='form-control' style='margin:5px 0px'></textarea></div>");
         });
         // $("#addPackBtn").click(function () {
         //     // $("#addPack").append(" <input type='text'  class='form-control' style='margin:5px 0px'/>");
@@ -661,5 +666,6 @@
     });
     function remove(e) {
         $(event.target).parent().remove();
+       // dayCount = $("#addExpect textarea:last").attr("id");
     }
 </script>

@@ -17,11 +17,14 @@ namespace SampleMVC.Controllers
         private ILocalizationService _localizationService;
         private IRepository _repo;
         private IMailService _mailService;
-        public TourDetailsController(IMailService mailService, ILocalizationService localizationService, IRepositoryFactory repo)
+        private IConfiguration _config;
+
+        public TourDetailsController(IMailService mailService, IConfiguration config, ILocalizationService localizationService, IRepositoryFactory repo)
         {
             _repo = repo.Create("AGGRDB");
             _localizationService = localizationService;
             _mailService = mailService;
+            _config = config;
         }
         [Route("TourDetails/{id}")]
         public async Task<IActionResult> index(int id)//index page
@@ -32,6 +35,7 @@ namespace SampleMVC.Controllers
             tourModel.includes = await _repo.Filter<Include>(e => e.tourId == id).ToListAsync();
             tourModel.excludes = await _repo.Filter<Exclude>(e => e.tourId == id).ToListAsync();
             tourModel.expects = await _repo.Filter<Expect>(e => e.tourId == id).ToListAsync();
+            tourModel.expects = tourModel.expects.OrderBy(e => e.order).ToList();
             tourModel.blockedDates = await _repo.Filter<BlockedDates>(e => e.tourId == id).ToListAsync();
             //tourModel.packs = await _repo.Filter<Pack>(e => e.tourId == id).ToListAsync();
             tourModel.additionalInformations = await _repo.Filter<AdditionalInformation>(e => e.tourId == id).ToListAsync();
@@ -129,6 +133,8 @@ namespace SampleMVC.Controllers
             var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
             if (bookRequest.requestId != null)
             {
+               var NbeCurrency = _config.GetSection("NbeCurrency").Value!.ToString();
+               var NbeMerchantName = _config.GetSection("NbeMerchantName").Value!.ToString();
                 var tour = await _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefaultAsync();
                 adultPrice = tour.adultPrice.Value * bookRequest.numberOfAdult.Value;
                 childPrice = tour.childPrice.Value * bookRequest.numberOfChild.Value;
@@ -143,9 +149,9 @@ namespace SampleMVC.Controllers
                 paymentSessionRequest.interaction.displayControl.customerEmail = "OPTIONAL";
                 paymentSessionRequest.interaction.displayControl.shipping = "HIDE";
                 paymentSessionRequest.interaction.merchant = new Merchant();
-                paymentSessionRequest.interaction.merchant.name = "OCEANUSTOURS";
+                paymentSessionRequest.interaction.merchant.name = NbeMerchantName;
                 paymentSessionRequest.order = new Order();
-                paymentSessionRequest.order.currency = "USD";
+                paymentSessionRequest.order.currency = NbeCurrency;
                 paymentSessionRequest.order.amount = bookRequest.totalPrice.ToString();
                 paymentSessionRequest.order.id = id.ToString();
                 paymentSessionRequest.order.description = "enjoy your tour";
@@ -164,12 +170,13 @@ namespace SampleMVC.Controllers
         }
         public async Task<string> createPaymentSession(PaymentSessionRequest request)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient(); 
 
-
-            var url = "https://nbe.gateway.mastercard.com/api/rest/version/73/merchant/OCEANUSTOURS/session";
+            var url = _config.GetSection("NbeApi").Value!.ToString();
+            var user = _config.GetSection("NbeUser").Value!.ToString();
+            var pass = _config.GetSection("NbePassword").Value!.ToString();
             client.DefaultRequestHeaders.Accept.Clear();
-            var byteArray = Encoding.ASCII.GetBytes("merchant.OCEANUSTOURS:978995a3445047724f87d14f000ae056");
+            var byteArray = Encoding.ASCII.GetBytes(user + ":" + pass);
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("text/plain"));

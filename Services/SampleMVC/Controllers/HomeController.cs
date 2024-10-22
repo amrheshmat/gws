@@ -53,7 +53,7 @@ namespace SampleMVC.Controllers
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.settings = settings;
-            ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString(); ;
+            ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString();
             ViewBag.tours = tours.OrderByDescending(e=> int.Parse(e.duration));
             ViewBag.toursAttachments = tourAttachments;
             return View(tourAttachments);

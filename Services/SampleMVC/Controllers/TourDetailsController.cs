@@ -52,7 +52,8 @@ namespace SampleMVC.Controllers
             ViewBag.hotels = hotels;
             ViewBag.rooms = rooms;
             ViewBag.currentId = id;
-            return View(tourModel);
+            ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString();
+			return View(tourModel);
 
         }
         private Booking buildBooking(BookingModel model)

@@ -2874,12 +2874,16 @@ p {
 
 #topnav.nav-sticky .navigation-menu.nav-light > li.active > a, #topnav.nav-sticky .navigation-menu.nav-light > li:hover > a {
     --tw-text-opacity: 1 !important;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+    color: #161c28 !important
 }
-
+#topnav.nav-sticky .navigation-menu.nav-light > li.active > a, #topnav.nav-sticky .navigation-menu.nav-light > li:hover > a {
+    --tw-text-opacity: 1 !important;
+    color: #161c28 !important;
+    text-decoration:none !important;
+}
 :is(.dark #topnav.nav-sticky .navigation-menu.nav-light > li.active > a), :is(.dark #topnav.nav-sticky .navigation-menu.nav-light > li:hover > a) {
     --tw-text-opacity: 1 !important;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+    color: #161c28 !important
 }
 
 #topnav.nav-sticky .navigation-menu.nav-light .has-submenu .menu-arrow {
@@ -3108,7 +3112,8 @@ p {
 
     #topnav .navigation-menu > li.active > a, #topnav .navigation-menu > li:hover > a {
         --tw-text-opacity: 1 !important;
-        color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+        color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
+        text-decoration:none;
     }
 
     :is(.dark #topnav .navigation-menu > li.active > a), :is(.dark #topnav .navigation-menu > li:hover > a) {

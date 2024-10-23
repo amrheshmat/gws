@@ -24,6 +24,9 @@
                                         <th scope="col">
                                         @_localizationService.Localize("sessionReference")
                                         </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Status")
+                                    </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Name")
                                         </th>
@@ -50,8 +53,11 @@
                                             </td> 
                                             <td>
                                             @request.sessionReference
-                                            </td> 
-                                            <td>
+                                            </td>
+                                        <td>
+                                            @request.status
+                                        </td>
+                                        <td>
                                             @request.name
                                             </td>
                                         <td>

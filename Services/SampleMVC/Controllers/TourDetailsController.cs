@@ -188,13 +188,14 @@ namespace SampleMVC.Controllers
         }
         [HttpGet]
         [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}/{status}/{errorDesc}")]
-        public async Task<Response> updateRequestStatusAndSendEmail(long id,string sessionId,string status,string errorDesc)
+        [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}/{status}")]
+        public async Task<Response> updateRequestStatusAndSendEmail(long id,string sessionId,string status,string errorDesc="")
         {
             Response response = new Response();
             response.Title = _localizationService.Localize("CheckOut");
 
             var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
-            if (bookRequest.requestId != null)
+            if (bookRequest != null)
             {
                 //update request ...
                 bookRequest.status = status;

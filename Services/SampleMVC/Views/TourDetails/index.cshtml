@@ -15,13 +15,14 @@
 <div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
     <div class="animated fadeInDown">
         <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;" alt="main tour image"/>
-    </div>
+		<div class="overlaySlider"></div>
+	</div>
 </div>
 <span class="container" style=" position: absolute; font-size: 30px; text-transform: uppercase; font-weight: bold; color: #fff; font-family: 'Montserrat', Arial, sans-serif; margin-top: -90px;">@Model.Tour.title </span>
 <div class="container" style="margin:30px auto;">
 	<div style="margin:20px 0px;">
 		
-<section class="gallery">
+<@* section class="gallery">
 	@if (attachments.Count > 0){
 		<div class="gallery__item">
 		<input type="radio" id="img-1" checked name="gallery" class="gallery__selector"/>
@@ -47,7 +48,7 @@
 		}
 	}
 			
-</section>
+</section> *@
 	</div>
    <div class="row">
        <div class="col-xs-12 col-lg-8">
@@ -666,9 +667,8 @@
 		var requestId = localStorage.getItem("PaymentRequestId");
 		var sessionId = localStorage.getItem("SessionId");
 		var status = "cancel";
-		var errorDesc = "";
 		$.ajax({
-			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status + "/" + errorDesc,
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status,
 			cache: false,
 			type: "GET",
 			success: function (data) {
@@ -686,9 +686,8 @@
 		var requestId = localStorage.getItem("PaymentRequestId");
 		var sessionId = localStorage.getItem("SessionId");
 		var status = "complete";
-		var errorDesc = "";
-		$.ajax({
-			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status + "/" + errorDesc,
+			$.ajax({
+			url: "/TourDetails/updateRequestStatusAndSendEmail/" + requestId + "/" + sessionId + "/" + status ,
 			cache: false,
 			type: "GET",
 			success: function (data) {
@@ -722,8 +721,8 @@
 		return [isDefaultDisabled && Blockeddates.indexOf(string) == -1];
 	}
     $(document).ready(function () {
-		localStorage.removeItem("PaymentRequestId");
-		localStorage.removeItem("SessionId");
+		//localStorage.removeItem("PaymentRequestId");
+		//localStorage.removeItem("SessionId");
 		$(".card-header h4 a").on("click", function () {
 			$(this).find("i").toggleClass("fa-plus fa-minus");
 		});

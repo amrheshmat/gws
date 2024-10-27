@@ -36,6 +36,9 @@ namespace SampleMVC.Controllers
                     tourAttachments.Add(attachment);
                 }
             }
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - facilities";
+            ViewBag.homeSeo = homeSeo;
             ViewBag.facilitiess = facilitiess;
             return View(tourAttachments);
         }

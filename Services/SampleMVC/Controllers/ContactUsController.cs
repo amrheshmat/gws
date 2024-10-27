@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
@@ -19,9 +20,12 @@ namespace SampleMVC.Controllers
 		}
 		public async Task<IActionResult> ContactUs()//index page
 		{
-			//List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
-			//ViewBag.contacts = contacts;
-			return View();
+            //List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
+            //ViewBag.contacts = contacts;
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - contact us";
+            ViewBag.homeSeo = homeSeo;
+            return View();
 
 		}
 		[HttpPost]

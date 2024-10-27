@@ -25,16 +25,19 @@
     var youtube = youtubeSection?.Replace("\"", "");
     var twitter = twitterSection?.Replace("\"", "");
     var NbeJs = ViewBag.NbeJs;
+    var homeSeo = ViewBag.homeSeo;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
      
     <meta charset="UTF-8">
-    <title>Anoush dahabiya</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Tour &amp; Anoush dahabiya Travels Agency Over all the World , the company located in egypt" name="description">
-    <meta content="Anoush,dahabiya,Egypt tour,Egypt trip,Tour, Travels, agency, business, corporate, tour packages, journey, trip, tailwind css, Admin, Landing" name="keywords">
+    @if(homeSeo != null){
+    <title>@homeSeo.title</title>
+    <meta name="viewport" content="@homeSeo.viewport">
+    <meta content="@homeSeo.description" name="description">
+    <meta content="@homeSeo.keyWords" name="keywords">
+    }
     <meta name="author" content="Shreethemes">
     <meta name="version" content="1.0.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

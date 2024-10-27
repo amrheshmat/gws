@@ -25,6 +25,9 @@ namespace SampleMVC.Controllers
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
             var language = _languageService.GetLanguageByCulture(currentCulture);
             List<About> abouts = await _repo.Filter<About>(e => e.languageId == language.languageId).OrderBy(e => e.orderId).ToListAsync();
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - about us";
+            ViewBag.homeSeo = homeSeo;
             ViewBag.abouts = abouts;
             return View();
 

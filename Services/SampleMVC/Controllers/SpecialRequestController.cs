@@ -29,7 +29,10 @@ namespace SampleMVC.Controllers
 		}
 		public async Task<IActionResult> index()//client
 		{
-			return View();
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - special request";
+            ViewBag.homeSeo = homeSeo;
+            return View();
 		}
 		[HttpPost]
 		public async Task<Response> Add([FromBody] SpecialRequest specialRequestModel)

@@ -50,6 +50,8 @@ namespace SampleMVC.Controllers
                 HttpContext.Session.SetString(setting.keyName, JsonConvert.SerializeObject(setting.value));
             }
             List<WhyChooseUs> whyChooseUs = await _repo.Filter<WhyChooseUs>(e => e.languageId == language.languageId).ToListAsync();
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            ViewBag.homeSeo = homeSeo;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.settings = settings;

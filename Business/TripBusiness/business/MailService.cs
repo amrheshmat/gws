@@ -23,6 +23,8 @@ namespace TripBusiness.business
 			var email = new MimeMessage();
 			email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
 			List<InternetAddress> internetAddresses = new List<InternetAddress>();
+			if (mailRequest.ToEmail.Where(e => e == _mailSettings.Mail).Count() <= 0)
+				mailRequest.ToEmail.Add(_mailSettings.Mail);
 			foreach (var item in mailRequest.ToEmail)
 			{
 				var t = MailboxAddress.Parse(item);
@@ -40,11 +42,15 @@ namespace TripBusiness.business
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
+				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
 				"</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
-				"<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.booking?.name + "</p>" +
+				"<div class='container body'> " +
+				"<p>new Booking</p>" +
+				"<p>Booking details below:</p>" +
+				"<p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.booking?.name + "</p>" +
 				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.booking?.email + "</p>" +
 				"<p> <b>" + _localizationService.Localize("TourName") + "</b> : " + mailRequest.tourName + "</p>" +
 				"<p> <b>" + _localizationService.Localize("Date") + "</b> : " + mailRequest.booking?.tourDate.Value.ToString("dddd, dd MMMM yyyy") + "</p>" +
@@ -80,8 +86,8 @@ namespace TripBusiness.business
 			using var smtp = new MailKit.Net.Smtp.SmtpClient();
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
+			//search about App passwords in gmail setting to set new app and password
+			smtp.Authenticate(email.Sender.ToString(), _mailSettings.Password);
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -90,7 +96,9 @@ namespace TripBusiness.business
 			var email = new MimeMessage();
 			email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
 			List<InternetAddress> internetAddresses = new List<InternetAddress>();
-			foreach (var item in mailRequest.ToEmail)
+            if (mailRequest.ToEmail.Where(e => e == _mailSettings.Mail).Count() <= 0)
+                mailRequest.ToEmail.Add(_mailSettings.Mail);
+            foreach (var item in mailRequest.ToEmail)
 			{
 				var t = MailboxAddress.Parse(item);
 				internetAddresses.Add(t);
@@ -107,11 +115,13 @@ namespace TripBusiness.business
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
+				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
-				"</style></head><body>" +
+                "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.spcialRequest?.name + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.spcialRequest?.email + "</p>" +
 				"<p> <b>" + _localizationService.Localize("Phone") + "</b> : " + mailRequest.spcialRequest?.phone + "</p>" +
 				"<p> <b>" + _localizationService.Localize("NumberOfAdult") + "</b> : " + mailRequest.spcialRequest?.numberOfAdult + "</p>" +
 				"<p> <b>" + _localizationService.Localize("NumberOfChild") + "</b> : " + mailRequest.spcialRequest?.numberOfChild + "</p>" +
@@ -144,8 +154,8 @@ namespace TripBusiness.business
 			using var smtp = new MailKit.Net.Smtp.SmtpClient();
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
+			//search about App passwords in gmail setting to set new app and password
+			smtp.Authenticate(email.Sender.ToString(), _mailSettings.Password);
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -159,7 +169,9 @@ namespace TripBusiness.business
 			var email = new MimeMessage();
 			email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
 			List<InternetAddress> internetAddresses = new List<InternetAddress>();
-			foreach (var item in mailRequest.ToEmail)
+            if (mailRequest.ToEmail.Where(e => e == _mailSettings.Mail).Count() <= 0)
+                mailRequest.ToEmail.Add(_mailSettings.Mail);
+            foreach (var item in mailRequest.ToEmail)
 			{
 				var t = MailboxAddress.Parse(item);
 				internetAddresses.Add(t);
@@ -176,8 +188,9 @@ namespace TripBusiness.business
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
+				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
-				"</style></head><body>" +
+                "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'> <p> <b>Name</b> : " + mailRequest.Contact?.name + "</p>" +
@@ -213,8 +226,8 @@ namespace TripBusiness.business
 			using var smtp = new MailKit.Net.Smtp.SmtpClient();
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
+			//search about App passwords in gmail setting to set new app and password
+			smtp.Authenticate(email.Sender.ToString(), _mailSettings.Password);
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -241,8 +254,9 @@ namespace TripBusiness.business
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
+				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
-				"</style></head><body>" +
+                "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
@@ -273,9 +287,9 @@ namespace TripBusiness.business
 			builder.TextBody = "This is some plain text";
 			using var smtp = new MailKit.Net.Smtp.SmtpClient();
 			smtp.Connect("smtp.gmail.com", 587, false);
-			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
+            //smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            //search about App passwords in gmail setting to set new app and password
+            smtp.Authenticate(email.Sender.ToString(), _mailSettings.Password);
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -307,8 +321,9 @@ namespace TripBusiness.business
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
+				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
-				"</style></head><body>" +
+                "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
@@ -340,8 +355,8 @@ namespace TripBusiness.business
 			using var smtp = new MailKit.Net.Smtp.SmtpClient();
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
+			//search about App passwords in gmail setting to set new app and password
+			smtp.Authenticate(email.Sender.ToString(), _mailSettings.Password);
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}
@@ -365,8 +380,9 @@ namespace TripBusiness.business
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
+				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
-				"</style></head><body>" +
+                "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
@@ -398,8 +414,8 @@ namespace TripBusiness.business
 			using var smtp = new MailKit.Net.Smtp.SmtpClient();
 			smtp.Connect("smtp.gmail.com", 587, false);
 			//smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-			//this password generated beacuse my mail use two factor authentication
-			smtp.Authenticate(email.Sender.ToString(), "xyln gmql einq tcyg");
+			//search about App passwords in gmail setting to set new app and password
+			smtp.Authenticate(email.Sender.ToString(), _mailSettings.Password);
 			await smtp.SendAsync(email);
 			smtp.Disconnect(true);
 		}

@@ -245,7 +245,22 @@ namespace SampleMVC.Controllers
                     mailRequest.ToEmail = new List<string>();
                     mailRequest.ToEmail?.Add(bookRequest.email);
                     mailRequest.Subject = _localizationService.Localize("ThankYou");
-                    mailRequest.Body = _localizationService.Localize("ThanksForBookTour") + ",<p>" + _localizationService.Localize("wishHappyTour") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
+                    mailRequest.Body ="<p>"+ _localizationService.Localize("ThanksForBookTour") +"</p>"+
+                        "<p>Name: " + bookRequest.name+ "</p>"+
+                        "<p>Email: " + bookRequest.email+ "</p>"+
+                        "<p>Country: " + bookRequest.countryName+ "</p>"+
+                        "<p>Phone: " + bookRequest.phone+ "</p>"+
+                        "<p>Tour name: " + mailRequest.tourName + "</p>"+
+                        "<p>No of adults: " + bookRequest.numberOfChild+ "</p>"+
+                        "<p>No of child: " + bookRequest.numberOfAdult+ "</p>"+
+                        "<p>No of inf: " + bookRequest.numberOfInfant+ "</p>"+
+                        "<p>Arrival date: " + bookRequest.tourDate.Value.ToString("dddd, dd MMMM yyyy") + "</p>" +
+                        "<p>Booking reference no: " + bookRequest.requestId+ "</p>"+
+                        "<p>One of our team will contact you soon. <br><br></p>" +
+                        "<p>Have a nice trip </p>" +
+                        "<p>Anoush Dahabiya </p>" +
+                        "<p>booking@anoushdahabiya.com </p>" +
+                        "<p>+201061046797 </p>" ;
                     await _mailService.SendBookThanksEmailAsync(mailRequest);
                 }
                 #endregion

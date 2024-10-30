@@ -16,6 +16,7 @@ namespace MWS.Infrustructure.Context
 
 		public DbSet<User> users { get; set; }
 		public DbSet<Seo> seo { get; set; }
+		public DbSet<Blog> blogs { get; set; }
 		public DbSet<Localization> localizations { get; set; }
 		public DbSet<Language> languages { get; set; }
 		public DbSet<Currency> currency { get; set; }
@@ -53,6 +54,7 @@ namespace MWS.Infrustructure.Context
 		{
 			modelBuilder.Entity<User>().ToTable("users").HasKey(e => e.userId);
 			modelBuilder.Entity<Seo>().ToTable("seo");
+			modelBuilder.Entity<Blog>().ToTable("blogs");
 			modelBuilder.Entity<Localization>().ToTable("localizations");
 			modelBuilder.Entity<AdditionalActivity>().ToTable("additionalActivities");
 			modelBuilder.Entity<BookAdditionalActivity>().ToTable("bookAdditionalActivities");

@@ -11,6 +11,7 @@
     var t = l.FirstOrDefault()?.value;
     ViewData["Title"] = @ViewData["Title"];
     var tours = ViewBag.tours;
+    var blogs = ViewBag.blogs;
     var whyChooseUs = ViewBag.whyChooseUs;
     var toursAttachments = ViewBag.toursAttachments;
 }
@@ -159,7 +160,7 @@
                                         <a href="/tourDetails/@tour.tourId">
                                             @if (Model.Where(e => e.tourId == tour.tourId).ToList().Count > 0)
                                             {
-                                                var mainImage = Model.Where(e => e.tourId == tour.tourId).ToList();
+                                                var mainImage = Model.Where(e => e.tourId == tour.tourId && e.type == "tour").ToList();
                                                 <img src="~/Files/@mainImage[0].attachmentPath" alt="tour">
                                             }
                                             else
@@ -223,66 +224,26 @@
         </div>
         <div class="row d-flex">
             <div class="owl-carousel owl-theme">
+                @foreach(var blog in blogs)
+                {
+                    var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type=="blog").ToList();
                     <div class="ftco-animate fadeInUp ftco-animated item">
                         <div class="blog-entry">
-                            <a href="article-single.html" class="block-20" style="background-image: url('/images/slide7.jpeg');">
+                            <a href="/BlogSingle/@blog.blogId" class="block-20" style="background-image: url('/Files/@mainImage[0].attachmentPath');">
                             </a>
                             <div class="text d-block text-center">
                                 <div class="meta">
                                     <p>
-                                        <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2024</a>
+                                        <a href="#"><span class="fa fa-calendar mr-2"></span>@blog.creationDate</a>
                                     </p>
                                 </div>
-                                <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="#">Marketing Strategies for Digital Ecosystem</a></h1>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
+                                <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="#">@blog.title</a></h1>
+                                <p>@blog.description.Substring(0, 10) </p>
                             </div>
                         </div>
                     </div>
-                    <div class=" ftco-animate fadeInUp ftco-animated item">
-                        <div class="blog-entry">
-                            <a href="article-single.html" class="block-20" style="background-image: url('/images/slide7.jpeg');">
-                            </a>
-                            <div class="text d-block text-center">
-                                <div class="meta">
-                                    <p>
-                                        <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2024</a>
-                                    </p>
-                                </div>
-                                 <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="#">Marketing Strategies for Digital Ecosystem</a></h1>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ftco-animate fadeInUp ftco-animated item">
-                        <div class="blog-entry">
-                            <a href="article-single.html" class="block-20" style="background-image: url('/images/slide7.jpeg');">
-                            </a>
-                            <div class="text d-block text-center">
-                                <div class="meta">
-                                    <p>
-                                        <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2024</a>
-                                    </p>
-                                </div>
-                                 <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="#">Marketing Strategies for Digital Ecosystem</a></h1>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ftco-animate fadeInUp ftco-animated item">
-                        <div class="blog-entry">
-                            <a href="article-single.html" class="block-20" style="background-image: url('/images/slide7.jpeg');">
-                            </a>
-                            <div class="text d-block text-center">
-                                <div class="meta">
-                                    <p>
-                                        <a href="#"><span class="fa fa-calendar mr-2"></span>Sept. 23, 2024</a>
-                                    </p>
-                                </div>
-                                 <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="#">Marketing Strategies for Digital Ecosystem</a></h1>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia...</p>
-                            </div>
-                        </div>
-                    </div>
+
+                }
             </div>
         </div>
         <div class="row justify-content-center pb-4">

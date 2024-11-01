@@ -1,0 +1,51 @@
+﻿@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model List<MWS.Data.Entities.TourAttachment>;
+@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var attachments = ViewBag.attachments;
+    var blog = ViewBag.blog;
+    var recentLogs = ViewBag.recentLogs;
+    var currentId = ViewBag.currentId;
+}
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 ftco-animate fadeInUp ftco-animated">
+                <h2 class="mb-3">@blog.title</h2>
+                <p>@blog.description</p>
+                <p>
+                    <img src="/Files/@attachments[0].attachmentPath" alt="" class="img-fluid">
+                </p>
+                @* <div class="tag-widget post-tag-container mb-5 mt-5">
+                <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">Life</a>
+                <a href="#" class="tag-cloud-link">Sport</a>
+                <a href="#" class="tag-cloud-link">Tech</a>
+                <a href="#" class="tag-cloud-link">Work</a>
+                </div>
+                </div> *@
+            </div>
+            <div class="col-lg-4 sidebar ftco-animate pl-md-5 mt-5 mt-md-5 fadeInUp ftco-animated">
+                <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+                    @if (recentLogs != null && recentLogs.Count >0){
+                        <h3>Recent Blog</h3>
+                        @foreach (var b in recentLogs)
+                        {
+                            var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                            <div class="block-21 mb-4 d-flex justify-content-between">
+                                <a class="blog-img" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
+                                <div class="text pl-3">
+                                    <h3 class="heading"><a href="#">@b.title</a></h3>
+                                    <div class="meta">
+                                        <div><a href="#"><span class="fa fa-calendar"></span>@b.creationDate</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

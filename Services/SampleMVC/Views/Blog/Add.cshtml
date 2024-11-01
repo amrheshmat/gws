@@ -1,0 +1,154 @@
+﻿@using TripBusiness.Ibusiness
+@model MWS.Data.Entities.Blog;
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var days = ViewBag.days;
+    var languages = ViewBag.languages;
+    var activities = ViewBag.activities;
+}
+    
+<!-- Modal -->
+@using (Html.BeginForm("Add", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.TextBoxFor(m => m.blogId, new { @id = "blogId", @class = "form-control", style = "display:none" })
+    <div class="container" style="margin-top:100px;width:85%;">
+    <div class="row">
+            <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="title">
+                    @_localizationService.Localize("title")
+        </label>
+        @Html.TextBoxFor(m => m.title, new { @id = "title", @class = "form-control"})
+        <span id="titleRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="description">
+                    @_localizationService.Localize("description")
+        </label>
+        @Html.TextBoxFor(m => m.description, new { @id = "description", @class = "form-control" })
+        <span id="descriptionRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="seoTitle">
+             @_localizationService.Localize("seoTitle")
+        </label>
+         @Html.TextBoxFor(m => m.seoTitle, new { @id = "seoTitle", @class = "form-control" })
+        <span id="seoTitleRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="seokeyWords">
+            @_localizationService.Localize("seokeyWords")
+        </label>
+        @Html.TextBoxFor(m => m.seokeyWords, new { @id = "seokeyWords", @class = "form-control" })
+        <span id="seokeyWordsRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+        <label class="form-label" for="seoDescription">
+            @_localizationService.Localize("seoDescription")
+        </label>
+        @Html.TextBoxFor(m => m.seoDescription, new { @id = "seoDescription", @class = "form-control" })
+        <span id="seoDescriptionRequired" style="color:red"></span>
+    </div>
+    <div class="col-xs-12 col-md-4" style="margin:20px 0px;" id="languageDiv">
+        <label class="form-label" for="language">
+            @_localizationService.Localize("language")
+        </label>
+        @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
+        <select name="language" class="form-select" id="language">
+            @foreach (var language in languages)
+            {
+                <option value="@language.languageId">@language.languageName</option>
+            }
+        </select>
+        <span id="languageRequired" style="color:red"></span>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary" id="addBlogBtn">@_localizationService.Localize("Save")</button>
+    </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        var dateToday = new Date();
+        var dayCount = $("#addExpect textarea:last").attr("id");
+   
+        $(document).on('change', '#language', function () {
+            $("#languageId").val($(this).val());
+        });
+        $('#addBlogBtn').on("click", function (e) {
+            e.preventDefault();
+            //validation
+            if ($("#title").val() == '') {
+                $("#titleRequired").text("required");
+                return false;
+            } else {
+                $("#titleRequired").text("");
+            }
+            if ($("#description").val() == '') {
+                $("#descriptionRequired").text("required");
+                return false;
+            } else {
+                $("#descriptionRequired").text("");
+            }
+            if ($("#seoTitle").val() == '') {
+                $("#seoTitleRequired").text("required");
+                return false;
+            } else {
+                $("#seoTitleRequired").text("");
+            }
+            if ($("#seokeyWords").val() == '') {
+                $("#seokeyWordsRequired").text("required");
+                return false;
+            } else {
+                $("#seokeyWordsRequired").text("");
+            }
+            if ($("#seoDescription").val() == '') {
+                $("#seoDescriptionRequired").text("required");
+                return false;
+            } else {
+                $("#seoDescriptionRequired").text("");
+            }
+            if ($("#language").val() == '') {
+                $("#languageRequired").text("required");
+                return false;
+            } else {
+                $("#languageRequired").text("");
+            }
+            var blog = {};
+            blog.title = $("#title").val();
+            blog.description = $("#description").val();
+            blog.seoTitle = $("#seoTitle").val();
+            blog.seokeyWords = $("#seokeyWords").val();
+            blog.seoDescription = $("#seoDescription").val();
+            blog.languageId = $("#language").val();
+            $.ajax({
+                url: "/Blog/Add",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(blog),
+                success: function (data) {
+                    if (data.status == true) {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "success",
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                        }, 1500);
+                    } else {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "error",
+                            timer: 1500
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>

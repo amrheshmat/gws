@@ -14,6 +14,7 @@ namespace MWS.Data.Entities
         public string? title { get; set; }
         public string? description { get; set; }
         public int? languageId { get; set; }
+		public string? isActive { get; set; }
         public DateTime? creationDate { get; set; }
     }
 }

@@ -22,8 +22,47 @@ namespace SampleMVC.Controllers
             _localizationService = localizationService;
         }
 
+        [Route("blogs")]
+        public async Task<IActionResult> Index()//index page
+        {
+            List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.type == "blog").ToListAsync();
+            List<Blog> blogs = _repo.GetAll<Blog>().OrderByDescending(e=>e.blogId).Take(3).ToList();
+            List<TourAttachment> tourAttachments = new List<TourAttachment>();
+            List<TourAttachment> recentAttachments = new List<TourAttachment>();
+            foreach (var b in blogs)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == b.blogId && e.type == "blog").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            List<Blog> recentLogs = await _repo.Filter<Blog>(e=> e.isActive == "Y").ToListAsync();
+            var recentbLogs = recentLogs.OrderByDescending(e => e.creationDate).ToList().Take(3);
+            foreach (var b in recentbLogs)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == b.blogId && e.type == "blog").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    recentAttachments.Add(attachment);
+                }
+            }
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - Our Blogs";
+            ViewBag.homeSeo = homeSeo;
+            int blogsCount = _repo.GetAll<Blog>().ToList().Count;
+            double blogsPaginationCount = (double)blogsCount / 3;
+            ViewBag.attachments = attachments;
+            ViewBag.recentAttachments = recentAttachments;
+            ViewBag.blogs = blogs;
+            ViewBag.recentLogs = recentbLogs;
+            ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
+            return View(tourAttachments);
+        }
         [Route("BlogSingle/{id}")]
-        public async Task<IActionResult> BlogSingle(int id)//index page
+        public async Task<IActionResult> BlogSingle(int id)
         {
             Blog blog = await _repo.Filter<Blog>(e => e.blogId == id).FirstOrDefaultAsync();
             List<Blog> recentLogs = await _repo.Filter<Blog>(e => e.blogId == id && e.isActive == "Y").ToListAsync();
@@ -39,13 +78,18 @@ namespace SampleMVC.Controllers
                     tourAttachments.Add(attachment);
                 }
             }
+            Seo homeSeo = new Seo();
+            homeSeo.title = blog.seoTitle;
+            homeSeo.description = blog.seoDescription;
+            homeSeo.keyWords = blog.seokeyWords;
+            ViewBag.homeSeo = homeSeo;
             ViewBag.currentId = id;
             ViewBag.attachments = attachments;
             ViewBag.blog = blog;
             ViewBag.recentLogs = recentLogs;
             return View(tourAttachments);
         }
-            [AuthAttribute("blog", "blog")]
+        [AuthAttribute("blog", "blog")]
         public async Task<IActionResult> Blog()//index page
         {
             List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();

@@ -226,29 +226,30 @@
             <div class="owl-carousel owl-theme">
                 @foreach(var blog in blogs)
                 {
-                    var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type=="blog").ToList();
-                    <div class="ftco-animate fadeInUp ftco-animated item">
+                    @if (Model.Where(e => e.tourId == blog.blogId).ToList().Count > 0)
+                    {
+                        var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                        <div class="ftco-animate fadeInUp ftco-animated item">
                         <div class="blog-entry">
-                            <a href="/BlogSingle/@blog.blogId" class="block-20" style="background-image: url('/Files/@mainImage[0].attachmentPath');">
-                            </a>
+                             <a href="/BlogSingle/@blog.blogId" class="block-20" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
                             <div class="text d-block text-center">
                                 <div class="meta">
                                     <p>
                                         <a href="#"><span class="fa fa-calendar mr-2"></span>@blog.creationDate</a>
                                     </p>
                                 </div>
-                                <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="#">@blog.title</a></h1>
-                                <p>@blog.description.Substring(0, 10) </p>
+                                    <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="/BlogSingle/@blog.blogId">@blog.title</a></h1>
+                                <p>@blog.description </p>
                             </div>
                         </div>
                     </div>
-
+                    }
                 }
             </div>
         </div>
         <div class="row justify-content-center pb-4">
             <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
-                <a href="#" style="background: #161c28; padding: 10px; border-radius: 5px; color: #fff;">Read More</a>
+                <a href="/blogs" style="background: #161c28; padding: 10px; border-radius: 5px; color: #fff;">Read More</a>
             </div>
         </div>
     </div>

@@ -61,6 +61,11 @@ namespace SampleMVC.Controllers
             }
             List<WhyChooseUs> whyChooseUs = await _repo.Filter<WhyChooseUs>(e => e.languageId == language.languageId).ToListAsync();
             Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            foreach(var b in blogs)
+            {
+                var shortDescription = b.description.Split().Take(20);
+                b.description =  string.Join(" ", shortDescription);
+            }
             ViewBag.homeSeo = homeSeo;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.whyChooseUs = whyChooseUs;

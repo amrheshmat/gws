@@ -19,14 +19,14 @@
         <label class="form-label" for="title">
                     @_localizationService.Localize("title")
         </label>
-        @Html.TextBoxFor(m => m.title, new { @id = "title", @class = "form-control"})
+        @Html.TextAreaFor(m => m.title, new { @id = "title", @class = "form-control"})
         <span id="titleRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="description">
                     @_localizationService.Localize("description")
         </label>
-        @Html.TextBoxFor(m => m.description, new { @id = "description", @class = "form-control" })
+        @Html.TextAreaFor(m => m.description, new { @id = "description", @class = "form-control" })
         <span id="descriptionRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">

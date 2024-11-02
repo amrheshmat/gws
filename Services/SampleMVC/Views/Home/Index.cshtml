@@ -131,7 +131,7 @@
             <div class="md:col-span-7">
                 <div class="lg:ms-8">
                     <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold">@_localizationService.Localize("WhoWeAre")</h3>
-                    <p style="font-weight: 400; font-size: 18px; color: #000; font-family: Arial, Helvetica, sans-serif;">
+                    <p style='font-weight: 400; font-size: 18px; color: #000; font-family: "Noto Serif", sans-serif;'>
                         @_localizationService.Localize("WhoWeAreDesc")
                     </p>
                     @* <a href="/aboutUs" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Read More <i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a> *@
@@ -210,7 +210,7 @@
                 <ul id="whyBookingUs">
                     @foreach (var c in whyChooseUs)
                     {
-                        <li style="color: #425166; font-size: 19px; font-family: Arial, Helvetica, sans-serif;"><i class="fa fa-angle-double-right"></i>@c.title</li>
+                        <li style="color: #425166; font-size: 19px; font-family: Arial, Helvetica, sans-serif !important;"><i class="fa fa-angle-double-right"></i>@c.title</li>
                     }
                 </ul>
             </div>

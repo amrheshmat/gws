@@ -30687,4 +30687,7 @@ button.applyBtn.btn.btn-sm.btn-primary {
     opacity: 1;
     height: 90vh;
 }
+body {
+    font-family: "Noto Serif", serif !important;
+}
 

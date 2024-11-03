@@ -9,7 +9,7 @@
 <!--Start image section-->
 <div  class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
     <div class="animated fadeInDown">
-        <img alt="facilities" src="~/images/16599949550wiki1.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;"/>
+        <img alt="facilities" src="~/images/facilities.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:90vh;"/>
         <div class="overlaySlider"></div>
     </div>
 </div>
@@ -22,11 +22,11 @@
     {
         <div class="col-md-4">
             <div class="single-facility animate-box fadeInUp animated" data-animate-effect="fadeInUp"
-                     style="background: #faf8f5; padding: 30px 20px;min-height:250px; transition: .5s; position: relative; z-index: 1; margin-bottom: 30px; line-height: 1; border: 1px solid #f1eeeb;">
+                     style="border-radius: 5px;background: #faf8f5; padding: 30px 20px;min-height:250px; transition: .5s; position: relative; z-index: 1; margin-bottom: 30px; line-height: 1; border: 1px solid #f1eeeb;">
                     @if (Model.Where(e => e.tourId == facilities.facilitiesId).ToList().Count > 0)
                     {
                         var mainImage = Model.Where(e => e.tourId == facilities.facilitiesId && e.type == "facilities").ToList();
-                        <img style="width: 45px;margin-bottom: 20px;" src="~/Files/@mainImage[0].attachmentPath" alt="tour">
+                        <img style="width: 45px;margin-bottom: 20px;" src="~/Files/@mainImage[0].attachmentPath" alt="@facilities.title">
                     }
                     <h5 style="font-family: 'Gilda Display', serif !important; font-size: 21px; color: #222; margin-bottom: 10px;">@facilities.title</h5>
                     <p style="line-height: 1.75em;">@facilities.description</p>

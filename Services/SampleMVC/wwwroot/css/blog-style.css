@@ -4104,8 +4104,9 @@ textarea.form-control {
     font-size: 34px;
     font-weight: 700;
     line-height: 1.4;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     letter-spacing: 3px;
+    font-family: "Noto Serif",sans-serif !important;
 }
 
     .heading-section h2 span {
@@ -4394,7 +4395,7 @@ textarea.form-control {
 
 .blog-entry {
     width: 100%;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 @media (max-width: 767.98px) {
@@ -4468,16 +4469,18 @@ textarea.form-control {
         font-size: 12px;
         text-transform: uppercase;
         font-weight: 500;
+        font-family: "Noto Serif",sans-serif !important;
     }
 
         .blog-entry .meta p a {
             color: #232429;
             font-size: 12px;
+            font-family: "Noto Serif",sans-serif !important;
         }
 
-            .blog-entry .meta p a .fa {
-                color: #cdb30c;
-            }
+        .blog-entry .meta p a .fa {
+            color: #cdb30c;
+        }
 
             .blog-entry .meta p a:hover {
                 color: #cdb30c;
@@ -4856,7 +4859,7 @@ textarea.form-control {
         font-size: 20px;
         margin-bottom: 15px;
         font-weight: 700;
-        text-transform: uppercase;
+        /*text-transform: uppercase;*/
     }
 
 .categories li {

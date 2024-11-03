@@ -33,14 +33,14 @@
         <label class="form-label" for="seoTitle">
              @_localizationService.Localize("seoTitle")
         </label>
-         @Html.TextBoxFor(m => m.seoTitle, new { @id = "seoTitle", @class = "form-control" })
-        <span id="seoTitleRequired" style="color:red"></span>
+         @Html.TextAreaFor(m => m.seoTitle, new { @id = "seoTitle", @class = "form-control" })
+        @* <span id="seoTitleRequired" style="color:red"></span> *@
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
         <label class="form-label" for="seokeyWords">
             @_localizationService.Localize("seokeyWords")
         </label>
-        @Html.TextBoxFor(m => m.seokeyWords, new { @id = "seokeyWords", @class = "form-control" })
+        @Html.TextAreaFor(m => m.seokeyWords, new { @id = "seokeyWords", @class = "form-control" })
         <span id="seokeyWordsRequired" style="color:red"></span>
     </div>
     <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
@@ -92,24 +92,24 @@
             } else {
                 $("#descriptionRequired").text("");
             }
-            if ($("#seoTitle").val() == '') {
-                $("#seoTitleRequired").text("required");
-                return false;
-            } else {
-                $("#seoTitleRequired").text("");
-            }
-            if ($("#seokeyWords").val() == '') {
-                $("#seokeyWordsRequired").text("required");
-                return false;
-            } else {
-                $("#seokeyWordsRequired").text("");
-            }
-            if ($("#seoDescription").val() == '') {
-                $("#seoDescriptionRequired").text("required");
-                return false;
-            } else {
-                $("#seoDescriptionRequired").text("");
-            }
+            // if ($("#seoTitle").val() == '') {
+            //     $("#seoTitleRequired").text("required");
+            //     return false;
+            // } else {
+            //     $("#seoTitleRequired").text("");
+            // }
+            // if ($("#seokeyWords").val() == '') {
+            //     $("#seokeyWordsRequired").text("required");
+            //     return false;
+            // } else {
+            //     $("#seokeyWordsRequired").text("");
+            // }
+            // if ($("#seoDescription").val() == '') {
+            //     $("#seoDescriptionRequired").text("required");
+            //     return false;
+            // } else {
+            //     $("#seoDescriptionRequired").text("");
+            // }
             if ($("#language").val() == '') {
                 $("#languageRequired").text("required");
                 return false;

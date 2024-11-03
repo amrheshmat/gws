@@ -181,10 +181,10 @@
             <!-- Logo container-->
             <a class="logo" href="/">
                 <span class="inline-block dark:hidden">
-                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="dark logo">
-                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-white.png" class="h-7 l-light" alt="white logo">
+                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="anoush dark logo">
+                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-white.png" class="h-7 l-light" alt="anoush white logo">
                 </span>
-                <img src="~/images/logo-white.png" class="hidden dark:inline-block" alt="white logo">
+                <img src="~/images/logo-white.png" class="hidden dark:inline-block" alt="anoush white logo">
             </a>
             <!-- End Logo container-->
             <!-- Start Mobile Toggle -->
@@ -216,8 +216,8 @@
                         </ul>
                     </li> *@
                     <li class="active"><a href="/" class="sub-menu-item "> @_localizationService.Localize("Home")</a></li>
-                    <li class="active" id="ourTours"><a href="/" class="sub-menu-item">@_localizationService.Localize("OurTours")</a></li>
-                    <li class="active" id="ourTours"><a href="/facilities" class="sub-menu-item">@_localizationService.Localize("OurFacilities")</a></li>
+                    <li class="active ourToursClass" id="ourTours"><a href="/" class="sub-menu-item">@_localizationService.Localize("OurTours")</a></li>
+                    <li class="active"><a href="/facilities" class="sub-menu-item">@_localizationService.Localize("OurFacilities")</a></li>
                     <li class="active"><a href="/contactUs/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
                     <li class="active"><a href="/aboutUs" class="sub-menu-item">@_localizationService.Localize("WhoWeAre")</a></li>
                     <li class="active"><a href="/blogs" class="sub-menu-item">@_localizationService.Localize("blog")</a></li>
@@ -246,7 +246,7 @@
                             </div><!--end col-->
                             <div class="lg:col-span-3 md:col-span-12" style="margin:auto">
                                 <a href="/" class="text-[22px] focus:outline-none">
-                                    <img style="width: 90px;height: 90px !important;" src="~/images/logo-white.png" alt="white logo">
+                                    <img style="width: 90px;height: 90px !important;" src="~/images/logo-white.png" alt="anoush white logo">
                                 </a>
                                 <ul class="list-none mt-6">
                                   <li class="inline"><a href="@facebook" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
@@ -266,15 +266,14 @@
                                     <h5 class="tracking-[1px] text-gray-100 font-semibold">@_localizationService.Localize("About")</h5>
                                     <ul class="list-none footer-list mt-6">
 
-                                        <li id="ourTours"><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out" @_localizationService.Localize("OurTours")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/facilities" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("OurFacilities")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("WhoWeAre")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/blogs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("Blog")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/SpecialRequest" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("SpecialRequests")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("AboutUs")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("faq")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> @_localizationService.Localize("TermsAndconditions")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/facilities" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("OurFacilities")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("WhoWeAre")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/blogs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("Blog")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/SpecialRequest" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("SpecialRequests")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("AboutUs")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("faq")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> @_localizationService.Localize("TermsAndconditions")</a></li>
                                         @* <li class="mt-[10px]"><a href="pricing.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Pricing</a></li> *@
                                     </ul>
                                 </div>
@@ -389,7 +388,7 @@
     <!-- JAVASCRIPTS -->
     <script>
         $(document).ready(function () {
-            $("#ourTours").on("click",function (e) {
+            $(".ourToursClass").on("click",function (e) {
                 e.preventDefault();
                 $('html, body').animate({
                     scrollTop: $("#tourPackages").offset().top - 70

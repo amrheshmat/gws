@@ -22,8 +22,8 @@
         <div class="swiper-wrapper" style="transform: translate3d(-3038px, 0px, 0px); transition-duration: 0ms;">
             <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="0" style="width: 1519px; transition: all 0ms ease 0s;">
                 <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
-                    <div class="absolute inset-0 bg-black/70">
-                        <img src="~/images/slide7.jpeg" style="width:100% !important;height:90vh" />
+                    <div class="absolute slid1 inset-0 bg-black/70">
+                        <img  src="~/images/slide7.jpeg" style="width:100% !important;height:90vh" alt="dahabiya slide 1" />
                         <div class="overlaySlider"></div>
                     </div>
                     <div class="container relative">
@@ -41,8 +41,8 @@
             </div> <!-- end swiper-slide -->
             <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="1" style="width: 1519px; transition: all 0ms ease 0s;">
                 <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
-                    <div class="absolute inset-0 bg-black/70">
-                        <img src="~/images/slide3.jpeg" style="width:100% !important;height:90vh" />
+                    <div class="absolute slid2 inset-0 bg-black/70">
+                        <img id="slid2" src="~/images/slide3.jpeg" style="width:100% !important;height:90vh" alt="dahabiya slide 2" />
                         <div class="overlaySlider"></div>
                     </div>
                     <div class="container relative">
@@ -53,8 +53,8 @@
             </div> <!-- end swiper-slide -->
             <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="2" style="width: 1519px; transition: all 0ms ease 0s;">
                 <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
-                    <div class="absolute inset-0 bg-black/70">
-                        <img src="~/images/slide4.jpeg" style="width:100% !important;height:90vh" />
+                    <div class="absolute slid3 inset-0 bg-black/70">
+                        <img id="slid3" src="~/images/slide4.jpeg" style="width:100% !important;height:90vh" alt="dahabiya slide 3" />
                         <div class="overlaySlider"></div>
                     </div>
                     <div class="container relative">
@@ -65,8 +65,8 @@
             </div> <!-- end swiper-slide -->
             <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="0" style="width: 1519px; transition: all 0ms ease 0s;">
                 <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
-                    <div class="absolute inset-0 bg-black/70">
-                        <img src="~/images/slide5.jpeg" style="width:100% !important;height:90vh" />
+                    <div class="absolute slid4 inset-0 bg-black/70">
+                        <img id="slid4" src="~/images/slide5.jpeg" style="width:100% !important;height:90vh" alt="dahabiya slide 4" />
                         <div class="overlaySlider"></div>
                     </div>
                     <div class="container relative">
@@ -77,8 +77,8 @@
             </div> <!-- end swiper-slide -->
             <div class="swiper-slide flex items-center overflow-hidden swiper-slide-active" data-swiper-slide-index="4" style="width: 1519px; transition: all 0ms ease 0s;">
                 <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(0px, 0px, 0px); transition: all 0ms ease 0s; ">
-                    <div class="absolute inset-0 bg-black/70">
-                        <img src="~/images/slide6.jpeg" style="width:100% !important;height:90vh" />
+                    <div class="absolute slid5 inset-0 bg-black/70">
+                        <img id="slid5" src="~/images/slide6.jpeg" style="width:100% !important;height:90vh" alt="dahabiya slide 5" />
                         <div class="overlaySlider"></div>
                     </div>
                     <div class="container relative">
@@ -89,8 +89,8 @@
             </div> <!-- end swiper-slide -->
             <div class="swiper-slide flex items-center overflow-hidden swiper-slide-active" data-swiper-slide-index="5" style="width: 1519px; transition: all 0ms ease 0s;">
                 <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(0px, 0px, 0px); transition: all 0ms ease 0s; ">
-                    <div class="absolute inset-0 bg-black/70">
-                        <img src="~/images/slide2.jpeg" style="width:100% !important;height:90vh" />
+                    <div class="absolute slid6 inset-0 bg-black/70">
+                        <img id="slid6" src="~/images/slide2.jpeg" style="width:100% !important;height:90vh" alt="dahabiya slide 6" />
                         <div class="overlaySlider"></div>
                     </div>
                     <div class="container relative">
@@ -161,11 +161,11 @@
                                             @if (Model.Where(e => e.tourId == tour.tourId).ToList().Count > 0)
                                             {
                                                 var mainImage = Model.Where(e => e.tourId == tour.tourId && e.type == "tour").ToList();
-                                                <img src="~/Files/@mainImage[0].attachmentPath" alt="tour">
+                                                <img src="~/Files/@mainImage[0].attachmentPath" alt="@tour.title">
                                             }
                                             else
                                             {
-                                                <img src="~/images/listing/1.jpg" alt="tour">
+                                                <img src="~/images/listing/1.jpg" alt="tour default image">
                                             }
                                         </a>
                                         <div class="image-badge">
@@ -210,7 +210,7 @@
                 <ul id="whyBookingUs">
                     @foreach (var c in whyChooseUs)
                     {
-                        <li style="color: #425166; font-size: 19px; font-family: Arial, Helvetica, sans-serif !important;"><i class="fa fa-angle-double-right"></i>@c.title</li>
+                        <li style='color: #425166; font-size: 19px; font-family:"Noto Serif",sans-serif!important;'><i class="fa fa-angle-double-right"></i>@c.title</li>
                     }
                 </ul>
             </div>
@@ -219,7 +219,7 @@
     <div class="container">
         <div class="row justify-content-center pb-4">
             <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
-                <h2 class="mb-4">Recent Post</h2>
+                <h2 class="mb-4">@_localizationService.Localize("Articles")</h2>
             </div>
         </div>
         <div class="row d-flex">
@@ -238,8 +238,9 @@
                                         <a href="#"><span class="fa fa-calendar mr-2"></span>@blog.creationDate</a>
                                     </p>
                                 </div>
-                                    <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="/BlogSingle/@blog.blogId">@blog.title</a></h1>
+                                    <h1 style=" font-size: 20px; font-weight: bold !important;margin-bottom:15px;"><a href="/BlogSingle/@blog.blogId">@blog.title</a></h1>
                                 <p>@blog.description </p>
+                                <a style="position: absolute; bottom: 30px; left: 20px;" href="/BlogSingle/@blog.blogId">Read More</a>
                             </div>
                         </div>
                     </div>

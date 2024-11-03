@@ -10,7 +10,7 @@
 }
 <div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
     <div class="animated fadeInDown">
-        <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;" alt="main tour image" />
+        <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:90vh;" alt="main tour image" />
         <div class="overlaySlider"></div>
     </div>
 </div>
@@ -19,9 +19,9 @@
         <div class="row">
             <div class="col-lg-8 ftco-animate fadeInUp ftco-animated">
                 <h2 class="mb-3">@blog.title</h2>
-                <p>@blog.description</p>
+                <p style="margin: 30px 0px 37px 0px; line-height: 2.3;">@blog.description</p>
                 <p>
-                    <img src="/Files/@attachments[0].attachmentPath" alt="" class="img-fluid">
+                    <img style="width:80%;height:400px;" src="/Files/@attachments[0].attachmentPath" alt="@blog.title" class="img-fluid">
                 </p>
                 @* <div class="tag-widget post-tag-container mb-5 mt-5">
                 <div class="tagcloud">
@@ -35,10 +35,10 @@
             <div class="col-lg-4 sidebar ftco-animate pl-md-5 mt-5 mt-md-5 fadeInUp ftco-animated">
                 <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
                     @if (recentLogs != null && recentLogs.Count >0){
-                        <h3>Recent Blog</h3>
+                        <h3>@_localizationService.Localize("RecentBlog")</h3>
                         @foreach (var b in recentLogs)
                         {
-                            var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                            var mainImage = Model.Where(e => e.tourId == b.blogId && e.type == "blog").ToList();
                             <div class="block-21 mb-4 d-flex justify-content-between">
                                 <a class="blog-img" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
                                 <div class="text pl-3">
@@ -52,6 +52,15 @@
                     }
                 </div>
             </div>
+            @* <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+                <h3>@_localizationService.Localize("Tags")</h3>
+                <div class="tagcloud">
+                    @foreach(var t in tags)
+                    {
+                        <a href="#" class="tag-cloud-link">@t</a>
+                    }
+                </div>
+            </div> *@
         </div>
     </div>
 </section>

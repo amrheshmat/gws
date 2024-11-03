@@ -26,7 +26,7 @@ namespace SampleMVC.Controllers
         public async Task<IActionResult> Index()//index page
         {
             List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.type == "blog").ToListAsync();
-            List<Blog> blogs = _repo.GetAll<Blog>().OrderByDescending(e=>e.blogId).Take(3).ToList();
+            List<Blog> blogs = _repo.Filter<Blog>(e=> e.isActive == "Y").OrderByDescending(e=>e.blogId).Take(2).ToList();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
             List<TourAttachment> recentAttachments = new List<TourAttachment>();
             foreach (var b in blogs)
@@ -49,26 +49,28 @@ namespace SampleMVC.Controllers
                     recentAttachments.Add(attachment);
                 }
             }
+            int lastId = blogs.Select(e => e.blogId).ToList().Min();
             Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
             homeSeo.title = homeSeo.title + " - Our Blogs";
             ViewBag.homeSeo = homeSeo;
             int blogsCount = _repo.GetAll<Blog>().ToList().Count;
-            double blogsPaginationCount = (double)blogsCount / 3;
+            double blogsPaginationCount = (double)blogsCount / 2;
             ViewBag.attachments = attachments;
             ViewBag.recentAttachments = recentAttachments;
             ViewBag.blogs = blogs;
             ViewBag.recentLogs = recentbLogs;
             ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
+            ViewBag.lastId = lastId;
             return View(tourAttachments);
         }
+
         [Route("BlogSingle/{id}")]
         public async Task<IActionResult> BlogSingle(int id)
         {
             Blog blog = await _repo.Filter<Blog>(e => e.blogId == id).FirstOrDefaultAsync();
-            List<Blog> recentLogs = await _repo.Filter<Blog>(e => e.blogId == id && e.isActive == "Y").ToListAsync();
+            List<Blog> recentbLogs = await _repo.Filter<Blog>(e=>e.isActive == "Y").OrderByDescending(e=>e.creationDate).Take(3).ToListAsync();
             List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type =="blog").ToListAsync();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
-            var recentbLogs = recentLogs.OrderByDescending(e => e.creationDate).ToList().Take(3);
             foreach (var b in recentbLogs)
             {
                 List<TourAttachment> tourAttachment = new List<TourAttachment>();
@@ -86,11 +88,11 @@ namespace SampleMVC.Controllers
             ViewBag.currentId = id;
             ViewBag.attachments = attachments;
             ViewBag.blog = blog;
-            ViewBag.recentLogs = recentLogs;
+            ViewBag.recentLogs = recentbLogs;
             return View(tourAttachments);
         }
         [AuthAttribute("blog", "blog")]
-        public async Task<IActionResult> Blog()//index page
+        public async Task<IActionResult> Blog() 
         {
             List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
             List<TourViewModel> list = new List<TourViewModel>();
@@ -109,7 +111,7 @@ namespace SampleMVC.Controllers
 
         }
         [AuthAttribute("Add", "blog")]
-        public async Task<IActionResult> Add()//index page
+        public async Task<IActionResult> Add()
         {
             List<Day> days = await _repo.GetAll<Day>().ToListAsync();
             List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
@@ -121,7 +123,7 @@ namespace SampleMVC.Controllers
         }
         [AuthAttribute("add", "blog")]
         [HttpPost]
-        public async Task<Response> Add([FromBody] Blog blog)//index page
+        public async Task<Response> Add([FromBody] Blog blog)
         {
             Response response = new Response();
             response.Title = _localizationService.Localize("Add");
@@ -142,7 +144,7 @@ namespace SampleMVC.Controllers
         }
         [AuthAttribute("Edit", "blog")]
         [Route("Blog/Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)//index page
+        public async Task<IActionResult> Edit(int id)
         {
             Blog blog = new Blog();
             blog = await _repo.Filter<Blog>(e => e.blogId == id).FirstOrDefaultAsync();
@@ -154,7 +156,7 @@ namespace SampleMVC.Controllers
         }
         [Route("Blog/GetAttachmentById/{id}")]
         [HttpGet]
-        public async Task<List<TourAttachment>> GetAttachmentById(int id)//index page
+        public async Task<List<TourAttachment>> GetAttachmentById(int id)
         {
             List<TourAttachment> blogAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type == "blog").ToListAsync();
             List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
@@ -267,6 +269,34 @@ namespace SampleMVC.Controllers
             response.Status = false;
             response.Message = _localizationService.Localize("AciveError");
             return response;
+        }
+
+        [HttpGet]
+        [Route("Blog/GetPagination/{pageId}")]
+        public async Task<List<BlogViewModel>> GetPagination(string pageId)
+        {
+            List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.type == "blog").ToListAsync();
+            List<Blog> blogs = _repo.Filter<Blog>(e => e.isActive == "Y").OrderByDescending(e => e.blogId).Skip(int.Parse(pageId) * 2).Take(2).ToList();
+            List<BlogViewModel> viewModelList = new List<BlogViewModel>();
+            foreach (var b in blogs)
+            {
+               BlogViewModel model = new BlogViewModel();
+                model.blog = b;
+                model.attachments = await _repo.Filter<TourAttachment>(e => e.tourId == b.blogId && e.type == "blog").ToListAsync();
+                viewModelList.Add(model);
+            }
+            int lastId = blogs.Select(e => e.blogId).ToList().Min();
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - Our Blogs";
+            ViewBag.homeSeo = homeSeo;
+            int blogsCount = _repo.GetAll<Blog>().ToList().Count;
+            double blogsPaginationCount = (double)blogsCount / 2;
+            ViewBag.attachments = attachments;
+            ViewBag.blogs = blogs;
+            ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
+            ViewBag.lastId = lastId;
+            return viewModelList;
+
         }
     }
 }

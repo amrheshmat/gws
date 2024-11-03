@@ -2166,7 +2166,7 @@ img, video {
 
 .text-gray-300 {
     --tw-text-opacity: 1 !important;
-    color: rgb(209 213 219 / var(--tw-text-opacity)) !important
+    color:rgb(156 163 175 / 1 ) !important;
 }
 
 .text-gray-900 {
@@ -4229,7 +4229,7 @@ html[dir=rtl] .tns-visually-hidden {
 
 .hover\:text-gray-400:hover {
     --tw-text-opacity: 1 !important;
-    color: rgb(156 163 175 / var(--tw-text-opacity)) !important
+    color: rgb(209 213 219 / var(--tw-text-opacity)) !important;
 }
 
 .hover\:text-red-500:hover {

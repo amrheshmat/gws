@@ -7,7 +7,7 @@ namespace MWS.Data.Entities
     {
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? blogId { get; set; }
+        public int blogId { get; set; }
         public string? seoTitle { get; set; }
         public string? seoDescription { get; set; }
         public string? seokeyWords { get; set; }

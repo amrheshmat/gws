@@ -47,18 +47,31 @@ namespace TripBusiness.business
 				"</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
-				"<div class='container body'> " +
-				"<p>new Booking</p>" +
-				"<p>Booking details below:</p>" +
-				"<p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.booking?.name + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.booking?.email + "</p>" +
-				"<p> <b>" + _localizationService.Localize("TourName") + "</b> : " + mailRequest.tourName + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Date") + "</b> : " + mailRequest.booking?.tourDate.Value.ToString("dddd, dd MMMM yyyy") + "</p>" +
-				"<p> <b>" + _localizationService.Localize("CountryName") + "</b> : " + mailRequest.booking?.countryName + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Phone") + "</b> : " + mailRequest.booking?.phone + "</p>" +
-				"<p> <b>" + _localizationService.Localize("NumberOfAdult") + "</b> : " + mailRequest.booking?.numberOfAdult + "</p>" +
-				"<p> <b>" + _localizationService.Localize("NumberOfChild") + "</b> : " + mailRequest.booking?.numberOfChild + "</p>" +
-				"<p> <b>" + _localizationService.Localize("NumberOfInfant") + "</b> : " + mailRequest.booking?.numberOfInfant + "</p>" +
+				"<div class='container body'>" +
+				"Thanks for booking with us.<br>"+
+				"Your booking is confirmed and below is your booking details:<br>"+
+				"Name:" + mailRequest.booking.name + "<br>" +
+				"Email:" + mailRequest.booking.email + "<br>" +
+				"Country:" + mailRequest.booking.countryName + "<br>" +
+				"Phone:" + mailRequest.booking.phone + "<br>" +
+				"Tour name:" + mailRequest.tourName + "<br>" +
+				"No of adults:" + mailRequest.booking.numberOfAdult + "<br>"+
+				"No of child:" + mailRequest.booking.numberOfChild + "<br>" +
+                "No of inf:" + mailRequest.booking.numberOfInfant + "<br>" +
+                "Arrival date:" + mailRequest.booking.tourDate + "<br>" +
+                "Tour language:" + mailRequest.booking.languageName + "<br>" +
+                "Pick up details:" + mailRequest.booking.pickup + "<br>" +
+				"Room type:" + mailRequest.booking.roomType + "<br>" +
+                "Payment amount:"+mailRequest.booking.totalPrice + "<br>" +
+                "Additional activities:" + mailRequest.additionalActivities + "<br>" +
+				"Booking reference no:"+ mailRequest.booking.sessionReference + "<br>" +
+
+                "One of our team will contact you soon.<br>" +
+
+				"Have a nice trip <br>"+
+				"Anoush Dahabiya <br>"+
+				"booking@anoushdahabiya.com <br>"+
+				"+201061046797" +
 				"</div>" +
 				"<div class='container footer'> " +
 			   "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +

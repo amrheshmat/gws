@@ -74,6 +74,16 @@ namespace SampleMVC.Controllers
             booking.numberOfChild = model.numberOfChild;
             booking.numberOfInfant = model.numberOfInfant;
             booking.numberOfRoom = model.roomCountList?.Where(e => e.count > 0).Select(e => e.count).Sum();
+            List<string> roomsType = new List<string>();
+            foreach(var room in model.roomCountList)
+            {
+                if(room.count > 0)
+                {
+					string t = room.count + " " + room.roomTypeName;
+					roomsType.Add(t);
+				}
+            }
+            booking.roomType = string.Join("," , roomsType);
             return booking;
         }
         [HttpPost]
@@ -207,11 +217,25 @@ namespace SampleMVC.Controllers
                 if (status == "complete")
                 {
                     Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
+                    List<BookAdditionalActivity> additionalActivity = _repo.Filter<BookAdditionalActivity>(e => e.bookId == bookRequest.requestId).ToList();
+                    List<AdditionalActivity> activities = new List<AdditionalActivity>();
+                    foreach(var bookActivity in additionalActivity)
+                    {
+                        List<TourAdditionalActivity> activityTours = _repo.Filter<TourAdditionalActivity>(e => e.tourId == tour.tourId && e.activityId == bookActivity.tourActivityId).ToList();
+                        foreach(var a in activityTours)
+                        {
+                            AdditionalActivity activity = _repo.Filter<AdditionalActivity>(e => e.additionalActivityId == a.activityId).FirstOrDefault();
+                            if (activity != null)
+                                activities.Add(activity);
+                        }
+                    }
+                    List<string> activitiesList = activities.Select(e => e.title).ToList();
                     MailRequest mailRequest = new MailRequest();
                     mailRequest.booking = bookRequest;
                     mailRequest.Subject = _localizationService.Localize("BookTour");
                     mailRequest.tourName = tour?.title;
                     mailRequest.ToEmail = new List<string>();
+                    mailRequest.additionalActivities = string.Join(",", activitiesList);
                     List<User> users = new List<User>();
                     decimal? permissionId = _repo.Filter<Permission>(permission => permission.permissionArea.ToLower() == "request".ToLower()).FirstOrDefault().permissionId;
                     if (permissionId != null)
@@ -245,22 +269,35 @@ namespace SampleMVC.Controllers
                     mailRequest.ToEmail = new List<string>();
                     mailRequest.ToEmail?.Add(bookRequest.email);
                     mailRequest.Subject = _localizationService.Localize("ThankYou");
-                    mailRequest.Body ="<p>"+ _localizationService.Localize("ThanksForBookTour") +"</p>"+
-                        "<p>Name: " + bookRequest.name+ "</p>"+
-                        "<p>Email: " + bookRequest.email+ "</p>"+
-                        "<p>Country: " + bookRequest.countryName+ "</p>"+
-                        "<p>Phone: " + bookRequest.phone+ "</p>"+
-                        "<p>Tour name: " + mailRequest.tourName + "</p>"+
-                        "<p>No of adults: " + bookRequest.numberOfChild+ "</p>"+
-                        "<p>No of child: " + bookRequest.numberOfAdult+ "</p>"+
-                        "<p>No of inf: " + bookRequest.numberOfInfant+ "</p>"+
-                        "<p>Arrival date: " + bookRequest.tourDate.Value.ToString("dddd, dd MMMM yyyy") + "</p>" +
-                        "<p>Booking reference no: " + bookRequest.requestId+ "</p>"+
-                        "<p>One of our team will contact you soon. <br><br></p>" +
-                        "<p>Have a nice trip </p>" +
-                        "<p>Anoush Dahabiya </p>" +
-                        "<p>booking@anoushdahabiya.com </p>" +
-                        "<p>+201061046797 </p>" ;
+                    mailRequest.Body = "<div class='container body'>" +
+				"Thanks for booking with us.<br>" +
+				"Your booking is confirmed and below is your booking details:<br>" +
+				"Name:" + mailRequest.booking.name + "<br>" +
+				"Email:" + mailRequest.booking.email + "<br>" +
+				"Country:" + mailRequest.booking.countryName + "<br>" +
+				"Phone:" + mailRequest.booking.phone + "<br>" +
+				"Tour name:" + mailRequest.tourName + "<br>" +
+				"No of adults:" + mailRequest.booking.numberOfAdult + "<br>" +
+				"No of child:" + mailRequest.booking.numberOfChild + "<br>" +
+				"No of inf:" + mailRequest.booking.numberOfInfant + "<br>" +
+				"Arrival date:" + mailRequest.booking.tourDate + "<br>" +
+				"Tour language:" + mailRequest.booking.languageName + "<br>" +
+				"Pick up details:" + mailRequest.booking.pickup + "<br>" +
+				"Room type:" + mailRequest.booking.roomType + "<br>" +
+				"Payment amount:" + mailRequest.booking.totalPrice + "<br>" +
+				"Additional activities:" + mailRequest.additionalActivities + "<br>" +
+				"Booking reference no:" + mailRequest.booking.sessionReference + "<br>" +
+
+				"One of our team will contact you soon.<br>" +
+
+				"Have a nice trip <br>" +
+				"Anoush Dahabiya <br>" +
+				"booking@anoushdahabiya.com <br>" +
+				"+201061046797" +
+				"</div>" +
+				"<div class='container footer'> " +
+			   "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
+				"</div>"  ;
                     await _mailService.SendBookThanksEmailAsync(mailRequest);
                 }
                 #endregion

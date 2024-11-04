@@ -609,7 +609,7 @@
 							</span>
 							</div>
 							<div class="col-sm-6">
-								<div class="form-group">
+							<div class="form-group" id="@room.roomTypeName ">
 								<input type="number" min="0" class="form-control roomTypeCount" id="@room.roomTypeId" value="0" />
 								</div>
 							</div>
@@ -754,12 +754,14 @@
 		$('#formBookingBtn').on("click", function (e) {
 			var selectedRoom = $('.roomTypeCount').map((_, el) => el.value).get()
 			var selectedRoomId = $('.roomTypeCount').map((_, el) => el.id).get()
-			console.log(selectedRoom)
+			var selectedRoomName = $('.roomTypeCount').parent().map((_, el) => el.id).get()
+			console.log(selectedRoomName);
 			var selectedRoomList = [];
 			for (i = 0; i < selectedRoom.length; i++) {
 				var roomCount = {};
 				roomCount.count = selectedRoom[i];
 				roomCount.roomTypeId = selectedRoomId[i];
+				roomCount.roomTypeName = selectedRoomName[i];
 				selectedRoomList.push(roomCount);
 			}
 			console.log(selectedRoomList)

@@ -68,7 +68,15 @@ namespace SampleMVC.Controllers
         public async Task<IActionResult> BlogSingle(int id)
         {
             Blog blog = await _repo.Filter<Blog>(e => e.blogId == id).FirstOrDefaultAsync();
-            List<Blog> recentbLogs = await _repo.Filter<Blog>(e=>e.isActive == "Y").OrderByDescending(e=>e.creationDate).Take(3).ToListAsync();
+            
+            List<Blog> recentbLogs = new List<Blog>();
+            if(blog?.seokeyWords != "" && blog?.seokeyWords != null)
+            {
+                List<string> keyWords = blog?.seokeyWords.Split(",").ToList();
+                recentbLogs = _repo.Filter<Blog>(e => e.blogId != id && keyWords.Any(x=>e.seokeyWords.Contains(x)) && e.isActive == "Y").OrderByDescending(e => e.creationDate).ToList();
+            }
+            else
+                recentbLogs = await _repo.Filter<Blog>(e=>e.isActive == "Y").OrderByDescending(e=>e.creationDate).Take(3).ToListAsync();
             List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type =="blog").ToListAsync();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
             foreach (var b in recentbLogs)
@@ -80,10 +88,12 @@ namespace SampleMVC.Controllers
                     tourAttachments.Add(attachment);
                 }
             }
+            Seo mainSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();  
             Seo homeSeo = new Seo();
-            homeSeo.title = blog.seoTitle;
-            homeSeo.description = blog.seoDescription;
-            homeSeo.keyWords = blog.seokeyWords;
+            homeSeo.title = blog?.seoTitle == "" || blog?.seoTitle == null? mainSeo?.title + " - " + blog?.title : blog?.seoTitle;
+            homeSeo.description = blog?.seoDescription == "" || blog?.seoDescription == null ?  mainSeo?.description : blog?.seoDescription;
+            homeSeo.keyWords = blog?.seokeyWords == "" || blog?.seokeyWords == null? mainSeo?.keyWords : blog?.seokeyWords;
+            homeSeo.viewport = mainSeo?.viewport;
             ViewBag.homeSeo = homeSeo;
             ViewBag.currentId = id;
             ViewBag.attachments = attachments;

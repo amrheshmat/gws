@@ -15,6 +15,7 @@ namespace MWS.Data.Entities
 		public string? name { get; set; }
 		public string? status { get; set; }
 		public string? countryName { get; set; }
+		public string? roomType { get; set; }
 		public string? languageName { get; set; }
 		public string? pickup { get; set; }
 		public DateTime? tourDate { get; set; }

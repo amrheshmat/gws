@@ -30697,6 +30697,7 @@ body {
 .slide-inner .slid1 img {
     animation: zoom-in-zoom-out 10s linear;
     animation-iteration-count: 1;
+   animation-fill-mode:forwards;
 }
 /*.slide-inner .slid2 img {
     animation: zoom-in-zoom-out 10s linear;
@@ -30721,6 +30722,6 @@ body {
     }
 
     100% {
-        transform: scale(1.4, 1..4);
+        transform: scale(1.5, 1.5);
     }
 }

@@ -10,7 +10,7 @@
 }
 <div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
     <div class="animated fadeInDown">
-        <img src="~/Files/@attachments[0].attachmentPath" style="width:100%;background-repeat:no-repeat;background-size:cover;height:90vh;" alt="main tour image" />
+        <img src="~/images/blogSingle.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:90vh;" alt="main tour image" />
         <div class="overlaySlider"></div>
     </div>
 </div>
@@ -35,7 +35,7 @@
             <div class="col-lg-4 sidebar ftco-animate pl-md-5 mt-5 mt-md-5 fadeInUp ftco-animated">
                 <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
                     @if (recentLogs != null && recentLogs.Count >0){
-                        <h3>@_localizationService.Localize("RecentBlog")</h3>
+                        <h3>@_localizationService.Localize("RelatedBlog")</h3>
                         @foreach (var b in recentLogs)
                         {
                             var mainImage = Model.Where(e => e.tourId == b.blogId && e.type == "blog").ToList();

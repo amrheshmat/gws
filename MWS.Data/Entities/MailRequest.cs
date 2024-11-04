@@ -8,6 +8,7 @@ namespace MWS.Data.Entities
 		public string? Subject { get; set; }
 		public string? Body { get; set; }
 		public string? tourName { get; set; }
+		public string? additionalActivities { get; set; }
 		public Contact? Contact { get; set; }
 		public SpecialRequest? spcialRequest { get; set; }
 		public Booking? booking { get; set; }

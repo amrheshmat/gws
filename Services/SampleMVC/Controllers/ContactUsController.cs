@@ -75,7 +75,7 @@ namespace SampleMVC.Controllers
 				mailRequest.ToEmail = new List<string>();
 				mailRequest.ToEmail?.Add(contactModel.email);
 				mailRequest.Subject = _localizationService.Localize("ThankYou");
-				mailRequest.Contact.message = _localizationService.Localize("ThanksForContactWithUs") + ",<p>" + _localizationService.Localize("CheckSoon") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
+				mailRequest.Contact.message = _localizationService.Localize("ThanksForContactWithUs") + ".<br><p>" + _localizationService.Localize("CheckSoon") + "<br><br>"+ _localizationService.Localize("DahabyiaSignture") + "</p><p>" + _localizationService.Localize("Regards") + ",</p>";
 				await _mailService.SendContactThankEmailAsync(mailRequest);
 				response.Status = true;
 				response.Message = _localizationService.Localize("ContactSent");

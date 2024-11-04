@@ -64,7 +64,7 @@ namespace TripBusiness.business
 				"Room type:" + mailRequest.booking.roomType + "<br>" +
                 "Payment amount:"+mailRequest.booking.totalPrice + "<br>" +
                 "Additional activities:" + mailRequest.additionalActivities + "<br>" +
-				"Booking reference no:"+ mailRequest.booking.sessionReference + "<br>" +
+				"Booking reference no:"+ mailRequest.booking.requestId + "<br>" +
 
                 "One of our team will contact you soon.<br>" +
 
@@ -124,7 +124,7 @@ namespace TripBusiness.business
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
 				".container{width:50%;margin:auto}" +
 				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;}" +
+				".body{border: 1px solid#0f172a;line-height:2}" +
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
@@ -140,6 +140,9 @@ namespace TripBusiness.business
 				"<p> <b>" + _localizationService.Localize("NumberOfChild") + "</b> : " + mailRequest.spcialRequest?.numberOfChild + "</p>" +
 				"<p> <b>" + _localizationService.Localize("NumberOfInfant") + "</b> : " + mailRequest.spcialRequest?.numberOfInfant + "</p>" +
 				"<p> <b>" + _localizationService.Localize("Message") + "</b> : " + mailRequest.spcialRequest?.message + "</p>" +
+				"<p> <b> Arrival date</b> : " + mailRequest.spcialRequest?.arriveDate.Value.ToString("dd-MM-yyyy") + "</p>" +
+				"<p> <b> Leave date</b> : " + mailRequest.spcialRequest?.leaveDate.Value.ToString("dd-MM-yyyy") + "</p>" +
+				"<p> <b> Nationality</b> : " + mailRequest.spcialRequest?.countryName + "</p>" +
 				"</div>" +
 				"<div class='container footer'> " +
 			   "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
@@ -207,6 +210,8 @@ namespace TripBusiness.business
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'> <p> <b>Name</b> : " + mailRequest.Contact?.name + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.spcialRequest?.email + "</p>" +
+				"<p> <b>Phone</b> : " + mailRequest.Contact?.phone + "</p>" +
 				"<p> <b>Phone</b> : " + mailRequest.Contact?.phone + "</p>" +
 				"<p> <b>Number Of Adult</b> : " + mailRequest.Contact?.numberOfAdult + "</p>" +
 				"<p> <b>Number Of Child</b> : " + mailRequest.Contact?.numberOfChild + "</p>" +
@@ -273,7 +278,7 @@ namespace TripBusiness.business
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
-				"<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.Contact?.name + "</b> ,</p><p> " + mailRequest.Contact?.message + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Dear") + "</b></p><p> " + mailRequest.Contact?.message + "</p>" +
 				"</div>" +
 				"<div class='container footer'>" +
 				"<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
@@ -340,7 +345,7 @@ namespace TripBusiness.business
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
-				"<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.spcialRequest?.name + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Dear") + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
 				"</div>" +
 				"<div class='container footer'> " +
 				"<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
@@ -389,7 +394,7 @@ namespace TripBusiness.business
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
 				".container{width:50%;margin:auto}" +
 				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;}" +
+				".body{border: 1px solid#0f172a;line-height:2}" +
 				".body p{padding: 0px 20px;}" +
 				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
 				".footer p{margin: 0px 30%; color: #fff;}" +
@@ -399,10 +404,7 @@ namespace TripBusiness.business
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
-				"<p> <b>" + _localizationService.Localize("Dear") + " " + mailRequest.booking.name + "<br>" + mailRequest.Body + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
-				"</div>" +
-				"<div class='container footer'> " +
-				"<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
+				"<p> <b>" + _localizationService.Localize("Dear") +"<br>" + mailRequest.Body + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
 				"</div>" +
 				"</div></body</html>";
 			if (mailRequest.Attachments != null)

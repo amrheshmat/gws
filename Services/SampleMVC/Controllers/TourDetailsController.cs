@@ -286,7 +286,7 @@ namespace SampleMVC.Controllers
 				"Room type:" + mailRequest.booking.roomType + "<br>" +
 				"Payment amount:" + mailRequest.booking.totalPrice + "<br>" +
 				"Additional activities:" + mailRequest.additionalActivities + "<br>" +
-				"Booking reference no:" + mailRequest.booking.sessionReference + "<br>" +
+				"Booking reference no:" + mailRequest.booking.requestId + "<br>" +
 
 				"One of our team will contact you soon.<br>" +
 

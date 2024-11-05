@@ -644,6 +644,7 @@
 	var bookAdditionalActivities = [];
 
 	function errorCallback(error) {
+		document.location.href = "/payment/result/status/2";
 		var requestId = localStorage.getItem("PaymentRequestId");
 		var sessionId = localStorage.getItem("SessionId");
 		var status = "error";
@@ -664,6 +665,7 @@
 		});
 	}
 	function cancelCallback() {
+		document.location.href = "/payment/result/status/2";
 		var requestId = localStorage.getItem("PaymentRequestId");
 		var sessionId = localStorage.getItem("SessionId");
 		var status = "cancel";
@@ -683,6 +685,7 @@
 		});
 	}
 	function completeCallback() {
+		document.location.href = "/payment/result/status/1";
 		var requestId = localStorage.getItem("PaymentRequestId");
 		var sessionId = localStorage.getItem("SessionId");
 		var status = "complete";

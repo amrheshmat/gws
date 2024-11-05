@@ -25,23 +25,25 @@ namespace TripBusiness.business
 			List<InternetAddress> internetAddresses = new List<InternetAddress>();
 			if (mailRequest.ToEmail.Where(e => e == _mailSettings.Mail).Count() <= 0)
 				mailRequest.ToEmail.Add(_mailSettings.Mail);
+			//mailRequest.ToEmail.Add("amrheshmat95@gmail.com");
 			foreach (var item in mailRequest.ToEmail)
 			{
 				var t = MailboxAddress.Parse(item);
 				internetAddresses.Add(t);
 			}
+
 			email.To.AddRange(internetAddresses);
 
 			email.Subject = mailRequest.Subject == null ? "Booking Request" : mailRequest.Subject;
 
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
-				".container{width:50%;margin:auto}" +
-				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;}" +
+                ".container{width:50%;margin:auto} .im {color: #000000 !important;}" +
+				".header{background: #0f172a; color: #fff; border: 1px solid #eee;padding:10px 15px}" +
+				".body{border: 1px solid#eee;line-height:2;padding: 0px 15px;}" +
 				".body p{padding: 0px 20px;}" +
-				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-				".footer p{margin: 0px 30%; color: #fff;}" +
+				".footer {border: 1px solid #eee; padding: 10px 15px; background: #0f172a;}" +
+				".footer p{margin: 0px 20%; color: #fff;}" +
 				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
 				"</style></head><body>" +
@@ -58,7 +60,7 @@ namespace TripBusiness.business
 				"No of adults:" + mailRequest.booking.numberOfAdult + "<br>"+
 				"No of child:" + mailRequest.booking.numberOfChild + "<br>" +
                 "No of inf:" + mailRequest.booking.numberOfInfant + "<br>" +
-                "Arrival date:" + mailRequest.booking.tourDate + "<br>" +
+                "Arrival date:" + mailRequest.booking.tourDate.Value.ToString("dd-MM-yyy") + "<br>" +
                 "Tour language:" + mailRequest.booking.languageName + "<br>" +
                 "Pick up details:" + mailRequest.booking.pickup + "<br>" +
 				"Room type:" + mailRequest.booking.roomType + "<br>" +
@@ -111,6 +113,8 @@ namespace TripBusiness.business
 			List<InternetAddress> internetAddresses = new List<InternetAddress>();
             if (mailRequest.ToEmail.Where(e => e == _mailSettings.Mail).Count() <= 0)
                 mailRequest.ToEmail.Add(_mailSettings.Mail);
+			//mailRequest.ToEmail.Add("amrheshmat95@gmail.com");
+
             foreach (var item in mailRequest.ToEmail)
 			{
 				var t = MailboxAddress.Parse(item);
@@ -122,27 +126,28 @@ namespace TripBusiness.business
 
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
-				".container{width:50%;margin:auto}" +
-				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;line-height:2}" +
+                ".container{width:50%;margin:auto} .im {color: #000000 !important;}" +
+				".header{background: #0f172a; color: #fff; border: 1px solid #eee;padding:10px 15px}" +
+				".body{border: 1px solid#eee;line-height:2;padding: 0px 15px;}" +
 				".body p{padding: 0px 20px;}" +
-				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-				".footer p{margin: 0px 30%; color: #fff;}" +
+				".footer {border: 1px solid #eee; padding: 10px 15px; background: #0f172a;}" +
+				".footer p{margin: 0px 20%; color: #fff;}" +
 				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
-				"<div class='container body'> <p> <b>" + _localizationService.Localize("Name") + "</b> : " + mailRequest.spcialRequest?.name + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.spcialRequest?.email + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Phone") + "</b> : " + mailRequest.spcialRequest?.phone + "</p>" +
-				"<p> <b>" + _localizationService.Localize("NumberOfAdult") + "</b> : " + mailRequest.spcialRequest?.numberOfAdult + "</p>" +
-				"<p> <b>" + _localizationService.Localize("NumberOfChild") + "</b> : " + mailRequest.spcialRequest?.numberOfChild + "</p>" +
-				"<p> <b>" + _localizationService.Localize("NumberOfInfant") + "</b> : " + mailRequest.spcialRequest?.numberOfInfant + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Message") + "</b> : " + mailRequest.spcialRequest?.message + "</p>" +
-				"<p> <b> Arrival date</b> : " + mailRequest.spcialRequest?.arriveDate.Value.ToString("dd-MM-yyyy") + "</p>" +
-				"<p> <b> Leave date</b> : " + mailRequest.spcialRequest?.leaveDate.Value.ToString("dd-MM-yyyy") + "</p>" +
-				"<p> <b> Nationality</b> : " + mailRequest.spcialRequest?.countryName + "</p>" +
+				"<div class='container body'>"+
+				"Name:" + mailRequest.spcialRequest?.name + "<br>" +
+				"Email:" + mailRequest.spcialRequest?.email + "<br>" +
+				"Phone:" + mailRequest.spcialRequest?.phone + "<br>" +
+				"Number Of Adult:" + mailRequest.spcialRequest?.numberOfAdult + "<br>" +
+				"Number Of Child:" + mailRequest.spcialRequest?.numberOfChild + "<br>" +
+				"Number Of Infant:" + mailRequest.spcialRequest?.numberOfInfant + "<br>" +
+				"Message:" + mailRequest.spcialRequest?.message + "<br>" +
+				"Arrival date:" + mailRequest.spcialRequest?.arriveDate.Value.ToString("dd-MM-yyy") + "<br>" +
+				"Leave date:" + mailRequest.spcialRequest?.leaveDate.Value.ToString("dd-MM-yyy") + "<br>" +
+				"Nationality:" + mailRequest.spcialRequest?.countryName + "<br>" +
 				"</div>" +
 				"<div class='container footer'> " +
 			   "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
@@ -187,8 +192,9 @@ namespace TripBusiness.business
 			List<InternetAddress> internetAddresses = new List<InternetAddress>();
             if (mailRequest.ToEmail.Where(e => e == _mailSettings.Mail).Count() <= 0)
                 mailRequest.ToEmail.Add(_mailSettings.Mail);
+			//mailRequest.ToEmail.Add("amrheshmat95@gmail.com");
             foreach (var item in mailRequest.ToEmail)
-			{
+            {
 				var t = MailboxAddress.Parse(item);
 				internetAddresses.Add(t);
 			}
@@ -198,25 +204,25 @@ namespace TripBusiness.business
 
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
-				".container{width:50%;margin:auto}" +
-				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;}" +
+                ".container{width:50%;margin:auto} .im {color: #000000 !important;}" +
+				".header{background: #0f172a; color: #fff; border: 1px solid #eee;padding:10px 15px}" +
+				".body{border: 1px solid#eee;line-height:2;padding: 0px 15px;}" +
 				".body p{padding: 0px 20px;}" +
-				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-				".footer p{margin: 0px 30%; color: #fff;}" +
+				".footer {border: 1px solid#eee; padding: 10px 15px; background: #0f172a;}" +
+				".footer p{margin: 0px 20%; color: #fff;}" +
 				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
-				"<div class='container body'> <p> <b>Name</b> : " + mailRequest.Contact?.name + "</p>" +
-				"<p> <b>" + _localizationService.Localize("Email") + "</b> : " + mailRequest.spcialRequest?.email + "</p>" +
-				"<p> <b>Phone</b> : " + mailRequest.Contact?.phone + "</p>" +
-				"<p> <b>Phone</b> : " + mailRequest.Contact?.phone + "</p>" +
-				"<p> <b>Number Of Adult</b> : " + mailRequest.Contact?.numberOfAdult + "</p>" +
-				"<p> <b>Number Of Child</b> : " + mailRequest.Contact?.numberOfChild + "</p>" +
-				"<p> <b>Number Of Infant</b> : " + mailRequest.Contact?.numberOfInfant + "</p>" +
-				"<p> <b>Message</b> : " + mailRequest.Contact?.message + "</p>" +
+				"<div class='container body'>"+
+				"Name:" + mailRequest.spcialRequest?.name + "<br>" +
+				"Email:" + mailRequest.spcialRequest?.email + "<br>" +
+				"Phone:" + mailRequest.spcialRequest?.phone + "<br>" +
+				"Number Of Adult:" + mailRequest.spcialRequest?.numberOfAdult + "<br>" +
+				"Number Of Child:" + mailRequest.spcialRequest?.numberOfChild + "<br>" +
+				"Number Of Infant:" + mailRequest.spcialRequest?.numberOfInfant + "<br>" +
+				"Message:" + mailRequest.spcialRequest?.message + "<br>" +
 				"</div>" +
 				"<div class='container footer'>" +
 				"<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
@@ -266,12 +272,12 @@ namespace TripBusiness.business
 
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
-				".container{width:50%;margin:auto}" +
-				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;}" +
+                ".container{width:50%;margin:auto} .im {color: #000000 !important;}" +
+				".header{background: #0f172a; color: #fff; border: 1px solid #eee;padding:10px 15px}" +
+				".body{border: 1px solid#eee;line-height:2;padding: 0px 15px;}" +
 				".body p{padding: 0px 20px;}" +
-				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-				".footer p{margin: 0px 30%; color: #fff;}" +
+				".footer {border: 1px solid#eee; padding: 10px 15px; background: #0f172a;}" +
+				".footer p{margin: 0px 20%; color: #fff;}" +
 				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
@@ -333,19 +339,19 @@ namespace TripBusiness.business
 
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
-				".container{width:50%;margin:auto}" +
-				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;}" +
+                ".container{width:50%;margin:auto} .im {color: #000000 !important;}" +
+				".header{background: #0f172a; color: #fff; border: 1px solid #eee;padding:10px 15px}" +
+				".body{border: 1px solid #eee;line-height:2;padding: 0px 15px;}" +
 				".body p{padding: 0px 20px;}" +
-				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-				".footer p{margin: 0px 30%; color: #fff;}" +
+				".footer {border: 1px solid #eee; padding: 10px 15px; background: #0f172a;}" +
+				".footer p{margin: 0px 20%; color: #fff;}" +
 				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
                 "</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
-				"<p> <b>" + _localizationService.Localize("Dear") + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
+				"<p> <b>" + _localizationService.Localize("Dear") + "</b></p><p> " + mailRequest.spcialRequest?.message + "</p>" +
 				"</div>" +
 				"<div class='container footer'> " +
 				"<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
@@ -392,19 +398,45 @@ namespace TripBusiness.business
 			email.Subject = mailRequest.Subject;
 			var builder = new BodyBuilder();
 			builder.HtmlBody = "<!DOCTYPE html> <html><head><style>" +
-				".container{width:50%;margin:auto}" +
-				".header{background: #0f172a; color: #fff; border: 1px solid #0f172a;padding:10px 0px}" +
-				".body{border: 1px solid#0f172a;line-height:2}" +
+                ".container{width:50%;margin:auto} .im {color: #000000 !important;}" +
+				".header{background: #0f172a; color: #fff; border: 1px solid #eee;padding:10px 15px}" +
+				".body{border: 1px solid#eee;line-height:2;padding: 0px 15px;}" +
 				".body p{padding: 0px 20px;}" +
-				".footer {border: 1px solid; padding: 10px 0px; background: #0f172a;}" +
-				".footer p{margin: 0px 30%; color: #fff;}" +
+				".footer {border: 1px solid #eee; padding: 10px 15px; background: #0f172a;}" +
+				".footer p{margin: 0px 20%; color: #fff;}" +
 				".im {color:#000 !important;}" +
 				"@media only screen and (max-width: 600px){.container{width:100%}}" +
-                "</style></head><body>" +
+				"</style></head><body>" +
 				"<div class='container header' style ='color:red>" +
 				"<div class='container'><a style='margin: auto; width: 50px; display: block;' href='https://anoushdahabiya.com'><img style='width:65px;height: 65px;' src='https://anoushdahabiya.com/images/logo-white.png'></a></div>" +
 				"<div class='container body'>" +
-				"<p> <b>" + _localizationService.Localize("Dear") +"<br>" + mailRequest.Body + "</b> ,</p><p> " + mailRequest.spcialRequest?.message + "</p>" +
+				"Thanks for booking with us.<br>" +
+				"Your booking is confirmed and below is your booking details:<br>" +
+				"Name:" + mailRequest.booking.name + "<br>" +
+				"Email:" + mailRequest.booking.email + "<br>" +
+				"Country:" + mailRequest.booking.countryName + "<br>" +
+				"Phone:" + mailRequest.booking.phone + "<br>" +
+				"Tour name:" + mailRequest.tourName + "<br>" +
+				"No of adults:" + mailRequest.booking.numberOfAdult + "<br>" +
+				"No of child:" + mailRequest.booking.numberOfChild + "<br>" +
+				"No of inf:" + mailRequest.booking.numberOfInfant + "<br>" +
+				"Arrival date:" + mailRequest.booking.tourDate.Value.ToString("dd-MM-yyy") + "<br>" +
+				"Tour language:" + mailRequest.booking.languageName + "<br>" +
+				"Pick up details:" + mailRequest.booking.pickup + "<br>" +
+				"Room type:" + mailRequest.booking.roomType + "<br>" +
+				"Payment amount:" + mailRequest.booking.totalPrice + "<br>" +
+				"Additional activities:" + mailRequest.additionalActivities + "<br>" +
+				"Booking reference no:" + mailRequest.booking.requestId + "<br>" +
+
+				"One of our team will contact you soon.<br>" +
+
+				"Have a nice trip <br>" +
+				"Anoush Dahabiya <br>" +
+				"booking@anoushdahabiya.com <br>" +
+				"+201061046797" +
+				"</div>" +
+				"<div class='container footer'> " +
+			   "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
 				"</div>" +
 				"</div></body</html>";
 			if (mailRequest.Attachments != null)

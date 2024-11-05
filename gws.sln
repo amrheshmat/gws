@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrustructure", "Infrustru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MWS.Business.Shared", "Business\MWS.Business.Shared\MWS.Business.Shared.csproj", "{76A47648-E1CA-471A-ACBD-E9EC3F083222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleMVC", "Services\SampleMVC\SampleMVC.csproj", "{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleMVC", "Services\SampleMVC\SampleMVC.csproj", "{F5F7D193-5765-4A1A-AB95-DEAB63671D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripBusiness", "Business\TripBusiness\TripBusiness.csproj", "{18BBA748-6712-4DC8-B92E-2B67641A18FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripBusiness", "Business\TripBusiness\TripBusiness.csproj", "{18BBA748-6712-4DC8-B92E-2B67641A18FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

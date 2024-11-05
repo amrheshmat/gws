@@ -269,35 +269,7 @@ namespace SampleMVC.Controllers
                     mailRequest.ToEmail = new List<string>();
                     mailRequest.ToEmail?.Add(bookRequest.email);
                     mailRequest.Subject = _localizationService.Localize("ThankYou");
-                    mailRequest.Body = "<div class='container body'>" +
-				"Thanks for booking with us.<br>" +
-				"Your booking is confirmed and below is your booking details:<br>" +
-				"Name:" + mailRequest.booking.name + "<br>" +
-				"Email:" + mailRequest.booking.email + "<br>" +
-				"Country:" + mailRequest.booking.countryName + "<br>" +
-				"Phone:" + mailRequest.booking.phone + "<br>" +
-				"Tour name:" + mailRequest.tourName + "<br>" +
-				"No of adults:" + mailRequest.booking.numberOfAdult + "<br>" +
-				"No of child:" + mailRequest.booking.numberOfChild + "<br>" +
-				"No of inf:" + mailRequest.booking.numberOfInfant + "<br>" +
-				"Arrival date:" + mailRequest.booking.tourDate + "<br>" +
-				"Tour language:" + mailRequest.booking.languageName + "<br>" +
-				"Pick up details:" + mailRequest.booking.pickup + "<br>" +
-				"Room type:" + mailRequest.booking.roomType + "<br>" +
-				"Payment amount:" + mailRequest.booking.totalPrice + "<br>" +
-				"Additional activities:" + mailRequest.additionalActivities + "<br>" +
-				"Booking reference no:" + mailRequest.booking.requestId + "<br>" +
-
-				"One of our team will contact you soon.<br>" +
-
-				"Have a nice trip <br>" +
-				"Anoush Dahabiya <br>" +
-				"booking@anoushdahabiya.com <br>" +
-				"+201061046797" +
-				"</div>" +
-				"<div class='container footer'> " +
-			   "<p>Copy right@<a href='https://anoushdahabiya.com'>anoushdahabiya</a></p>" +
-				"</div>"  ;
+                    
                     await _mailService.SendBookThanksEmailAsync(mailRequest);
                 }
                 #endregion

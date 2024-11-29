@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using MWS.Business.Shared;
 using MWS.Business.Shared.Business;
 using MWS.Business.Shared.IBusiness;
 using MWS.Data.Entities;
@@ -26,6 +27,7 @@ namespace GWS.Service
             services.AddScoped<ICustomCaching, CustomCaching>();
             services.AddScoped<IUserRolePermission, UserRolePermission>();
             services.AddScoped<ISecurity, Security>();
+            services.AddScoped<IFacebookTokenService, FacebookTokenService>();
             return services;
         }
         public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services)

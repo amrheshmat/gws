@@ -49,11 +49,13 @@ namespace MWS.Infrustructure.Context
 		public DbSet<AdditionalActivity> additionalActivities { get; set; }
 		public DbSet<BookAdditionalActivity> bookAdditionalActivities { get; set; }
 		public DbSet<TourAdditionalActivity> tourAdditionalActivities { get; set; }
+		public DbSet<FacebookToken> facebookTokens { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<User>().ToTable("users").HasKey(e => e.userId);
 			modelBuilder.Entity<Seo>().ToTable("seo");
+			modelBuilder.Entity<FacebookToken>().ToTable("facebookTokens");
 			modelBuilder.Entity<Blog>().ToTable("blogs");
 			modelBuilder.Entity<Localization>().ToTable("localizations");
 			modelBuilder.Entity<AdditionalActivity>().ToTable("additionalActivities");

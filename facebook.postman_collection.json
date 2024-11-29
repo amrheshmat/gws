@@ -1,0 +1,945 @@
+{
+	"info": {
+		"_postman_id": "a35ce75f-075d-4963-b41d-1248b8bda2e5",
+		"name": "facebook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9552383",
+		"_collection_link": "https://uuddddddddddddd.postman.co/workspace/tour~f2ee413f-0ab3-4c52-8847-a0b6dbd57aae/collection/9552383-a35ce75f-075d-4963-b41d-1248b8bda2e5?action=share&source=collection_link&creator=9552383"
+	},
+	"item": [
+		{
+			"name": "roles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "EAAif0ZBO1abMBOxNGcGiUVNxPWOVgSAwtGOaZCrXO0m4hZBkh0CVCjdlnyhuaaxQmxUTTf9Bp7DjbKuqZBmUNiOG5VfIv4DKTzAq13JepuFIbJku8tSaFw9Avwg4DSHMyuSQzz9w37tuF6SPuhRMpbyjgIYd7la7hmz01a82GWxswPIauC37TUBuG0BWegzk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.facebook.com/472889172575271/roles",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"facebook",
+						"com"
+					],
+					"path": [
+						"472889172575271",
+						"roles"
+					],
+					"query": [
+						{
+							"key": "scheduled_publish_time",
+							"value": "1701153000",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "roles",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.facebook.com/472889172575271/roles",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"facebook",
+								"com"
+							],
+							"path": [
+								"472889172575271",
+								"roles"
+							],
+							"query": [
+								{
+									"key": "scheduled_publish_time",
+									"value": "1701153000",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "ETag",
+							"value": "\"7e80c0581521da918fc1f2ae5c6488892b9b1851\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "x-business-use-case-usage",
+							"value": "{\"472889172575271\":[{\"type\":\"pages\",\"call_count\":1,\"total_cputime\":1,\"total_time\":1,\"estimated_time_to_regain_access\":0}]}"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "facebook-api-version",
+							"value": "v21.0"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; preload"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "Sat, 01 Jan 2000 00:00:00 GMT"
+						},
+						{
+							"key": "x-fb-request-id",
+							"value": "AoKstjW6mifTlbnvW8Y0px7"
+						},
+						{
+							"key": "x-fb-trace-id",
+							"value": "F5xweOhWrN8"
+						},
+						{
+							"key": "x-fb-rev",
+							"value": "1018528584"
+						},
+						{
+							"key": "X-FB-Debug",
+							"value": "uMynSmUzyc1mEe+ysqj2q4wwluzeaW7y50UhtToWbI94/ZE7Xcb1d4gMx5+BaztnqfnlWjnvaCN59wymD5LR7Q=="
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Nov 2024 16:05:05 GMT"
+						},
+						{
+							"key": "X-FB-Connection-Quality",
+							"value": "EXCELLENT; q=0.9, rtt=13, rtx=0, c=10, mss=1392, tbw=7183, tp=-1, tpl=-1, uplat=307, ullat=0"
+						},
+						{
+							"key": "Alt-Svc",
+							"value": "h3=\":443\"; ma=86400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Length",
+							"value": "382"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"name\": \"Amr Heshmat\",\n            \"id\": \"8581214321997553\",\n            \"tasks\": [\n                \"ADVERTISE\",\n                \"ANALYZE\",\n                \"CREATE_CONTENT\",\n                \"MANAGE\",\n                \"MANAGE\",\n                \"MANAGE_LEADS\",\n                \"MESSAGING\",\n                \"MODERATE\",\n                \"VIEW_MONETIZATION_INSIGHTS\"\n            ],\n            \"is_active\": true\n        }\n    ],\n    \"paging\": {\n        \"cursors\": {\n            \"before\": \"QVFIUjhMLUFtT0hwWFhTdlZA5MUR6eXA4LTZAWUVM3SUpzUWROTEtCR2lkRHpNMElzdFhSUUp4b2NwUTJvdmVmWndSY29NUFhkTHpJMGJabE9VNEhWRUtscXFn\",\n            \"after\": \"QVFIUjhMLUFtT0hwWFhTdlZA5MUR6eXA4LTZAWUVM3SUpzUWROTEtCR2lkRHpNMElzdFhSUUp4b2NwUTJvdmVmWndSY29NUFhkTHpJMGJabE9VNEhWRUtscXFn\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "accessToken",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.facebook.com/oauth/access_token?client_id=2427532220918195&client_secret=2680a68ba45e3fffce2cd5e36775b99f&grant_type=client_credentials",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"facebook",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"access_token"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "2427532220918195"
+						},
+						{
+							"key": "client_secret",
+							"value": "2680a68ba45e3fffce2cd5e36775b99f"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "accessToken",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.facebook.com/oauth/access_token?client_id=2427532220918195&client_secret=2680a68ba45e3fffce2cd5e36775b99f&grant_type=client_credentials",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"facebook",
+								"com"
+							],
+							"path": [
+								"oauth",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "2427532220918195"
+								},
+								{
+									"key": "client_secret",
+									"value": "2680a68ba45e3fffce2cd5e36775b99f"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "facebook-api-version",
+							"value": "v16.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; preload"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "Sat, 01 Jan 2000 00:00:00 GMT"
+						},
+						{
+							"key": "x-fb-request-id",
+							"value": "AAjO_XAy8SzkYxmJZOwNn6u"
+						},
+						{
+							"key": "x-fb-trace-id",
+							"value": "ANTSo6L0W6f"
+						},
+						{
+							"key": "x-fb-rev",
+							"value": "1018529359"
+						},
+						{
+							"key": "X-FB-Debug",
+							"value": "UeGI620LU9mPrXllr/f76iQ08IPLo0ZQcoIGTdk9lGX45/hoEitC1v7oR+SdkeLrRfamoqO7whadGbFKf/6RAQ=="
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Nov 2024 18:07:38 GMT"
+						},
+						{
+							"key": "X-FB-Connection-Quality",
+							"value": "EXCELLENT; q=0.9, rtt=14, rtx=0, c=10, mss=1392, tbw=7123, tp=-1, tpl=-1, uplat=79, ullat=0"
+						},
+						{
+							"key": "Alt-Svc",
+							"value": "h3=\":443\"; ma=86400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Length",
+							"value": "85"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"2427532220918195|M4aA6dEI2kw1ud4pTs_CPISNpz8\",\n    \"token_type\": \"bearer\"\n}"
+				}
+			]
+		},
+		{
+			"name": "pageAccessToken",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.facebook.com/v21.0/me/accounts?access_token=EAAif0ZBO1abMBO4GtATm689VWrlgdZCCCYHd6LCW6dkiFinkE2FiF6It0yRWKM4ZBFYKpUOoRlzzhYZACdkQ38mlGqcugTNdJENRjTKHa0b1Q2ZC6CgRmSOQOcCPC1K04vDdb5mHghGhJXEVb8UzOD4NSVrTCHMB0ZCv2tLfBmR10LFWxhPS6XQGNY",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"facebook",
+						"com"
+					],
+					"path": [
+						"v21.0",
+						"me",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "EAAif0ZBO1abMBO4GtATm689VWrlgdZCCCYHd6LCW6dkiFinkE2FiF6It0yRWKM4ZBFYKpUOoRlzzhYZACdkQ38mlGqcugTNdJENRjTKHa0b1Q2ZC6CgRmSOQOcCPC1K04vDdb5mHghGhJXEVb8UzOD4NSVrTCHMB0ZCv2tLfBmR10LFWxhPS6XQGNY"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "pageAccessToken",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.facebook.com/v21.0/me/accounts?access_token=EAAif0ZBO1abMBO4GtATm689VWrlgdZCCCYHd6LCW6dkiFinkE2FiF6It0yRWKM4ZBFYKpUOoRlzzhYZACdkQ38mlGqcugTNdJENRjTKHa0b1Q2ZC6CgRmSOQOcCPC1K04vDdb5mHghGhJXEVb8UzOD4NSVrTCHMB0ZCv2tLfBmR10LFWxhPS6XQGNY",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"facebook",
+								"com"
+							],
+							"path": [
+								"v21.0",
+								"me",
+								"accounts"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "EAAif0ZBO1abMBO4GtATm689VWrlgdZCCCYHd6LCW6dkiFinkE2FiF6It0yRWKM4ZBFYKpUOoRlzzhYZACdkQ38mlGqcugTNdJENRjTKHa0b1Q2ZC6CgRmSOQOcCPC1K04vDdb5mHghGhJXEVb8UzOD4NSVrTCHMB0ZCv2tLfBmR10LFWxhPS6XQGNY"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ba6a857184ef5bbb37bb5f1b123ce7b7a0623f50\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "cross-origin"
+						},
+						{
+							"key": "x-app-usage",
+							"value": "{\"call_count\":2,\"total_cputime\":0,\"total_time\":0}"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "facebook-api-version",
+							"value": "v21.0"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; preload"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "Sat, 01 Jan 2000 00:00:00 GMT"
+						},
+						{
+							"key": "x-fb-request-id",
+							"value": "AqB1yp4Gs5WkzW3FOUb73Z3"
+						},
+						{
+							"key": "x-fb-trace-id",
+							"value": "C3MC3PwdOnt"
+						},
+						{
+							"key": "x-fb-rev",
+							"value": "1018527892"
+						},
+						{
+							"key": "X-FB-Debug",
+							"value": "PoaKpS9yL18AIi+jJQMLM8bvqYvh9IB79xHQx/9K8M+bKs3ee0gMu7U1mhnfvqqyFh5JFrOj3I63HS1ehMRrnw=="
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Nov 2024 14:22:11 GMT"
+						},
+						{
+							"key": "X-FB-Connection-Quality",
+							"value": "EXCELLENT; q=0.9, rtt=15, rtx=0, c=10, mss=1392, tbw=3403, tp=-1, tpl=-1, uplat=260, ullat=0"
+						},
+						{
+							"key": "Alt-Svc",
+							"value": "h3=\":443\"; ma=86400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Length",
+							"value": "996"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"access_token\": \"EAAif0ZBO1abMBOwjEedCTyJJgWrmc3fToyh9ZBWC5zNyg9c23ZCg8bEQPWLiWAKyHZCMyjNZCgfKdzBB3a2P7x6HZC6CUHTdWyZATpo9wO3fg5x6ssmoKn8kcoh3IHQ5mWJpRliGYCwJjfnPZAs195R3Ak9UAK94WBorqItDIsqQsr1LHdxnecWKf2SXXItvmuzw\",\n            \"category\": \"Food & Drink\",\n            \"category_list\": [\n                {\n                    \"id\": \"314853004119510\",\n                    \"name\": \"Food & Drink\"\n                }\n            ],\n            \"name\": \"Testanoush\",\n            \"id\": \"512179811972122\",\n            \"tasks\": [\n                \"ADVERTISE\",\n                \"ANALYZE\",\n                \"CREATE_CONTENT\",\n                \"MESSAGING\",\n                \"MODERATE\",\n                \"MANAGE\"\n            ]\n        },\n        {\n            \"access_token\": \"EAAif0ZBO1abMBO5jnPhxlHMgTMY5vm7l2waShiHDpJEt4PLWdg3VxoxlpjGZBMZAevZCjmvhbSB3lIZAIv562uV687UWj595ECldsh7ZCffNZBCZCNaV1mQ8FFURy1FLtNmPqZCckkmOVdxrzSEY67bS1ecShKhDoUxeku3nIFQo5KdSer7367paXQuXMKPyKD6sV\",\n            \"category\": \"Video Game Programmer\",\n            \"category_list\": [\n                {\n                    \"id\": \"605176767263553\",\n                    \"name\": \"Video Game Programmer\"\n                }\n            ],\n            \"name\": \"Testp\",\n            \"id\": \"472889172575271\",\n            \"tasks\": [\n                \"ADVERTISE\",\n                \"ANALYZE\",\n                \"CREATE_CONTENT\",\n                \"MESSAGING\",\n                \"MODERATE\",\n                \"MANAGE\"\n            ]\n        },\n        {\n            \"access_token\": \"EAAif0ZBO1abMBOZCZCBk9yjOpPBFzFk0nJbz5W1HSZCBjcVlaTFlBFYIPfswRb09vvaB066ztZB17QyU7FbAOV3CToL03KtnkriQm35Xm9KgOI88vzPGjQSJioCn4s8csgqxZAlml1nzR5RXRBQZBC8w3pZAZCpSUGdIJzXf41mrTDPW0MY6SxIYrpPK4fwVGmHAZD\",\n            \"category\": \"Kitchen/cooking\",\n            \"category_list\": [\n                {\n                    \"id\": \"132852590115660\",\n                    \"name\": \"Kitchen/cooking\"\n                }\n            ],\n            \"name\": \"Food time\",\n            \"id\": \"197405336793010\",\n            \"tasks\": [\n                \"ADVERTISE\",\n                \"ANALYZE\",\n                \"CREATE_CONTENT\",\n                \"MESSAGING\",\n                \"MODERATE\",\n                \"MANAGE\"\n            ]\n        }\n    ],\n    \"paging\": {\n        \"cursors\": {\n            \"before\": \"QVFIUkUzcGpvMTUzcVk4X1gza2czWE8tTEJsZA3VqMkctUGpxcC05b0FHQWJibnZAYLVlIOTNGY1ZAqQkJwOFgzQU05QV9xUjVGNG4wRzFXdXg3QXdyQnUxdnJ3\",\n            \"after\": \"QVFIUkhDQU04T3FXb0wtNnl1T2hwdUlZAXy0wMHBtOEx5ZAVVJSnFVU0pfMlh0MndkZA1lXb0lCVWtIcUVxeDlRS09vZA21MREJuRFdoWjZApeTRGZAVJ6bXh0eVhn\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "post to facebook",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "EAAif0ZBO1abMBOZCZCBk9yjOpPBFzFk0nJbz5W1HSZCBjcVlaTFlBFYIPfswRb09vvaB066ztZB17QyU7FbAOV3CToL03KtnkriQm35Xm9KgOI88vzPGjQSJioCn4s8csgqxZAlml1nzR5RXRBQZBC8w3pZAZCpSUGdIJzXf41mrTDPW0MY6SxIYrpPK4fwVGmHAZD",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://graph.facebook.com/v21.0/197405336793010/feed?message=test welcome",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"facebook",
+						"com"
+					],
+					"path": [
+						"v21.0",
+						"197405336793010",
+						"feed"
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "test welcome"
+						},
+						{
+							"key": "target_id",
+							"value": "61555252927037",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "post to facebook",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://graph.facebook.com/v21.0/197405336793010/feed?message=test welcome",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"facebook",
+								"com"
+							],
+							"path": [
+								"v21.0",
+								"197405336793010",
+								"feed"
+							],
+							"query": [
+								{
+									"key": "message",
+									"value": "test welcome"
+								},
+								{
+									"key": "target_id",
+									"value": "61555252927037",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "x-business-use-case-usage",
+							"value": "{\"197405336793010\":[{\"type\":\"pages\",\"call_count\":1,\"total_cputime\":1,\"total_time\":1,\"estimated_time_to_regain_access\":0}]}"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "facebook-api-version",
+							"value": "v21.0"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; preload"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "Sat, 01 Jan 2000 00:00:00 GMT"
+						},
+						{
+							"key": "x-fb-request-id",
+							"value": "At4NGOmVXvBsG2jCxt9QTVi"
+						},
+						{
+							"key": "x-fb-trace-id",
+							"value": "EQ9PuTfKEph"
+						},
+						{
+							"key": "x-fb-rev",
+							"value": "1018530119"
+						},
+						{
+							"key": "X-FB-Debug",
+							"value": "9pzQrah+uYAzAc/0iJhJc2hOiE8a5jQsY2N9BdiI1RMFWoWrhJ53xIuz4BB9PlpbC/a9Z9UmXBbAo/bQauUCkg=="
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Nov 2024 19:45:23 GMT"
+						},
+						{
+							"key": "X-FB-Connection-Quality",
+							"value": "EXCELLENT; q=0.9, rtt=29, rtx=0, c=10, mss=1392, tbw=3404, tp=-1, tpl=-1, uplat=1789, ullat=0"
+						},
+						{
+							"key": "Alt-Svc",
+							"value": "h3=\":443\"; ma=86400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"197405336793010_122181256106175097\"\n}"
+				}
+			]
+		},
+		{
+			"name": "exchange_token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.facebook.com/v17.0/oauth/access_token?client_id=2427532220918195&client_secret=2680a68ba45e3fffce2cd5e36775b99f&grant_type=fb_exchange_token&fb_exchange_token=EAAif0ZBO1abMBO8gUxZBRsjVZAvg9QuZAHH7r2HbTkH5l1v41bxOUjp0ZB4CbSvpRy3f6k9sT4O84RhnI1DNcD2mZBF3ySXqO94spuuv87tLQpCI9vFGKSTscP084KJ9rSxXHoBqXEkBDUk3ikwlrdKPr27ZAHzcnYgrM8fuhXq3IFF1SFNzQuDjczf63BCX0fubYkOAdvfu55JQWSmZBEZBYRZB0ZCrxlQLlKvBJi8g6Attdf6SgZBOXYS7TvbB5ERlvOJ76RCYZClpPdeQ5HJMzxLZBqNbkbF1UWKsGBHitSfXeucjm6DQZDZD",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"facebook",
+						"com"
+					],
+					"path": [
+						"v17.0",
+						"oauth",
+						"access_token"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "2427532220918195"
+						},
+						{
+							"key": "client_secret",
+							"value": "2680a68ba45e3fffce2cd5e36775b99f"
+						},
+						{
+							"key": "grant_type",
+							"value": "fb_exchange_token"
+						},
+						{
+							"key": "fb_exchange_token",
+							"value": "EAAif0ZBO1abMBO8gUxZBRsjVZAvg9QuZAHH7r2HbTkH5l1v41bxOUjp0ZB4CbSvpRy3f6k9sT4O84RhnI1DNcD2mZBF3ySXqO94spuuv87tLQpCI9vFGKSTscP084KJ9rSxXHoBqXEkBDUk3ikwlrdKPr27ZAHzcnYgrM8fuhXq3IFF1SFNzQuDjczf63BCX0fubYkOAdvfu55JQWSmZBEZBYRZB0ZCrxlQLlKvBJi8g6Attdf6SgZBOXYS7TvbB5ERlvOJ76RCYZClpPdeQ5HJMzxLZBqNbkbF1UWKsGBHitSfXeucjm6DQZDZD"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "exchange_token",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.facebook.com/v17.0/oauth/access_token?client_id=2427532220918195&client_secret=2680a68ba45e3fffce2cd5e36775b99f&grant_type=fb_exchange_token&fb_exchange_token=EAAif0ZBO1abMBO8gUxZBRsjVZAvg9QuZAHH7r2HbTkH5l1v41bxOUjp0ZB4CbSvpRy3f6k9sT4O84RhnI1DNcD2mZBF3ySXqO94spuuv87tLQpCI9vFGKSTscP084KJ9rSxXHoBqXEkBDUk3ikwlrdKPr27ZAHzcnYgrM8fuhXq3IFF1SFNzQuDjczf63BCX0fubYkOAdvfu55JQWSmZBEZBYRZB0ZCrxlQLlKvBJi8g6Attdf6SgZBOXYS7TvbB5ERlvOJ76RCYZClpPdeQ5HJMzxLZBqNbkbF1UWKsGBHitSfXeucjm6DQZDZD",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"facebook",
+								"com"
+							],
+							"path": [
+								"v17.0",
+								"oauth",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "2427532220918195"
+								},
+								{
+									"key": "client_secret",
+									"value": "2680a68ba45e3fffce2cd5e36775b99f"
+								},
+								{
+									"key": "grant_type",
+									"value": "fb_exchange_token"
+								},
+								{
+									"key": "fb_exchange_token",
+									"value": "EAAif0ZBO1abMBO8gUxZBRsjVZAvg9QuZAHH7r2HbTkH5l1v41bxOUjp0ZB4CbSvpRy3f6k9sT4O84RhnI1DNcD2mZBF3ySXqO94spuuv87tLQpCI9vFGKSTscP084KJ9rSxXHoBqXEkBDUk3ikwlrdKPr27ZAHzcnYgrM8fuhXq3IFF1SFNzQuDjczf63BCX0fubYkOAdvfu55JQWSmZBEZBYRZB0ZCrxlQLlKvBJi8g6Attdf6SgZBOXYS7TvbB5ERlvOJ76RCYZClpPdeQ5HJMzxLZBqNbkbF1UWKsGBHitSfXeucjm6DQZDZD"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "facebook-api-version",
+							"value": "v17.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; preload"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "Sat, 01 Jan 2000 00:00:00 GMT"
+						},
+						{
+							"key": "x-fb-request-id",
+							"value": "Ab8dcS4Xtktcv6hSPiGIjvO"
+						},
+						{
+							"key": "x-fb-trace-id",
+							"value": "DSP/Oh0yClH"
+						},
+						{
+							"key": "x-fb-rev",
+							"value": "1018529359"
+						},
+						{
+							"key": "X-FB-Debug",
+							"value": "Oh0YXgWjAD2WxAVLeDeJF2GnG1jdlQovH5FWI0/vqbtQfoFVRUvXien6xKFTmApX7PuOaQXBNs+oauqGwyDK9g=="
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Nov 2024 18:15:57 GMT"
+						},
+						{
+							"key": "X-FB-Connection-Quality",
+							"value": "EXCELLENT; q=0.9, rtt=14, rtx=0, c=10, mss=1392, tbw=3403, tp=-1, tpl=-1, uplat=144, ullat=0"
+						},
+						{
+							"key": "Alt-Svc",
+							"value": "h3=\":443\"; ma=86400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Length",
+							"value": "232"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"EAAif0ZBO1abMBOxxw0lxGEU7dAjTTHzZCbSZCW9Tm3T7rZAsbW0aFsUsHN4wqCBlZCj9aSdziE729T5cmeSdI8sWQeun32vjDc9ovXT5H2JxpkoufZA8VZCMK1QOqqo3AFHen9kK8Y8w1zsOytS7wdCcdwW5ZBqVzi6ipTdwZC0LRLZCn1hrwPuEckqYGw\",\n    \"token_type\": \"bearer\"\n}"
+				}
+			]
+		},
+		{
+			"name": "getTokenExpiryDate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.facebook.com/v17.0/debug_token?input_token=EAAif0ZBO1abMBOxxw0lxGEU7dAjTTHzZCbSZCW9Tm3T7rZAsbW0aFsUsHN4wqCBlZCj9aSdziE729T5cmeSdI8sWQeun32vjDc9ovXT5H2JxpkoufZA8VZCMK1QOqqo3AFHen9kK8Y8w1zsOytS7wdCcdwW5ZBqVzi6ipTdwZC0LRLZCn1hrwPuEckqYGw&access_token=2427532220918195|M4aA6dEI2kw1ud4pTs_CPISNpz8",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"facebook",
+						"com"
+					],
+					"path": [
+						"v17.0",
+						"debug_token"
+					],
+					"query": [
+						{
+							"key": "input_token",
+							"value": "EAAif0ZBO1abMBOxxw0lxGEU7dAjTTHzZCbSZCW9Tm3T7rZAsbW0aFsUsHN4wqCBlZCj9aSdziE729T5cmeSdI8sWQeun32vjDc9ovXT5H2JxpkoufZA8VZCMK1QOqqo3AFHen9kK8Y8w1zsOytS7wdCcdwW5ZBqVzi6ipTdwZC0LRLZCn1hrwPuEckqYGw"
+						},
+						{
+							"key": "access_token",
+							"value": "2427532220918195|M4aA6dEI2kw1ud4pTs_CPISNpz8"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getTokenExpiryDate",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.facebook.com/v17.0/debug_token?input_token=EAAif0ZBO1abMBOxxw0lxGEU7dAjTTHzZCbSZCW9Tm3T7rZAsbW0aFsUsHN4wqCBlZCj9aSdziE729T5cmeSdI8sWQeun32vjDc9ovXT5H2JxpkoufZA8VZCMK1QOqqo3AFHen9kK8Y8w1zsOytS7wdCcdwW5ZBqVzi6ipTdwZC0LRLZCn1hrwPuEckqYGw&access_token=2427532220918195|M4aA6dEI2kw1ud4pTs_CPISNpz8",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"facebook",
+								"com"
+							],
+							"path": [
+								"v17.0",
+								"debug_token"
+							],
+							"query": [
+								{
+									"key": "input_token",
+									"value": "EAAif0ZBO1abMBOxxw0lxGEU7dAjTTHzZCbSZCW9Tm3T7rZAsbW0aFsUsHN4wqCBlZCj9aSdziE729T5cmeSdI8sWQeun32vjDc9ovXT5H2JxpkoufZA8VZCMK1QOqqo3AFHen9kK8Y8w1zsOytS7wdCcdwW5ZBqVzi6ipTdwZC0LRLZCn1hrwPuEckqYGw"
+								},
+								{
+									"key": "access_token",
+									"value": "2427532220918195|M4aA6dEI2kw1ud4pTs_CPISNpz8"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "ETag",
+							"value": "\"eda44a69bc1e291c441f2cc55bf3e5bb840b5ce7\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "x-ad-api-version-warning",
+							"value": "The call has been auto-upgraded to v21.0 as v17.0 has been deprecated."
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "cross-origin"
+						},
+						{
+							"key": "x-app-usage",
+							"value": "{\"call_count\":1,\"total_cputime\":0,\"total_time\":0}"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "facebook-api-version",
+							"value": "v21.0"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; preload"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, no-cache, no-store, must-revalidate"
+						},
+						{
+							"key": "Expires",
+							"value": "Sat, 01 Jan 2000 00:00:00 GMT"
+						},
+						{
+							"key": "x-fb-request-id",
+							"value": "AgYzae55a8osSMTW0quL7V3"
+						},
+						{
+							"key": "x-fb-trace-id",
+							"value": "HGvpmxYY96/"
+						},
+						{
+							"key": "x-fb-rev",
+							"value": "1018529359"
+						},
+						{
+							"key": "X-FB-Debug",
+							"value": "yhOCMQgr+KH0ZFJTLGjo/10OsjCIMmhgVIWACD7/Zb6AsRaAF0wDNATPYFk9nEMLOblZJjH5htCNy1FwceC9pA=="
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Nov 2024 18:24:36 GMT"
+						},
+						{
+							"key": "X-FB-Connection-Quality",
+							"value": "EXCELLENT; q=0.9, rtt=25, rtx=0, c=10, mss=1392, tbw=3403, tp=-1, tpl=-1, uplat=146, ullat=0"
+						},
+						{
+							"key": "Alt-Svc",
+							"value": "h3=\":443\"; ma=86400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Content-Length",
+							"value": "381"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"app_id\": \"2427532220918195\",\n        \"type\": \"USER\",\n        \"application\": \"managePagetest\",\n        \"data_access_expires_at\": 1740680120,\n        \"expires_at\": 0,\n        \"is_valid\": true,\n        \"issued_at\": 1732904157,\n        \"scopes\": [\n            \"email\",\n            \"publish_video\",\n            \"pages_manage_cta\",\n            \"pages_manage_instant_articles\",\n            \"pages_show_list\",\n            \"pages_messaging\",\n            \"page_events\",\n            \"pages_read_engagement\",\n            \"pages_manage_metadata\",\n            \"pages_read_user_content\",\n            \"pages_manage_ads\",\n            \"pages_manage_posts\",\n            \"pages_manage_engagement\",\n            \"public_profile\"\n        ],\n        \"granular_scopes\": [\n            {\n                \"scope\": \"pages_manage_cta\",\n                \"target_ids\": [\n                    \"472889172575271\",\n                    \"197405336793010\"\n                ]\n            },\n            {\n                \"scope\": \"pages_manage_instant_articles\",\n                \"target_ids\": [\n                    \"472889172575271\",\n                    \"197405336793010\"\n                ]\n            },\n            {\n                \"scope\": \"pages_show_list\"\n            },\n            {\n                \"scope\": \"pages_messaging\",\n                \"target_ids\": [\n                    \"472889172575271\",\n                    \"197405336793010\"\n                ]\n            },\n            {\n                \"scope\": \"page_events\",\n                \"target_ids\": [\n                    \"472889172575271\",\n                    \"197405336793010\"\n                ]\n            },\n            {\n                \"scope\": \"pages_read_engagement\"\n            },\n            {\n                \"scope\": \"pages_manage_metadata\"\n            },\n            {\n                \"scope\": \"pages_read_user_content\"\n            },\n            {\n                \"scope\": \"pages_manage_ads\",\n                \"target_ids\": [\n                    \"472889172575271\",\n                    \"197405336793010\"\n                ]\n            },\n            {\n                \"scope\": \"pages_manage_posts\"\n            },\n            {\n                \"scope\": \"pages_manage_engagement\"\n            }\n        ],\n        \"user_id\": \"1565276774100650\"\n    }\n}"
+				}
+			]
+		}
+	]
+}

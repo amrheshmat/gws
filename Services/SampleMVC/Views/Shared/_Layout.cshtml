@@ -253,9 +253,9 @@
                             <ul>
                                 @foreach (var c in languages)
                                 {
-                                    var mainImage = Model.Where(e => e.tourId == c.languageId && e.type == "language").ToList();
+                                var mainImage = Model.Where(e => e.tourId == c.languageId && e.type == "language").ToList();
                                 <li onclick="ChangeLanguage('@c.code','@returnUrl')">
-                                    <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="./images/1.jpg" /> 
+                                    <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage[0].attachmentPath" /> 
                                         <span class="active">@c.code</span>
                                 </li>
                                 }

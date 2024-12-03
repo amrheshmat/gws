@@ -18,7 +18,7 @@ namespace SampleMVC.Controllers
 			_mailService = mailService;
 			_localizationService = localizationService;
 		}
-		public async Task<IActionResult> ContactUs()//index page
+		public async Task<IActionResult> Index()//index page
 		{
             //List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
             //ViewBag.contacts = contacts;

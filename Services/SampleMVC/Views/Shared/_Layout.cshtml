@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Options
 @inject IOptions<RequestLocalizationOptions> LocOptions;
+@model List<MWS.Data.Entities.TourAttachment>;
 @using TripBusiness.Ibusiness;
 @inject ILocalizationService _localizationService;
 @{
@@ -26,6 +27,8 @@
     var twitter = twitterSection?.Replace("\"", "");
     var NbeJs = ViewBag.NbeJs;
     var homeSeo = ViewBag.homeSeo;
+    var attachments = ViewBag.toursAttachments;
+    var languages = ViewBag.languages;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -124,7 +127,94 @@
         .footer-list li a:hover{
             text-decoration:none!important;
         }
-        
+
+        .sl-nav {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position: relative;
+            display: inline-block;
+        }
+
+        .sl-nav li {
+            cursor: pointer;
+            padding-bottom: 10px;
+        }
+
+            .sl-nav li ul {
+                display: none;
+            }
+
+                    .sl-nav li:hover ul, .sl-nav li ul li:hover .sl-nav li ul {
+                position: absolute;
+                top: 29px;
+                right: -15px;
+                display: block;
+                background: #fff;
+                width: 142px;
+                padding-top: 0px;
+                z-index: 999;
+                border-radius: 5px;
+                box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+            }
+
+            .sl-nav li:hover .triangle {
+                position: absolute;
+                top: 15px;
+                right: -10px;
+                z-index: 999;
+                height: 14px;
+                overflow: hidden;
+                width: 30px;
+                background: transparent;
+            }
+
+                .sl-nav li:hover .triangle:after {
+                    content: '';
+                    display: block;
+                    z-index: 9999;
+                    width: 15px;
+                    transform: rotate(45deg) translateY(0px) translatex(10px);
+                    height: 15px;
+                    background: #fff;
+                    border-radius: 2px 0px 0px 0px;
+                    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+                }
+
+            .sl-nav li ul li {
+                position: relative;
+                text-align: left;
+                background: transparent;
+                padding: 15px 15px;
+                padding-bottom: 0;
+                z-index: 2;
+                font-size: 15px;
+                color: #3c3c3c;
+            }
+
+                .sl-nav li ul li:last-of-type {
+                    padding-bottom: 15px;
+                }
+
+                .sl-nav li ul li span {
+                    padding-left: 5px;
+                }
+
+                    .sl-nav li ul li span:hover, .sl-nav li ul li span.active {
+                        color: #146c78;
+                    }
+
+        .sl-flag {
+            display: inline-block;
+            box-shadow: 0px 0px 3px rgba(0,0,0,0.4);
+            width: 15px;
+            height: 15px;
+            background: #aaa;
+            border-radius: 50%;
+            position: relative;
+            top: 2px;
+            overflow: hidden;
+        }
         </style>
 </head>
 <body class="dark:bg-slate-900">
@@ -155,26 +245,22 @@
                         </li>
                     </ul>
 
-                    <ul class="list-none">
-                        <li class="inline-flex items-center">
-                            <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
-                                <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
-                               @*  <select id="culture"
-                                        name="culture"
-                                        style="border-radius: 10px;"
-                                        onchange="this.form.submit();"
-                                        asp-items="cultureItems"
-                                        asp-for="@requestCulture.RequestCulture.UICulture.Name">
-                                </select> *@
-                                <select class="selectpicker" data-width="fit" onchange="this.form.submit();">
-                                    @foreach(var lang in cultureItems){
-                                        <option >@lang.Value</option>
-                                    }
-                                 </select>
-                            </form> 
-                           
+                    
+                    <ul class="sl-nav ">
+                        <li>
+                            <span><img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="./images/1.jpg" /> @requestCulture.RequestCulture.UICulture.Name</span> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <div class="triangle"></div>
+                            <ul>
+                                @foreach (var c in languages)
+                                {
+                                    var mainImage = Model.Where(e => e.tourId == c.languageId && e.type == "language").ToList();
+                                <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                    <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="./images/1.jpg" /> 
+                                        <span class="active">@c.code</span>
+                                </li>
+                                }
+                            </ul>
                         </li>
-                        
                     </ul>
                 </div>
             </div>
@@ -224,7 +310,7 @@
                     <li class="active"><a href="/" class="sub-menu-item "> @_localizationService.Localize("Home")</a></li>
                     <li class="active ourToursClass" id="ourTours"><a href="/" class="sub-menu-item">@_localizationService.Localize("OurTours")</a></li>
                     <li class="active"><a href="/facilities" class="sub-menu-item">@_localizationService.Localize("OurFacilities")</a></li>
-                    <li class="active"><a href="/contactUs/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
+                    <li class="active"><a href="/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
                     <li class="active"><a href="/aboutUs" class="sub-menu-item">@_localizationService.Localize("WhoWeAre")</a></li>
                     <li class="active"><a href="/blogs" class="sub-menu-item">@_localizationService.Localize("blog")</a></li>
                     <li class="active"><a href="/SpecialRequest" class="sub-menu-item">@_localizationService.Localize("SpecialRequests")</a></li>
@@ -273,7 +359,7 @@
                                     <ul class="list-none footer-list mt-6">
 
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/facilities" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("OurFacilities")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("WhoWeAre")</a></li>
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/blogs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("Blog")</a></li>
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/SpecialRequest" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("SpecialRequests")</a></li>
@@ -347,7 +433,7 @@
             <div class="container relative text-center">
                 <div class="grid grid-cols-1">
                     <div class="text-center">
-                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://www.linkedin.com/in/amr-heshmat-491266137/" target="_blank" class="text-reset">A.Heshmat</a></p>
+                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://anoushdahabiya.com/" target="_blank" class="text-reset">anoushdahabiya</a></p>
                     </div>
                 </div><!--end grid-->
             </div><!--end container-->
@@ -400,6 +486,22 @@
                 }, 2000);
             });
         });
+        function ChangeLanguage(lang,url){
+            $.ajax({
+                url: "/Home/ChangeLanguage",
+                type: "POST",
+                data: {
+                    culture: lang,       // First parameter
+                    returnUrl: url        // Second parameter
+                  },
+                success: function (data) {
+                   location.reload();
+                },
+                error: function (error) {
+                    console.log("e");
+                }
+            });
+        }
     </script>
 </body>
 </html>

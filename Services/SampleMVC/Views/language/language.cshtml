@@ -61,7 +61,8 @@
                                             }
                                             @if (hasEditPermission > 0)
                                             {
-                                            <span onclick="editlanguage(@language.languageId,'@language.languageName','@language.code')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                                <span onclick="tourAttachment(@language.languageId)" style="margin:0px 5px;cursor:pointer" data-toggle="modal" data-target="#exampleModal2"><i style="color: #dc3545;" class="fa fa-link "></i></span>
+                                                <span onclick="editlanguage(@language.languageId,'@language.languageName','@language.code')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
                                             }    
                                         </td>
                                         </tr>
@@ -74,6 +75,48 @@
             </div>
         </div>
     </div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@_localizationService.Localize("Tour")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Upload" asp-controller="Tour" method="post" enctype="multipart/form-data">
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <input asp-for="languageId" id="tourId" class="form-control" hidden />
+                        </div>
+                    </div>
+                    <div id="imagePreview">
+                    </div>
+                    <div id="selectedImage">
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <label class="col-form-label">Select File</label>
+                            <input type="file" id="fileId" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <button id="submit" type="submit" class="btn btn-success">@_localizationService.Localize("UploadFile")</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     
@@ -117,6 +160,7 @@
 </div>
 
 <script>
+    var validateFile = [];
     function clearData() {
         $(".modal-body #languageId").val("");
         $(".modal-body #languageName").val("");
@@ -127,6 +171,77 @@
             clearData();
         })
         $('#demoGrid').dataTable({
+        });
+        $('#exampleModal2').on('shown.bs.modal', function (e) {
+            // do something...
+            var id = $("#tourId").val();
+            $.ajax({
+                url: "/language/GetAttachmentById/" + id,
+                type: "GET",
+                cache: false,
+                success: function (data) {
+                    validateFile = [];
+                    $("#imagePreview").children().remove();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+                        $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].tourAttachmentId + '"/>');
+                        var getLinkFromImage = $("#" + data[i].tourAttachmentId).attr('src');
+                        console.log(getLinkFromImage);
+                        fetch(getLinkFromImage)
+                            .then((res) => res.blob())
+                            .then((myBlob) => {
+                                debugger
+                                const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
+                                console.log(myFile);
+                                validateFile.push(myFile);
+                            });
+                    }
+                }
+            });
+        });
+        $("#submit").on('click', function (e) {
+            e.preventDefault();
+            var tourId = $("#tourId").val();
+            var formData = new FormData();
+            for (var i = 0; i < validateFile.length; i++) {
+                formData.append(i, validateFile[i]);
+            }
+            $.ajax({
+                url: "/language/Upload?tourId=" + tourId,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (message) {
+                    if (message == "Uploaded") {
+                        Swal.fire({
+                            title: "Uploaded",
+                            text: "Tour Imaged added",
+                            icon: "success",
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Error when upload Tour image",
+                            icon: "error",
+                            timer: 1500
+                        });
+                    }
+                }
+            });
+        });
+        $("#fileId").on("change", function () {
+            const [file] = fileId.files;
+            if (file) {
+                for (var i = 0; i < fileId.files.length; i++) {
+                    validateFile.push(fileId.files[i]);
+                }
+            }
+            drawFiles();
         });
         $('#formUserBtn').on("click", function (e) {
             //validation
@@ -210,6 +325,28 @@
 
         });
     });
+    function deleteFile(id) {
+        debugger;
+        validateFile.splice(id, 1);
+        drawFiles();
+    }
+    function drawFiles() {
+        $("#imagePreview").children().remove();
+        debugger;
+        if (validateFile.length > 0) {
+            for (var i = 0; i < validateFile.length; i++) {
+                var image = validateFile[i];
+                var id = 'image_' + i;
+                $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+                $("#imagePreview").append('<img style="width:100px;height:100px;" id="' + id + '"/>');
+                $("#" + id).attr("src", URL.createObjectURL(image));
+            }
+        }
+        console.log(validateFile);
+    }
+    function tourAttachment(id) {
+        $("#tourId").val(id);
+    }
     function editlanguage(id,name,code) {
         $(".modal-body #languageId").val(id);
         $(".modal-body #languageName").val(name);

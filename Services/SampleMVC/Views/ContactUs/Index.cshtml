@@ -45,7 +45,7 @@
                     @Html.TextBoxFor(m => m.phone, new { @id = "phone", type="number", @class = "form-control", required = "required" })
                     <span id="phoneRequired" style="color:red"></span>
                 </div>
-                <div class="mb-3">
+                @* <div class="mb-3">
                     <label class="form-label" for="numberOfAdult">
                         @_localizationService.Localize("NumberOfAdult")
                     </label>
@@ -63,7 +63,7 @@
                         @_localizationService.Localize("NumberOfInfant")
                     </label>
                     <input type="number" value="0" class="form-control" id="numberOfInfant" />
-                </div>
+                </div> *@
                 <div class="mb-3">
                     <label class="form-label" for="message">
                         @_localizationService.Localize("Message")

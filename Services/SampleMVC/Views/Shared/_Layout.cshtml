@@ -248,15 +248,25 @@
                     
                     <ul class="sl-nav ">
                         <li>
-                            <span><img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="./images/1.jpg" /> @requestCulture.RequestCulture.UICulture.Name</span> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <span>
+                                @foreach (var c in languages)
+                                {
+                                    if (c.code == @requestCulture.RequestCulture.UICulture.Name){
+                                         var mainImage = Model.Where(e => e.tourId == c.languageId && e.type == "language").ToList();
+                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage[0].attachmentPath" />
+                                    }
+                                }
+                                @requestCulture.RequestCulture.UICulture.Name</span> <i class="fa fa-angle-down" aria-hidden="true"></i>
                             <div class="triangle"></div>
                             <ul>
                                 @foreach (var c in languages)
                                 {
                                 var mainImage = Model.Where(e => e.tourId == c.languageId && e.type == "language").ToList();
                                 <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                    @if(mainImage.Count > 0){
                                     <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage[0].attachmentPath" /> 
-                                        <span class="active">@c.code</span>
+                                    }
+                                    <span class="active">@c.code</span>
                                 </li>
                                 }
                             </ul>

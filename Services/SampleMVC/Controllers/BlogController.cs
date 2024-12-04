@@ -120,6 +120,7 @@ namespace SampleMVC.Controllers
             ViewBag.homeSeo = homeSeo;
             ViewBag.currentId = id;
             ViewBag.attachments = attachments;
+            ViewBag.toursAttachments = tourAttachments;
             ViewBag.blog = blog;
             ViewBag.recentLogs = recentbLogs;
             return View(tourAttachments);

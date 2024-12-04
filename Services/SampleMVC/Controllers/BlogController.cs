@@ -51,6 +51,18 @@ namespace SampleMVC.Controllers
             }
             int lastId = blogs.Select(e => e.blogId).ToList().Min();
             Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.languages = languages;
+            ViewBag.toursAttachments = tourAttachments;
             homeSeo.title = homeSeo.title + " - Our Blogs";
             ViewBag.homeSeo = homeSeo;
             int blogsCount = _repo.GetAll<Blog>().ToList().Count;
@@ -60,7 +72,7 @@ namespace SampleMVC.Controllers
             ViewBag.blogs = blogs;
             ViewBag.recentLogs = recentbLogs;
             ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
-            ViewBag.lastId = lastId;
+            ViewBag.lastId = lastId; 
             return View(tourAttachments);
         }
 
@@ -88,6 +100,17 @@ namespace SampleMVC.Controllers
                     tourAttachments.Add(attachment);
                 }
             }
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.languages = languages;
             Seo mainSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();  
             Seo homeSeo = new Seo();
             homeSeo.title = blog?.seoTitle == "" || blog?.seoTitle == null? mainSeo?.title + " - " + blog?.title : blog?.seoTitle;

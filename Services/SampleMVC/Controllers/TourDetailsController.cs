@@ -46,6 +46,18 @@ namespace SampleMVC.Controllers
             List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type =="tour").ToListAsync();
             List<HotelType> hotels = await _repo.GetAll<HotelType>().ToListAsync();
             List<RoomType> rooms = await _repo.GetAll<RoomType>().ToListAsync();
+            List<TourAttachment> tourAttachments = new List<TourAttachment>();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.toursAttachments = tourAttachments;
             ViewBag.days = days;
             ViewBag.languages = tourModel.tourLanguages;
             ViewBag.attachments = attachments;

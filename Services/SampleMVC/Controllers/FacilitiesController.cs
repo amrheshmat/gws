@@ -36,6 +36,18 @@ namespace SampleMVC.Controllers
                     tourAttachments.Add(attachment);
                 }
             }
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.toursAttachments = tourAttachments;
+            ViewBag.languages = languages;
             Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
             homeSeo.title = homeSeo.title + " - facilities";
             ViewBag.homeSeo = homeSeo;

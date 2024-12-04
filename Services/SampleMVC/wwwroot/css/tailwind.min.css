@@ -2384,7 +2384,7 @@ p {
     inset-inline-start: 0px;
     inset-inline-end: 0px;
     top: 0;
-    z-index: 999;
+    z-index: 12;
     border-width: 0;
     background-color: transparent;
     -webkit-transition-property: all;

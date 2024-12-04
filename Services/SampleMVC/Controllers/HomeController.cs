@@ -35,6 +35,7 @@ namespace SampleMVC.Controllers
             var language = _languageService.GetLanguageByCulture(currentCulture);
             List<Tour> tours = await _repo.Filter<Tour>(e => e.languageId == language.languageId && e.isActive == "Y").ToListAsync();
             List<Blog> blogs = await _repo.Filter<Blog>(e => e.languageId == language.languageId && e.isActive == "Y").ToListAsync();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
             foreach (var tour in tours)
             {
@@ -49,6 +50,15 @@ namespace SampleMVC.Controllers
             {
                 List<TourAttachment> tourAttachment = new List<TourAttachment>();
                 tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == blog.blogId && e.type == "blog").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
                 foreach (var attachment in tourAttachment)
                 {
                     tourAttachments.Add(attachment);
@@ -74,6 +84,7 @@ namespace SampleMVC.Controllers
             ViewBag.tours = tours.OrderByDescending(e=> int.Parse(e.duration));
             ViewBag.blogs = blogs.OrderByDescending(e=> e.creationDate).Take(10);
             ViewBag.toursAttachments = tourAttachments;
+            ViewBag.languages = languages;
             return View(tourAttachments);
         }
 
@@ -99,7 +110,7 @@ namespace SampleMVC.Controllers
                     Expires = DateTimeOffset.UtcNow.AddDays(7)
                 }
             );
-
+            ViewBag.test = "test";
             return LocalRedirect(returnUrl);
         }
         [HttpPost("Send")]

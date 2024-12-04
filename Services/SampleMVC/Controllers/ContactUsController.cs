@@ -18,13 +18,26 @@ namespace SampleMVC.Controllers
 			_mailService = mailService;
 			_localizationService = localizationService;
 		}
-		public async Task<IActionResult> ContactUs()//index page
+		public async Task<IActionResult> Index()//index page
 		{
             //List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
             //ViewBag.contacts = contacts;
             Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
             homeSeo.title = homeSeo.title + " - contact us";
             ViewBag.homeSeo = homeSeo;
+            List<TourAttachment> tourAttachments = new List<TourAttachment>();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.toursAttachments = tourAttachments;
+            ViewBag.languages = languages;
             return View();
 
 		}

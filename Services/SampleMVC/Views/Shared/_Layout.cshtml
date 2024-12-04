@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Options
 @inject IOptions<RequestLocalizationOptions> LocOptions;
+@model List<MWS.Data.Entities.TourAttachment>;
 @using TripBusiness.Ibusiness;
 @inject ILocalizationService _localizationService;
 @{
@@ -15,6 +16,8 @@
     var instgramSection = ViewContext.HttpContext.Session.GetString("instgram");
     var youtubeSection = ViewContext.HttpContext.Session.GetString("youtube");
     var twitterSection = ViewContext.HttpContext.Session.GetString("twitter");
+    var tiktokSection = ViewContext.HttpContext.Session.GetString("tiktok");
+    var linkedinSection = ViewContext.HttpContext.Session.GetString("linkedin");
     var address = ViewContext.HttpContext.Session.GetString("address");
     var whatsappSection = ViewContext.HttpContext.Session.GetString("whatsapp");
     var mailSection = ViewContext.HttpContext.Session.GetString("email");
@@ -24,8 +27,12 @@
     var instgram = instgramSection?.Replace("\"", "");
     var youtube = youtubeSection?.Replace("\"", "");
     var twitter = twitterSection?.Replace("\"", "");
+    var tiktok = tiktokSection?.Replace("\"", "");
+    var linkedin = linkedinSection?.Replace("\"", "");
     var NbeJs = ViewBag.NbeJs;
     var homeSeo = ViewBag.homeSeo;
+    var attachments = ViewBag.toursAttachments;
+    var languages = ViewBag.languages;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -124,7 +131,94 @@
         .footer-list li a:hover{
             text-decoration:none!important;
         }
-        
+
+        .sl-nav {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position: relative;
+            display: inline-block;
+        }
+
+        .sl-nav li {
+            cursor: pointer;
+            padding-bottom: 10px;
+        }
+
+            .sl-nav li ul {
+                display: none;
+            }
+
+                    .sl-nav li:hover ul, .sl-nav li ul li:hover .sl-nav li ul {
+                position: absolute;
+                top: 29px;
+                right: -15px;
+                display: block;
+                background: #fff;
+                width: 142px;
+                padding-top: 0px;
+                z-index: 999;
+                border-radius: 5px;
+                box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+            }
+
+            .sl-nav li:hover .triangle {
+                position: absolute;
+                top: 15px;
+                right: -10px;
+                z-index: 999;
+                height: 14px;
+                overflow: hidden;
+                width: 30px;
+                background: transparent;
+            }
+
+                .sl-nav li:hover .triangle:after {
+                    content: '';
+                    display: block;
+                    z-index: 9999;
+                    width: 15px;
+                    transform: rotate(45deg) translateY(0px) translatex(10px);
+                    height: 15px;
+                    background: #fff;
+                    border-radius: 2px 0px 0px 0px;
+                    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+                }
+
+            .sl-nav li ul li {
+                position: relative;
+                text-align: left;
+                background: transparent;
+                padding: 15px 15px;
+                padding-bottom: 0;
+                z-index: 2;
+                font-size: 15px;
+                color: #3c3c3c;
+            }
+
+                .sl-nav li ul li:last-of-type {
+                    padding-bottom: 15px;
+                }
+
+                .sl-nav li ul li span {
+                    padding-left: 5px;
+                }
+
+                    .sl-nav li ul li span:hover, .sl-nav li ul li span.active {
+                        color: #146c78;
+                    }
+
+        .sl-flag {
+            display: inline-block;
+            box-shadow: 0px 0px 3px rgba(0,0,0,0.4);
+            width: 15px;
+            height: 15px;
+            background: #aaa;
+            border-radius: 50%;
+            position: relative;
+            top: 2px;
+            overflow: hidden;
+        }
         </style>
 </head>
 <body class="dark:bg-slate-900">
@@ -150,25 +244,65 @@
                                 <li class="inline-flex mb-0"><a href="@facebook" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
                                 <li class="inline-flex ms-2 mb-0"><a href="@instgram" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
                                 <li class="inline-flex ms-2 mb-0"><a href="@twitter" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter size-4 align-middle" title="twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="@tiktok" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#fafafa" d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z" /></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="@linkedin" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#f2f2f2" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" /></svg></a></li>
                                 <li class="inline-flex ms-2 mb-0"><a href="tel:@whatsapp" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone size-4 align-middle" title="phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a></li>
                             </ul><!--end icon-->
                         </li>
                     </ul>
 
-                    <ul class="list-none">
-                        <li class="inline-flex items-center">
-                            <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
-                                <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
-                                <select id="culture"
-                                        name="culture"
-                                        style="border-radius: 10px;"
-                                        onchange="this.form.submit();"
-                                        asp-items="cultureItems"
-                                        asp-for="@requestCulture.RequestCulture.UICulture.Name">
-                                </select>
-                            </form>
+                    
+                    <ul class="sl-nav ">
+                        <li>
+                            <span style="color:#fff;">
+                                @if(languages != null)
+                                {
+                                    foreach (var c in languages)
+                                    {
+                                        if (c.code == @requestCulture.RequestCulture.UICulture.Name)
+                                        {
+                                            foreach (var att in attachments)
+                                            {
+                                                if (att.tourId == c.languageId && att.type == "language")
+                                                {
+                                                    var mainImage = att;
+                                                    @if (mainImage != null)
+                                                    {
+                                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                @requestCulture.RequestCulture.UICulture.Name
+                            </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
+                            <div class="triangle"></div>
+                            <ul>
+                                @if(languages != null)
+                                {
+                                    foreach (var c in languages)
+                                    {
+                                        <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                            @foreach (var att in attachments)
+                                            {
+                                                if (att.tourId == c.languageId && att.type == "language")
+                                                {
+                                                    var mainImage = att;
+                                                    @if (mainImage != null)
+                                                    {
+                                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            <span class="active">@c.code</span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
                         </li>
-                        
                     </ul>
                 </div>
             </div>
@@ -181,8 +315,8 @@
             <!-- Logo container-->
             <a class="logo" href="/">
                 <span class="inline-block dark:hidden">
-                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="anoush dark logo">
-                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-white.png" class="h-7 l-light" alt="anoush white logo">
+                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="anoush dark logo">
+                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-white.png" class="h-7 l-light" alt="anoush white logo">
                 </span>
                 <img src="~/images/logo-white.png" class="hidden dark:inline-block" alt="anoush white logo">
             </a>
@@ -218,7 +352,7 @@
                     <li class="active"><a href="/" class="sub-menu-item "> @_localizationService.Localize("Home")</a></li>
                     <li class="active ourToursClass" id="ourTours"><a href="/" class="sub-menu-item">@_localizationService.Localize("OurTours")</a></li>
                     <li class="active"><a href="/facilities" class="sub-menu-item">@_localizationService.Localize("OurFacilities")</a></li>
-                    <li class="active"><a href="/contactUs/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
+                    <li class="active"><a href="/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
                     <li class="active"><a href="/aboutUs" class="sub-menu-item">@_localizationService.Localize("WhoWeAre")</a></li>
                     <li class="active"><a href="/blogs" class="sub-menu-item">@_localizationService.Localize("blog")</a></li>
                     <li class="active"><a href="/SpecialRequest" class="sub-menu-item">@_localizationService.Localize("SpecialRequests")</a></li>
@@ -246,12 +380,14 @@
                             </div><!--end col-->
                             <div class="lg:col-span-3 md:col-span-12" style="margin:auto">
                                 <a href="/" class="text-[22px] focus:outline-none">
-                                    <img style="width: 90px;height: 90px !important;" src="~/images/logo-white.png" alt="anoush white logo">
+                                    <img style="width:115px;height: 115px !important;" src="~/images/logo-white.png" alt="anoush white logo">
                                 </a>
                                 <ul class="list-none mt-6">
                                   <li class="inline"><a href="@facebook" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
                                     <li class="inline"><a href="@instgram" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
                                     <li class="inline"><a href="@twitter" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter size-4 align-middle" title="twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a></li>
+                                    <li class="inline"><a href="@tiktok" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#fafafa" d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z" /></svg></a></li>
+                                    <li class="inline"><a href="@linkedin" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#f2f2f2" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" /></svg></a></li>
                                     <li class="inline"><a href="@youtube" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i class="fab fa-youtube"></i></a></li>
                                 </ul><!--end icon-->
                                 <div style="margin-top:50px;">
@@ -267,7 +403,7 @@
                                     <ul class="list-none footer-list mt-6">
 
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/facilities" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("OurFacilities")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("WhoWeAre")</a></li>
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/blogs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("Blog")</a></li>
                                         <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/SpecialRequest" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("SpecialRequests")</a></li>
@@ -341,7 +477,7 @@
             <div class="container relative text-center">
                 <div class="grid grid-cols-1">
                     <div class="text-center">
-                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://www.linkedin.com/in/amr-heshmat-491266137/" target="_blank" class="text-reset">A.Heshmat</a></p>
+                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://anoushdahabiya.com/" target="_blank" class="text-reset">anoushdahabiya</a></p>
                     </div>
                 </div><!--end grid-->
             </div><!--end container-->
@@ -394,6 +530,22 @@
                 }, 2000);
             });
         });
+        function ChangeLanguage(lang,url){
+            $.ajax({
+                url: "/Home/ChangeLanguage",
+                type: "POST",
+                data: {
+                    culture: lang,       // First parameter
+                    returnUrl: url        // Second parameter
+                  },
+                success: function (data) {
+                   location.reload();
+                },
+                error: function (error) {
+                    console.log("e");
+                }
+            });
+        }
     </script>
 </body>
 </html>

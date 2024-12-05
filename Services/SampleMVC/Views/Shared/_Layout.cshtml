@@ -4,6 +4,7 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions;
 @using TripBusiness.Ibusiness;
 @inject ILocalizationService _localizationService;
+@inject IConfiguration _config;
 @{
     string returnUrl = ViewContext.HttpContext.Request.Path;
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -32,6 +33,7 @@
     var homeSeo = ViewBag.homeSeo;
     var attachments = ViewBag.toursAttachments;
     var languages = ViewBag.languages;
+    var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -250,59 +252,61 @@
                         </li>
                     </ul>
 
-                    
-                    <ul class="sl-nav ">
-                        <li>
-                            <span style="color:#fff;">
-                                @if(languages != null)
-                                {
-                                    foreach (var c in languages)
+                    @if(showLanguageButton == "1")
+                    {
+                        <ul class="sl-nav ">
+                            <li>
+                                <span style="color:#fff;">
+                                    @if (languages != null)
                                     {
-                                        if (c.code == @requestCulture.RequestCulture.UICulture.Name)
+                                        foreach (var c in languages)
                                         {
-                                            foreach (var att in attachments)
+                                            if (c.code == @requestCulture.RequestCulture.UICulture.Name)
                                             {
-                                                if (att.tourId == c.languageId && att.type == "language")
+                                                foreach (var att in attachments)
                                                 {
-                                                    var mainImage = att;
-                                                    @if (mainImage != null)
+                                                    if (att.tourId == c.languageId && att.type == "language")
                                                     {
-                                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        var mainImage = att;
+                                                        @if (mainImage != null)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        }
+                                                        break;
                                                     }
-                                                    break;
                                                 }
                                             }
                                         }
                                     }
-                                }
-                                @requestCulture.RequestCulture.UICulture.Name
-                            </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
-                            <div class="triangle"></div>
-                            <ul>
-                                @if(languages != null)
-                                {
-                                    foreach (var c in languages)
+                                    @requestCulture.RequestCulture.UICulture.Name
+                                </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
+                                <div class="triangle"></div>
+                                <ul>
+                                    @if (languages != null)
                                     {
-                                        <li onclick="ChangeLanguage('@c.code','@returnUrl')">
-                                            @foreach (var att in attachments)
-                                            {
-                                                if (att.tourId == c.languageId && att.type == "language")
+                                        foreach (var c in languages)
+                                        {
+                                            <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                                @foreach (var att in attachments)
                                                 {
-                                                    var mainImage = att;
-                                                    @if (mainImage != null)
+                                                    if (att.tourId == c.languageId && att.type == "language")
                                                     {
-                                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        var mainImage = att;
+                                                        @if (mainImage != null)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        }
+                                                        break;
                                                     }
-                                                    break;
                                                 }
-                                            }
-                                            <span class="active">@c.code</span>
-                                        </li>
+                                                <span class="active">@c.code</span>
+                                            </li>
+                                        }
                                     }
-                                }
-                            </ul>
-                        </li>
-                    </ul>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </div><!--end container-->

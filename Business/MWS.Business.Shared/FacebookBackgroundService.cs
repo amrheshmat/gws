@@ -33,6 +33,9 @@ public class FacebookBackgroundService : BackgroundService
 		int TokenRefreshDays = int.Parse(_config.GetSection("FacebookSetting:TokenRefreshDays").Value);
 		var interval = TimeSpan.FromDays(TokenRefreshDays);
 
+        // Wait for the first interval before executing
+        //await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+
 		while (!stoppingToken.IsCancellationRequested)
 		{
 			// Log the current task run time

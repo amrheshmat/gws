@@ -1,5 +1,6 @@
 ﻿using GWS.Service;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.ResponseCompression;
 using MWS.Shared;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -36,6 +37,11 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromDays(10); // Set session timeout
 });
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<GzipCompressionProvider>();
+    options.Providers.Add<BrotliCompressionProvider>();
+});
 builder.Services.AddAuthentication().AddCookie(options => options.LoginPath = "/");
 var app = builder.Build();
 // enable the localization middleware
@@ -51,7 +57,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();

@@ -42,7 +42,7 @@
 :root {
     --remix-icon: "remixicon";
     --Kaushan: "Kaushan Script", cursive;
-    --Dm: "Noto Serif",sans-serif;
+    --Dm: "Montserrat", sans-serif;
     --white: #fff;
     --light: #d8dbe0;
     --dark: #28292c;
@@ -30667,61 +30667,4 @@ button.applyBtn.btn.btn-sm.btn-primary {
 .ui-state-default:hover {
     border: 1px solid #83dfad !important;
     background: #83dfad !important;
-}
-#tourIdLinke:hover {
-    text-decoration: none;
-}
-.overlaySlider {
-    position: absolute;
-    bottom: 0;
-    background: rgb(0, 0, 0);
-    background: rgba(0, 0, 0, 0.5); /* Black see-through */
-    color: #f1f1f1;
-    width: 100%;
-    transition: .5s ease;
-    opacity: 0;
-    color: white;
-    font-size: 20px;
-    padding: 20px;
-    text-align: center;
-    opacity: 1;
-    height: 90vh;
-}
-body {
-    font-family: "Noto Serif", serif !important;
-}
-
-.blog-entry .meta p a, .blog-entry .meta p {
-    font-family: "Noto Serif",sans-serif !important;
-}
-.slide-inner .slid1 img {
-    animation: zoom-in-zoom-out 10s linear;
-    animation-iteration-count: 1;
-   animation-fill-mode:forwards;
-}
-/*.slide-inner .slid2 img {
-    animation: zoom-in-zoom-out 10s linear;
-    animation-delay: 8s;
-    animation-iteration-count: 1;
-}*/
-
-    @keyframes zoom-in-zoom-out {
-        0% {
-        transform: scale(1, 1);
-    }
-
-    25% {
-        transform: scale(1.1, 1.1);
-    }
-    50% {
-        transform: scale(1.2, 1.2);
-    }
-    
-    75% {
-        transform: scale(1.3, 1.3);
-    }
-
-    100% {
-        transform: scale(1.5, 1.5);
-    }
 }

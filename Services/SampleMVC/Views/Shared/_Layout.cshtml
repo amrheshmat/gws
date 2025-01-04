@@ -58,20 +58,20 @@
     <meta name="author" content="Shreethemes">
     <meta name="version" content="1.0.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="~/css/jquery-ui.css">
+    <link rel="preload" href="~/css/jquery-ui.css">
     <!-- favicon -->
-    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <link rel="shortcut icon preload" href="~/images/favicon.ico">
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Css -->
-    <link href="~/css/blog-style.css" rel="stylesheet" type="text/css">
+    <link href="~/css/blog-style.css" rel="stylesheet preload" type="text/css">
     @* <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> *@
-    <link href="https://fonts.googleapis.com">
-    <link href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preload">
+    <link href="https://fonts.gstatic.com" crossorigin rel="preload">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="preload">
     @* checkout payment *@
     <script src="@NbeJs" data-complete="completeCallback" data-error="errorCallback" data-cancel="cancelCallback"></script>
     <link href="~/css/swiper.min.css" rel="stylesheet">
@@ -79,12 +79,14 @@
     <!-- Main Css -->
     <link href="~/css/tailwind.min.css" rel="stylesheet" type="text/css">
     <link href="~/css/main-style.css" rel="stylesheet" type="text/css">
-    <script src="~/js/sweetAlert.js"></script>
-    <link href="~/css/vendor.css" type="text/css" rel="stylesheet"/>
+    <script src="~/js/sweetAlert.js" defer></script>
+    <link href="~/css/vendor.css" type="text/css" rel="stylesheet preload"/>
+    <link rel="preload" href="~/images/logo-dark.webp" />
+    <link rel="preload" href="~/images/logo-white.webp" />
     @if (lang.Contains("ar"))
     {
-        <link rel="stylesheet" href="~/css/homestyle-ar.css" data-n-g="">
-        <script src="~/js/website-ar.js"></script>
+        <link rel="stylesheet preconnect" href="~/css/homestyle-ar.css" data-n-g="">
+        <script src="~/js/website-ar.js" defer></script>
     }
     <style>
         .tooltip {

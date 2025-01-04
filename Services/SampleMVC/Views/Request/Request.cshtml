@@ -24,8 +24,11 @@
                                         <th scope="col">
                                         @_localizationService.Localize("sessionReference")
                                         </th>
+                                        <th scope="col">
+                                        @_localizationService.Localize("Date")
+                                        </th>
                                     <th scope="col">
-                                        @_localizationService.Localize("Status")
+                                        @_localizationService.Localize("status")
                                     </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Name")
@@ -36,6 +39,9 @@
                                     <th scope="col">
                                         @_localizationService.Localize("Email")
                                     </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("totalPrice")
+                                    </th>
                                         <th scope="col">
                                         @_localizationService.Localize("Actions")
                                         </th>
@@ -45,7 +51,7 @@
                                     @{
                                         int i = 0;
                                     }
-                                @foreach (var request in requests)
+                                @foreach (var request in requests as List<MWS.Data.Entities.Booking>)
                                 {
                                         <tr>
                                             <td>
@@ -53,6 +59,9 @@
                                             </td> 
                                             <td>
                                             @request.sessionReference
+                                            </td>
+                                            <td>
+                                            @request.tourDate.Value.ToString("dd-MM-yyyy")
                                             </td>
                                         <td>
                                             @request.status
@@ -66,8 +75,11 @@
                                         <td>
                                             @request.email
                                         </td>
+                                        <td>
+                                            @request.totalPrice
+                                        </td>
                                             <td>
-                                            <span onclick="viewcontact(@request.requestId,'@request.name','@request.email','@request.phone','@request.numberOfAdult','@request.numberOfChild','@request.numberOfInfant','@request.countryName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-eye"></i></span>
+                                            <span onclick="viewcontact(@request.requestId,'@request.name','@request.email','@request.phone','@request.numberOfAdult','@request.numberOfChild','@request.numberOfInfant','@request.countryName','@request.tourDate','@request.totalPrice')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-eye"></i></span>
                                             </td>
                                         </tr>
                                     }
@@ -82,10 +94,10 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="max-width: 70%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                <h5 class="modal-title" id="exampleModalLabel">view reservation</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -94,49 +106,63 @@
                 @using (Html.BeginForm("edit", "Request", FormMethod.Post))
                 {
                     @Html.TextBoxFor(m => m.requestId, new { @id = "requestId", @class = "form-control", style = "display:none" })
-                        <div class="mb-3">
-                        <label class="form-label" for="name">
-                            @_localizationService.Localize("Name")
-                        </label>
-                        @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control",disabled="disabled"})
+                       <div class="row">
+                        <div class="col-6">
+                            <label class="form-label" for="name">
+                                @_localizationService.Localize("Name")
+                            </label>
+                            @Html.TextBoxFor(m => m.name, new { @id = "name", @class = "form-control", disabled = "disabled" })
                         </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="phone">
-                            @_localizationService.Localize("Phone")
-                        </label>
-                        @Html.TextBoxFor(m => m.phone, new { @id = "phone", @class = "form-control", disabled = "disabled" })
-                    </div>
-                    <div class="mb-3">
+                        <div class="col-6">
+                            <label class="form-label" for="phone">
+                                @_localizationService.Localize("Phone")
+                            </label>
+                            @Html.TextBoxFor(m => m.phone, new { @id = "phone", @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <div class="col-6" style="margin-top:15px;">
                         <label class="form-label" for="email">
                             @_localizationService.Localize("Email")
                         </label>
                         @Html.TextBoxFor(m => m.email, new { @id = "email", @class = "form-control", disabled = "disabled" })
                     </div>
-                    <div class="mb-3">
+                        <div class="col-6" style="margin-top:15px;">
                         <label class="form-label" for="numberOfAdult">
                             @_localizationService.Localize("NumberOfAdult")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfAdult, new { @id = "numberOfAdult", @class = "form-control", disabled = "disabled" })
                     </div>
-                    <div class="mb-3">
+                        <div class="col-6" style="margin-top:15px;">
                         <label class="form-label" for="numberOfChild">
                             @_localizationService.Localize("NumberOfChild")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfChild, new { @id = "numberOfChild", @class = "form-control", disabled = "disabled" })
                     </div>
-                    <div class="mb-3">
+                        <div class="col-6" style="margin-top:15px;">
                         <label class="form-label" for="numberOfInfant">
                             @_localizationService.Localize("NumberOfInfant")
                         </label>
                         @Html.TextBoxFor(m => m.numberOfInfant, new { @id = "numberOfInfant", @class = "form-control", disabled = "disabled" })
                     </div>
-                    <div class="mb-3">
+                        <div class="col-6" style="margin-top:15px;">
                         <label class="form-label" for="countryName">
                             @_localizationService.Localize("CountryName")
                         </label>
                         @Html.TextBoxFor(m => m.countryName, new { @id = "countryName", @class = "form-control", disabled = "disabled" })
                     </div>
-                    <div class="d-grid">
+                        <div class="col-6" style="margin-top:15px;">
+                            <label class="form-label" for="tourDate">
+                                @_localizationService.Localize("Date")
+                            </label>
+                            @Html.TextBoxFor(m => m.tourDate, new { @id = "tourDate", @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <div class="col-6" style="margin-top:15px;">
+                            <label class="form-label" for="totalPrice">
+                                @_localizationService.Localize("totalPrice")
+                            </label>
+                            @Html.TextBoxFor(m => m.totalPrice, new { @id = "totalPrice", @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="d-grid" style="margin-top:15px;">
                         <button type="submit" class="btn btn-primary">@_localizationService.Localize("Save")</button>
                     </div>
                 }
@@ -153,11 +179,13 @@
         $('#demoGrid').dataTable({
         });
     });
-    function viewcontact(id, name, email, phone, adult, child, infant, countryName) {
+    function viewcontact(id, name, email, phone, adult, child, infant, countryName, tourDate, totalPrice) {
         $(".modal-body #name").val(name);
         $(".modal-body #email").val(email);
         $(".modal-body #phone").val(phone);
         $(".modal-body #countryName").val(countryName);
+        $(".modal-body #tourDate").val(tourDate);
+        $(".modal-body #totalPrice").val(totalPrice);
         $(".modal-body #numberOfAdult").val(adult);
         $(".modal-body #numberOfChild").val(child);
         $(".modal-body #numberOfInfant").val(infant);

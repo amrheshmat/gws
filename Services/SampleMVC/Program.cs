@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.ResponseCompression;
 using MWS.Shared;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -57,7 +58,11 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromDays(10); // Set session timeout
 });
-
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<GzipCompressionProvider>();
+    options.Providers.Add<BrotliCompressionProvider>();
+});
 builder.Services.AddAuthentication().AddCookie(options => options.LoginPath = "/");
 var app = builder.Build();
 // enable the localization middleware
@@ -67,15 +72,27 @@ app.UseRequestLocalization();
 //            .AddRedirectToWww()
 //         );
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+Console.WriteLine($"Running in {app.Environment.EnvironmentName} environment");
+if (app.Environment.IsDevelopment())
 {
+    // Developer tools (e.g., DeveloperExceptionPage) should only be enabled in development
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    // In production, show a generic error page and enable other production settings
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseResponseCompression();
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers["Cache-Control"] = "public, max-age=31536000";
+    }
+});
 app.UseSession();
 
 app.UseMiddleware<JwtMiddleware>();

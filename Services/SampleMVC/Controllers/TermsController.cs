@@ -38,6 +38,7 @@ namespace SampleMVC.Controllers
                 }
             }
             ViewBag.toursAttachments = tourAttachments;
+            ViewBag.languages = languages;
             homeSeo.title = homeSeo.title + " - terms";
             ViewBag.homeSeo = homeSeo;
             ViewBag.terms = terms;

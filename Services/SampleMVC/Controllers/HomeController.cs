@@ -93,10 +93,12 @@ namespace SampleMVC.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewData["ErrorMessage"] = "Something went wrong. Please try again later.";
+
+            return View();  // Returns the ErrorPage view
         }
         [HttpPost]
         public IActionResult ChangeLanguage(string culture, string returnUrl)

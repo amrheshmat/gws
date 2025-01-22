@@ -2,9 +2,9 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Options
 @inject IOptions<RequestLocalizationOptions> LocOptions;
-@model List<MWS.Data.Entities.TourAttachment>;
 @using TripBusiness.Ibusiness;
 @inject ILocalizationService _localizationService;
+@inject IConfiguration _config;
 @{
     string returnUrl = ViewContext.HttpContext.Request.Path;
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -33,51 +33,60 @@
     var homeSeo = ViewBag.homeSeo;
     var attachments = ViewBag.toursAttachments;
     var languages = ViewBag.languages;
+    var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFZ6M6F02D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-JFZ6M6F02D');
+    </script>
     <meta charset="UTF-8">
     @if(homeSeo != null){
     <title>@homeSeo.title</title>
-    <meta name="viewport" content="@homeSeo.viewport">
+    @* <meta name="viewport" content="@homeSeo.viewport"> *@
     <meta content="@homeSeo.description" name="description">
     <meta content="@homeSeo.keyWords" name="keywords">
     }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Shreethemes">
     <meta name="version" content="1.0.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="~/css/jquery-ui.css">
+    <link rel="preload" href="~/css/jquery-ui.css">
     <!-- favicon -->
-    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <link rel="shortcut icon preload" href="~/images/favicon.ico">
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Css -->
-    <link href="~/css/blog-style.css" rel="stylesheet" type="text/css">
+    <link href="~/css/blog-style.css" rel="stylesheet preload" type="text/css">
     @* <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> *@
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preload">
+    <link href="https://fonts.gstatic.com" crossorigin rel="preload">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="preload">
     @* checkout payment *@
     <script src="@NbeJs" data-complete="completeCallback" data-error="errorCallback" data-cancel="cancelCallback"></script>
     <link href="~/css/swiper.min.css" rel="stylesheet">
-    <link href="~/css/tiny-slider.css" rel="stylesheet">
     <link href="~/css/datepicker.min.css" rel="stylesheet">
     <!-- Main Css -->
-    <link href="~/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
     <link href="~/css/tailwind.min.css" rel="stylesheet" type="text/css">
-    <link href="~/css/gallery.css" rel="stylesheet" type="text/css">
     <link href="~/css/main-style.css" rel="stylesheet" type="text/css">
-    <script src="~/js/sweetAlert.js"></script>
-    <link href="~/css/vendor.css" type="text/css" rel="stylesheet"/>
+    <script src="~/js/sweetAlert.js" defer></script>
+    <link href="~/css/vendor.css" type="text/css" rel="stylesheet preload"/>
+    <link rel="preload" href="~/images/logo-dark.webp" />
+    <link rel="preload" href="~/images/logo-white.webp" />
     @if (lang.Contains("ar"))
     {
-        <link rel="stylesheet" href="~/css/homestyle-ar.css" data-n-g="">
-        <script src="~/js/website-ar.js"></script>
+        <link rel="stylesheet preconnect" href="~/css/homestyle-ar.css" data-n-g="">
+        <script src="~/js/website-ar.js" defer></script>
     }
     <style>
         .tooltip {
@@ -220,6 +229,7 @@
             overflow: hidden;
         }
         </style>
+    <meta name="google-site-verification" content="rBoRM2BMBCq5zFDQc__1FhCw9FOzWmnWvMb9-rkhLEI" />
 </head>
 <body class="dark:bg-slate-900">
     <!-- Loader Start -->
@@ -251,59 +261,61 @@
                         </li>
                     </ul>
 
-                    
-                    <ul class="sl-nav ">
-                        <li>
-                            <span style="color:#fff;">
-                                @if(languages != null)
-                                {
-                                    foreach (var c in languages)
+                    @if(showLanguageButton == "1")
+                    {
+                        <ul class="sl-nav ">
+                            <li>
+                                <span style="color:#fff;">
+                                    @if (languages != null)
                                     {
-                                        if (c.code == @requestCulture.RequestCulture.UICulture.Name)
+                                        foreach (var c in languages)
                                         {
-                                            foreach (var att in attachments)
+                                            if (c.code == @requestCulture.RequestCulture.UICulture.Name)
                                             {
-                                                if (att.tourId == c.languageId && att.type == "language")
+                                                foreach (var att in attachments)
                                                 {
-                                                    var mainImage = att;
-                                                    @if (mainImage != null)
+                                                    if (att.tourId == c.languageId && att.type == "language")
                                                     {
-                                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        var mainImage = att;
+                                                        @if (mainImage != null)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        }
+                                                        break;
                                                     }
-                                                    break;
                                                 }
                                             }
                                         }
                                     }
-                                }
-                                @requestCulture.RequestCulture.UICulture.Name
-                            </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
-                            <div class="triangle"></div>
-                            <ul>
-                                @if(languages != null)
-                                {
-                                    foreach (var c in languages)
+                                    @requestCulture.RequestCulture.UICulture.Name
+                                </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
+                                <div class="triangle"></div>
+                                <ul>
+                                    @if (languages != null)
                                     {
-                                        <li onclick="ChangeLanguage('@c.code','@returnUrl')">
-                                            @foreach (var att in attachments)
-                                            {
-                                                if (att.tourId == c.languageId && att.type == "language")
+                                        foreach (var c in languages)
+                                        {
+                                            <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                                @foreach (var att in attachments)
                                                 {
-                                                    var mainImage = att;
-                                                    @if (mainImage != null)
+                                                    if (att.tourId == c.languageId && att.type == "language")
                                                     {
-                                                        <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        var mainImage = att;
+                                                        @if (mainImage != null)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        }
+                                                        break;
                                                     }
-                                                    break;
                                                 }
-                                            }
-                                            <span class="active">@c.code</span>
-                                        </li>
+                                                <span class="active">@c.code</span>
+                                            </li>
+                                        }
                                     }
-                                }
-                            </ul>
-                        </li>
-                    </ul>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </div><!--end container-->
@@ -315,10 +327,10 @@
             <!-- Logo container-->
             <a class="logo" href="/">
                 <span class="inline-block dark:hidden">
-                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="anoush dark logo">
-                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-white.png" class="h-7 l-light" alt="anoush white logo">
+                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-dark.webp" class="h-7 l-dark" alt="anoush dark logo">
+                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-white.webp" class="h-7 l-light" alt="anoush white logo">
                 </span>
-                <img src="~/images/logo-white.png" class="hidden dark:inline-block" alt="anoush white logo">
+                <img src="~/images/logo-white.webp" class="hidden dark:inline-block" alt="anoush white logo">
             </a>
             <!-- End Logo container-->
             <!-- Start Mobile Toggle -->
@@ -379,9 +391,7 @@
                                 </ul><!--end icon-->
                             </div><!--end col-->
                             <div class="lg:col-span-3 md:col-span-12" style="margin:auto">
-                                <a href="/" class="text-[22px] focus:outline-none">
-                                    <img style="width:115px;height: 115px !important;" src="~/images/logo-white.png" alt="anoush white logo">
-                                </a>
+                             
                                 <ul class="list-none mt-6">
                                   <li class="inline"><a href="@facebook" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
                                     <li class="inline"><a href="@instgram" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
@@ -392,7 +402,7 @@
                                 </ul><!--end icon-->
                                 <div style="margin-top:50px;">
                                     <a style="position: fixed; inset-inline-start: 0px; inset-inline-end: 0px; bottom: -10px; z-index: 999; width: 100px;" href="https://api.whatsapp.com/send?phone=@whatsapp&amp;text=Hi." class="floatwa" target="_blank">
-                                        <img src="~/images/WhatsApp_icon.png" style="height: 65px;width: 65px;margin-bottom: 25px;" alt="whatsapp">
+                                        <img src="~/images/WhatsApp_icon.webp" style="height: 65px;width: 65px;margin-bottom: 25px;" alt="whatsapp">
                                     </a>
                                 </div>
                             </div><!--end col-->
@@ -451,7 +461,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="lg:col-span-3 md:col-span-4">
+                            @* <div class="lg:col-span-3 md:col-span-4">
                                 <!--Start of Tawk.to Script-->
                                 <script type="text/javascript">
                                 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -466,7 +476,7 @@
                                 </script>
 
                                 <!--End of Tawk.to Script-->
-                            </div>
+                            </div> *@
                         </div><!--end grid-->
                     </div><!--end col-->
                 </div>
@@ -477,7 +487,7 @@
             <div class="container relative text-center">
                 <div class="grid grid-cols-1">
                     <div class="text-center">
-                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://anoushdahabiya.com/" target="_blank" class="text-reset">anoushdahabiya</a></p>
+                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a style="color:#caccce !important" href="https://anoushdahabiya.com/" target="_blank" class="text-reset">anoushdahabiya</a></p>
                     </div>
                 </div><!--end grid-->
             </div><!--end container-->
@@ -513,7 +523,6 @@
     <!-- Back to top -->
     <!-- JAVASCRIPTS -->
     <script src="~/js/swiper.min.js"></script>
-    <script src="~/js/tiny-slider.js"></script>
     <script src="~/js/datepicker.min.js"></script>
     <script src="~/js/feather.min.js"></script>
     <script src="~/js/plugins.init.js"></script>

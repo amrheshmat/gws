@@ -40,9 +40,9 @@
                         {
                             var mainImage = Model.Where(e => e.tourId == b.blogId && e.type == "blog").ToList();
                             <div class="block-21 mb-4 d-flex justify-content-between">
-                                <a class="blog-img" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
+                                <a href="/BlogSingle/@b.blogId"  class="blog-img" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
                                 <div class="text pl-3">
-                                    <h3 class="heading"><a href="#">@b.title</a></h3>
+                                    <h3 class="heading"><a href="/BlogSingle/@b.blogId">@b.title</a></h3>
                                     <div class="meta">
                                         <div><a href="#"><span class="fa fa-calendar"></span>@b.creationDate</a></div>
                                     </div>
@@ -69,5 +69,3 @@
         </div>
     </div>
 </section>
-@* <div id="fb-root"></div> *@
-@* <script *@ async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0&appId=1739125016660738"></script>

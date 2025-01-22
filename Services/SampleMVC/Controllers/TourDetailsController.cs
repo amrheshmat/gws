@@ -59,8 +59,10 @@ namespace SampleMVC.Controllers
             }
             ViewBag.toursAttachments = tourAttachments;
             ViewBag.days = days;
-            ViewBag.languages = tourModel.tourLanguages;
-            ViewBag.attachments = attachments;
+            ViewBag.languages2 = tourModel.tourLanguages;
+            ViewBag.languages = languages;
+            ViewBag.attachments = attachments; 
+            ViewBag.toursAttachments = tourAttachments;
             ViewBag.hotels = hotels;
             ViewBag.rooms = rooms;
             ViewBag.currentId = id;

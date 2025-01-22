@@ -6,6 +6,7 @@
 	Layout = "~/Views/Shared/_layout.cshtml";
 	var days = ViewBag.days;
 	var languages = ViewBag.languages;
+	var languages2 = ViewBag.languages2;
 	var attachments = ViewBag.attachments;
 	var hotels = ViewBag.hotels;
 	var rooms = ViewBag.rooms;
@@ -349,7 +350,7 @@
 					<label>@_localizationService.Localize("language")</label>
 					<select id="language" class="form-control" name="language" required="">
 						<option value="" selected="selected"> @_localizationService.Localize("language")</option>
-						@foreach(var lang in languages)
+						@foreach(var lang in languages2)
 						{
 							<option value="@lang.languageName">@lang.languageName</option>
 						}

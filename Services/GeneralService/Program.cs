@@ -1,4 +1,7 @@
-﻿using GWS.Service;
+﻿using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using GWS.Service;
+using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.AspNetCore.Localization;
 using MWS.Shared;
 using System.Data.Common;
@@ -14,6 +17,11 @@ builder.Services.AddDbContextsDependencies(builder.Configuration).AddBusinessDep
 builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
+var firebaseConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Config", "gws-core-399b1-firebase-adminsdk-fbsvc-10b4042e3e.json");
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile(firebaseConfigPath)
+});
 var serviceProvider = builder.Services.BuildServiceProvider();
 var languageService = serviceProvider.GetRequiredService<ILanguageService>();
 var languages = languageService.GetLanguages();

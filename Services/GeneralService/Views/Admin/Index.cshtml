@@ -67,8 +67,43 @@
     </div>
 </div>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
 <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDBWpn0l-5oTAHsApVJBW9xp0pZHJSlnm4",
+        authDomain: "gws-core-399b1.firebaseapp.com",
+        projectId: "gws-core-399b1",
+        storageBucket: "gws-core-399b1.firebasestorage.app",
+        messagingSenderId: "260487603676",
+        appId: "1:260487603676:web:4c9f8448b9dffc0a779b19",
+        measurementId: "G-95PY49RZ3C"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    messaging.requestPermission()
+        .then(function () {
+            console.log("Notification permission granted.");
+            return messaging.getToken();
+        })
+        .then(function (token) {
+            console.log("Device token:", token);
+            // Send the token to your server to store it for future notifications
+        })
+        .catch(function (err) {
+            console.error("Notification permission denied", err);
+        });
+    messaging.onMessage(function (payload) {
+        console.log('Message received. ', payload);
+        // Customize your notification handling here
+        alert("New Notification: " + payload.notification.title);
+    });
+
     $(document).ready(function () {
+       
         $.ajax({
             url: "/admin/chart/",
             method: 'GET',

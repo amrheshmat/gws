@@ -17,11 +17,12 @@ builder.Services.AddDbContextsDependencies(builder.Configuration).AddBusinessDep
 builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
-var firebaseConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Config", "gws-core-399b1-firebase-adminsdk-fbsvc-10b4042e3e.json");
-FirebaseApp.Create(new AppOptions()
-{
-    Credential = GoogleCredential.FromFile(firebaseConfigPath)
-});
+//var firebaseConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Config", "gws-core-399b1-firebase-adminsdk-fbsvc-52b4181550.json");
+//FirebaseApp.Create(new AppOptions()
+//{
+//    Credential = GoogleCredential.FromFile(firebaseConfigPath)
+//});
+builder.Services.AddHttpClient<PushNotificationService>();
 var serviceProvider = builder.Services.BuildServiceProvider();
 var languageService = serviceProvider.GetRequiredService<ILanguageService>();
 var languages = languageService.GetLanguages();

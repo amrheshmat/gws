@@ -16,6 +16,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="mb-2 mb-lg-0">
                         <h3 class="mb-0 text-white">@_localizationService.Localize("Statistics") </h3>
+                        <span id="sendNotification">test notification</span>
                     </div>
                 </div>
             </div>
@@ -67,11 +68,11 @@
     </div>
 </div>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-
+<!-- Firebase 8.x SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
 <script>
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
         apiKey: "AIzaSyDBWpn0l-5oTAHsApVJBW9xp0pZHJSlnm4",
         authDomain: "gws-core-399b1.firebaseapp.com",
@@ -81,29 +82,73 @@
         appId: "1:260487603676:web:4c9f8448b9dffc0a779b19",
         measurementId: "G-95PY49RZ3C"
     };
-    const app = firebase.initializeApp(firebaseConfig);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var token = "";
+    // Initialize Firebase Cloud Messaging
     const messaging = firebase.messaging();
-
-    messaging.requestPermission()
-        .then(function () {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function (registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+                // Optionally, you can pass the registration to Firebase Messaging.
+                firebase.messaging().useServiceWorker(registration);
+            })
+            .catch(function (error) {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
+    Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
             console.log("Notification permission granted.");
-            return messaging.getToken();
-        })
-        .then(function (token) {
-            console.log("Device token:", token);
-            // Send the token to your server to store it for future notifications
-        })
-        .catch(function (err) {
-            console.error("Notification permission denied", err);
-        });
-    messaging.onMessage(function (payload) {
-        console.log('Message received. ', payload);
-        // Customize your notification handling here
-        alert("New Notification: " + payload.notification.title);
+            // Get the FCM token (add your VAPID key here)
+            messaging.getToken({ vapidKey: 'BM8YcnTa79rqgbJjAj_t5vl1ONAJZ1bxNXjN45hrLXgJsfMQSEoVto2_YLrJapz-zlnzzKozqCYZ1HW_ei1Ow8M' })
+                .then(currentToken => {
+                    if (currentToken) {
+                        token = currentToken
+                        console.log("FCM Token:", currentToken);
+                        // You can save the token to your server here
+                    } else {
+                        console.error("No FCM token available.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error retrieving FCM token:", error);
+                });
+        } else {
+            console.error("Notification permission denied.");
+        }
+    }).catch(error => {
+        console.error("Permission request failed:", error);
     });
-
+    // Handle incoming messages when app is in the foreground
+    messaging.onMessage((payload) => {
+        console.log("Message received. ", payload);
+        // Customize how you handle incoming messages here
+    });
     $(document).ready(function () {
+        alert(token);
+        $('#sendNotification').on("click", function (e) {
+            var notificationRequest = {};
+            notificationRequest.DeviceToken = token;
+            notificationRequest.Title = "token title from amr";
+            notificationRequest.Body = "token message from amr";
+            $.ajax({
+                url: "/api/Notifications/send/",
+                method: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(notificationRequest),
+                success: function (info) {
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        });
        
+
+
+
         $.ajax({
             url: "/admin/chart/",
             method: 'GET',

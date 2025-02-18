@@ -21,8 +21,8 @@ builder.Services.AddControllersWithViews()
 //FirebaseApp.Create(new AppOptions()
 //{
 //    Credential = GoogleCredential.FromFile(firebaseConfigPath)
-//});
-builder.Services.AddHttpClient<PushNotificationService>();
+////});
+//builder.Services.AddHttpClient<FirebaseAuth>();
 var serviceProvider = builder.Services.BuildServiceProvider();
 var languageService = serviceProvider.GetRequiredService<ILanguageService>();
 var languages = languageService.GetLanguages();

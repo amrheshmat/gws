@@ -5,43 +5,44 @@ using Newtonsoft.Json;
 
 public class PushNotificationService
 {
-    private readonly HttpClient _httpClient;
-    private readonly string _serverKey = "AAAAMV1DFFw:APA91bFuS2gQt6QHO7X8M3AdlKiIJALLG8hT8Hmt7uL0q_gUH9VAVofj-FaLGkJR1j6oZuOradQtZeD6zQrYXFmqAVUKIIz-TykS711asogm-MJlit_JeQJ3qtZyQf9dqSMZdncMDekD"; // Firebase Cloud Messaging server key
+    private static readonly string FcmUrl = "https://fcm.googleapis.com/v1/projects/gws-core-399b1/messages:send";
 
-    public PushNotificationService(HttpClient httpClient)
+    public static async Task SendPushNotificationAsync(string accessToken, string deviceToken, string titleValue, string bodyValue)
     {
-        _httpClient = httpClient;
-    }
-
-    public async Task SendPushNotificationAsync(string deviceToken, string title, string body)
-    {
-        var message = new
+        var notification = new
         {
-            to = deviceToken,  // Firebase Device Token
-            notification = new
+            message = new
             {
-                title,
-                body
-            },
-            priority = "high"
+                token = deviceToken,  // Device token
+                notification = new
+                {
+                    title = titleValue,  // Notification title
+                    body = bodyValue     // Notification body
+                }
+            }
         };
 
-        var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
-
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/send")
+        var client = new HttpClient();
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/v1/projects/gws-core-399b1/messages:send")
         {
-            Content = content
+            Content = new StringContent(JsonConvert.SerializeObject(notification), Encoding.UTF8, "application/json")
         };
 
-        // Set Authorization header
-        requestMessage.Headers.Add("Authorization", $"key={_serverKey}");
+        // Add authorization header
+        requestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
-        var response = await _httpClient.SendAsync(requestMessage);
+        var response = await client.SendAsync(requestMessage);
+        var responseString = await response.Content.ReadAsStringAsync();
 
-        if (!response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            var errorMessage = await response.Content.ReadAsStringAsync();
-            throw new Exception($"Failed to send notification: {errorMessage}");
+            Console.WriteLine("Notification sent successfully");
+        }
+        else
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Error sending notification: {response.StatusCode} - {responseContent}");
         }
     }
+
 }

@@ -16,16 +16,17 @@ namespace SampleMVC.Controllers
 		private IRepository _repo;
 		private ILocalizationService _localizationService;
 		private ISecurity _security;
-		public AdminController(ILogger<AdminController> logger, IRepositoryFactory repo, ISecurity security, ILanguageService languageService, ILocalizationService localizationService) : base(languageService, localizationService)
+
+        public AdminController(ILogger<AdminController> logger, IRepositoryFactory repo, ISecurity security, ILanguageService languageService, ILocalizationService localizationService) : base(languageService, localizationService)
 		{
 			_logger = logger;
 			_repo = repo.Create("AGGRDB");
 			_security = security;
 			_localizationService = localizationService;
-		}
-		public async Task<IActionResult> Index()
+        }
+        public async Task<IActionResult> Index()
 		{
-			var currentUser = HttpContext.Session.GetString("currentUser");
+            var currentUser = HttpContext.Session.GetString("currentUser");
 			ViewData["users"] = await Localize("users");
 			if (currentUser == null)
 				return RedirectToAction("Login", "admin");

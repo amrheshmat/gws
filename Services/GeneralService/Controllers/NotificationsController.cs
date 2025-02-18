@@ -1,26 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/[controller]")]
 public class NotificationsController : ControllerBase
 {
-    private readonly PushNotificationService _pushNotificationService;
 
-    public NotificationsController(PushNotificationService pushNotificationService)
+    public NotificationsController()
     {
-        _pushNotificationService = pushNotificationService;
     }
 
     [HttpPost("send")]
     public async Task<IActionResult> SendNotification([FromBody] NotificationRequest request)
     {
         // Send notification to the device
-        await _pushNotificationService.SendPushNotificationAsync(request.DeviceToken, request.Title, request.Body);
+        string accessToken = await FirebaseAuth.GetAccessTokenAsync();
+        await PushNotificationService.SendPushNotificationAsync(accessToken, request.DeviceToken,request.Title,request.Body);
         return Ok("Notification sent successfully.");
     }
+    [HttpGet("getToken")]
+    public async Task<string> getToken()
+    {
+        // Send notification to the device
+        string accessToken = await FirebaseAuth.GetAccessTokenAsync();
+        return accessToken;
+    }
 }
-
 public class NotificationRequest
 {
     public string? DeviceToken { get; set; }

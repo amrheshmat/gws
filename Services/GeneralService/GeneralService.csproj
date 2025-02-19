@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Business\TripBusiness\TripBusiness.csproj" />
+    <ProjectReference Include="..\..\event.business\events.business.csproj" />
     <ProjectReference Include="..\..\MWS.Data\MWS.Data.csproj" />
     <ProjectReference Include="..\..\MWS.Infrustructure\MWS.Infrustructure.csproj" />
   </ItemGroup>

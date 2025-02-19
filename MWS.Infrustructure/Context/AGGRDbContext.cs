@@ -15,6 +15,7 @@ namespace MWS.Infrustructure.Context
 		}
 
 		public DbSet<User> users { get; set; }
+		public DbSet<Session> sessions { get; set; }
 		public DbSet<Localization> localizations { get; set; }
 		public DbSet<Language> languages { get; set; }
 		public DbSet<Currency> currency { get; set; }
@@ -31,6 +32,7 @@ namespace MWS.Infrustructure.Context
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<User>().ToTable("users").HasKey(e => e.userId);
+			modelBuilder.Entity<Session>().ToTable("sessions");
 			modelBuilder.Entity<Localization>().ToTable("localizations");
 			modelBuilder.Entity<Language>().ToTable("languages");
 			modelBuilder.Entity<Currency>().ToTable("currency");

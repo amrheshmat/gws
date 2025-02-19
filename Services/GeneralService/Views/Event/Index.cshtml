@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Session Booking";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="calendar"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            defaultView: 'agendaDay', // Show a daily view by default
+            slotDuration: '01:00:00', // Show hourly time slots
+            minTime: '08:00:00',  // Start time for the day (e.g., 8 AM)
+            maxTime: '18:00:00',  // End time for the day (e.g., 6 PM)
+            events: function (start, end, timezone, callback) {
+                var day = start.format('YYYY-MM-DD');  // Get the selected day in YYYY-MM-DD format
+                $.ajax({
+                    url: '@Url.Action("GetSessionsForDay")',
+                    data: { day: day },
+                    success: function (data) {
+                        callback(data);
+                    }
+                });
+            },
+            eventClick: function (event) {
+                if (event.isAvailable) {
+                    if (confirm('Do you want to book this session?')) {
+                        $.ajax({
+                            url: '@Url.Action("BookSession")',
+                            type: 'POST',
+                            data: { sessionId: event.id },
+                            success: function (response) {
+                                if (response.success) {
+                                    alert('Session booked successfully!');
+                                    location.reload();
+                                } else {
+                                    alert(response.message);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    alert('This session is unavailable.');
+                }
+            },
+            eventRender: function (event, element) {
+                if (!event.isAvailable) {
+                    element.css('background-color', 'gray');  // Make unavailable events gray
+                    element.css('cursor', 'not-allowed');  // Change cursor to not-allowed
+                    element.attr('title', 'This session is unavailable');
+                }
+            }
+        });
+    });
+</script>

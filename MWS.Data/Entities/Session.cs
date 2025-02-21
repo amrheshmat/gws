@@ -12,7 +12,7 @@ namespace MWS.Data.Entities
     {
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string? Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

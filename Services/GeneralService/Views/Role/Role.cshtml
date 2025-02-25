@@ -18,18 +18,67 @@
 
 
 
-    <div class="row">
-
-    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
-
-        <div id="contextual-classes" class="row">
-            <h2 class="col-11">@_localizationService.Localize("Role")</h2>
+<div class="container" style="margin-top:50px;">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <!-- Role cards -->
+        <div class="row g-6">
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-normal mb-0 text-body">Total 4 users</h6>
+                            <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
+                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar pull-up" aria-label="Vinnie Mostowy" data-bs-original-title="Vinnie Mostowy">
+                                    <img class="rounded-circle" src="/images/avatars/1.png" alt="Avatar">
+                                </li>
+                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar pull-up" aria-label="Allen Rieske" data-bs-original-title="Allen Rieske">
+                                    <img class="rounded-circle" src="/images/avatars/3.png" alt="Avatar">
+                                </li>
+                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar pull-up" aria-label="Julee Rossignol" data-bs-original-title="Julee Rossignol">
+                                    <img class="rounded-circle" src="/images/avatars/5.png" alt="Avatar">
+                                </li>
+                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar pull-up" aria-label="Kaith D'souza" data-bs-original-title="Kaith D'souza">
+                                    <img class="rounded-circle" src="/images/avatars/9.png" alt="Avatar">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="role-heading">
+                                <h5 class="mb-1">Administrator</h5>
+                                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addRoleModal" class="role-edit-modal"><span>Edit Role</span></a>
+                            </div>
+                            <a href="javascript:void(0);"><i class="icon-base bx bx-copy icon-md text-body-secondary"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @if (hasAddPermission > 0)
             {
-                <span class="col-1 btn btn-primary" data-toggle="modal" data-target="#exampleModal">@_localizationService.Localize("Add")</span>
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card h-100">
+                    <div class="row h-100">
+                        <div class="col-sm-5">
+                            <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-4 ps-6">
+                                <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/illustrations/lady-with-laptop-light.png" class="img-fluid" alt="Image" width="120" data-app-light-img="illustrations/lady-with-laptop-light.png" data-app-dark-img="illustrations/lady-with-laptop-dark.png" style="visibility: visible;">
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="card-body text-sm-end text-center ps-sm-0">
+                                <span class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus" style="margin:0px 10px;"></i> Add New Role</span>
+                                    <p class="mb-0" style="margin-top: 15px; text-align: left; margin-left: 25px;">
+                                    Add new role, <br>
+                                    if it doesn't exist.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             }
         </div>
-
+        <!--/ Role cards -->
+    </div>
+    <div class="col-xl-12" style="margin:50px auto">
             <div class="card">
                 <div class="p-0 card-body">
                     <div class="tab-content">
@@ -147,7 +196,28 @@
             });
         })
         $('#demoGrid').dataTable({
+            dom: 'lBfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel" style="margin-right: 10px;"></i> Excel',
+                    className: 'btn btn-warning'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf" style="margin-right: 10px;"></i> PDF',
+                    className: 'btn btn-danger'
+                },
+            ],
+            "lengthMenu": [10, 20, 50, 100], // Options for the "Show entries" dropdown
+            "pageLength": 10
+            // "processing": true, // for show progress bar
+            // "serverSide": true, // for process server side
+            // "filter": true, // this is for disable filter (search box)
+            // "orderMulti": false, // for disable multiple column at once
+            // "pageLength": 5,
         });
+        $('#demoGrid_filter input').removeClass('form-control-sm');
 
         $('#formUserBtn').on("click", function (e) {
             //validation

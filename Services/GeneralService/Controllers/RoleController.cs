@@ -25,6 +25,7 @@ namespace SampleMVC.Controllers
             RoleModel roleModel = new RoleModel();
             List<Permission> permissions = await _repo.GetAll<Permission>().ToListAsync();
             List<RolePermission> rolePermissions = null;
+            List<User> users = null;
             foreach (var role in roles)
             {
                 rolePermissions = await _repo.Filter<RolePermission>(e => e.roleId == role.roleId).ToListAsync();
@@ -37,6 +38,7 @@ namespace SampleMVC.Controllers
                         role.permissions.Add(per);
                     }
                 }
+                role.users = await _repo.Filter<User>(e => e.roleId == role.roleId).ToListAsync();
             }
             ViewBag.roles = roles;
             //ViewBag.permissions = new SelectList(permissions, "permissionId", "permissionName");

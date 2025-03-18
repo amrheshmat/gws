@@ -232,11 +232,13 @@
                         </label>
                         @Html.TextBoxFor(m => m.roleId, new { @id = "roleId", @class = "form-control", style = "display:none" })
                         <select name="role" class="form-select" id="role">
-                            @foreach(var role in roles)
+                            <option value=""></option>
+                            @foreach (var role in roles)
                             {
                                 <option value="@role.roleId" >@role.roleName</option>
                             }
                         </select>
+                        <span id="roleRequired" style="color:red"></span>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
@@ -280,6 +282,12 @@
                 return false;
             } else {
                 $(".modal-body #userNameRequired").text("");
+            }
+            if ($(".modal-body #role").val() == '') {
+                $(".modal-body #roleRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #roleRequired").text("");
             }
            
             e.preventDefault();
@@ -432,11 +440,11 @@
         });
     }
     function editUser(id,name,mobile,email,roleId) {
-        $('#passwordDiv').hide();
+            $('#passwordDiv').hide();
             $(".modal-body #userId").val(id);
             $(".modal-body #userName").val(name);
             $(".modal-body #mobile").val(mobile);
             $(".modal-body #email").val(email);
-        $("#role").val(roleId);
+            $("#role").val(roleId);
         }
 </script>

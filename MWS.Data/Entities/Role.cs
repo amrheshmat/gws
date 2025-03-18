@@ -10,7 +10,7 @@ namespace MWS.Data.Entities
         public decimal? roleId { get; set; }
 
         public string? roleName { get; set; }
-        public List<User> users { get; } = [];
+        public List<User> users { get; set; } = [];
         public List<Permission> permissions { get; set; } = [];
 
     }

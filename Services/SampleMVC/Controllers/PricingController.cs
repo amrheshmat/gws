@@ -9,7 +9,7 @@ using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
 {
-	public class PricingController : BaseController
+    public class PricingController : BaseController
 	{
 		private readonly ILogger<PricingController> _logger;
 		private IRepository _repo;

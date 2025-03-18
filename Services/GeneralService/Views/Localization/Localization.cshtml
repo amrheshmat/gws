@@ -1,0 +1,292 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model MWS.Data.Entities.Localization;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "localization").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "localization").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "localization").ToList().Count;
+    var localizations = ViewBag.localizations;
+    var languages = ViewBag.languages;
+}
+    <div class="row">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+            <div id="contextual-classes" class="mb-4">
+            <h2>@_localizationService.Localize("Translations")</h2>
+            </div>
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                        @_localizationService.Localize("Key")
+                                        </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Value")
+                                    </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("language")
+                                    </th>
+                                        <th scope="col">
+                                        @_localizationService.Localize("Actions")
+                                    </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                @foreach (var localization in localizations)
+                                    {
+                                        <tr>
+                                            <td>
+                                            @localization.keyName
+                                            </td>
+                                        <td>
+                                            @localization.value
+                                        </td>
+                                        <td>
+                                            @localization.languageName
+                                        </td>
+                                            <td>
+                                            @if (hasDeletePermission > 0)
+                                            {
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLocalization(@localization.localizeId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            }
+                                            @if (hasEditPermission > 0)
+                                            {
+                                                <span onclick="editLocalization(@localization.languageId,@localization.localizeId,'@localization.keyName','@localization.value')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            }
+                                            @if (hasAddPermission > 0)
+                                            {
+                                            <span onclick="addLocalization('@localization.keyName')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-plus"></i></span>
+                                            }    
+                                        </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("edit", "Localization", FormMethod.Post))
+                {
+                    @Html.TextBoxFor(m => m.localizeId, new { @id = "localizeId", @class = "form-control", style = "display:none" })
+                    <div class="mb-3">
+                        <label class="form-label" for="keyName">
+                            @_localizationService.Localize("Key")
+                        </label>
+                        @Html.TextBoxFor(m => m.keyName, new { @id = "keyName", @class = "form-control", disabled="disabled" })
+                        <span id="keyNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3" id="languageDiv">
+                        <label class="form-label" for="language">
+                            @_localizationService.Localize("language")
+                        </label>
+                        @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
+                        <select name="language" class="form-select" id="language">
+                            @foreach (var language in languages)
+                            {
+                                <option value="@language.languageId">@language.languageName</option>
+                            }
+                        </select>
+                        <span id="languageRequired" style="color:red"></span>
+                    </div>
+                        <div class="mb-3">
+                        <label class="form-label" for="value">
+                            @_localizationService.Localize("Value")
+                            </label>
+                        @Html.TextBoxFor(m => m.value, new { @id = "value", @class = "form-control", placeholder = "Enter  Value " })
+                        <span id="valueRequired" style="color:red"></span>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function clearData() {
+        $(".modal-body #value").val("");
+        $(".modal-body #localizeId").val("");
+    }
+    var cleickedEvent;
+    $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            clearData();
+        })
+        $('#demoGrid').dataTable({
+        }); $(document).on('change', '#language', function () {
+            $(".modal-body #languageId").val($(this).val());
+        });
+
+        $('#formUserBtn').on("click", function (e) {
+            //validation
+            if ($(".modal-body #keyName").val() == '') {
+                $(".modal-body #keyNameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #keyNameRequired").text("");
+            }
+            if ($(".modal-body #language").val() == '') {
+                $(".modal-body #languageRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #languageRequired").text("");
+            }
+            if ($(".modal-body #value").val() == '') {
+                $(".modal-body #valueRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #valueRequired").text("");
+            }
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.keyName = $(".modal-body #keyName").val();
+            userUpdate.value = $(".modal-body #value").val();
+            if ($(".modal-body #localizeId").val() != '')
+                userUpdate.localizeId = $(".modal-body #localizeId").val();
+            if ($(".modal-body #localizeId").val() == "") {
+            userUpdate.languageId = $(".modal-body #language").val();
+                $.ajax({
+                    url: "/Localization/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else if (data.message == "exsits") {
+                            Swal.fire({
+                                title: "exstis",
+                                text: "this tranlation exsits before.",
+                                icon: "warning",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Error!",
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                    }
+                });
+            } else {
+                userUpdate.localizeId = $(".modal-body #localizeId").val();
+                userUpdate.languageId = $(".modal-body #languageId").val();
+                $.ajax({
+                    url: "/Localization/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            console.log(data);
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+    function DeleteLocalization(id) {
+        $.ajax({
+            url: "/Localization/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                if (data.status == true) {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    }
+    function editLocalization(langId,id, key, name) {
+        $("#languageDiv").hide();
+            cleickedEvent = "edit";
+             $(".modal-body #languageId").val(langId)
+            $(".modal-body #localizeId").val(id);
+            $(".modal-body #keyName").val(key)
+            $(".modal-body #value").val(name);
+        }
+    function addLocalization(key) {
+        $("#languageDiv").show();
+        cleickedEvent = "add";
+        $(".modal-body #keyName").val(key)
+    }
+</script>

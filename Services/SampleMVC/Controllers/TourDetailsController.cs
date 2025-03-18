@@ -43,7 +43,7 @@ namespace SampleMVC.Controllers
             tourModel.tourLanguages = await _repo.Filter<TourLanguage>(e => e.tourId == id).ToListAsync();
             List<Day> days = await _repo.GetAll<Day>().ToListAsync();
             //List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
-            List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type =="tour").ToListAsync();
+            List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type == "tour").ToListAsync();
             List<HotelType> hotels = await _repo.GetAll<HotelType>().ToListAsync();
             List<RoomType> rooms = await _repo.GetAll<RoomType>().ToListAsync();
             List<TourAttachment> tourAttachments = new List<TourAttachment>();
@@ -61,13 +61,13 @@ namespace SampleMVC.Controllers
             ViewBag.days = days;
             ViewBag.languages2 = tourModel.tourLanguages;
             ViewBag.languages = languages;
-            ViewBag.attachments = attachments; 
+            ViewBag.attachments = attachments;
             ViewBag.toursAttachments = tourAttachments;
             ViewBag.hotels = hotels;
             ViewBag.rooms = rooms;
             ViewBag.currentId = id;
             ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString();
-			return View(tourModel);
+            return View(tourModel);
 
         }
         private Booking buildBooking(BookingModel model)
@@ -89,15 +89,15 @@ namespace SampleMVC.Controllers
             booking.numberOfInfant = model.numberOfInfant;
             booking.numberOfRoom = model.roomCountList?.Where(e => e.count > 0).Select(e => e.count).Sum();
             List<string> roomsType = new List<string>();
-            foreach(var room in model.roomCountList)
+            foreach (var room in model.roomCountList)
             {
-                if(room.count > 0)
+                if (room.count > 0)
                 {
-					string t = room.count + " " + room.roomTypeName;
-					roomsType.Add(t);
-				}
+                    string t = room.count + " " + room.roomTypeName;
+                    roomsType.Add(t);
+                }
             }
-            booking.roomType = string.Join("," , roomsType);
+            booking.roomType = string.Join(",", roomsType);
             return booking;
         }
         [HttpPost]
@@ -158,8 +158,8 @@ namespace SampleMVC.Controllers
             var bookRequest = await _repo.Filter<Booking>(e => e.requestId == id).FirstOrDefaultAsync();
             if (bookRequest.requestId != null)
             {
-               var NbeCurrency = _config.GetSection("NbeCurrency").Value!.ToString();
-               var NbeMerchantName = _config.GetSection("NbeMerchantName").Value!.ToString();
+                var NbeCurrency = _config.GetSection("NbeCurrency").Value!.ToString();
+                var NbeMerchantName = _config.GetSection("NbeMerchantName").Value!.ToString();
                 var tour = await _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefaultAsync();
                 adultPrice = tour.adultPrice.Value * bookRequest.numberOfAdult.Value;
                 childPrice = tour.childPrice.Value * bookRequest.numberOfChild.Value;
@@ -195,7 +195,7 @@ namespace SampleMVC.Controllers
         }
         public async Task<string> createPaymentSession(PaymentSessionRequest request)
         {
-            HttpClient client = new HttpClient(); 
+            HttpClient client = new HttpClient();
 
             var url = _config.GetSection("NbeApi").Value!.ToString();
             var user = _config.GetSection("NbeUser").Value!.ToString();
@@ -213,7 +213,7 @@ namespace SampleMVC.Controllers
         [HttpGet]
         [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}/{status}/{errorDesc}")]
         [Route("TourDetails/updateRequestStatusAndSendEmail/{id}/{sessionId}/{status}")]
-        public async Task<Response> updateRequestStatusAndSendEmail(long id,string sessionId,string status,string errorDesc="")
+        public async Task<Response> updateRequestStatusAndSendEmail(long id, string sessionId, string status, string errorDesc = "")
         {
             Response response = new Response();
             response.Title = _localizationService.Localize("CheckOut");
@@ -233,10 +233,10 @@ namespace SampleMVC.Controllers
                     Tour tour = _repo.Filter<Tour>(e => e.tourId == bookRequest.tourId).FirstOrDefault();
                     List<BookAdditionalActivity> additionalActivity = _repo.Filter<BookAdditionalActivity>(e => e.bookId == bookRequest.requestId).ToList();
                     List<AdditionalActivity> activities = new List<AdditionalActivity>();
-                    foreach(var bookActivity in additionalActivity)
+                    foreach (var bookActivity in additionalActivity)
                     {
                         List<TourAdditionalActivity> activityTours = _repo.Filter<TourAdditionalActivity>(e => e.tourId == tour.tourId && e.activityId == bookActivity.tourActivityId).ToList();
-                        foreach(var a in activityTours)
+                        foreach (var a in activityTours)
                         {
                             AdditionalActivity activity = _repo.Filter<AdditionalActivity>(e => e.additionalActivityId == a.activityId).FirstOrDefault();
                             if (activity != null)
@@ -283,7 +283,7 @@ namespace SampleMVC.Controllers
                     mailRequest.ToEmail = new List<string>();
                     mailRequest.ToEmail?.Add(bookRequest.email);
                     mailRequest.Subject = _localizationService.Localize("ThankYou");
-                    
+
                     await _mailService.SendBookThanksEmailAsync(mailRequest);
                 }
                 #endregion
@@ -338,7 +338,7 @@ namespace SampleMVC.Controllers
             var capacity = tour?.capacity;
             List<Booking> bookingList2 = await _repo.GetAll<Booking>().ToListAsync();
 
-            List<Booking> bookingList = await _repo.Filter<Booking>(e => e.tourId == tour.tourId && e.tourDate == bookModel.tourDate && e.status =="Y").ToListAsync();
+            List<Booking> bookingList = await _repo.Filter<Booking>(e => e.tourId == tour.tourId && e.tourDate == bookModel.tourDate && e.status == "Y").ToListAsync();
             var selectecCapcity = 0;
             foreach (var book in bookingList)
             {

@@ -1,0 +1,49 @@
+﻿@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var faqs = ViewBag.faqs;
+}
+<!--Start image section-->
+<div  class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img alt="faq" src="~/images/16599949550wiki1.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;"/>
+    </div>
+</div>
+<div class="container">
+    <div class="fqaTitle" style="margin:30px 0px;">
+        <p style="font-size:25px;font-weight:bold;"> @_localizationService.Localize("faq")</p>
+    </div>
+    @{
+        var i = 0;
+    }
+    @foreach (var faq in faqs)
+    {
+        var target = "#collapseExample" + i;
+        var id = "collapseExample" + i;
+        <div class="question" style="margin-bottom:15px;">
+            <div style="background-color:#eee;padding:15px 0px;" data-bs-toggle="collapse" data-bs-target="@target" aria-expanded="false" aria-controls="collapseExample">
+                <h1 class="col-10" style="margin: 0px 35px;padding:0px 10px;display: inline-block;">@Html.Raw(faq.question) ? </h1>
+                <i id="collapseExampleIcon" style="margin: 0px 9px;" class="fa fa-plus col-1"></i>
+            </div>
+            <div class="collapse" id="@id">
+                <div class="card card-body">
+                    @Html.Raw(faq.answer)
+                </div>
+            </div>
+        </div>
+        i++;
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".question div").on("click", function () {
+            $(this).find("i").toggleClass("fa-plus fa-minus");
+        });
+    });
+    function viewcontact(id,name) {
+        $(".modal-body #contactId").val(id);
+        $(".modal-body #contactName").val(name);
+        }
+</script>

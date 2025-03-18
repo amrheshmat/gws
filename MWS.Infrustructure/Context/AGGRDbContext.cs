@@ -3,7 +3,7 @@ using MWS.Data.Entities;
 
 namespace MWS.Infrustructure.Context
 {
-	public class AGGRDbContext : DbContext
+    public class AGGRDbContext : DbContext
 	{
 
 		public AGGRDbContext(DbContextOptions<AGGRDbContext> options) : base(options)
@@ -40,15 +40,9 @@ namespace MWS.Infrustructure.Context
 		public DbSet<Facilities> facilities { get; set; }
 		public DbSet<About> abouts { get; set; }
 		public DbSet<Term> terms { get; set; }
-		public DbSet<AdditionalInformation> additionalInformation { get; set; }
-		public DbSet<SpecialRequest> specialRequests { get; set; }
 		public DbSet<Role> roles { get; set; }
 		public DbSet<Permission> permissions { get; set; }
 		public DbSet<RolePermission> rolePermissions { get; set; }
-		public DbSet<TourLanguage> tourLanguages { get; set; }
-		public DbSet<AdditionalActivity> additionalActivities { get; set; }
-		public DbSet<BookAdditionalActivity> bookAdditionalActivities { get; set; }
-		public DbSet<TourAdditionalActivity> tourAdditionalActivities { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -56,21 +50,9 @@ namespace MWS.Infrustructure.Context
 			modelBuilder.Entity<Seo>().ToTable("seo");
 			modelBuilder.Entity<Blog>().ToTable("blogs");
 			modelBuilder.Entity<Localization>().ToTable("localizations");
-			modelBuilder.Entity<AdditionalActivity>().ToTable("additionalActivities");
-			modelBuilder.Entity<BookAdditionalActivity>().ToTable("bookAdditionalActivities");
-			modelBuilder.Entity<TourAdditionalActivity>().ToTable("tourAdditionalActivities");
 			modelBuilder.Entity<Language>().ToTable("languages");
 			modelBuilder.Entity<Currency>().ToTable("currency");
-			modelBuilder.Entity<Tour>().ToTable("tours");
 			modelBuilder.Entity<Contact>().ToTable("contacts");
-			modelBuilder.Entity<Day>().ToTable("days");
-			modelBuilder.Entity<TourDay>().ToTable("tourDays");
-			modelBuilder.Entity<TourLanguage>().ToTable("tourLanguages");
-			modelBuilder.Entity<Include>().ToTable("includes");
-			modelBuilder.Entity<Exclude>().ToTable("excludes");
-			modelBuilder.Entity<Pack>().ToTable("packs");
-			modelBuilder.Entity<HotelType>().ToTable("hotelType");
-			modelBuilder.Entity<HotelRoomPricing>().ToTable("hotelRoomPricing");
 			modelBuilder.Entity<RoomType>().ToTable("roomType");
 			modelBuilder.Entity<TourAttachment>().ToTable("tourAttachments");
 			modelBuilder.Entity<Expect>().ToTable("expects");
@@ -82,8 +64,6 @@ namespace MWS.Infrustructure.Context
 			modelBuilder.Entity<Facilities>().ToTable("facilities");
 			modelBuilder.Entity<About>().ToTable("abouts");
 			modelBuilder.Entity<Term>().ToTable("terms");
-			modelBuilder.Entity<AdditionalInformation>().ToTable("additionalInformations");
-			modelBuilder.Entity<SpecialRequest>().ToTable("specialRequests");
 			modelBuilder.Entity<Permission>().ToTable("permissions").HasMany(e => e.roles).WithMany(e => e.permissions);
 			modelBuilder.Entity<RolePermission>().ToTable("rolePermissions").HasKey(e => e.rolePermissionsId);
 			modelBuilder.Entity<Role>().ToTable("roles").HasMany(e => e.users).WithOne(e => e.role);

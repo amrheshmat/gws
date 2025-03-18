@@ -1,0 +1,40 @@
+﻿@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var terms = ViewBag.terms;
+}
+<!--Start image section-->
+<div  class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img src="~/images/16599949550wiki1.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:65vh;" alt="terms and conditions"/>
+    </div>
+</div>
+<div class="container relative" style="margin:50px 0px;">
+    <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6 relative">
+        <div class="md:col-span-12">
+            <h1 class="md:text-3xl" style="color:#333;margin-bottom:30px;font-size:2.5rem!important;"> @_localizationService.Localize("TermsAndconditions")</h1>
+            @foreach(var term in terms)
+            {
+                <div class="lg:ms-12">
+                    <p class="mb-12  text-2xl md:leading-normal leading-normal font-semibold"> @Html.Raw(term.title):</p>
+                    <p>
+                       @Html.Raw(term.subject)
+                    </p>
+                    <br />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    function viewcontact(id,name) {
+        $(".modal-body #contactId").val(id);
+        $(".modal-body #contactName").val(name);
+        }
+</script>

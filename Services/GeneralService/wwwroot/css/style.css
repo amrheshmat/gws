@@ -3010,8 +3010,8 @@ progress {
 }
 
 .table-striped-columns > :not(caption) > tr > :nth-child(2n), .table-striped > tbody > tr:nth-of-type(odd) > * {
-    --bs-table-accent-bg: var(--bs-table-striped-bg);
-    color: var(--bs-table-striped-color)
+    --bs-table-accent-bg: #fff !important;
+    color: #000 !important;
 }
 
 .table-active {

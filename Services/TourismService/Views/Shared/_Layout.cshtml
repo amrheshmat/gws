@@ -4,6 +4,7 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions;
 @using TripBusiness.Ibusiness;
 @inject ILocalizationService _localizationService;
+@inject IConfiguration _config;
 @{
     string returnUrl = ViewContext.HttpContext.Request.Path;
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -15,6 +16,8 @@
     var instgramSection = ViewContext.HttpContext.Session.GetString("instgram");
     var youtubeSection = ViewContext.HttpContext.Session.GetString("youtube");
     var twitterSection = ViewContext.HttpContext.Session.GetString("twitter");
+    var tiktokSection = ViewContext.HttpContext.Session.GetString("tiktok");
+    var linkedinSection = ViewContext.HttpContext.Session.GetString("linkedin");
     var address = ViewContext.HttpContext.Session.GetString("address");
     var whatsappSection = ViewContext.HttpContext.Session.GetString("whatsapp");
     var mailSection = ViewContext.HttpContext.Session.GetString("email");
@@ -24,45 +27,66 @@
     var instgram = instgramSection?.Replace("\"", "");
     var youtube = youtubeSection?.Replace("\"", "");
     var twitter = twitterSection?.Replace("\"", "");
+    var tiktok = tiktokSection?.Replace("\"", "");
+    var linkedin = linkedinSection?.Replace("\"", "");
+    var NbeJs = ViewBag.NbeJs;
+    var homeSeo = ViewBag.homeSeo;
+    var attachments = ViewBag.toursAttachments;
+    var languages = ViewBag.languages;
+    var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFZ6M6F02D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-JFZ6M6F02D');
+    </script>
     <meta charset="UTF-8">
-    <title>Anoush dahabiya</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Tour &amp; Anoush dahabiya Travels Agency Over all the World , the company located in egypt" name="description">
-    <meta content="Anoush,dahabiya,Egypt tour,Egypt trip,Tour, Travels, agency, business, corporate, tour packages, journey, trip, tailwind css, Admin, Landing" name="keywords">
+    @if(homeSeo != null){
+    <title>@homeSeo.title</title>
+    @* <meta name="viewport" content="@homeSeo.viewport"> *@
+    <meta content="@homeSeo.description" name="description">
+    <meta content="@homeSeo.keyWords" name="keywords">
+    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Shreethemes">
     <meta name="version" content="1.0.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="~/css/jquery-ui.css">
+    <link rel="preload" href="~/css/jquery-ui.css">
     <!-- favicon -->
-    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <link rel="shortcut icon preload" href="~/images/favicon.ico">
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Css -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="~/css/blog-style.css" rel="stylesheet preload" type="text/css">
+    @* <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> *@
+    <link href="https://fonts.googleapis.com" rel="preload">
+    <link href="https://fonts.gstatic.com" crossorigin rel="preload">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="preload">
     @* checkout payment *@
-    <script src="https://nbe.gateway.mastercard.com/static/checkout/checkout.min.js" data-complete="completeCallback" data-error="errorCallback" data-cancel="cancelCallback"></script>
+    <script src="@NbeJs" data-complete="completeCallback" data-error="errorCallback" data-cancel="cancelCallback"></script>
     <link href="~/css/swiper.min.css" rel="stylesheet">
-    <link href="~/css/tiny-slider.css" rel="stylesheet">
     <link href="~/css/datepicker.min.css" rel="stylesheet">
     <!-- Main Css -->
-    <link href="~/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
     <link href="~/css/tailwind.min.css" rel="stylesheet" type="text/css">
-    <link href="~/css/gallery.css" rel="stylesheet" type="text/css">
     <link href="~/css/main-style.css" rel="stylesheet" type="text/css">
-    <script src="~/js/sweetAlert.js"></script>
-    <link href="~/css/vendor.css" type="text/css" rel="stylesheet"/>
+    <script src="~/js/sweetAlert.js" defer></script>
+    <link href="~/css/vendor.css" type="text/css" rel="stylesheet preload"/>
+    <link rel="preload" href="~/images/logo-dark.webp" />
+    <link rel="preload" href="~/images/logo-white.webp" />
     @if (lang.Contains("ar"))
     {
-        <link rel="stylesheet" href="~/css/homestyle-ar.css" data-n-g="">
-        <script src="~/js/website-ar.js"></script>
+        <link rel="stylesheet preconnect" href="~/css/homestyle-ar.css" data-n-g="">
+        <script src="~/js/website-ar.js" defer></script>
     }
     <style>
         .tooltip {
@@ -116,8 +140,96 @@
         .footer-list li a:hover{
             text-decoration:none!important;
         }
-        
+
+        .sl-nav {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position: relative;
+            display: inline-block;
+        }
+
+        .sl-nav li {
+            cursor: pointer;
+            padding-bottom: 10px;
+        }
+
+            .sl-nav li ul {
+                display: none;
+            }
+
+                    .sl-nav li:hover ul, .sl-nav li ul li:hover .sl-nav li ul {
+                position: absolute;
+                top: 29px;
+                right: -15px;
+                display: block;
+                background: #fff;
+                width: 142px;
+                padding-top: 0px;
+                z-index: 999;
+                border-radius: 5px;
+                box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+            }
+
+            .sl-nav li:hover .triangle {
+                position: absolute;
+                top: 15px;
+                right: -10px;
+                z-index: 999;
+                height: 14px;
+                overflow: hidden;
+                width: 30px;
+                background: transparent;
+            }
+
+                .sl-nav li:hover .triangle:after {
+                    content: '';
+                    display: block;
+                    z-index: 9999;
+                    width: 15px;
+                    transform: rotate(45deg) translateY(0px) translatex(10px);
+                    height: 15px;
+                    background: #fff;
+                    border-radius: 2px 0px 0px 0px;
+                    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+                }
+
+            .sl-nav li ul li {
+                position: relative;
+                text-align: left;
+                background: transparent;
+                padding: 15px 15px;
+                padding-bottom: 0;
+                z-index: 2;
+                font-size: 15px;
+                color: #3c3c3c;
+            }
+
+                .sl-nav li ul li:last-of-type {
+                    padding-bottom: 15px;
+                }
+
+                .sl-nav li ul li span {
+                    padding-left: 5px;
+                }
+
+                    .sl-nav li ul li span:hover, .sl-nav li ul li span.active {
+                        color: #146c78;
+                    }
+
+        .sl-flag {
+            display: inline-block;
+            box-shadow: 0px 0px 3px rgba(0,0,0,0.4);
+            width: 15px;
+            height: 15px;
+            background: #aaa;
+            border-radius: 50%;
+            position: relative;
+            top: 2px;
+            overflow: hidden;
+        }
         </style>
+    <meta name="google-site-verification" content="rBoRM2BMBCq5zFDQc__1FhCw9FOzWmnWvMb9-rkhLEI" />
 </head>
 <body class="dark:bg-slate-900">
     <!-- Loader Start -->
@@ -132,36 +244,78 @@
     <!-- Loader End -->
     <!-- TAGLINE START-->
     <div class="tagline bg-slate-900">
-        <div class="container relative">
+        <div class="container-fluied relative" style="padding: 5px 20px;margin: 0px 10px !important;">
             <div class="grid grid-cols-1">
                 <div class="flex items-center justify-between">
                     <ul class="list-none">
                         <li class="inline-flex items-center ms-2">
                             <ul class="list-none">
-                                <li class="inline-flex mb-0"><a id="adminFromWebsite" href="/admin" target="_blank" style="padding: 1px 5px; border-radius: 10px; background: #fff; color: #000;">Admin</a></li>
+                                @* <li class="inline-flex mb-0"><a id="adminFromWebsite" href="/admin" target="_blank" style="padding: 1px 5px; border-radius: 10px; background: #fff; color: #000;">Admin</a></li> *@
                                 <li class="inline-flex mb-0"><a href="@facebook" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
                                 <li class="inline-flex ms-2 mb-0"><a href="@instgram" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
                                 <li class="inline-flex ms-2 mb-0"><a href="@twitter" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter size-4 align-middle" title="twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="@tiktok" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#fafafa" d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z" /></svg></a></li>
+                                <li class="inline-flex ms-2 mb-0"><a href="@linkedin" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#f2f2f2" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" /></svg></a></li>
                                 <li class="inline-flex ms-2 mb-0"><a href="tel:@whatsapp" target="_blank" class="text-slate-300 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone size-4 align-middle" title="phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a></li>
                             </ul><!--end icon-->
                         </li>
                     </ul>
 
-                    <ul class="list-none">
-                        <li class="inline-flex items-center">
-                            <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
-                                <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
-                                <select id="culture"
-                                        name="culture"
-                                        style="border-radius: 10px;"
-                                        onchange="this.form.submit();"
-                                        asp-items="cultureItems"
-                                        asp-for="@requestCulture.RequestCulture.UICulture.Name">
-                                </select>
-                            </form>
-                        </li>
-                        
-                    </ul>
+                    @if(showLanguageButton == "1")
+                    {
+                        <ul class="sl-nav ">
+                            <li>
+                                <span style="color:#fff;">
+                                    @if (languages != null)
+                                    {
+                                        foreach (var c in languages)
+                                        {
+                                            if (c.code == @requestCulture.RequestCulture.UICulture.Name)
+                                            {
+                                                foreach (var att in attachments)
+                                                {
+                                                    if (att.tourId == c.languageId && att.type == "language")
+                                                    {
+                                                        var mainImage = att;
+                                                        @if (mainImage != null)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    @requestCulture.RequestCulture.UICulture.Name
+                                </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
+                                <div class="triangle"></div>
+                                <ul>
+                                    @if (languages != null)
+                                    {
+                                        foreach (var c in languages)
+                                        {
+                                            <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                                @foreach (var att in attachments)
+                                                {
+                                                    if (att.tourId == c.languageId && att.type == "language")
+                                                    {
+                                                        var mainImage = att;
+                                                        @if (mainImage != null)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/Files/@mainImage.attachmentPath" />
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                                <span class="active">@c.code</span>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </div><!--end container-->
@@ -169,14 +323,14 @@
     <!-- TAGLINE END-->
     <!-- Start Navbar -->
     <nav id="topnav" class="defaultscroll is-sticky tagline-height">
-        <div class="container relative">
+        <div class="container-fluied relative" style="padding: 5px 20px;margin: 0px 10px !important;">
             <!-- Logo container-->
             <a class="logo" href="/">
                 <span class="inline-block dark:hidden">
-                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-dark.png" class="h-7 l-dark" alt="dark logo">
-                    <img style="width: 70px;height: 70px !important;margin-top: 20px;" src="~/images/logo-white.png" class="h-7 l-light" alt="white logo">
+                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-dark.webp" class="h-7 l-dark" alt="anoush dark logo">
+                    <img style="width: 91px;height: 91px !important;margin-top: 20px;" src="~/images/logo-white.webp" class="h-7 l-light" alt="anoush white logo">
                 </span>
-                <img src="~/images/logo-white.png" class="hidden dark:inline-block" alt="white logo">
+                <img src="~/images/logo-white.webp" class="hidden dark:inline-block" alt="anoush white logo">
             </a>
             <!-- End Logo container-->
             <!-- Start Mobile Toggle -->
@@ -208,9 +362,11 @@
                         </ul>
                     </li> *@
                     <li class="active"><a href="/" class="sub-menu-item "> @_localizationService.Localize("Home")</a></li>
-                    <li class="active" id="ourTours"><a href="/" class="sub-menu-item">@_localizationService.Localize("OurTours")</a></li>
-                    <li class="active"><a href="/contactUs/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
+                    <li class="active ourToursClass" id="ourTours"><a href="/" class="sub-menu-item">@_localizationService.Localize("OurTours")</a></li>
+                    <li class="active"><a href="/facilities" class="sub-menu-item">@_localizationService.Localize("OurFacilities")</a></li>
+                    <li class="active"><a href="/contactUs" class="sub-menu-item">@_localizationService.Localize("ContactUs")</a></li>
                     <li class="active"><a href="/aboutUs" class="sub-menu-item">@_localizationService.Localize("WhoWeAre")</a></li>
+                    <li class="active"><a href="/blogs" class="sub-menu-item">@_localizationService.Localize("blog")</a></li>
                     <li class="active"><a href="/SpecialRequest" class="sub-menu-item">@_localizationService.Localize("SpecialRequests")</a></li>
                 </ul><!--end navigation menu-->
             </div><!--end navigation-->
@@ -235,29 +391,34 @@
                                 </ul><!--end icon-->
                             </div><!--end col-->
                             <div class="lg:col-span-3 md:col-span-12" style="margin:auto">
-                                <a href="#" class="text-[22px] focus:outline-none">
-                                    <img style="width: 90px;height: 90px !important;" src="~/images/logo-white.png" alt="white logo">
-                                </a>
+                             
                                 <ul class="list-none mt-6">
                                   <li class="inline"><a href="@facebook" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook size-4 align-middle" title="facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a></li>
                                     <li class="inline"><a href="@instgram" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram size-4 align-middle" title="instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></li>
                                     <li class="inline"><a href="@twitter" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter size-4 align-middle" title="twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a></li>
+                                    <li class="inline"><a href="@tiktok" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#fafafa" d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z" /></svg></a></li>
+                                    <li class="inline"><a href="@linkedin" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" height="12" width="10.5" viewBox="0 0 448 512"><path fill="#f2f2f2" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" /></svg></a></li>
                                     <li class="inline"><a href="@youtube" target="_blank" class="size-8 inline-flex items-center justify-center tracking-wide align-middle text-base border border-gray-800 dark:border-slate-800 rounded-md hover:bg-red-500 hover:text-white text-slate-300"><i class="fab fa-youtube"></i></a></li>
                                 </ul><!--end icon-->
                                 <div style="margin-top:50px;">
                                     <a style="position: fixed; inset-inline-start: 0px; inset-inline-end: 0px; bottom: -10px; z-index: 999; width: 100px;" href="https://api.whatsapp.com/send?phone=@whatsapp&amp;text=Hi." class="floatwa" target="_blank">
-                                        <img src="~/images/WhatsApp_icon.png" style="height: 65px;width: 65px;margin-bottom: 25px;" alt="whatsapp">
+                                        <img src="~/images/WhatsApp_icon.webp" style="height: 65px;width: 65px;margin-bottom: 25px;" alt="whatsapp">
                                     </a>
                                 </div>
                             </div><!--end col-->
 
-                            <div class="lg:col-span-3 md:col-span-4">
+                            <div class="lg:col-span-3 md:col-span-12">
                                 <div class="lg:ms-8">
                                     <h5 class="tracking-[1px] text-gray-100 font-semibold">@_localizationService.Localize("About")</h5>
                                     <ul class="list-none footer-list mt-6">
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("AboutUs")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("faq")</a></li>
-                                        <li><a style="font-size: 15px;line-height: 1.5;font-family: 'Font Awesome 5 Brands';" href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> @_localizationService.Localize("TermsAndconditions")</a></li>
+
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/facilities" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("OurFacilities")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/contactUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("ContactUs")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/aboutUs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("WhoWeAre")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/blogs" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("Blog")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/SpecialRequest" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("SpecialRequests")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/Fqa" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out">@_localizationService.Localize("faq")</a></li>
+                                        <li><a style="font-size: 15px;line-height: 2.5;font-family: 'Font Awesome 5 Brands';" href="/terms" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"> @_localizationService.Localize("TermsAndconditions")</a></li>
                                         @* <li class="mt-[10px]"><a href="pricing.html" class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i class="mdi mdi-chevron-right"></i> Pricing</a></li> *@
                                     </ul>
                                 </div>
@@ -300,7 +461,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="lg:col-span-3 md:col-span-4">
+                            @* <div class="lg:col-span-3 md:col-span-4">
                                 <!--Start of Tawk.to Script-->
                                 <script type="text/javascript">
                                 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -315,7 +476,7 @@
                                 </script>
 
                                 <!--End of Tawk.to Script-->
-                            </div>
+                            </div> *@
                         </div><!--end grid-->
                     </div><!--end col-->
                 </div>
@@ -326,7 +487,7 @@
             <div class="container relative text-center">
                 <div class="grid grid-cols-1">
                     <div class="text-center">
-                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a href="https://www.linkedin.com/in/amr-heshmat-491266137/" target="_blank" class="text-reset">A.Heshmat</a></p>
+                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Developed by <a style="color:#caccce !important" href="https://anoushdahabiya.com/" target="_blank" class="text-reset">anoushdahabiya</a></p>
                     </div>
                 </div><!--end grid-->
             </div><!--end container-->
@@ -362,7 +523,6 @@
     <!-- Back to top -->
     <!-- JAVASCRIPTS -->
     <script src="~/js/swiper.min.js"></script>
-    <script src="~/js/tiny-slider.js"></script>
     <script src="~/js/datepicker.min.js"></script>
     <script src="~/js/feather.min.js"></script>
     <script src="~/js/plugins.init.js"></script>
@@ -372,13 +532,29 @@
     <!-- JAVASCRIPTS -->
     <script>
         $(document).ready(function () {
-            $("#ourTours").on("click",function (e) {
+            $(".ourToursClass").on("click",function (e) {
                 e.preventDefault();
                 $('html, body').animate({
                     scrollTop: $("#tourPackages").offset().top - 70
                 }, 2000);
             });
         });
+        function ChangeLanguage(lang,url){
+            $.ajax({
+                url: "/Home/ChangeLanguage",
+                type: "POST",
+                data: {
+                    culture: lang,       // First parameter
+                    returnUrl: url        // Second parameter
+                  },
+                success: function (data) {
+                   location.reload();
+                },
+                error: function (error) {
+                    console.log("e");
+                }
+            });
+        }
     </script>
 </body>
 </html>

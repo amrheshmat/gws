@@ -1,8 +1,443 @@
-﻿<html>
-<head>
-    <title>Index</title>
-</head>
-<body>
-    <div></div>
-</body>
-</html>
+﻿@using Microsoft.AspNetCore.Localization
+@using TripBusiness.Ibusiness;
+@inject ILocalizationService _localizationService;
+@inject ILanguageService _languageService;
+@model List<MWS.Data.Entities.TourAttachment>;
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var culture = requestCulture?.RequestCulture.UICulture.Name;
+    var lang = _languageService.GetLanguageByCulture(culture!).languageId!.Value;
+    var l = _localizationService.GetStringResource(lang);
+    var t = l.FirstOrDefault()?.value;
+    ViewData["Title"] = @ViewData["Title"];
+    var tours = ViewBag.tours;
+    var blogs = ViewBag.blogs;
+    var whyChooseUs = ViewBag.whyChooseUs;
+    var toursAttachments = ViewBag.toursAttachments;
+}
+
+<!-- Start Hero -->
+<section class="swiper-slider-hero relative block h-screen" id="home">
+    <div class="swiper-container absolute end-0 top-0 w-full h-full swiper-container-initialized swiper-container-horizontal">
+        <div class="swiper-wrapper" style="transform: translate3d(-3038px, 0px, 0px); transition-duration: 0ms;">
+            <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="0" style="width: 1519px; transition: all 0ms ease 0s;">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
+                    <div class="absolute slid1 inset-0 bg-black/70">
+                        <img  src="~/images/slide7.webp" style="width:100% !important;height:90vh" alt="dahabiya slide 1" />
+                        <div class="overlaySlider"></div>
+                    </div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                            <div class="text-center">
+                                <h1 class="font-bold text-white lg:leading-normal leading-normal text-4xl lg:text-6xl mb-6 mt-5">@_localizationService.Localize("Find") <br> @_localizationService.Localize("TravelPackage")</h1>
+                                <p class="text-white/70 text-xl max-w-xl mx-auto">@_localizationService.Localize("PlanningForTrip")</p>
+                                <div class="mt-6" id="seeMore">
+                                    <a href="/aboutUs" class="sub-menu-item py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">@_localizationService.Localize("SeeMore")</a>
+                                </div>
+                            </div>
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div><!-- end slide-inner -->
+            </div> <!-- end swiper-slide -->
+            <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="1" style="width: 1519px; transition: all 0ms ease 0s;">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
+                    <div class="absolute slid2 inset-0 bg-black/70">
+                        <img id="slid2" src="~/images/slide3.webp" style="width:100% !important;height:90vh" alt="dahabiya slide 2" />
+                        <div class="overlaySlider"></div>
+                    </div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div><!-- end slide-inner -->
+            </div> <!-- end swiper-slide -->
+            <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="2" style="width: 1519px; transition: all 0ms ease 0s;">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
+                    <div class="absolute slid3 inset-0 bg-black/70">
+                        <img id="slid3" src="~/images/slide4.webp" style="width:100% !important;height:90vh" alt="dahabiya slide 3" />
+                        <div class="overlaySlider"></div>
+                    </div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div><!-- end slide-inner -->
+            </div> <!-- end swiper-slide -->
+            <div class="swiper-slide flex items-center overflow-hidden swiper-slide-prev swiper-slide-duplicate-next" data-swiper-slide-index="0" style="width: 1519px; transition: all 0ms ease 0s;">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(759.5px, 0px, 0px); transition: all 0ms ease 0s;">
+                    <div class="absolute slid4 inset-0 bg-black/70">
+                        <img id="slid4" src="~/images/slide5.webp" style="width:100% !important;height:90vh" alt="dahabiya slide 4" />
+                        <div class="overlaySlider"></div>
+                    </div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div><!-- end slide-inner -->
+            </div> <!-- end swiper-slide -->
+            <div class="swiper-slide flex items-center overflow-hidden swiper-slide-active" data-swiper-slide-index="4" style="width: 1519px; transition: all 0ms ease 0s;">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(0px, 0px, 0px); transition: all 0ms ease 0s; ">
+                    <div class="absolute slid5 inset-0 bg-black/70">
+                        <img id="slid5" src="~/images/slide6.webp" style="width:100% !important;height:90vh" alt="dahabiya slide 5" />
+                        <div class="overlaySlider"></div>
+                    </div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div><!-- end slide-inner -->
+            </div> <!-- end swiper-slide -->
+            <div class="swiper-slide flex items-center overflow-hidden swiper-slide-active" data-swiper-slide-index="5" style="width: 1519px; transition: all 0ms ease 0s;">
+                <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;" style="background-size:cover;transform: translate3d(0px, 0px, 0px); transition: all 0ms ease 0s; ">
+                    <div class="absolute slid6 inset-0 bg-black/70">
+                        <img id="slid6" src="~/images/slide2.webp" style="width:100% !important;height:90vh" alt="dahabiya slide 6" />
+                        <div class="overlaySlider"></div>
+                    </div>
+                    <div class="container relative">
+                        <div class="grid grid-cols-1">
+                        </div><!--end grid-->
+                    </div><!--end container-->
+                </div><!-- end slide-inner -->
+            </div> <!-- end swiper-slide -->
+        </div>
+        <!-- end swiper-wrapper -->
+        <!-- swipper controls -->
+        @*         <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+        <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1">01</span>
+        <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2">02</span>
+        <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3">03</span>
+        <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4">04</span>
+        <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 5">05</span>
+        <span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 6">06</span>
+        </div> *@
+        <!-- <div class="swiper-button-next bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div>
+        <div class="swiper-button-prev bg-transparent w-[35px] h-[35px] leading-[35px] -mt-[30px] bg-none border border-solid border-white/50 text-white hover:bg-red-500 hover:border-red-500 rounded-full text-center"></div> -->
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div><!--end container-->
+</section>
+<!-- Hero End -->
+@* Who we are *@
+<section class="relative md:py-24 py-16 overflow-hidden">
+    <div class="container relative">
+        <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6 relative">
+            <div class="md:col-span-5">
+                <div class="relative">
+                    <video style="width:100%" poster="" controls>
+                        <source src="/images/video.mp4" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                </div>
+            </div>
+            <div class="md:col-span-7">
+                <div class="lg:ms-8">
+                    <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold">@_localizationService.Localize("WhoWeAre")</h3>
+                    <p style='font-weight: 400; font-size: 18px; color: #000; font-family: "Noto Serif", sans-serif;'>
+                        @_localizationService.Localize("WhoWeAreDesc")
+                    </p>
+                    @* <a href="/aboutUs" class="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-red-500 text-white rounded-md">Read More <i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a> *@
+                </div>
+            </div>
+
+        </div>
+    </div><!--end container-->
+
+    <div class="container relative md:mt-24 mt-16" id="tourPackages" style="margin-top:90px !important;">
+        <div class="grid grid-cols-1 text-center">
+            <h3 class="mb-6 md:text-3xl text-2xl md:leading-normal leading-normal font-semibold" style="margin-bottom:35px!important;">@_localizationService.Localize("ToursPackages")</h3>
+        </div><!--end grid-->
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade active show" id="pills-london" role="tabpanel" aria-labelledby="pills-london-tab">
+                <div class="row g-4">
+                    @if (tours != null)
+                    {
+                        var i = 0;
+                        foreach (var tour in tours)
+                        {
+
+                            <div class="col-xs-12 col-lg-4 col-sm-6" style="margin-bottom:25px;">
+                                <div class="package-card h-calc">
+                                    <div class="package-img imgEffect4">
+                                        <a href="/tourDetails/@tour.tourId">
+                                            @if (Model.Where(e => e.tourId == tour.tourId).ToList().Count > 0)
+                                            {
+                                                var mainImage = Model.Where(e => e.tourId == tour.tourId && e.type == "tour").ToList();
+                                                <img src="~/Files/@mainImage[0].attachmentPath" alt="@tour.title">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/listing/1.jpg" alt="tour default image">
+                                            }
+                                        </a>
+                                        <div class="image-badge">
+                                            <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">Book Now</a></p>
+                                        </div>
+                                        <div class="price-badge image-badge">
+                                                    <p class="pera"><a href="/tourDetails/@tour.tourId" id="bookNow">@tour.adultPriceForDouble $</a></p>
+                                        </div>
+                                        <div class="day-badge">
+                                            <p class="pera">
+                                                <i class="fa fa-calendar-alt"></i>
+                                                @tour.duration Days
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <a href="/tourDetails/@tour.tourId" id="tourIdLinke">
+                                        <div class="package-content">
+                                            <p class="area-name">
+                                                <span>@tour.title</span>
+                                            </p>
+                                            @* <div class="location">
+                                    <i class="ri-map-pin-line"></i>
+                                    <div class="name">@tour.tourLocation</div>
+                                    </div> *@
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!--end grid-->
+    </div><!--end container-->
+    <div class="container" style="margin-bottom:35px;">
+        <div class="row">
+            <div class="col-xs-12 col-md-5">
+                <p style="font-weight: bold;font-size: 25px;margin-top: 30px;margin-bottom: 10px;">
+                    @_localizationService.Localize("WhyBookingWithUs")
+                </p>
+                <ul id="whyBookingUs">
+                    @foreach (var c in whyChooseUs)
+                    {
+                        <li style='color: #425166; font-size: 19px; font-family:"Noto Serif",sans-serif!important;'><i class="fa fa-angle-double-right"></i>@c.title</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-xs-12 col-md-7">
+                <img style="height:400px;width:100%;margin-top: 15px;" src="./images/whybooking.jpg" alt="why booking with us" />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center pb-4">
+            <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
+                <h2 class="mb-4">@_localizationService.Localize("Articles")</h2>
+            </div>
+        </div>
+        <div class="row d-flex">
+            <div class="owl-carousel owl-theme">
+                @foreach(var blog in blogs)
+                {
+                    @if (Model.Where(e => e.tourId == blog.blogId).ToList().Count > 0)
+                    {
+                        var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                        <div class="ftco-animate fadeInUp ftco-animated item">
+                        <div class="blog-entry">
+                             <a href="/BlogSingle/@blog.blogId" class="block-20" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
+                            <div class="text d-block text-center">
+                                <div class="meta">
+                                    <p>
+                                        <a href="#"><span class="fa fa-calendar mr-2"></span>@blog.creationDate</a>
+                                    </p>
+                                </div>
+                                    <h1 style=" font-size: 20px; font-weight: bold !important;margin-bottom:15px;"><a href="/BlogSingle/@blog.blogId">@blog.title</a></h1>
+                                <p>@blog.description </p>
+                                <a style="position: absolute; bottom: 30px; left: 20px;" href="/BlogSingle/@blog.blogId">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
+                <a href="/blogs" style="background: #161c28; padding: 10px; border-radius: 5px; color: #fff;">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+@* End who we are *@
+<style>
+
+    #news-slider {
+        margin-top: 80px;
+    }
+
+    .post-slide {
+        background: #fff;
+        margin: 20px 15px 20px;
+        border-radius: 15px;
+        padding-top: 1px;
+        box-shadow: 0px 14px 22px -9px #bbcbd8;
+    }
+
+        .post-slide .post-img {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: -12px 15px 8px 15px;
+            margin-left: -10px;
+        }
+
+            .post-slide .post-img img {
+                width: 100%;
+                height: auto;
+                transform: scale(1,1);
+                transition: transform 0.2s linear;
+            }
+
+        .post-slide:hover .post-img img {
+            transform: scale(1.1,1.1);
+        }
+
+        .post-slide .over-layer {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            background: linear-gradient(-45deg, rgba(6,190,244,0.75) 0%, rgba(45,112,253,0.6) 100%);
+            transition: all 0.50s linear;
+        }
+
+        .post-slide:hover .over-layer {
+            opacity: 1;
+            text-decoration: none;
+        }
+
+        .post-slide .over-layer i {
+            position: relative;
+            top: 45%;
+            text-align: center;
+            display: block;
+            color: #fff;
+            font-size: 25px;
+        }
+
+        .post-slide .post-content {
+            background: #fff;
+            padding: 2px 20px 40px;
+            border-radius: 15px;
+        }
+
+        .post-slide .post-title a {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            display: inline-block;
+            text-transform: uppercase;
+            transition: all 0.3s ease 0s;
+        }
+
+            .post-slide .post-title a:hover {
+                text-decoration: none;
+                color: #3498db;
+            }
+
+        .post-slide .post-description {
+            line-height: 24px;
+            color: #808080;
+            margin-bottom: 25px;
+        }
+
+        .post-slide .post-date {
+            color: #a9a9a9;
+            font-size: 14px;
+        }
+
+            .post-slide .post-date i {
+                font-size: 20px;
+                margin-right: 8px;
+                color: #CFDACE;
+            }
+
+        .post-slide .read-more {
+            padding: 7px 20px;
+            float: right;
+            font-size: 12px;
+            background: #2196F3;
+            color: #ffffff;
+            box-shadow: 0px 10px 20px -10px #1376c5;
+            border-radius: 25px;
+            text-transform: uppercase;
+        }
+
+            .post-slide .read-more:hover {
+                background: #3498db;
+                text-decoration: none;
+                color: #fff;
+            }
+</style>
+<script src="/js/owl.carousel.js"></script>
+<script src="/js/owl.autoplay.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            items: 3,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 2000,
+            autoplayHoverPause: true,
+            smartSpeed: 1500,
+            animateIn: 'linear',
+            animateOut: 'linear',
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                800:{
+                    items:3
+                }
+            }
+        });
+        $("#news-slider").owlCarousel({
+            items: 3,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [980, 2],
+            itemsMobile: [600, 1],
+            navigation: true,
+            navigationText: ["", ""],
+            pagination: true,
+            autoPlay: true
+        });
+        // $("#seeMore").on("click", function (e) {
+        //     e.preventDefault();
+        //     $('html, body').animate({
+        //         scrollTop: $("#tourPackages").offset().top - 70
+        //     }, 2000);
+        // });
+        if (localStorage.getItem("spcialRequestTitle")) {
+            $.toast({
+                heading: localStorage.getItem("spcialRequestTitle"),
+                text: localStorage.getItem("spcialRequestMessage"),
+                showHideTransition: 'slide',
+                position: 'top-right',
+                icon: 'success',
+                bgColor: '#1e7506',
+                hideAfter: 5000
+            });
+            localStorage.clear();
+        }
+        if (localStorage.getItem("contactTitle")) {
+            $.toast({
+                heading: localStorage.getItem("contactTitle"),
+                text: localStorage.getItem("contactMessage"),
+                showHideTransition: 'slide',
+                position: 'top-right',
+                icon: 'success',
+                bgColor: '#1e7506',
+                hideAfter: 5000
+            });
+            localStorage.clear();
+        }
+    });
+</script>

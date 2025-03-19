@@ -27,32 +27,24 @@ namespace SampleMVC.Controllers
 		{
 			var currentUser = HttpContext.Session.GetString("currentUser");
 			ViewData["users"] = await Localize("users");
+			int successRequest = _repo.Filter<Booking>(e => e.status == "Y").ToList().Count;
+			ViewBag.NumberOfRequest = _repo.GetAll<Booking>().ToList().Count();
+			double NumberOfSuccessRequest = (double)successRequest / ViewBag.NumberOfRequest;
+			ViewBag.NumberOfSuccessRequest = Math.Round(NumberOfSuccessRequest * 100);
 			if (currentUser == null)
 				return RedirectToAction("Login", "admin");
-			ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
-			ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
-
-            return View();
+			return View();
 		}
 
 		public IActionResult Login()
 		{
 			return View();
 		}
-        [HttpGet]
-        [Route("admin/chart")]
-        public IActionResult chart()
+		[AuthAttribute("index", "home")]
+		public IActionResult Test()
 		{
-            ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
-            ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
-            ViewBag.NumberOfLanguage = _repo.GetAll<Language>().ToList().Count();
-			List<int> chartData = new List<int>();
-			chartData.Add(ViewBag.NumberOfUsers);
-			chartData.Add(ViewBag.NumberOfRoles);
-			chartData.Add(ViewBag.NumberOfLanguage);
-            var peopleArray = chartData.ToArray();
-            return Ok(peopleArray);
-        }
+			return View();
+		}
 		public IActionResult AccessDenied()
 		{
 			return View();
@@ -69,7 +61,7 @@ namespace SampleMVC.Controllers
 					HttpContext.Session.SetString("currentUser", JsonConvert.SerializeObject(t));
 					//var value = HttpContext.Session.GetString("currentUser");
 					//UserDTO m = JsonConvert.DeserializeObject<UserDTO>(value);
-					return RedirectToAction("index", "upload");
+					return RedirectToAction("index", "admin");
 				}
 			}
 			else

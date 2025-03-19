@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
@@ -17,11 +18,27 @@ namespace SampleMVC.Controllers
 			_mailService = mailService;
 			_localizationService = localizationService;
 		}
-		public async Task<IActionResult> ContactUs()//index page
+		public async Task<IActionResult> Index()//index page
 		{
-			//List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
-			//ViewBag.contacts = contacts;
-			return View();
+            //List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
+            //ViewBag.contacts = contacts;
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            homeSeo.title = homeSeo.title + " - contact us";
+            ViewBag.homeSeo = homeSeo;
+            List<TourAttachment> tourAttachments = new List<TourAttachment>();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.toursAttachments = tourAttachments;
+            ViewBag.languages = languages;
+            return View();
 
 		}
 		[HttpPost]
@@ -71,7 +88,7 @@ namespace SampleMVC.Controllers
 				mailRequest.ToEmail = new List<string>();
 				mailRequest.ToEmail?.Add(contactModel.email);
 				mailRequest.Subject = _localizationService.Localize("ThankYou");
-				mailRequest.Contact.message = _localizationService.Localize("ThanksForContactWithUs") + ",<p>" + _localizationService.Localize("CheckSoon") + ".</p><p>" + _localizationService.Localize("Regards") + ",</p>";
+				mailRequest.Contact.message = _localizationService.Localize("ThanksForContactWithUs") + ".<br><p>" + _localizationService.Localize("CheckSoon") + "<br><br>"+ _localizationService.Localize("DahabyiaSignture") + "</p><p>" + _localizationService.Localize("Regards") + ",</p>";
 				await _mailService.SendContactThankEmailAsync(mailRequest);
 				response.Status = true;
 				response.Message = _localizationService.Localize("ContactSent");

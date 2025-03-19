@@ -30,64 +30,34 @@ namespace SampleMVC.Controllers
         {
             return View();
         }
-        //[HttpGet]
-        //[Route("Report/RequestReport/{startDate}/{endDate}")]
-        //public async Task<IActionResult> RequestReport(DateTime startDate, DateTime endDate)
-        //{
-        //    var model = await _repo.Filter<User>(e => e.tourDate >= startDate && e.tourDate <= endDate).ToListAsync();
-        //    List<RequestReportModel> requestReportModelList = new List<RequestReportModel>();
-        //    if (model != null && model.Count > 0)
-        //    {
-        //        foreach (var booking in model)
-        //        {
-        //            RequestReportModel requestReportModel = new RequestReportModel();
-        //            requestReportModel.id = booking.requestId;
-        //            requestReportModel.tourDate = booking.tourDate.Value.ToString("dd/MM/yyyy");
-        //            requestReportModel.countryName = booking.countryName;
-        //            requestReportModel.tourName = _repo.Filter<Tour>(e => e.tourId == booking.tourId).FirstOrDefault()?.title;
-        //            requestReportModel.name = booking.name;
-        //            requestReportModel.email = booking.email;
-        //            requestReportModel.phone = booking.phone;
-        //            requestReportModel.numberOfAdult = booking.numberOfAdult;
-        //            requestReportModel.numberOfChild = booking.numberOfChild;
-        //            requestReportModel.numberOfInfant = booking.numberOfInfant;
-        //            requestReportModel.status = booking.status;
-        //            requestReportModelList.Add(requestReportModel);
-        //        }
-        //    }
-        //    var peopleArray = requestReportModelList.ToArray();
-        //    return Ok(peopleArray);
-        //}
-
         [HttpGet]
-        [Route("Report/UserReportData")]
-        public async Task<IActionResult> UserReportData()
+        [Route("Report/RequestReport/{startDate}/{endDate}")]
+        public async Task<IActionResult> RequestReport(DateTime startDate, DateTime endDate)
         {
-
-            var model = await _repo.GetAll<User>().ToListAsync();
-            List<UserReportModel> userReportModelList = new List<UserReportModel>();
+            var model = await _repo.Filter<Booking>(e => e.tourDate >= startDate && e.tourDate <= endDate).ToListAsync();
+            List<RequestReportModel> requestReportModelList = new List<RequestReportModel>();
             if (model != null && model.Count > 0)
             {
-                foreach (var user in model)
+                foreach (var booking in model)
                 {
-                    UserReportModel userReportModel = new UserReportModel();
-                    userReportModel.id = user.userId;
-                    userReportModel.userName = user.userName;
-                    userReportModel.email = user.email;
-                    userReportModel.mobile = user.mobile;
-                    userReportModel.email = user.email;
-                    string role = _repo.Filter<Role>(e => e.roleId == user.roleId).FirstOrDefault().roleName;
-                    userReportModel.roleName = role;
-                    userReportModelList.Add(userReportModel);
+                    RequestReportModel requestReportModel = new RequestReportModel();
+                    requestReportModel.id = booking.requestId;
+                    requestReportModel.tourDate = booking.tourDate.Value.ToString("dd/MM/yyyy");
+                    requestReportModel.countryName = booking.countryName;
+                    requestReportModel.tourName = _repo.Filter<Tour>(e => e.tourId == booking.tourId).FirstOrDefault()?.title;
+                    requestReportModel.name = booking.name;
+                    requestReportModel.email = booking.email;
+                    requestReportModel.phone = booking.phone;
+                    requestReportModel.numberOfAdult = booking.numberOfAdult;
+                    requestReportModel.numberOfChild = booking.numberOfChild;
+                    requestReportModel.numberOfInfant = booking.numberOfInfant;
+                    requestReportModel.status = booking.status;
+                    requestReportModelList.Add(requestReportModel);
                 }
             }
-            var peopleArray = userReportModelList.ToArray();
+            var peopleArray = requestReportModelList.ToArray();
             return Ok(peopleArray);
         }
-        [Route("Report/UserReport")]
-        public async Task<IActionResult> UserReport()
-        {
-            return View();
-        }
+
     }
 }

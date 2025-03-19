@@ -3010,8 +3010,8 @@ progress {
 }
 
 .table-striped-columns > :not(caption) > tr > :nth-child(2n), .table-striped > tbody > tr:nth-of-type(odd) > * {
-    --bs-table-accent-bg: #fff !important;
-    color: #000 !important;
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: var(--bs-table-striped-color)
 }
 
 .table-active {
@@ -27570,15 +27570,15 @@ div.code-toolbar {
     width: auto;
     max-width: 100%;
     max-height: 100%;
-    overflow: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none
+    overflow-y: auto;
 }
 
     .simplebar-content-wrapper::-webkit-scrollbar, .simplebar-hide-scrollbar::-webkit-scrollbar {
-        display: none;
-        width: 0;
-        height: 0
+        width: 1px !important;
+    }
+    .simplebar-content-wrapper::-webkit-scrollbar-thumb {
+        background: #017b6e!important;
+        border-radius: 10px;
     }
 
 .simplebar-content:after, .simplebar-content:before {
@@ -27912,6 +27912,3 @@ input:checked + .slide-container .nav label {
     display: block;
 }
 
-.modebar-group {
-    display: none!important;
-}

@@ -29,9 +29,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = cultures;
 });
 builder.Services.ConfigureApplicationCookie(options =>
-    {
-        options.LoginPath = "/";
-    });
+{
+    options.LoginPath = "/";
+});
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromDays(10); // Set session timeout

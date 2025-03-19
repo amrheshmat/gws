@@ -2015,7 +2015,7 @@ img, video {
 }
 
 .font-dancing {
-    font-family: "Dancing Script",cursive !important
+    font-family: "Noto Serif",cursive !important
 }
 
 .text-2xl {
@@ -2166,7 +2166,7 @@ img, video {
 
 .text-gray-300 {
     --tw-text-opacity: 1 !important;
-    color: rgb(209 213 219 / var(--tw-text-opacity)) !important
+    color:rgb(156 163 175 / 1 ) !important;
 }
 
 .text-gray-900 {
@@ -2344,7 +2344,7 @@ img, video {
 
 body {
     margin: 0;
-    font-family: "DM Sans",sans-serif;
+    font-family: "Noto Serif",sans-serif;
     font-size: 16px;
     line-height: 28px;
     --tw-text-opacity: 1;
@@ -2361,7 +2361,7 @@ p {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    font-family: "DM Sans",sans-serif;
+    font-family: "Noto Serif",sans-serif;
     line-height: 1.5
 }
 
@@ -2384,7 +2384,7 @@ p {
     inset-inline-start: 0px;
     inset-inline-end: 0px;
     top: 0;
-    z-index: 999;
+    z-index: 12;
     border-width: 0;
     background-color: transparent;
     -webkit-transition-property: all;
@@ -2635,7 +2635,7 @@ p {
 
     #topnav .buy-button .search-bar .searchform:after {
         content: "󰍉";
-        font-family: "Material Design Icons"
+        font-family: "Noto Serif",
     }
 
     #topnav .buy-button .dropdown .dropdown-toggle::after, #topnav .buy-menu-btn .dropdown .dropdown-toggle::after {
@@ -2651,7 +2651,7 @@ p {
 
     #topnav .navigation-menu > li {
         position: relative;
-        margin: 0 10px;
+        margin: 0px;
         display: block
     }
 
@@ -2668,7 +2668,7 @@ p {
             background-color: transparent;
             padding-left: 15px;
             padding-right: 15px;
-            font-family: "DM Sans",sans-serif;
+            font-family: "Noto Serif",sans-serif;
             font-size: 16px;
             font-weight: 500;
             line-height: 1.5rem;
@@ -2689,7 +2689,7 @@ p {
 
 #topnav .navigation-menu > li.active > a, #topnav .navigation-menu > li:hover > a {
     --tw-text-opacity: 1 !important;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+    color: #161c28 !important
 }
 
 :is(.dark #topnav .navigation-menu > li.active > a), :is(.dark #topnav .navigation-menu > li:hover > a) {
@@ -2874,12 +2874,16 @@ p {
 
 #topnav.nav-sticky .navigation-menu.nav-light > li.active > a, #topnav.nav-sticky .navigation-menu.nav-light > li:hover > a {
     --tw-text-opacity: 1 !important;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+    color: #161c28 !important
 }
-
+#topnav.nav-sticky .navigation-menu.nav-light > li.active > a, #topnav.nav-sticky .navigation-menu.nav-light > li:hover > a {
+    --tw-text-opacity: 1 !important;
+    color: #161c28 !important;
+    text-decoration:none !important;
+}
 :is(.dark #topnav.nav-sticky .navigation-menu.nav-light > li.active > a), :is(.dark #topnav.nav-sticky .navigation-menu.nav-light > li:hover > a) {
     --tw-text-opacity: 1 !important;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+    color: #161c28 !important
 }
 
 #topnav.nav-sticky .navigation-menu.nav-light .has-submenu .menu-arrow {
@@ -3108,7 +3112,8 @@ p {
 
     #topnav .navigation-menu > li.active > a, #topnav .navigation-menu > li:hover > a {
         --tw-text-opacity: 1 !important;
-        color: rgb(239 68 68 / var(--tw-text-opacity)) !important
+        color: #161c28 !important;
+        text-decoration: none;
     }
 
     :is(.dark #topnav .navigation-menu > li.active > a), :is(.dark #topnav .navigation-menu > li:hover > a) {
@@ -3211,6 +3216,9 @@ p {
     }
 }
 
+@media (max-width:1280px){
+
+}
 @media (max-width:991px) {
     #topnav {
         min-height: 74px;
@@ -3737,7 +3745,7 @@ html[dir=rtl] .tns-visually-hidden {
 }
 
 .swiper-slider-hero .swiper-container .swiper-button-next:before, .swiper-slider-hero .swiper-container .swiper-button-prev:before {
-    font-family: "Material Design Icons"
+    font-family: "Noto Serif"
 }
 
 .swiper-slider-hero .swiper-container .swiper-button-prev:before {
@@ -4221,7 +4229,7 @@ html[dir=rtl] .tns-visually-hidden {
 
 .hover\:text-gray-400:hover {
     --tw-text-opacity: 1 !important;
-    color: rgb(156 163 175 / var(--tw-text-opacity)) !important
+    color: rgb(209 213 219 / var(--tw-text-opacity)) !important;
 }
 
 .hover\:text-red-500:hover {

@@ -1,0 +1,86 @@
+﻿@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@{
+    var paymentResult = ViewBag.paymentResult;
+}
+<!--Start image section-->
+<div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img alt="about Us" src="~/images/about-us.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:90vh;" />
+        <div class="overlaySlider"></div>
+    </div>
+</div>
+<div class="container">
+    @if(paymentResult == 1){
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="message-box _success">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+
+                <h2> @Html.Raw(@_localizationService.Localize("paymentSuccessfulTitle"))</h2>
+                <p>
+                    @Html.Raw(@_localizationService.Localize("paymentSuccessfulDescription"))
+                </p>
+            </div>
+        </div>
+    </div>
+    }else{
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="message-box _success _failed">
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                <h2> @Html.Raw(@_localizationService.Localize("paymentFailedTitle"))</h2>
+                <p>
+                    @Html.Raw(@_localizationService.Localize("paymentFailedDescription"))
+                </p>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<style>
+    _failed {
+        border-bottom: solid 4px red !important;
+    }
+
+    ._failed i {
+        color: red !important;
+    }
+
+    ._success {
+        box-shadow: 0 15px 25px #00000019;
+        padding: 45px;
+        width: 100%;
+        text-align: center;
+        margin: 40px auto;
+        border-bottom: solid 4px #28a745;
+    }
+
+        ._success i {
+            font-size: 55px;
+            color: #28a745;
+        }
+
+        ._success h2 {
+            margin-bottom: 12px;
+            font-size: 40px;
+            font-weight: 500;
+            line-height: 1.2;
+            margin-top: 10px;
+        }
+
+        ._success p {
+            margin-bottom: 0px;
+            font-size: 18px;
+            color: #495057;
+            font-weight: 500;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            location.href = "/"
+        }, 6000);
+    });
+   
+</script>

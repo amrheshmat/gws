@@ -25,8 +25,33 @@ namespace SampleMVC.Controllers
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
             var language = _languageService.GetLanguageByCulture(currentCulture);
             List<About> abouts = await _repo.Filter<About>(e => e.languageId == language.languageId).OrderBy(e => e.orderId).ToListAsync();
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            List<TourAttachment> tourAttachments = new List<TourAttachment>();
+            foreach (var about in abouts)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == about.aboutId && e.type == "aboutus").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.languages = languages;
+            homeSeo.title = homeSeo.title + " - about us";
+            ViewBag.homeSeo = homeSeo;
+            ViewBag.toursAttachments = tourAttachments;
             ViewBag.abouts = abouts;
-            return View();
+            return View(tourAttachments);
 
         }
         [AuthAttribute("about", "admin")]
@@ -117,6 +142,59 @@ namespace SampleMVC.Controllers
                 return about;
             }
             return about;
+        }
+
+        [HttpPost]
+        [Route("aboutus/Upload")]
+        public async Task<IActionResult> Upload([FromQuery] int tourId)
+        {
+            if (ModelState.IsValid)
+            {
+                List<TourAttachment> attachments = _repo.Filter<TourAttachment>(e => e.tourId == tourId && e.type == "aboutus").ToList();
+                _repo.context.RemoveRange(attachments);
+                _repo.SaveChanges();
+                var files = Request.Form.Files;
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+
+                //create folder if not exist
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                //get file extension
+                foreach (var file in files)
+                {
+                    FileInfo fileInfo = new FileInfo(file.FileName);
+                    var myUniqueFileName = string.Format(@"{0}", Guid.NewGuid());
+                    TourAttachment tourAttachment = new TourAttachment();
+                    tourAttachment.type = "aboutus";
+                    tourAttachment.tourId = tourId;
+                    tourAttachment.attachmentName = file.Name;
+                    tourAttachment.attachmentPath = myUniqueFileName + fileInfo.Extension;
+                    _repo.Create(tourAttachment);
+                    _repo.SaveChanges();
+                    string fileName = myUniqueFileName + fileInfo.Extension;
+
+                    string fileNameWithPath = Path.Combine(path, fileName);
+
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                return Ok("Uploaded");
+            }
+            List<Tour> tours = await _repo.GetAll<Tour>().ToListAsync();
+            ViewBag.tours = tours;
+            return NotFound("NotFound");
+        }
+        [Route("aboutus/GetAttachmentById/{id}")]
+        [HttpGet]
+        public async Task<List<TourAttachment>> GetAttachmentById(int id)
+        {
+            List<TourAttachment> tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == id && e.type == "aboutus").ToListAsync();
+            return tourAttachment;
+
         }
     }
 }

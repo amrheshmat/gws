@@ -1,0 +1,136 @@
+﻿@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model List<MWS.Data.Entities.TourAttachment>;
+@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var attachments = ViewBag.attachments;
+    var blogs = ViewBag.blogs;
+    var recentLogs = ViewBag.recentLogs;
+    var blogsCount = ViewBag.blogsCount;
+    var recentAttachments = ViewBag.recentAttachments;
+    var lastId = ViewBag.lastId;
+}
+<div class="parallax-content-1 opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="animated fadeInDown">
+        <img src="~/images/blog.jpg" style="width:100%;background-repeat:no-repeat;background-size:cover;height:90vh;" alt="@blogs[0].title" />
+        <div class="overlaySlider"></div>
+    </div>
+</div>
+<section class="ftco-section ftco-no-pb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-7">
+                <div class="row d-flex" id="blogsShow">
+                    @foreach (var blog in blogs)
+                    {
+                        @if (Model.Where(e => e.tourId == blog.blogId).ToList().Count > 0)
+                        {
+                            var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                            <div class="col-lg-6 ftco-animate fadeInUp ftco-animated">
+                                <div class="blog-entry">
+                                    <a href="/BlogSingle/@blog.blogId" class="block-20" style="background-image: url('/Files/@mainImage[0].attachmentPath');"></a>
+                                    <div class="text d-block text-center">
+                                        <div class="meta">
+                                            <p>
+                                                <a href="#"><span class="fa fa-calendar mr-2"></span>@blog.creationDate</a>
+                                            </p>
+                                        </div>
+                                        <h1 style=" font-size: 20px; font-weight: bold !important;"><a href="/BlogSingle/@blog.blogId">@blog.title</a></h1>
+                                        <p>@blog.description </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="row mt-5" style="margin:0px 0px 60px 0px !important;">
+                    <div class="col">
+                        <div class="block-27">
+                            <ul id="pagination">
+                                @if (blogsCount > 1)
+                                {
+                                    var v = 1;
+                                    for (var i = 0; i < blogsCount; i++)
+                                    {
+                                        <li class="" id="pageId-@i"><a href="#">@v</a></li>
+                                        v++;
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5 sidebar ftco-animate pl-md-5 mt-5 mt-md-0 pt-md-0 pt-5 fadeInUp ftco-animated">
+                <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+                    <h3>@_localizationService.Localize("RecentBlog")</h3>
+                    @foreach (var b in recentLogs)
+                    {
+                        foreach (var image in recentAttachments)
+                        {
+                            if (b.blogId == image.tourId)
+                            {
+                                <div class="block-21 mb-4 d-flex justify-content-between">
+                                    <a class="blog-img" style="background-image: url('/Files/@image.attachmentPath');"></a>
+                                    <div class="text pl-3">
+                                        <h3 class="heading"><a href="/BlogSingle/@b.blogId">@b.title</a></h3>
+                                        <div class="meta">
+                                            <div><a href="#"><span class="fa fa-calendar"></span>@b.creationDate</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                @* <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+                    <h3>@_localizationService.Localize("Tags")</h3>
+                    <div class="tagcloud">
+                        <a href="#" class="tag-cloud-link">design</a>
+                        <a href="#" class="tag-cloud-link">learn</a>
+                        <a href="#" class="tag-cloud-link">education</a>
+                        <a href="#" class="tag-cloud-link">course</a>
+                        <a href="#" class="tag-cloud-link">online</a>
+                        <a href="#" class="tag-cloud-link">bag</a>
+                        <a href="#" class="tag-cloud-link">pen</a>
+                        <a href="#" class="tag-cloud-link">teacher</a>
+                    </div>
+                </div> *@
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        var startId = 1;
+        $("#pageId-0").toggleClass("active");
+        $('#pagination li').on("click", function (e) {
+            e.preventDefault();
+            startId = $(this).attr("id").substring(7);
+            $('#pagination li').removeClass("active");
+            $(this).toggleClass("active");
+            $("#preloader").css({ "visibility": "visible", "opacity": 1 });
+            $.ajax({
+                url: "/Blog/GetPagination/" + startId,
+                type: "GET",
+                cache: false,
+                success: function (data) {
+                    $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+                    $("#blogsShow").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#blogsShow").append('<div class= "col-lg-6 ftco-animate fadeInUp ftco-animated" >'+'<div class="blog-entry">'+
+                            '<a href="/BlogSingle/' + data[i].blog.blogId + '" class="block-20" style="background-image: url(\'/Files/'+data[i].attachments[0].attachmentPath+'\');"></a>'+
+                                '<div class="text d-block text-center">'+
+                                    '<div class="meta">'+
+                            '<p><a href="#"><span class="fa fa-calendar mr-2"></span>' + data[i].blog.creationDate + '</a>' +
+                                        '</p></div>'+
+                            '<h1 style=" font-size: 20px; font-weight: bold !important;"><a href="/BlogSingle/' + data[i].blog.blogId + '">' + data[i].blog.title + '</a></h1>' +
+                            '<p>' + data[i].blog.description +'</p></div></div></div> ')
+                    }
+                }
+            });
+        });
+     
+    });
+</script>

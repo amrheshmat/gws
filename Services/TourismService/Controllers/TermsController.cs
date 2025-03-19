@@ -25,6 +25,22 @@ namespace SampleMVC.Controllers
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
             var language = _languageService.GetLanguageByCulture(currentCulture);
             List<Term> terms = await _repo.Filter<Term>(e => e.languageId == language.languageId).OrderBy(e => e.orderId).ToListAsync();
+            Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
+            List<TourAttachment> tourAttachments = new List<TourAttachment>();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            foreach (var lan in languages)
+            {
+                List<TourAttachment> tourAttachment = new List<TourAttachment>();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == lan.languageId && e.type == "language").ToListAsync();
+                foreach (var attachment in tourAttachment)
+                {
+                    tourAttachments.Add(attachment);
+                }
+            }
+            ViewBag.toursAttachments = tourAttachments;
+            ViewBag.languages = languages;
+            homeSeo.title = homeSeo.title + " - terms";
+            ViewBag.homeSeo = homeSeo;
             ViewBag.terms = terms;
             return View();
 

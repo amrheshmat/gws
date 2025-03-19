@@ -1,0 +1,194 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model MWS.Data.Entities.Setting;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "setting").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "setting").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "setting").ToList().Count;
+    var settings = ViewBag.settings;
+}
+
+
+
+<div class="row">
+
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+
+        <div id="contextual-classes" class="row">
+            <h2 class="col-11">Setting</h2>
+            @if (hasAddPermission > 0)
+            {
+                <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">@_localizationService.Localize("Add")</span>
+            }
+        </div>
+
+        <div class="card">
+            <div class="p-0 card-body">
+                <div class="tab-content">
+                    <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">
+                                        @_localizationService.Localize("keyName")
+                                    </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Value")
+                                    </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("Actions")
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 0;
+                                }
+                                @foreach (var setting in settings)
+                                {
+                                    <tr>
+                                        <td>
+                                            @setting.keyName
+                                        </td>
+                                        <td>
+                                            @setting.value
+                                        </td>
+                                        <td>
+                                            @if (hasEditPermission > 0)
+                                            {
+                                                <span onclick="editSetting(@setting.settingId)" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@_localizationService.Localize("setting")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("add", "setting", FormMethod.Post, new { @id = "formUser" }))
+                {
+                    @Html.TextBoxFor(m => m.settingId, new { @id = "settingId", @class = "form-control", style = "display:none" })
+                    <div class="mb-3">
+                        <label class="form-label" for="keyNaem">
+                            @_localizationService.Localize("KeyName")
+                        </label>
+                        @Html.TextBoxFor(m => m.keyName, new { type = "text", @id = "keyName", @class = "form-control", required = "required", disabled = "disabled" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="value">
+                            @_localizationService.Localize("Value")
+                        </label>
+                        @Html.TextAreaFor(m => m.value, new { @id = "value", @class = "form-control", required = "required" })
+                        <span id="valueRequired" style="color:red"></span>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">
+                            @_localizationService.Localize("Save")
+                        </button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            // do something…
+            clearData();
+        })
+        $('#formUserBtn').on("click", function (e) {
+            //validation
+            if ($(".modal-body #value").val() == '') {
+                $(".modal-body #valueRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #valueRequired").text("");
+            }
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.keyName = $(".modal-body #keyName").val();
+            userUpdate.value = $(".modal-body #value").val();
+                userUpdate.settingId = $(".modal-body #settingId").val();
+                $.ajax({
+                    url: "/setting/edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+        });
+
+        $('#demoGrid').dataTable({
+        });
+    });
+    function editSetting(id) {
+        $.ajax({
+            url: "/setting/getSettingById/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                $(".modal-body #settingId").val(data.settingId);
+                $(".modal-body #keyName").val(data.keyName);
+                $(".modal-body #value").val(data.value);
+                }
+        });
+       
+    }
+    function clearData() {
+        $(".modal-body #settingId").val("");
+        $(".modal-body #keyName").val("");
+        $(".modal-body #value").val("");
+    }
+</script>

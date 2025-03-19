@@ -4,10 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using Newtonsoft.Json;
-using SampleMVC.Models;
-using System.Diagnostics;
 using TripBusiness.Ibusiness;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace SampleMVC.Controllers
 {
@@ -40,7 +37,7 @@ namespace SampleMVC.Controllers
             foreach (var tour in tours)
             {
                 List<TourAttachment> tourAttachment = new List<TourAttachment>();
-                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == tour.tourId && e.type=="tour").ToListAsync();
+                tourAttachment = await _repo.Filter<TourAttachment>(e => e.tourId == tour.tourId && e.type == "tour").ToListAsync();
                 foreach (var attachment in tourAttachment)
                 {
                     tourAttachments.Add(attachment);
@@ -71,18 +68,18 @@ namespace SampleMVC.Controllers
             }
             List<WhyChooseUs> whyChooseUs = await _repo.Filter<WhyChooseUs>(e => e.languageId == language.languageId).ToListAsync();
             Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
-            foreach(var b in blogs)
+            foreach (var b in blogs)
             {
                 var shortDescription = b.description.Split().Take(20);
-                b.description =  string.Join(" ", shortDescription);
+                b.description = string.Join(" ", shortDescription);
             }
             ViewBag.homeSeo = homeSeo;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.whyChooseUs = whyChooseUs;
             ViewBag.settings = settings;
-            ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString();
-            ViewBag.tours = tours.OrderByDescending(e=> int.Parse(e.duration));
-            ViewBag.blogs = blogs.OrderByDescending(e=> e.creationDate).Take(10);
+            //ViewBag.NbeJs = _config.GetSection("NbeJs").Value!.ToString();
+            ViewBag.tours = tours.OrderByDescending(e => int.Parse(e.duration));
+            ViewBag.blogs = blogs.OrderByDescending(e => e.creationDate).Take(10);
             ViewBag.toursAttachments = tourAttachments;
             ViewBag.languages = languages;
             return View(tourAttachments);

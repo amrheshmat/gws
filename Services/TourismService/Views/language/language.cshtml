@@ -1,0 +1,244 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model MWS.Data.Entities.Language;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasAddPermission = currentUser?.permissions.Where(e => e.permissionAction == "add" && e.permissionArea == "language").ToList().Count;
+    var hasEditPermission = currentUser?.permissions.Where(e => e.permissionAction == "edit" && e.permissionArea == "language").ToList().Count;
+    var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "language").ToList().Count;
+
+    var languages = ViewBag.languages;
+}
+    <div class="row">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
+        <div id="contextual-classes" class="row">
+            <h2 class="col-11">@_localizationService.Localize("language")</h2>
+            @if (hasAddPermission > 0)
+            {
+            <span class="col-1 btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</span>
+            }
+        </div>
+            <div class="card">
+                <div class="p-0 card-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
+                        <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">
+                                        @_localizationService.Localize("language")
+                                        </th>
+                                    <th scope="col">
+                                        @_localizationService.Localize("LanguageCode")
+                                    </th>
+                                        <th scope="col">
+                                        @_localizationService.Localize("Actions")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                    }
+                                @foreach (var language in languages)
+                                    {
+                                        <tr>
+                                            <td>
+                                            @language.languageName
+                                            </td>
+                                        <td>
+                                            @language.code
+                                        </td>
+                                            <td>
+                                            @if (hasDeletePermission > 0)
+                                            {
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteLanguage(@language.languageId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                            }
+                                            @if (hasEditPermission > 0)
+                                            {
+                                            <span onclick="editlanguage(@language.languageId,'@language.languageName','@language.code')" class="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color:#624bff;" class="fa fa-edit"></i></span>
+                                            }    
+                                        </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> @_localizationService.Localize("Language")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("edit", "Language", FormMethod.Post, new { @id = "formUser" }))
+                {
+                    @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
+
+                        <div class="mb-3">
+                        <label class="form-label" for="languageName">
+                            @_localizationService.Localize("language")
+                            </label>
+                        @Html.TextBoxFor(m => m.languageName, new { @id = "languageName", @class = "form-control" })
+                        <span id="languageNameRequired" style="color:red"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="code">
+                            @_localizationService.Localize("LanguageCode") <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank"> @_localizationService.Localize("GetCode")</a>
+                        </label>
+                        @Html.TextBoxFor(m => m.code, new { @id = "code", @class = "form-control" })
+                        <span id="codeRequired" style="color:red"></span>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="formUserBtn">@_localizationService.Localize("Save")</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function clearData() {
+        $(".modal-body #languageId").val("");
+        $(".modal-body #languageName").val("");
+        $(".modal-body #code").val("");
+    }
+    $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            clearData();
+        })
+        $('#demoGrid').dataTable({
+        });
+        $('#formUserBtn').on("click", function (e) {
+            //validation
+            if ($(".modal-body #languageName").val() == '') {
+                $(".modal-body #languageNameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #languageNameRequired").text("");
+            }
+            if ($(".modal-body #code").val() == '') {
+                $(".modal-body #codeRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #codeRequired").text("");
+            }
+            e.preventDefault();
+            var userUpdate = {};
+            userUpdate.languageName = $(".modal-body #languageName").val();
+            userUpdate.code = $(".modal-body #code").val();
+            if ($(".modal-body #languageId").val() != '')
+                userUpdate.languageId = $(".modal-body #languageId").val();
+            if ($(".modal-body #languageId").val() == "") {
+                $.ajax({
+                    url: "/language/Add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log("e");
+                    }
+                });
+            } else {
+                userUpdate.languageId = $(".modal-body #languageId").val();
+                $.ajax({
+                    url: "/language/Edit",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userUpdate),
+                    success: function (data) {
+                        if (data.status == true) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "error",
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+    function editlanguage(id,name,code) {
+        $(".modal-body #languageId").val(id);
+        $(".modal-body #languageName").val(name);
+        $(".modal-body #code").val(code);
+        }
+    function DeleteLanguage(id) {
+        $.ajax({
+            url: "/language/Delete/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                if (data.status == true) {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Error When Delete Localization!",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    }
+</script>

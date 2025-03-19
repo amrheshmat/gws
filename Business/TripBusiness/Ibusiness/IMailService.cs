@@ -6,9 +6,5 @@ namespace TripBusiness.Ibusiness
     {
         Task SendContactEmailAsync(MailRequest mailRequest);
         Task SendContactThankEmailAsync(MailRequest mailRequest);
-        Task SendBookEmailAsync(MailRequest mailRequest);
-        Task SendSpecialEmailAsync(MailRequest mailRequest);
-        Task SendSpecialThankEmailAsync(MailRequest mailRequest);
-        Task SendBookThanksEmailAsync(MailRequest mailRequest);
     }
 }

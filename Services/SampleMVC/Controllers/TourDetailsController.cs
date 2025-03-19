@@ -414,7 +414,7 @@ namespace SampleMVC.Controllers
                 response.Status = true;
                 response.Total = totalPrice;
                 response.SubTitle = _localizationService.Localize("SelectAdditionalActivities");
-                response.Activities = additionalActivities;
+                //response.Activities = additionalActivities;
                 return response;
             }
             response.Message = _localizationService.Localize("CalculatedError");

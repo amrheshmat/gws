@@ -20,6 +20,7 @@ namespace SampleMVC.Controllers
             _localizationService = localizationService;
             _languageService = languageService;
         }
+        [Route("about-us")]
         public async Task<IActionResult> index()//index page
         {
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;

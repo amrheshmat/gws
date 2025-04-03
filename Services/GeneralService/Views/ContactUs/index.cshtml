@@ -1,0 +1,115 @@
+﻿@model MWS.Data.Entities.Contact;
+@using TripBusiness.Ibusiness;
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var contacts = ViewBag.contacts;
+}
+
+<!--Start contact form -->
+<section>
+    <div class="form-container section" style="margin-top: 50px;background: white;">
+        <div class="form-background" style="background: #12264a;">
+            <form class="form">
+                <h2>Contact Us</h2>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Your message..." required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+<!--End contact form -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#formUserBtn').on("click", function (e) {
+            e.preventDefault();
+            if ($(".modal-body #name").val() == '') {
+                $(".modal-body #nameRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #nameRequired").text("");
+            }
+            if ($(".modal-body #email").val() == '') {
+                $(".modal-body #emailRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #emailRequired").text("");
+            }
+            if ($(".modal-body #phone").val() == '') {
+                $(".modal-body #phoneRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #phoneRequired").text("");
+            }
+            if ($(".modal-body #numberOfAdult").val() == '0') {
+                $(".modal-body #numberOfAdultRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #numberOfAdultRequired").text("");
+            }
+            if ($(".modal-body #message").val() == '') {
+                $(".modal-body #messageRequired").text("required");
+                return false;
+            } else {
+                $(".modal-body #messageRequired").text("");
+            }
+            var userUpdate = {};
+            userUpdate.name = $(".modal-body #name").val();
+            userUpdate.email = $(".modal-body #email").val();
+            userUpdate.phone = $(".modal-body #phone").val();
+            userUpdate.message = $(".modal-body #message").val();
+            userUpdate.numberOfAdult = $(".modal-body #numberOfAdult").val();
+            userUpdate.numberOfChild = $(".modal-body #numberOfChild").val();
+            userUpdate.numberOfInfant = $(".modal-body #numberOfInfant").val();
+            $("#preloader").css({ "visibility": "visible", "opacity": 1 });
+            $.ajax({
+                url: "/ContactUs/Add",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(userUpdate),
+                success: function (data) {
+                    if (data.status == true) {
+                        localStorage.setItem("contactTitle", data.title);
+                        localStorage.setItem("contactMessage", data.message);
+                        $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+                        location.href = "/";
+                    } else {
+                        $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
+                        $.toast({
+                            heading: data.title,
+                            text: data.message,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error',
+                            bgColor: '#007bff',
+                        });
+                    }
+                },
+                error: function (error) {
+                    $.toast({
+                        heading: 'Contact',
+                        text: 'Message Not Sent',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error',
+                        bgColor: '#007bff',
+                    });
+                }
+            });
+        });
+    });
+    function viewcontact(id,name) {
+        $(".modal-body #contactId").val(id);
+        $(".modal-body #contactName").val(name);
+        }
+</script>

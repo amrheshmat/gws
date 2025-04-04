@@ -86,7 +86,7 @@ html, body {
 
 .carousel-caption {
     position: absolute;
-    top: 50%;
+    top: 65%;
     font-family: 'Playfair Display', serif; /* Applying a nice font */
     left: 50%;
     transform: translate(-50%, -50%);
@@ -151,9 +151,10 @@ html, body {
         font-size: 20px;
     }
 
-    .carousel-caption h5 {
-        margin-bottom: 30px;
-    }
+        .carousel-caption h5 {
+            margin-bottom: 30px;
+        }
+
     #carouselExampleFade, .carousel-inner {
         height: 90vh; /* Makes the height 80% of the viewport height */
     }
@@ -1069,3 +1070,127 @@ h2 {
     }
 }
 /*-------------------------------------- end about us --------------------------------------------------------------*/
+/*-------------------------------------- Start terms --------------------------------------------------------------*/
+/* remove the focus from all input fields.*/
+.termsAndConditions {
+    z-index: 1000;
+    border-radius: 3px;
+    width: 100%;
+    background-color: rgb(255,255,255);
+    max-width: 900px;
+    align-items: center;
+    transform: all .2s;
+    backface-visibility: hidden;
+}
+
+.termsAndConditionsHeading {
+    margin-top: 70px;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.termsParagraphIntro {
+    margin: 15px;
+}
+
+.spangleWelcome {
+    font-weight: 500;
+}
+
+.serviceLeadingSection, .spl {
+    margin: 15px 0px;
+}
+
+.sn {
+    font-size: 32px;
+    padding-right: 5px;
+}
+
+.st {
+    font-size: 32px;
+}
+
+.serviceInfoContainer {
+    position: relative;
+    width: 100%;
+}
+
+.serviceLead {
+    font-weight: 700;
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-block-end: 5px;
+}
+
+.serviceDetails {
+    margin-left: 15px;
+}
+
+.displayNone {
+    display: none;
+}
+
+.secionLine {
+    height: 40px;
+    width: 5px;
+    position: absolute;
+    top: 7px;
+}
+/*Font Colours below*/
+.lightGreen {
+    color: rgb(85, 189, 134);
+}
+
+.blue {
+    color: #2998ff;
+}
+
+.orange {
+    color: #ff7730;
+}
+
+.purple {
+    color: #2a0073
+}
+
+/*Set the colours for the lines*/
+
+.lineColorGreen {
+    background-image: linear-gradient(to right bottom, rgb(85, 189, 134), rgb(11, 103, 92));
+}
+
+.lineColorBlue {
+    background-image: linear-gradient(to right bottom, #2998ff, #5643fa);
+}
+
+.lineColorOrange {
+    background-image: linear-gradient(to right bottom, #ffb900, #ff7730);
+}
+
+.lineColorPurple {
+    background-image: linear-gradient(to bottom right, #b25f88, #2a0073)
+}
+
+.closeTerms {
+    border-bottom: 1px solid black;
+    margin: 15px 0px;
+    padding-bottom: 5px;
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+    animation-duration: .8s;
+    animation-timing-function: ease-out;
+    z-index: 1001;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+/*-------------------------------------- end terms --------------------------------------------------------------*/

@@ -35,15 +35,17 @@ html, body {
 .dropdown-menu {
     background: linear-gradient(45deg, #3172e8, #2a5298);
     border: none;
-    display: none;
-    opacity: 0; /* Initially hidden */
+    display: block;
+    opacity: 0;
+    visibility: hidden;
     transform: translateY(20px);
-    transition: transform 2s ease, opacity 0.3s ease; /* Smooth transition for transform and opacity */
+    transition: transform .5s ease,opacity 0.3s ease; /* Smooth transition for transform and opacity */
 }
 
 .nav-item:hover .dropdown-menu {
     transform: translateY(-5px); /* Reset to its original position (slide it down) */
     opacity: 1; /* Make it visible */
+    visibility: visible;
 }
 
 .nav-link {
@@ -55,6 +57,17 @@ html, body {
     .navbar-expand-lg .navbar-collapse {
         display: contents !important;
         flex-basis: auto;
+    }
+
+}
+@media (max-width:768px){
+    .dropdown-menu {
+        display: none;
+        visibility: visible;
+    }
+
+    .nav-item:hover .dropdown-menu {
+        display: block;
     }
 }
 /*-------------------------------------- end navbar -----------------------------------------------------------*/

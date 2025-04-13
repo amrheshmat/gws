@@ -16,9 +16,7 @@
     }
 
 <style>
-    #demoGrid tr.odd {
-        background-color: red!important; /* Light gray color */
-    }
+
 
 </style>
 
@@ -382,7 +380,7 @@
         }
        
         $('#demoGrid').dataTable({
-            dom: 'lBfrtip',
+            dom: 'lBfrt<"bottom-pagination"p><"info"i>',
             buttons: [
                 {
                     extend: 'excel',

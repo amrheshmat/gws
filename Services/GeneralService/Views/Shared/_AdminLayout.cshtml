@@ -812,8 +812,20 @@ border-radius: 100px;
 }
 
 /* Custom styles for buttons */
+        .bottom-pagination {
+            text-align: center;
+            margin-top: 10px;
+        }
+            /* Remove default float from pagination */
+            .bottom-pagination .dataTables_paginate {
+                float: none !important;
+                display: inline-block;
+            }
+        .info {
+            text-align: left;
+        }
 .dt-button {
-    background: #e7e7ff !important;
+    background: linear-gradient(45deg, #3172e8, #2a5298) !important;
     color: #696cff !important;
     border: none !important;
     padding: 8px 16px !important;
@@ -833,9 +845,13 @@ border-radius: 100px;
             padding: 10px; /* Add some space inside cells */
         }
     .dt-button:hover {
-        background-color: #45a049; /* Darker green on hover */
+            background: linear-gradient(45deg, #1e3c72, #2a5298) !important; /* Darker green on hover */
     }
 
+.btn-primary {
+    background: linear-gradient(45deg, #1e3c72, #2a5298) !important;
+    border-color: #2a5298;
+}
 /* Custom styles for the CSV button */
 .dt-button-collection .dt-button:first-child {
     background-color: #2196F3; /* Blue for CSV */

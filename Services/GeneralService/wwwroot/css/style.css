@@ -3009,10 +3009,7 @@ progress {
     border-top-width: 0
 }
 
-.table-striped-columns > :not(caption) > tr > :nth-child(2n), .table-striped > tbody > tr:nth-of-type(odd) > * {
-    --bs-table-accent-bg: #fff !important;
-    color: #000 !important;
-}
+
 
 .table-active {
     --bs-table-accent-bg: var(--bs-table-active-bg);
@@ -6064,7 +6061,9 @@ textarea.form-control-lg {
     padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
     color: var(--bs-card-color)
 }
-
+    .card-body a, .card-body h1,h5,h6,p,td,h4,small,span {
+        color: #c0bcbc !important;
+    }
 .card-title {
     margin-bottom: var(--bs-card-title-spacer-y)
 }
@@ -12809,7 +12808,7 @@ textarea.form-control-lg {
 }
 
 .bg-primary {
-    background-color: #624bff !important
+    background-color: #232333 !important;
 }
 
 .bg-secondary {
@@ -26381,7 +26380,7 @@ textarea.form-control-lg {
     width: 100%;
     max-width: 250px;
     padding: 0;
-    background-color: #212b36;
+    background-color: #2b2c40;
     border-right: 1px solid #212b36;
     transition: margin .25s ease-out
 }
@@ -26505,7 +26504,7 @@ textarea.form-control-lg {
 }
 
 .navbar-classic {
-    background-color: #fff;
+    background-color: #2b2c40;
     box-shadow: 0 2px 4px rgba(0,0,20,.08),0 1px 2px rgba(0,0,20,.08)
 }
 
@@ -26586,7 +26585,7 @@ textarea.form-control-lg {
 
     .header .navbar #nav-toggle {
         font-size: 20px;
-        color: #454f5b;
+        color: #0158bf;
         line-height: .5
     }
 
@@ -26614,6 +26613,7 @@ textarea.form-control-lg {
 }
 
 #page-content {
+    background: #232333 !important;
     min-height: 100vh;
     min-width: 100vw;
     margin-left: 15.625rem;
@@ -26857,7 +26857,8 @@ body {
 .card {
     box-shadow: 0 2px 4px rgba(0,0,20,.08),0 1px 2px rgba(0,0,20,.08);
     border: 0;
-    border-radius: .5rem
+    border-radius: .5rem;
+    background: #2b2c40;
 }
 
 .avatar {
@@ -27915,3 +27916,56 @@ input:checked + .slide-container .nav label {
 .modebar-group {
     display: none!important;
 }
+
+/* Dark theme for DataTables */
+.dataTables_wrapper {
+    background-color: #2b2c40;
+    color: white;
+}
+table.dataTable, table.dataTable th, table.dataTable td {
+    border: 1px solid #303145 !important;
+}
+table.dataTable {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #2b2c40 !important;
+}
+
+    table.dataTable th, table.dataTable td {
+        color: white;
+        padding: 8px;
+        text-align: center;
+    }
+
+    table.dataTable thead {
+        background-color: #2b2c40 !important;
+    }
+
+    table.dataTable tbody {
+        background-color: #2b2c40 !important;
+    }
+
+
+    table.dataTable thead th {
+        background-color: #2b2c40 !important;
+    }
+
+.dataTables_filter input {
+    background-color: #2b2c40 !important;
+    color: white;
+}
+
+.dataTables_length select {
+    background-color: #2b2c40 !important;
+    color: white;
+}
+
+.dataTables_paginate .paginate_button {
+    background-color: #2b2c40 !important;
+    color: white;
+}
+.page-item.disabled .page-link {
+    background-color: #232333!important;
+    border-color: #232333!important;
+}
+

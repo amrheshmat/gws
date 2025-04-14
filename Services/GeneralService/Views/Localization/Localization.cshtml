@@ -14,12 +14,9 @@
     var localizations = ViewBag.localizations;
     var languages = ViewBag.languages;
 }
-    <div class="row">
-    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
-            <div id="contextual-classes" class="mb-4">
-            <h2>@_localizationService.Localize("Translations")</h2>
-            </div>
-            <div class="card">
+<div class="container">
+    <div class="col-xl-12" style="margin:50px auto">
+        <div class="card">
                 <div class="p-0 card-body">
                     <div class="tab-content">
                         <div role="tabpanel" id="react-aria-101-tabpane-design" aria-labelledby="react-aria-101-tab-design" class="fade pb-4 p-4 tab-pane active show">
@@ -78,8 +75,8 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     

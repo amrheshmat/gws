@@ -15,18 +15,32 @@
     var languages = ViewBag.languages;
 }
 
-<div class="row">
-
-    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
-
-        <div id="contextual-classes" class="row">
-            <h2 class="col-11">Choose Us</h2>
+<div class="container">
+    <div id="contextual-classes" style="margin:50px auto">
             @if (hasAddPermission > 0)
             {
-                <span class="col-1 btn btn-primary" onclick="" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal">@_localizationService.Localize("Add")</span>
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card" style="min-height:125px;">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div>
+                                    <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/illustrations/lady-with-laptop-light.png" class="img-fluid" alt="Image" width="120" data-app-light-img="illustrations/lady-with-laptop-light.png" data-app-dark-img="illustrations/lady-with-laptop-dark.png" style="visibility: visible;">
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="card-body   ps-sm-0">
+                                    <span class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus" style="margin:0px 10px;"></i> Add</span>
+                                    <p class="mb-0" style="margin-top: 15px; text-align: left;">
+                                        Add new choose us section
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </div>
-
+    <div class="col-xl-12" style="margin:50px auto">
         <div class="card">
             <div class="p-0 card-body">
                 <div class="tab-content">

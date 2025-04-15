@@ -8,8 +8,7 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions
 @inject IUserRolePermission _permission;
 @inject ILocalizationService _localizationService;
-
-
+@inject IConfiguration _config;
 @{
     string returnUrl = ViewContext.HttpContext.Request.Path;
 

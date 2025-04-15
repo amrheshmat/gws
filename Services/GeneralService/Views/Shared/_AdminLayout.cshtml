@@ -23,6 +23,9 @@
     var fixedPages = menuPermission.Where(e => e.permissionAction == "term" || e.permissionAction == "faq" || e.permissionAction == "about").ToList();
     var otherPages = menuPermission.Where(e => e.permissionAction != "term" && e.permissionAction != "faq" && e.permissionAction != "about").ToList();
     var lang = requestCulture?.RequestCulture.UICulture.Name;
+
+    var languages = ViewBag.languages;
+    var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
 }
 <!DOCTYPE html>
 
@@ -1025,6 +1028,36 @@ border-radius: 100px;
                                             </select>
                                         </form>
                                     </li>
+                                    @if (showLanguageButton == "1")
+                                    {
+                                        <ul class="sl-nav ">
+                                            <li>
+                                                <span style="color:#fff;">
+                                                    @if (languages != null)
+                                                    {
+                                                        foreach (var c in languages)
+                                                        {
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
+                                                        }
+                                                    }
+                                                    @requestCulture.RequestCulture.UICulture.Name
+                                                </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
+                                                <div class="triangle"></div>
+                                                <ul>
+                                                    @if (languages != null)
+                                                    {
+                                                        foreach (var c in languages)
+                                                        {
+                                                            <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                                                <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
+                                                                <span class="active">@c.code</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    }
                                     <li class="ms-2 dropdown">
                                         <span class="rounded-circle" id="dropdownUser" aria-expanded="false">
 
@@ -1086,6 +1119,22 @@ border-radius: 100px;
                 }); // addEventListener
             }) // forEach
         });
+        function ChangeLanguage(lang, url) {
+            $.ajax({
+                url: "/Admin/ChangeLanguage",
+                type: "POST",
+                data: {
+                    culture: lang,       // First parameter
+                    returnUrl: url        // Second parameter
+                },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log("e");
+                }
+            });
+        }
     </script>
 </body>
 

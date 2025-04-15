@@ -1,0 +1,41 @@
+﻿@using MWS.Business.Shared.Data.Models
+@using Newtonsoft.Json
+@using TripBusiness.Ibusiness
+@inject ILocalizationService _localizationService;
+@model MWS.Data.Entities.Language;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var value = ViewContext.HttpContext.Session.GetString("currentUser");
+    UserDTO currentUser = JsonConvert.DeserializeObject<UserDTO>(value);
+    var hasViewAbout= currentUser?.permissions.Where(e => e.permissionAction == "about" && e.permissionArea == "admin").ToList().Count;
+
+    var languages = ViewBag.languages;
+}
+<div class="container">
+    <div id="contextual-classes" style="margin:50px auto">
+        @if (hasViewAbout > 0)
+            {
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card" style="min-height:125px;">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div>
+                                    <img src="/images/manage-cms.png" class="img-fluid" alt="Image" width="120" data-app-light-img="illustrations/lady-with-laptop-light.png" data-app-dark-img="illustrations/lady-with-laptop-dark.png" style="visibility: visible;">
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="card-body   ps-sm-0">
+                                <a class="btn btn-primary" href="/admin/about"><i class="fa fa-user" style="margin:0px 10px;"></i>Manage</a>
+                                    <p class="mb-0" style="margin-top: 15px; text-align: left;">
+                                        Manage About US
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+    </div>
+</div>

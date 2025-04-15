@@ -43,7 +43,7 @@
     <script src="~/js/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" >
     <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
     <!-- DataTables Buttons JS -->
@@ -56,7 +56,7 @@
     <script src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.flash.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.print.min.js"></script>
-
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel="preload" href="~/css/style.css" as="style">
@@ -947,7 +947,7 @@ border-radius: 100px;
                                             </li>
                                             <li class="nav-item">
                                                 <a href="/admin" class="nav-link active">
-                                                    <i class="fa fa-home" style="margin:0px 8px;"></i> admin
+                                                    <i class="fa fa-home" style="margin:0px 8px;color:#1e307b"></i> admin
                                                 </a>
                                             </li>
                                             @foreach (var item in otherPages)
@@ -956,20 +956,20 @@ border-radius: 100px;
                                                     <a class="nav-link active" href="/@item.permissionArea/@item.permissionAction">@Html.Raw(@item.icon)  @_localizationService.Localize(@item.permissionAction)</a>
                                                 </li>
                                             }
-                                            <li class="nav-item has-submenu">
+                                           @*  <li class="nav-item has-submenu">
                                                 @if (fixedPages.Count > 0)
                                                 {
                                                     <a class="nav-link" href="#"> <i class="fa fa-file-alt" style="margin:0px 8px;"></i> pages  <i class='bx bxs-chevron-down js-arrow arrow'></i> </a>
                                                 }
                                                 <ul class="submenu collapse js-sub-menu sub-menu">
                                                     @foreach(var item in fixedPages)
-                                            {
-                                                    <li>
-                                                            <a class="nav-link" href="/@item.permissionArea/@item.permissionAction">@Html.Raw(@item.icon)  @_localizationService.Localize(@item.permissionAction)</a>
-                                                    </li>
-                                            }
+                                                    {       
+                                                        <li>
+                                                                <a class="nav-link" href="/@item.permissionArea/@item.permissionAction">@Html.Raw(@item.icon)  @_localizationService.Localize(@item.permissionAction)</a>
+                                                        </li>
+                                                     }
                                                 </ul>
-                                            </li>
+                                            </li> *@
                                         </ul>
                                     </div>
                                 </div>

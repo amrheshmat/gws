@@ -26,6 +26,7 @@ namespace SampleMVC.Controllers
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
             var language = _languageService.GetLanguageByCulture(currentCulture);
             List<About> abouts = await _repo.Filter<About>(e => e.languageId == language.languageId).OrderBy(e => e.orderId).ToListAsync();
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             ViewBag.abouts = abouts;
             return View();
 

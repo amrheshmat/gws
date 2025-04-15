@@ -22,6 +22,7 @@ namespace SampleMVC.Controllers
         public async Task<IActionResult> AdminIndex()//index page
         {
             List<Setting> settings = await _repo.GetAll<Setting>().ToListAsync();
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             ViewBag.settings = settings;
             return View();
 

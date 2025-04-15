@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using TripBusiness.Ibusiness;
 
@@ -18,6 +19,7 @@ namespace SampleMVC.Controllers
         [Route("checkout")]
         public async Task<IActionResult> index()//index page
         {
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View();
         }
     }

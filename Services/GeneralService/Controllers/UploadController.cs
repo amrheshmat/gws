@@ -1,11 +1,7 @@
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
-using Newtonsoft.Json;
 using SampleMVC.Models;
-using System.Diagnostics;
 using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
@@ -27,6 +23,7 @@ namespace SampleMVC.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View();
         }
 
@@ -44,16 +41,15 @@ namespace SampleMVC.Controllers
                 if (file.Length > 0)
                 {
                     var filePath = Path.Combine("wwwroot\\Uploads", file.FileName);
-                    
+
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
                     }
                 }
             }
-
             return Ok(new { Message = "Files uploaded successfully!" });
         }
     }
-  
+
 }

@@ -890,6 +890,94 @@ border-radius: 100px;
         background-color: #00796b; /* Darker teal for Print hover */
     }
 /* end new dashboard style */
+.sl-nav {
+margin: 0 25px;
+padding: 0;
+list-style: none;
+position: relative;
+display: inline-block;
+}
+
+.sl-nav li {
+cursor: pointer;
+padding-bottom: 10px;
+margin-top: 10px;
+}
+
+.sl-nav li ul {
+display: none;
+}
+
+.sl-nav li:hover ul, .sl-nav li ul li:hover .sl-nav li ul {
+position: absolute;
+top: 36px;
+right: -15px;
+display: block;
+background: #0158bf;
+width: 110px;
+padding: 0px 10px;
+z-index: 999;
+border-radius: 5px;
+box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+.sl-nav li:hover .triangle {
+position: absolute;
+top: 22px;
+right: -11px;
+z-index: 999;
+height: 14px;
+overflow: hidden;
+width: 30px;
+background: transparent;
+}
+
+.sl-nav li:hover .triangle:after {
+content: '';
+display: block;
+z-index: 9999;
+width: 15px;
+transform: rotate(45deg) translateY(0px) translatex(10px);
+height: 15px;
+background: #0158bf;
+border-radius: 2px 0px 0px 0px;
+box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+}
+
+.sl-nav li ul li {
+position: relative;
+text-align: left;
+background: transparent;
+padding: 4px 0px;
+z-index: 2;
+font-size: 15px;
+color: #3c3c3c;
+list-style: none;
+}
+
+.sl-nav li ul li:last-of-type {
+padding-bottom: 10px;
+}
+
+.sl-nav li ul li span {
+padding-left: 5px;
+}
+
+.sl-nav li ul li span:hover, .sl-nav li ul li span.active {
+color: #146c78;
+}
+
+.sl-flag {
+display: inline-block;
+box-shadow: 0px 0px 3px rgba(0,0,0,0.4);
+width: 15px;
+height: 15px;
+background: #aaa;
+border-radius: 50%;
+position: relative;
+top: 2px;
+overflow: hidden;
+}
 </style>
 </head>
 @* <body>
@@ -1014,49 +1102,41 @@ border-radius: 100px;
                             </div>
 
                             <div class="navbar-right-wrap ms-2 d-flex nav-top-wrap navbar-nav">
-                                <ul class="navbar-right-wrap ms-auto d-flex nav-top-wrap navbar-nav">
-                                    <li class="nav-item" style="margin: auto;">
-                                        <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
-                                            <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
-                                            <select id="culture"
-                                                    name="culture"
-                                                    style="border-radius: 10px;"
-                                                    onchange="this.form.submit();"
-                                                    asp-items="cultureItems"
-                                                    asp-for="@requestCulture.RequestCulture.UICulture.Name">
-                                            </select>
-                                        </form>
-                                    </li>
-                                    @if (showLanguageButton == "1")
-                                    {
-                                        <ul class="sl-nav ">
-                                            <li>
-                                                <span style="color:#fff;">
-                                                    @if (languages != null)
+                                @if (showLanguageButton == "1")
+                                {
+                                    <ul class="sl-nav ">
+                                        <li>
+                                            <span style="color:#fff;">
+                                                @if (languages != null)
+                                                {
+                                                    foreach (var c in languages)
                                                     {
-                                                        foreach (var c in languages)
+                                                        if(c.code == lang)
                                                         {
                                                             <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
                                                         }
                                                     }
-                                                    @requestCulture.RequestCulture.UICulture.Name
-                                                </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
-                                                <div class="triangle"></div>
-                                                <ul>
-                                                    @if (languages != null)
+                                                }
+                                                @requestCulture.RequestCulture.UICulture.Name
+                                            </span> <i style="color:#fff;" class="fa fa-angle-down" aria-hidden="true"></i>
+                                            <div class="triangle"></div>
+                                            <ul>
+                                                @if (languages != null)
+                                                {
+                                                    foreach (var c in languages)
                                                     {
-                                                        foreach (var c in languages)
-                                                        {
-                                                            <li onclick="ChangeLanguage('@c.code','@returnUrl')">
-                                                                <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
-                                                                <span class="active">@c.code</span>
-                                                            </li>
-                                                        }
+                                                        <li onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
+                                                            <span class="active">@c.code</span>
+                                                        </li>
                                                     }
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                }
+                                <ul class="navbar-right-wrap ms-auto d-flex nav-top-wrap navbar-nav">
+                                   
                                     <li class="ms-2 dropdown">
                                         <span class="rounded-circle" id="dropdownUser" aria-expanded="false">
 

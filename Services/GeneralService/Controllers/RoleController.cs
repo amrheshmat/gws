@@ -43,6 +43,7 @@ namespace SampleMVC.Controllers
             ViewBag.roles = roles;
             //ViewBag.permissions = new SelectList(permissions, "permissionId", "permissionName");
             ViewBag.permissions = permissions;
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
 
             return View();
 

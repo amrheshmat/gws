@@ -24,6 +24,7 @@ namespace SampleMVC.Controllers
             List<Role> roles = await _repo.GetAll<Role>().ToListAsync();
             ViewBag.roles = roles;
             ViewBag.users = users;
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View();
 
         }

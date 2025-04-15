@@ -23,6 +23,7 @@ namespace SampleMVC.Controllers
         [Route("Report/{name}")]
         public async Task<IActionResult> index(string name)//index page
         {
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return RedirectToAction(name, "Report");
         }
         [Route("Report/RequestReport")]

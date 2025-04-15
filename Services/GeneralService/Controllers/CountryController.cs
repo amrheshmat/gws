@@ -18,6 +18,7 @@ namespace SampleMVC.Controllers
         {
             List<Country> countries = await _repo.GetAll<Country>().ToListAsync();
             ViewBag.countries = countries;
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View();
 
         }

@@ -18,6 +18,7 @@ namespace SampleMVC.Controllers
         {
             List<Contact> contacts = await _repo.GetAll<Contact>().ToListAsync();
             ViewBag.contacts = contacts;
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View();
 
         }

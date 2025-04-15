@@ -677,7 +677,7 @@
 
     <div class="align-items-center justify-content-center g-0 min-vh-100 row">
 
-        <div class="py-8 py-xl-0 col-xxl-4 col-lg-6 col-md-8 col-12">
+        <div class="py-8 py-xl-0 col-xxl-4 col-lg-6 col-md-8 col-12" style="margin:10% auto;">
 
                 <div class="smooth-shadow-md card" style=" background: rgba(0, 0, 0, 0.5);">
 
@@ -695,14 +695,14 @@
                             <label class="form-label" for="username">
                                        @_localizationService.Localize("UserName")
                             </label>
-                                    @Html.TextBoxFor(m => m.userName, new { @class = "form-control", placeholder = "Enter User Name " })
+                                    @Html.TextBoxFor(model => model.userName, new { @class = "form-control", placeholder = "Enter User Name ", required = "required" })
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="password">
                                         @_localizationService.Localize("Password")
                             </label>
-                                    @Html.PasswordFor(m => m.password, new { @class = "form-control", placeholder = "********" })
+                                    @Html.PasswordFor(model => model.password, new { @class = "form-control", placeholder = "********", required = "required" })
                         </div>
 
                         <div class="d-lg-flex justify-content-between align-items-center mb-4">

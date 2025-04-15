@@ -18,6 +18,7 @@ namespace SampleMVC.Controllers
         {
             List<Currency> currencys = await _repo.GetAll<Currency>().ToListAsync();
             ViewBag.currencys = currencys;
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View();
 
         }

@@ -19,13 +19,13 @@
         }
 
         h1 {
-            color: red;
+            color: #785dc8;
         }
 
         h6 {
-            color: red;
-            text-decoration: underline;
+            color: #785dc8;
         }
+        
 
     </style>
 </head>
@@ -35,7 +35,12 @@
         <hr class="w3-border-white w3-animate-left" style="margin:auto;width:50%">
         <h3 class="w3-center w3-animate-right">You dont have permission to view this Page.</h3>
         <h3 class="w3-center w3-animate-zoom">🚫🚫🚫🚫</h3>
-        <h6 class="w3-center w3-animate-zoom">error code:403 forbidden</h6>
+        <h6 class="w3-center w3-animate-zoom"><a href="javascript:history.back()" style="text-decoration:none;">🔙 Go Back</a></h6>
     </div>
+ <script>
+        setTimeout(function () {
+            window.history.back();
+        }, 3000);
+ </script>
 </body>
 </html>

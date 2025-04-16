@@ -69,7 +69,7 @@
     <script src="~/js/sweetAlert.js"></script>
     @if (lang.Contains("ar"))
     {
-        <link rel="stylesheet" href="~/css/style-ar.css" data-n-g="">
+        <link rel="stylesheet" href="~/css/adminStyle-ar.css" data-n-g="">
     }
     
 <style id="apexcharts-css">
@@ -1037,13 +1037,13 @@ overflow: hidden;
                                             </li>
                                             <li class="nav-item">
                                                 <a href="/admin" class="nav-link active">
-                                                    <i class="fa fa-home" style="margin:0px 8px;color:#1e307b"></i> admin
+                                                    <i class="fa fa-home" style="margin:0px 8px;color:#21427d"></i> admin
                                                 </a>
                                             </li>
                                             @foreach (var item in otherPages)
                                             {
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" href="/@item.permissionArea/@item.permissionAction">@Html.Raw(@item.icon)  @_localizationService.Localize(@item.permissionAction)</a>
+                                                    <a class="nav-link active" href="/@item.permissionArea/@item.permissionAction">@Html.Raw(@item.icon) @_localizationService.Localize(@item.permissionAction) </a>
                                                 </li>
                                             }
                                            @*  <li class="nav-item has-submenu">

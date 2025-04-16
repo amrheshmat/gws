@@ -1,0 +1,37 @@
+﻿body{
+    direction:rtl;
+}
+#page-content {
+    margin-right: 15.625rem;
+    margin-left: 0px;
+}
+#db-wrapper.toggled .navbar-vertical {
+    margin-right: -16rem;
+}
+#db-wrapper.toggled #page-content {
+    margin-right: 0px;
+}
+.simplebar-content-wrapper .simplebar-content .navbar-nav {
+    padding:0px;
+}
+@media (min-width: 1200px) {
+.navbar-classic .dropdown-menu-end
+    {
+        right: auto;
+        left: 0;
+    }
+}
+.sl-nav li:hover ul, .sl-nav li ul li:hover .sl-nav li ul {
+    left: -15px;
+    right:auto !important;
+}
+.sl-nav li:hover .triangle:after {
+    transform: rotate(138deg) translateY(0px) translatex(10px) !important;
+}
+.sl-nav li:hover .triangle {
+    left: -11px;
+    right:auto !important;
+}
+.sl-nav li ul li {
+    text-align: right!important;
+}

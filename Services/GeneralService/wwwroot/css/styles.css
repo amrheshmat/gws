@@ -37,6 +37,7 @@ html, body {
     border: none;
     display: block;
     opacity: 0;
+    min-width:100px !important;
     visibility: hidden;
     transform: translateY(20px);
     transition: transform .5s ease,opacity 0.3s ease; /* Smooth transition for transform and opacity */
@@ -48,6 +49,11 @@ html, body {
     visibility: visible;
 }
 
+.nav-item:hover .dropdown-menu a{
+    display:block;
+    margin:5px;
+    cursor:pointer;
+}
 .nav-link {
     color: white !important;
 }

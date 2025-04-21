@@ -1,3 +1,9 @@
 ﻿body {
     direction: rtl;
 }
+.footer-section h4, .footer-menu, .contact-info, .social-media,.nav-item:hover .dropdown-menu {
+    text-align: right !important;
+}
+.carousel-caption{
+    right:auto !important;
+}

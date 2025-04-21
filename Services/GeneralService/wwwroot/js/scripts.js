@@ -55,6 +55,7 @@ $(document).ready(function () {
     $(".owl-carousel").owlCarousel({
         loop: true,
         margin: 10,
+        rtl:true,
         nav: false,// Hide navigation controls (next/prev arrows)
         dots: false,// Optional: you can enable dots for navigation if needed
         autoplay: true,        // Enable autoplay

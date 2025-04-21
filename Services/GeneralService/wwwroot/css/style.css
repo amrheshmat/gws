@@ -5949,7 +5949,8 @@ textarea.form-control-lg {
     }
 
         .navbar-expand .navbar-nav .dropdown-menu {
-            position: absolute
+            position: absolute;
+            visibility:hidden;
         }
 
         .navbar-expand .navbar-nav .nav-link {
@@ -26509,7 +26510,7 @@ textarea.form-control-lg {
 
 .navbar-classic {
     background-color: #2b2c40;
-    box-shadow: 0 2px 4px rgba(0,0,20,.08),0 1px 2px rgba(0,0,20,.08)
+    /*box-shadow: 0 2px 4px rgba(0,0,20,.08),0 1px 2px rgba(0,0,20,.08)*/
 }
 
     .navbar-classic .navbar-right-wrap .list-group-item {
@@ -26533,21 +26534,22 @@ textarea.form-control-lg {
         left: 0
     }
 
-    .navbar-classic .dropdown-menu {
-        display: block;
-        visibility: hidden;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all .3s ease-in
-    }
+    
 
-    .navbar-classic .dropdown-submenu:hover > .dropdown-menu, .navbar-classic .dropdown:hover > .dropdown-menu {
-        transform: scaleY(1);
-        opacity: 1;
-        visibility: visible
-    }
+   
 }
-
+.navbar-classic .dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all .3s ease-in
+}
+.navbar-classic .dropdown-submenu:hover > .dropdown-menu, .navbar-classic .dropdown:hover > .dropdown-menu {
+    transform: scaleY(1);
+    opacity: 1;
+    visibility: visible
+}
 @media(max-width: 992px) {
     .navbar-classic .navbar-nav .dropdown-menu {
         margin: 0

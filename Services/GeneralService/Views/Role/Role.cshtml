@@ -26,8 +26,9 @@
             { 
                 if (Role.users.Count > 0)
                 {
+
                     <div class="col-xl-3 col-lg-6 col-md-6">
-                        <div class="card" style="min-height:140px;">
+                        <div class="card" style="min-height:140px;margin-bottom: 10px;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h6 class="fw-normal mb-0 text-body">Total @Role.users.Count users</h6>
@@ -70,20 +71,16 @@
             @if (hasAddPermission > 0)
             {
                 <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card h-100" style="min-height:140px;">
+                    <div class="card h-100" style="min-height:140px;margin-bottom: 10px;">
                     <div class="row h-100">
-                        <div class="col-sm-5">
-                            <div>
-                                <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/illustrations/lady-with-laptop-light.png" class="img-fluid" alt="Image" width="120" data-app-light-img="illustrations/lady-with-laptop-light.png" data-app-dark-img="illustrations/lady-with-laptop-dark.png" style="visibility: visible;">
-                            </div>
+                        <div>
+                            <img src="/images/manage-cms.png" class="img-fluid" alt="Image" width="120" data-app-light-img="illustrations/lady-with-laptop-light.png" data-app-dark-img="illustrations/lady-with-laptop-dark.png" style="visibility: visible;">
                         </div>
-                        <div class="col-sm-7">
-                            <div class="card-body ps-sm-0">
-                                <span class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus" style="margin:0px 10px;"></i> Add</span>
-                                    <p class="mb-0" style="margin-top: 15px; text-align: left;">
-                                        Add new role
-                                    </p>
-                            </div>
+                        <div class="card-body ps-sm-0">
+                            <span class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus" style="margin:0px 10px;"></i> Add</span>
+                            <p class="mb-0" style="margin-top: 15px; text-align: left;">
+                                Add new role
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -255,7 +252,9 @@
                                 title: data.title,
                                 text: data.message,
                                 icon: "success",
-                                timer: 1500
+                                timer: 1500,
+                                iconColor: '#132649',
+                                confirmButtonColor: '#132649'
                             });
                             setTimeout(function () {
                                 location.reload();
@@ -265,7 +264,9 @@
                                 title: data.title,
                                 text: data.message,
                                 icon: "error",
-                                timer: 1500
+                                timer: 1500,
+                                iconColor: '#132649',
+                                confirmButtonColor: '#132649'
                             });
                         }
                     },
@@ -285,7 +286,9 @@
                                 title: data.title,
                                 text: data.message,
                                 icon: "success",
-                                timer: 1500
+                                timer: 1500,
+                                iconColor: '#132649',
+                                confirmButtonColor: '#132649'
                             });
                             setTimeout(function () {
                                 location.reload();
@@ -295,7 +298,9 @@
                                 title: data.title,
                                 text: data.message,
                                 icon: "error",
-                                timer: 1500
+                                timer: 1500,
+                                iconColor: '#132649',
+                                confirmButtonColor: '#132649'
                             });
                         }
                     }
@@ -315,7 +320,9 @@
                         title: data.title,
                         text: data.message,
                         icon: "success",
-                        timer: 1500
+                        timer: 1500,
+                        iconColor: '#132649',
+                        confirmButtonColor: '#132649'
                     });
                     setTimeout(function () {
                         location.reload();
@@ -325,7 +332,9 @@
                         title: data.title,
                         text: data.message,
                         icon: "error",
-                        timer: 1500
+                        timer: 1500,
+                        iconColor: '#132649',
+                        confirmButtonColor: '#132649'
                     });
                 }
             }

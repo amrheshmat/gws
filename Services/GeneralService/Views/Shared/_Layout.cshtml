@@ -3,6 +3,7 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<RequestLocalizationOptions> LocOptions;
 @using TripBusiness.Ibusiness;
+@inject IConfiguration _config;
 @inject ILocalizationService _localizationService;
 @{
     string returnUrl = ViewContext.HttpContext.Request.Path;
@@ -24,6 +25,9 @@
     var instgram = instgramSection?.Replace("\"", "");
     var youtube = youtubeSection?.Replace("\"", "");
     var twitter = twitterSection?.Replace("\"", "");
+    var languages = ViewBag.languages;
+    var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +48,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/styles.css">
+
+    @if (lang.Contains("ar"))
+    {
+        <link rel="stylesheet" href="~/css/styles-ar.css" data-n-g="">
+    }
 </head>
 <body>
 
@@ -64,7 +73,9 @@
             <span>m</span>
             <span>o</span>
         </div>
-    </div>
+    </div> 
+    <!-- Loader End -->
+ 
     <!-- Start Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
@@ -93,6 +104,36 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contact-us">Contact</a>
                     </li>
+                    @if (showLanguageButton == "1")
+                    {
+                        <li class="nav-item dropdown">
+                            @if (languages != null)
+                            {
+                                foreach (var c in languages)
+                                {
+                                    if (c.code == lang)
+                                    {
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
+                                            @requestCulture.RequestCulture.UICulture.Name
+                                        </a>
+                                    }
+                                }
+                            }
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @if (languages != null)
+                                {
+                                    foreach (var c in languages)
+                                    {
+                                        <a dropdown-item" onclick="ChangeLanguage('@c.code','@returnUrl')">
+                                            <img style="display: inline; width: 20px; height: 20px; border-radius: 50%;" src="~/images/@c.code-lang.png" />
+                                            <span class="active">@c.code</span>
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -199,5 +240,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <!-- Custom Script -->
     <script src="~/js/scripts.js"></script>
+
+    <script>
+        function ChangeLanguage(lang, url) {
+            $.ajax({
+                url: "/Home/ChangeLanguage",
+                type: "POST",
+                data: {
+                    culture: lang,       // First parameter
+                    returnUrl: url        // Second parameter
+                },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log("e");
+                }
+            });
+        }
+    </script>
 </body>
 </html>

@@ -1,9 +1,8 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
-using SampleMVC.Models;
-using System.Diagnostics;
 using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
@@ -22,6 +21,7 @@ namespace SampleMVC.Controllers
             this.mailService = mailService;
             _languageService = languageService;
         }
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Index()
         {
 
@@ -34,10 +34,37 @@ namespace SampleMVC.Controllers
             return View();
         }
 
+        public IActionResult Test()
+        {
+            // This will simulate a server error and trigger the error handling
+            throw new Exception("This is a test exception to trigger the error page.");
+        }
+        public IActionResult StatusCode(int code)
+        {
+            string message = code switch
+            {
+                404 => "Page not found.",
+                403 => "Access denied.",
+                401 => "Unauthorized access.",
+                500 => "Something went wrong on the server.",
+                _ => "An unexpected error occurred."
+            };
+
+            ViewData["ErrorMessage"] = message;
+            ViewData["StatusCode"] = code;
+
+            return View("Error");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+            ViewData["StatusCode"] = 500;
+            ViewData["ErrorMessage"] = "A server error occurred.";
+            // Optionally log exceptionDetails here
+
+            return View();
         }
         [HttpPost]
         public IActionResult ChangeLanguage(string culture, string returnUrl)

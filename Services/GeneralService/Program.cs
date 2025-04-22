@@ -1,5 +1,6 @@
 ﻿using GWS.Service;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Net.Http.Headers;
 using MWS.Shared;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -28,6 +29,11 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedCultures = cultures;
     options.SupportedUICultures = cultures;
 });
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
 builder.Services.ConfigureApplicationCookie(options =>
     {
         options.LoginPath = "/";
@@ -38,6 +44,21 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddAuthentication().AddCookie(options => options.LoginPath = "/");
 var app = builder.Build();
+var env = builder.Environment;
+//Configure the HTTP request pipeline.
+if (env.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error"); // Redirects to error page for 500 error
+    //app.UseDeveloperExceptionPage(); // Show detailed error in dev
+}
+else
+{
+    // For production, handle errors globally without redirecting to a different page
+    app.UseExceptionHandler("/Home/Error"); // Redirects to error page for 500 error
+    app.UseHsts(); // Adds HTTP Strict Transport Security
+}
+app.UseStatusCodePagesWithReExecute("/Home/StatusCode", "?code={0}");
+
 // enable the localization middleware
 app.UseRequestLocalization();
 //app.UseRewriter(new RewriteOptions()
@@ -45,15 +66,17 @@ app.UseRequestLocalization();
 //            .AddRedirectToWww()
 //         );
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        var maxAge = new DateTimeOffset(DateTime.UtcNow).AddDays(30);
+        ctx.Context.Response.Headers[HeaderNames.CacheControl] = "public, max-age=2592000";
+    }
+});
 app.UseSession();
 
 app.UseMiddleware<JwtMiddleware>();

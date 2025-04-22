@@ -49,11 +49,11 @@ html, body {
     visibility: visible;
 }
 
-.nav-item:hover .dropdown-menu a{
-    display:block;
-    margin:5px;
-    cursor:pointer;
-}
+    .nav-item:hover .dropdown-menu span:not(.active) {
+        display: block;
+        margin: 5px;
+        cursor: pointer;
+    }
 .nav-link {
     color: white !important;
 }
@@ -517,7 +517,7 @@ html, body {
     justify-content: center;
     align-items: center;
     position: relative;
-    background-image: url('../images/header-lap-carousel.jpg'); /* Replace with your background image */
+    background-image: url('../images/header-lap-carousel.webp'); /* Replace with your background image */
     background-size: cover;
     background-position: center;
 }
@@ -955,7 +955,7 @@ h2 {
 .our-team {
     position: relative; /* To position the overlay on top */
     padding: 40px 0;
-    background-image: url('../images/header-lap-carousel.jpg'); /* Add your background image here */
+    background-image: url('../images/header-lap-carousel.webp'); /* Add your background image here */
     background-size: cover;
     background-position: center;
     color: white; /* Optional: To make text more readable */

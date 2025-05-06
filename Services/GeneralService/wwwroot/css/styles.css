@@ -79,6 +79,15 @@ html, body {
 /*-------------------------------------- end navbar -----------------------------------------------------------*/
 /* ------------------------------------- Start carousel header ------------------------------------------------*/
 /* Carousel Styling */
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
 #carouselExampleFade, .carousel-inner {
     height: 90vh; /* Makes the height 80% of the viewport height */
 }

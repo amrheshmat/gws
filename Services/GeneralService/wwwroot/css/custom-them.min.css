@@ -112,7 +112,7 @@ blockquote {
 	position: relative;
 }
 blockquote:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f10e";
 	position: absolute;
 	color: #ccc;
@@ -224,10 +224,15 @@ blockquote p {
 	height:70px;
 	padding:0 30px;
     transition: all 200ms linear;
-	width:100%;
+	width:99%;
 	z-index:50;
 	border-bottom:1px solid #eee;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.07);
+}
+@media only screen and (max-width: 991px) {
+	.main-header {
+		width: 100%;
+	}
 }
 .logo-holder {
 	float:left;
@@ -494,7 +499,7 @@ blockquote p {
 	display:block;
 }
 .hsbclose i:before, .show-header-modal.scwllink i:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f00d";
 }
 .show-header-modal.scwllink .cart-btn_counter {
@@ -717,18 +722,21 @@ blockquote p {
 	border-radius:4px;
     transition: all 200ms linear;
 }
+.fa-magnifying-glass:before, .fa-search:before {
+	font-weight: 900;
+}
 .nav-button-wrap.vismobmenu_btn span {
-	display:none;
+	display: none;
 }
 .nav-button-wrap.vismobmenu_btn:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f00d";
 	position:absolute;
 	color:#fff;
 	font-size:18px;
 	top:8px;
 	left:12px;
-	font-weight:100;
+	font-weight:900;
 }
 /*------ header search ------------------------------------------------*/
 .header-search-wrapper {
@@ -1083,7 +1091,7 @@ nav li ul a:before , nav li ul a:after {
     color: #144273;
 }
 .footer-list li:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f0da";
     position: absolute;
     left:0;
@@ -1281,7 +1289,7 @@ nav li ul a:before , nav li ul a:after {
 	background:rgba(255,255,255,0.21);
 } 
 .filter-tags input:checked:after , .custom-form  .filter-tags input:checked:after  {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f00c";
 	font-size: 12px;
 	position: absolute;
@@ -1432,7 +1440,7 @@ nav li ul a:before , nav li ul a:after {
 	color:#666;
 }
 .radio input[type="radio"]:checked + span:before{
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f00c";
 	font-size: 13px;
 	position: absolute;
@@ -1626,7 +1634,7 @@ nav li ul a:before , nav li ul a:after {
 	border-radius: 50%;
 }
 .color-form-title:after {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f66e";
 	color: rgba(255,255,255,0.2);
 	position: absolute;
@@ -2142,7 +2150,7 @@ nav li ul a:before , nav li ul a:after {
     width: 100%;
 	top: 0;
 	left: 15%;
-    background: linear-gradient(to left, rgba(255,255,255,0.99) 20%, rgba(255,255,255,0.5) 70%, rgba(255,255,255,0) 95%);
+    /*background: linear-gradient(to left, rgba(255,255,255,0.99) 20%, rgba(255,255,255,0.5) 70%, rgba(255,255,255,0) 95%);*/
 	z-index: 5
 }
 .hero-notifer {
@@ -2353,7 +2361,7 @@ section {
 	position: relative;
 	float: left;
 	width: 100%;
-	padding: 90px 0;
+	padding: 5px 0;
 	background: #fff;
 }
 .hidden-section {
@@ -3678,7 +3686,7 @@ section.single-par2  .scroll-down-wrap{
 	box-shadow: 0 5px 25px rgba(0,0,0,0.2);   
 }
 .about-img-hotifer:before {
-    font-family: Font Awesome\ 5 Pro;
+    font-family: "Font Awesome 5 Free";
     content: "\f10e";
     bottom: 30px;
     right: 20px;
@@ -4281,7 +4289,7 @@ section.single-par2  .scroll-down-wrap{
 	border:none;
 }
 .bwc_download-list  a:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f019";
 	font-size:12px;
 	color:#ccc;
@@ -4372,7 +4380,7 @@ section.single-par2  .scroll-down-wrap{
 	box-shadow: 0 10px 15px rgba(0,0,0,0.03);
 }
 .profile-widget-card:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f4fc";
 	font-size:20px;
 	color:#ccc;
@@ -4628,7 +4636,7 @@ section.single-par2  .scroll-down-wrap{
 	position:relative;
 } 
 /* .card-popup-rainingvis_bg span:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f005";
 	font-size:10px;
 	color:#ccc;
@@ -5219,7 +5227,7 @@ section.single-par2  .scroll-down-wrap{
 	color:#999;
 }
 .faq-nav li a:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f0da";
     position: absolute;
     top: 12px;
@@ -5441,10 +5449,10 @@ section.single-par2  .scroll-down-wrap{
 	margin-top:-43px;
 }
 .mapzoom-in:before, .mapzoom-out:before {
-    font-family: Font Awesome\ 5 Pro;
+    font-family: "Font Awesome 5 Free";
     content: "\f068";
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 900;
 }
 .mapzoom-in:before {
     content: "\f067";
@@ -5492,10 +5500,10 @@ section.single-par2  .scroll-down-wrap{
 	bottom:95px;
 }
 .scrollContorl:before{
-    font-family: Font Awesome\ 5 Pro;
+    font-family: "Font Awesome 5 Free";
     content: "\f068";
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 900;
 }
 .scrollContorl:before {
     content: "\f09c";
@@ -5877,7 +5885,7 @@ section.single-par2  .scroll-down-wrap{
 	text-decoration: line-through;
 }
 .pricing-content li:before {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f00c";
 	position: absolute;
 	bottom: 3px;
@@ -6086,7 +6094,7 @@ section.single-par2  .scroll-down-wrap{
 	padding-left: 20px;
 }
 .cat-item.cat-item_dec li:after {
-    font-family: Font Awesome\ 5 Pro;
+    font-family: "Font Awesome 5 Free";
     content: "\f178";
     position: absolute;
     left: 0;
@@ -6185,7 +6193,7 @@ section.single-par2  .scroll-down-wrap{
 	padding-right:25px;
 }
 .content-nav li a.ln:before  {
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f2a1";
 	position:absolute;
 	width:20px;
@@ -6365,7 +6373,7 @@ section.single-par2  .scroll-down-wrap{
 	background: #ccc;
 }
 .text-carousel-item:before {
-    font-family: Font Awesome\ 5 Pro;
+    font-family: "Font Awesome 5 Free";
 	content: "\f10e";
     top: 30px;
     right: 20px;
@@ -6934,7 +6942,7 @@ section.single-par2  .scroll-down-wrap{
 	padding-left:5px;
 }
 .menusb a.back:before{
-	font-family: Font Awesome\ 5 Pro;
+	font-family: "Font Awesome 5 Free";
 	content: "\f177";
 	font-size:14px;
 }

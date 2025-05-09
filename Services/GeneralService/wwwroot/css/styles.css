@@ -216,7 +216,7 @@ video {
 /*-------------------------------------- End shuffle categories -----------------------------------------------------------*/
 /*-------------------------------------- Start owl carousel -----------------------------------------------------------*/
 .owl-carousel {
-    margin-top: 80px;
+    margin-top: 10px;
 }
 
     .owl-carousel .item {
@@ -279,7 +279,7 @@ video {
 /*-------------------------------------- End owl carousel -----------------------------------------------------------*/
 /*-------------------------------------- Start flib section --------------------------------------------------------------*/
 .card-container {
-    margin: 50px 0px;
+    margin: 5px 0px;
     perspective: 1000px; /* Adds 3D effect to the container */
     display: flex;
     justify-content: center;
@@ -415,6 +415,7 @@ video {
     justify-content: flex-start; /* Align sections to the left */
     flex-wrap: wrap;
     gap: 20px;
+    padding-top:30px;
 }
 
 /* Footer Section (each column) */
@@ -524,11 +525,15 @@ video {
 /* Footer Bottom Section */
 .footer-bottom {
     border-top: 1px solid #444;
-    padding-top: 20px;
+    padding-top: 10px;
     font-size: 14px;
     text-align: center; /* Align copyright text to the left */
 }
 
+.footer-bottom p{
+    margin: auto;
+    text-align: center;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .footer-content {
@@ -668,7 +673,7 @@ video {
 /*-------------------------------------- End Form --------------------------------------------------------------*/
 /*-------------------------------------- Start Blog  --------------------------------------------------------------*/
 .blog-section {
-    padding: 20px 0;
+    padding: 2px 0;
     color: #fff;
 }
 

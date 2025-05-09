@@ -78,8 +78,6 @@
     </div> 
     <!-- Loader End -->
  
-    <main>
-        @RenderBody()<!-- Start Header -->
         <header class="main-header">
             <!--  logo  -->
             <div class="logo-holder"><a href="index.html"><img src="./img/logo.png" alt=""></a></div>
@@ -107,7 +105,6 @@
                 <span><i class="fa fa-globe"></i></span>
             </div>
             <!--  header-opt_btn end -->
-           
             <!--  login btn -->
             <div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Sign In</span></div>
             <!--  login btn  end -->
@@ -116,9 +113,12 @@
                 <nav>
                     <ul class="no-list-style">
                         <li>
-                            <a href="#" class="act-link">Home</a>
+                            <a href="/" class="act-link">Home</a>
                         </li>
                         <li>
+                            <a href="/about-us">About Us</a>
+                        </li>
+                       @*  <li>
                             <a href="#">Listings <i class="fa fa-caret-down"></i></a>
                             <!--second level -->
                             <ul>
@@ -134,12 +134,12 @@
                                 </li>
                             </ul>
                             <!--second level end-->
+                        </li> *@
+                        <li>
+                            <a href="/contact-us">Contact</a>
                         </li>
                         <li>
-                            <a href="#">Agents</a>
-                        </li>
-                        <li>
-                            <a href="blog.html">News</a>
+                            <a href="/blogs">News</a>
                         </li>
                     </ul>
                 </nav>
@@ -261,8 +261,8 @@
             </div>
             <!--header-opt-modal end -->
         </header>
+        @RenderBody()<!-- Start Header -->
         <!-- End Header -->
-    </main>
 
     <footer class="footer">
         <div class="footer-content container">

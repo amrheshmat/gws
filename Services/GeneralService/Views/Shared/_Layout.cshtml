@@ -1,7 +1,9 @@
-﻿@using Microsoft.AspNetCore.Builder
+﻿@using MWS.Business.Shared.Data.Models
+@using Microsoft.AspNetCore.Builder
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Options
 @inject IOptions<RequestLocalizationOptions> LocOptions;
+@using Newtonsoft.Json
 @using TripBusiness.Ibusiness;
 @inject IConfiguration _config;
 @inject ILocalizationService _localizationService;
@@ -27,6 +29,11 @@
     var twitter = twitterSection?.Replace("\"", "");
     var languages = ViewBag.languages;
     var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
+    var currentUser = ViewContext.HttpContext.Session.GetString("currentUser");
+    var currentUserName = "";
+    if (currentUser != null)
+        currentUserName = JsonConvert.DeserializeObject<UserDTO>(currentUser)?.userName;
+
 
 }
 <!DOCTYPE html>
@@ -47,10 +54,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/custom-them.min.css">
-    <link rel="stylesheet" href="~/css/dark-style.css">
+   
     <link rel="stylesheet" href="~/css/styles.css">
-
+    <link rel="stylesheet" href="~/css/custom-them.min.css">
+    <link rel="stylesheet" href="~/css/dashboard-style.css">
+    <link rel="stylesheet" href="~/css/dark-style.css">
     @if (lang.Contains("ar"))
     {
         <link rel="stylesheet" href="~/css/styles-ar.css" data-n-g="">
@@ -96,18 +104,25 @@
             </div>
             <!-- header-search button end  -->
             <!--  add new  btn -->
-            <div class="add-list_wrap">
-                <a href="dashboard-add-listing.html" class="add-list color-bg"><i class="fa fa-plus"></i> <span>Subscribe</span></a>
-            </div>
+                @if(currentUser == null)
+                {
+                    <div class="add-list_wrap">
+                        <a href="/Login" class="add-list color-bg"><i class="fa fa-plus"></i> <span>Subscribe</span></a>
+                    </div>
+                }
+                @if(currentUser != null && currentUserName != "")
+                {
+                    <div class="add-list_wrap">
+                        <a href="/Profile" class="color-bg"><span>@currentUserName</span></a>
+                    </div>
+                }
+           
             <!--  add new  btn end -->
             <!--  header-opt_btn -->
             <div class="header-opt_btn tolt" data-microtip-position="bottom" data-tooltip="Language / Currency">
                 <span><i class="fa fa-globe"></i></span>
             </div>
             <!--  header-opt_btn end -->
-            <!--  login btn -->
-            <div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Sign In</span></div>
-            <!--  login btn  end -->
             <!--  navigation -->
             <div class="nav-holder main-menu">
                 <nav>
@@ -331,6 +346,7 @@
     <!-- Custom Script -->
     <script src="~/js/scripts_theme.js"></script>
     <script src="~/js/plugins_theme.js"></script>
+    <script src="~/js/dashboard.js"></script>
     <script src="~/js/scripts.js"></script>
 
     <script>

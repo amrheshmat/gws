@@ -279,11 +279,11 @@
             <div class="row g-4">
                 @foreach (var blog in blogs)
                 {
-                    @if (Model.Where(e => e.tourId == blog.blogId).ToList().Count > 0)
+                    @if (Model.Where(e => e.elementId == blog.blogId).ToList().Count > 0)
                     {
-                        var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                        var mainImage = Model.Where(e => e.elementId == blog.blogId && e.type == "blog").ToList();
                         
-                        if(mainImage.length > 0)
+                        if(mainImage.Count > 0)
                         {
                             <div class="col-md-3">
                                 <div class="card blog-card">

@@ -40,8 +40,7 @@ namespace SampleMVC.Controllers
             }
             ViewBag.blogs = blogs.OrderByDescending(e => e.creationDate).Take(10);
             ViewBag.languages = _repo.GetAll<Language>().ToList();
-            ViewBag.toursAttachments = attachments;
-            return View();
+            return View(attachments);
         }
 
         public IActionResult Privacy()

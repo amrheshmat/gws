@@ -25,8 +25,9 @@ namespace SampleMVC.Controllers
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Index()
         {
+            var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
+            var language = _languageService.GetLanguageByCulture(currentCulture);
             List<Attachment> attachments = new List<Attachment>();
-
             List<Blog> blogs = await _repo.Filter<Blog>(e => e.languageId == language.languageId && e.isActive == "Y").ToListAsync();
             foreach (var blog in blogs)
             {

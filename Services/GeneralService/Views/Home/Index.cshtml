@@ -1,4 +1,11 @@
-﻿<!-- Start wrapper-->
+﻿@model List<MWS.Data.Entities.Attachment>;
+@{
+    var tours = ViewBag.tours;
+    var blogs = ViewBag.blogs;
+    var whyChooseUs = ViewBag.whyChooseUs;
+    var toursAttachments = ViewBag.toursAttachments;
+}
+<!-- Start wrapper-->
 <div id="wrapper">
     <!-- content -->
     <div class="content">
@@ -270,53 +277,41 @@
             <h2 class="text-center mb-5">What's New</h2>
 
             <div class="row g-4">
-                <!-- Blog Post 1 -->
-                <div class="col-md-3">
-                    <div class="card blog-card">
-                        <img src="images/header-office-carousel.webp" class="card-img-top" alt="Blog Post 1" loading="lazy" />
-                        <div class="card-body">
-                            <h5 class="card-title">How to Use Our Software</h5>
-                            <p class="card-text">Learn how to get started with our software demo. Discover all its features and functionalities...</p>
-                            <a href="#" class="stretched-link">Read More</a>
-                        </div>
-                    </div>
-                </div>
+                @foreach (var blog in blogs)
+                {
+                    @if (Model.Where(e => e.tourId == blog.blogId).ToList().Count > 0)
+                    {
+                        var mainImage = Model.Where(e => e.tourId == blog.blogId && e.type == "blog").ToList();
+                        
+                        if(mainImage.length > 0)
+                        {
+                            <div class="col-md-3">
+                                <div class="card blog-card">
+                                    <img src="Files/@mainImage[0].attachmentPath" class="card-img-top" alt="Blog Post 1" loading="lazy" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">How to Use Our Software</h5>
+                                        <p class="card-text">Learn how to get started with our software demo. Discover all its features and functionalities...</p>
+                                        <a href="#" class="stretched-link">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-3">
+                                <div class="card blog-card">
+                                    <img src="images/header-office-carousel.webp" class="card-img-top" alt="Blog Post 2" loading="lazy" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">Software Demo: Features Overview</h5>
+                                        <p class="card-text">Take a deep dive into the features of our software. See how it can improve your workflow and productivity...</p>
+                                        <a href="#" class="stretched-link">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
 
-                <!-- Blog Post 2 -->
-                <div class="col-md-3">
-                    <div class="card blog-card">
-                        <img src="images/header-office-carousel.webp" class="card-img-top" alt="Blog Post 2" loading="lazy" />
-                        <div class="card-body">
-                            <h5 class="card-title">Software Demo: Features Overview</h5>
-                            <p class="card-text">Take a deep dive into the features of our software. See how it can improve your workflow and productivity...</p>
-                            <a href="#" class="stretched-link">Read More</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Blog Post 3 -->
-                <div class="col-md-3">
-                    <div class="card blog-card">
-                        <img src="images/header-office-carousel.webp" class="card-img-top" alt="Blog Post 3" loading="lazy" />
-                        <div class="card-body">
-                            <h5 class="card-title">Why You Should Try Our Demo</h5>
-                            <p class="card-text">Discover the benefits of trying out the demo version of our software before making a purchase...</p>
-                            <a href="#" class="stretched-link">Read More</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Blog Post 4 -->
-                <div class="col-md-3">
-                    <div class="card blog-card">
-                        <img src="images/header-office-carousel.webp" class="card-img-top" alt="Blog Post 4" loading="lazy" />
-                        <div class="card-body">
-                            <h5 class="card-title">Getting the Most Out of Our Software</h5>
-                            <p class="card-text">Learn tips and tricks on how to maximize the potential of the software demo for your business...</p>
-                            <a href="#" class="stretched-link">Read More</a>
-                        </div>
-                    </div>
-                </div>
+                    }
+                }
             </div>
         </div>
     </div>

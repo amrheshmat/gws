@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
+using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
 using TripBusiness.Ibusiness;
 
@@ -113,36 +114,32 @@ namespace SampleMVC.Controllers
             ViewBag.recentLogs = recentbLogs;
             return View(tourAttachments);
         }
-        //[AuthAttribute("blog", "blog")]
-        //public async Task<IActionResult> Blog() 
-        //{
-        //    List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
-        //    List<TourViewModel> list = new List<TourViewModel>();
-        //    foreach (Blog blog in blogs)
-        //    {
-        //        TourViewModel tourViewModel = new TourViewModel();
-        //        var lang = _repo.Filter<Language>(e => e.languageId == blog.languageId).FirstOrDefault()?.languageName;
-        //        tourViewModel.languageName = lang;
-        //        tourViewModel.title = blog.title;
-        //        tourViewModel.tourId = blog.blogId;
-        //        tourViewModel.isActive = blog.isActive;
-        //        list.Add(tourViewModel);
-        //    }
-        //    ViewBag.blogs = list;
-        //    return View();
+        [AuthAttribute("blog", "blog")]
+        public async Task<IActionResult> Blog()
+        {
+            List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
+            List<BlogViewModel> list = new List<BlogViewModel>();
+            foreach (Blog blog in blogs)
+            {
+                BlogViewModel blogViewModel = new BlogViewModel();
+                var lang = _repo.Filter<Language>(e => e.languageId == blog.languageId).FirstOrDefault()?.languageName;
+                blogViewModel.languageName = lang;
+                blogViewModel.title = blog.title;
+                blogViewModel.tourId = blog.blogId;
+                blogViewModel.isActive = blog.isActive;
+                list.Add(blogViewModel);
+            }
+            ViewBag.blogs = list;
+            return View();
 
-        //}
-        //[AuthAttribute("Add", "blog")]
-        //public async Task<IActionResult> Add()
-        //{
-        //    List<Day> days = await _repo.GetAll<Day>().ToListAsync();
-        //    List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
-        //    List<AdditionalActivity> activities = await _repo.GetAll<AdditionalActivity>().ToListAsync();
-        //    ViewBag.languages = languages;
-        //    ViewBag.activities = activities;
-        //    ViewBag.days = days;
-        //    return View();
-        //}
+        }
+        [AuthAttribute("Add", "blog")]
+        public async Task<IActionResult> Add()
+        {
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            ViewBag.languages = languages;
+            return View();
+        }
         [AuthAttribute("add", "blog")]
         [HttpPost]
         public async Task<Response> Add([FromBody] Blog blog)

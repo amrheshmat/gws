@@ -13,6 +13,7 @@
     var hasDeletePermission = currentUser?.permissions.Where(e => e.permissionAction == "delete" && e.permissionArea == "blog").ToList().Count;
 
     var blogs = ViewBag.blogs;
+    var languages = ViewBag.languages;
 }
     <div class="row">
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10" style="margin:50px auto">
@@ -60,20 +61,20 @@
                                         <td>
                                             @if(blog.isActive == "Y")
                                             {
-                                                <input type='checkbox' onclick="ActiveBlog(@blog.tourId)" checked />
+                                                <input type='checkbox' onclick="ActiveBlog(@blog.blogId)" checked />
                                             }else{
-                                                <input type='checkbox' onclick="ActiveBlog(@blog.tourId)" />
+                                                <input type='checkbox' onclick="ActiveBlog(@blog.blogId)" />
                                             }
                                         </td>
                                             <td>
                                             @if (hasDeletePermission > 0)
                                             {
-                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteBlog(@blog.tourId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
+                                                <span style="margin:0px 5px;cursor:pointer" onclick="DeleteBlog(@blog.blogId)"><i style="color: #dc3545;" class="fa fa-trash "></i></span>
                                             }
                                             @if (hasEditPermission > 0)
                                             {
-                                                <span onclick="blogAttachment(@blog.tourId)" style="margin:0px 5px;cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color: #dc3545;" class="fa fa-link "></i></span>
-                                                <a href="/blog/Edit/@blog.tourId\" style="cursor:pointer"><i style="color:#624bff;" class="fa fa-edit"></i></a>
+                                                <span onclick="blogAttachment(@blog.blogId)" style="margin:0px 5px;cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color: #dc3545;" class="fa fa-link "></i></span>
+                                                <a href="/blog/Edit/@blog.blogId\" style="cursor:pointer"><i style="color:#624bff;" class="fa fa-edit"></i></a>
                                             }    
                                         </td>
                                         </tr>
@@ -100,7 +101,7 @@
                 <form asp-action="Upload" asp-controller="Blog" method="post" enctype="multipart/form-data">
                     <div class="row mt-2">
                         <div class="col-12">
-                            <input asp-for="tourId" id="blogId" class="form-control" hidden />
+                            <input asp-for="attachments.elemntId" id="blogId" class="form-control" hidden />
                         </div>
                     </div>
                     <div id="imagePreview">
@@ -111,7 +112,7 @@
                     <div class="row mt-2">
                         <div class="col-12">
                             <label class="col-form-label">Select File</label>
-                            <input asp-for="files" id="fileId" class="form-control"  multiple />
+                            <input asp-for="attachments.files" id="fileId" class="form-control" multiple />
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -140,23 +141,23 @@
             @using (Html.BeginForm("Add", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.TextBoxFor(m => m.blogId, new { @id = "blogId", @class = "form-control", style = "display:none" })
-                <div class="container" style="margin-top:100px;width:85%;">
+                <div class="container" style="width:95%;">
                     <div class="row">
-                        <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                        <div class="col-xs-12 col-md-12" style="margin:10px 0px;">
                             <label class="form-label" for="title">
                                 @_localizationService.Localize("title")
                             </label>
                             @Html.TextAreaFor(m => m.title, new { @id = "title", @class = "form-control" })
                             <span id="titleRequired" style="color:red"></span>
                         </div>
-                        <div class="col-xs-12 col-md-4" style="margin:20px 0px;">
+                        <div class="col-xs-12 col-md-12" style="margin:10px 0px;">
                             <label class="form-label" for="description">
                                 @_localizationService.Localize("description")
                             </label>
                             @Html.TextAreaFor(m => m.description, new { @id = "description", @class = "form-control" })
                             <span id="descriptionRequired" style="color:red"></span>
                         </div>
-                        <div class="col-xs-12 col-md-4" style="margin:20px 0px;" id="languageDiv">
+                        <div class="col-xs-12 col-md-12" style="margin:10px 0px;" id="languageDiv">
                             <label class="form-label" for="language">
                                 @_localizationService.Localize("language")
                             </label>
@@ -169,7 +170,7 @@
                             </select>
                             <span id="languageRequired" style="color:red"></span>
                         </div>
-                        <div>
+                        <div style="margin: auto;margin-bottom: 10px;">
                             <button type="submit" class="btn btn-primary" id="addBlogBtn">@_localizationService.Localize("Save")</button>
                         </div>
                     </div>

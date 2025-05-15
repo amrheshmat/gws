@@ -118,6 +118,7 @@ namespace SampleMVC.Controllers
         public async Task<IActionResult> Blog()
         {
             List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
             List<BlogViewModel> list = new List<BlogViewModel>();
             foreach (Blog blog in blogs)
             {
@@ -125,11 +126,12 @@ namespace SampleMVC.Controllers
                 var lang = _repo.Filter<Language>(e => e.languageId == blog.languageId).FirstOrDefault()?.languageName;
                 blogViewModel.languageName = lang;
                 blogViewModel.title = blog.title;
-                blogViewModel.tourId = blog.blogId;
+                blogViewModel.blogId = blog.blogId;
                 blogViewModel.isActive = blog.isActive;
                 list.Add(blogViewModel);
             }
             ViewBag.blogs = list;
+            ViewBag.languages = languages;
             return View();
 
         }

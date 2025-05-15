@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
 using TripBusiness.Ibusiness;
@@ -24,8 +25,21 @@ namespace SampleMVC.Controllers
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Index()
         {
+            List<Attachment> attachments = new List<Attachment>();
 
+            List<Blog> blogs = await _repo.Filter<Blog>(e => e.languageId == language.languageId && e.isActive == "Y").ToListAsync();
+            foreach (var blog in blogs)
+            {
+                List<Attachment> attachment = new List<Attachment>();
+                attachment = await _repo.Filter<Attachment>(e => e.elementId == blog.blogId && e.type == "blog").ToListAsync();
+                foreach (var attach in attachment)
+                {
+                    attachments.Add(attach);
+                }
+            }
+            ViewBag.blogs = blogs.OrderByDescending(e => e.creationDate).Take(10);
             ViewBag.languages = _repo.GetAll<Language>().ToList();
+            ViewBag.toursAttachments = attachments;
             return View();
         }
 

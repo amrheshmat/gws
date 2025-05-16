@@ -21,7 +21,7 @@
             <h2 class="col-11">@_localizationService.Localize("Blog")</h2>
             @if (hasAddPermission > 0)
             {
-                <span data-toggle="modal" data-target="#addModal" class="col-1 btn btn-primary">@_localizationService.Localize("Add")</span>
+                <span onclick="openAddModal()" class="col-1 btn btn-primary">@_localizationService.Localize("Add")</span>
             }
         </div>
             <div class="card">
@@ -74,7 +74,7 @@
                                             @if (hasEditPermission > 0)
                                             {
                                                 <span onclick="blogAttachment(@blog.blogId)" style="margin:0px 5px;cursor:pointer" data-toggle="modal" data-target="#exampleModal"><i style="color: #dc3545;" class="fa fa-link "></i></span>
-                                                <a href="/blog/Edit/@blog.blogId\" style="cursor:pointer"><i style="color:#624bff;" class="fa fa-edit"></i></a>
+                                                <span onclick="openEditModal(@blog.blogId)" style="cursor:pointer"><i style="color:#624bff;" class="fa fa-edit"></i></span>
                                             }    
                                         </td>
                                         </tr>
@@ -87,47 +87,6 @@
             </div>
         </div>
     </div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@_localizationService.Localize("Blog")</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="Upload" asp-controller="Blog" method="post" enctype="multipart/form-data">
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <input asp-for="attachments.elemntId" id="blogId" class="form-control" hidden />
-                        </div>
-                    </div>
-                    <div id="imagePreview">
-                    </div>
-                    <div id="selectedImage">
-                        
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <label class="col-form-label">Select File</label>
-                            <input asp-for="attachments.files" id="fileId" class="form-control" multiple />
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <button id="submit" type="submit" class="btn btn-success">@_localizationService.Localize("UploadFile")</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@_localizationService.Localize("Cancel")</button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- add Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -138,7 +97,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Html.BeginForm("Add", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Add", "Blog", FormMethod.Post, new { enctype = "multipart/form-data", id = "addForm" }))
             {
                 @Html.TextBoxFor(m => m.blogId, new { @id = "blogId", @class = "form-control", style = "display:none" })
                 <div class="container" style="width:95%;">
@@ -161,8 +120,7 @@
                             <label class="form-label" for="language">
                                 @_localizationService.Localize("language")
                             </label>
-                            @Html.TextBoxFor(m => m.languageId, new { @id = "languageId", @class = "form-control", style = "display:none" })
-                            <select name="language" class="form-select" id="language">
+                            <select name="languageId" class="form-select" id="language">
                                 @foreach (var language in languages)
                                 {
                                     <option value="@language.languageId">@language.languageName</option>
@@ -170,8 +128,16 @@
                             </select>
                             <span id="languageRequired" style="color:red"></span>
                         </div>
+                        <div id="imagePreview">
+                        </div>
+                        <div id="selectedImage">
+                        </div>
+                        <div class="col-12" style="border: 1px solid #32363e; border-radius: 5px;">
+                            <input type="file" id="files" name="files" class="form-control" multiple hidden />
+                            <i class="fa fa-upload" id="uploadIcon" style="cursor: pointer;font-size: 25px; margin:5px 47%;"></i>
+                        </div>
                         <div style="margin: auto;margin-bottom: 10px;">
-                            <button type="submit" class="btn btn-primary" id="addBlogBtn">@_localizationService.Localize("Save")</button>
+                            <button type="submit" class="btn btn-primary">@_localizationService.Localize("Save")</button>
                         </div>
                     </div>
                 </div>
@@ -185,46 +151,75 @@
 
 <script>
     var validateFile = [];
+    // Open Add Modal
+    function openAddModal() {
+        $('#addForm')[0].reset();
+        $('#addModal').modal('show');
+        validateFile = [];
+        drawFiles();
+    }
+    // Open Edit Modal
+    function openEditModal(id) {
+        $.ajax({
+            url: "/Blog/Edit/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                $('#title').val(data.title);
+                $('#description').val(data.description);
+                $('#languageId').val(data.languageId);
+                $('#blogId').val(data.blogId);
+                getAttachment(id);
+            }
+        });
+        
+    }
+    function getAttachment(id) {
+        $.ajax({
+            url: "/Blog/GetAttachmentById/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                validateFile = [];
+                $("#imagePreview").children().remove();
+                for (var i = 0; i < data.length; i++) {
+                    $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+                    $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].blogAttachmentId + '"/>');
+                    var getLinkFromImage = $("#" + data[i].blogAttachmentId).attr('src');
+                    console.log(getLinkFromImage);
+                    fetch(getLinkFromImage)
+                        .then((res) => res.blob())
+                        .then((myBlob) => {
+                            debugger
+                            const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
+                            console.log(myFile);
+                            validateFile.push(myFile);
+                        });
+                }
+                $('#addModal').modal('show');
+            }
+        });
+    }
     $(document).ready(function () {
-
-
-
-        $(document).on('change', '#language', function () {
+        $("#uploadIcon").on("click", function () {
+            $("#files").click();
+        });
+        $(document).on('change', '#languageId', function () {
             $("#languageId").val($(this).val());
         });
-        $('#addBlogBtn').on("click", function (e) {
-            e.preventDefault();
-            //validation
-            if ($("#title").val() == '') {
-                $("#titleRequired").text("required");
-                return false;
-            } else {
-                $("#titleRequired").text("");
+        $('#addForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            var formData = new FormData(this); // Create a FormData object
+            formData.delete("files");
+            for (var i = 0; i < validateFile.length; i++) {
+                formData.append(i, validateFile[i]);
             }
-            if ($("#description").val() == '') {
-                $("#descriptionRequired").text("required");
-                return false;
-            } else {
-                $("#descriptionRequired").text("");
-            }
-            if ($("#language").val() == '') {
-                $("#languageRequired").text("required");
-                return false;
-            } else {
-                $("#languageRequired").text("");
-            }
-            var blog = {};
-            blog.title = $("#title").val();
-            blog.description = $("#description").val();
-            blog.seoTitle = $("#seoTitle").val();
-            blog.seokeyWords = $("#seokeyWords").val();
-            blog.seoDescription = $("#seoDescription").val();
-            blog.languageId = $("#language").val();
             $.ajax({
-                url: "/Blog/Add",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(blog),
+                url: '/Blog/Add', // Your API endpoint
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
                 success: function (data) {
                     if (data.status == true) {
                         Swal.fire({
@@ -247,86 +242,19 @@
                 }
             });
         });
-
-        $('.modal').on('shown.bs.modal', function (e) {
-            // do something...
-            var id = $("#blogId").val();
-            $.ajax({
-                url: "/Blog/GetAttachmentById/" + id,
-                type: "GET",
-                cache: false,
-                success: function (data) {
-                    validateFile = [];
-                    $("#imagePreview").children().remove();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
-                        $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].blogAttachmentId + '"/>');
-                        var getLinkFromImage = $("#" + data[i].blogAttachmentId).attr('src');
-                        console.log(getLinkFromImage);
-                        fetch(getLinkFromImage)
-                            .then((res) => res.blob())
-                            .then((myBlob) => {
-                                debugger
-                                const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
-                                console.log(myFile);
-                                validateFile.push(myFile);
-                            });
-                    }
-                }
-            });
-        })
-        $("#submit").on('click', function (e) {
-            e.preventDefault();
-            var blogId = $("#blogId").val();
-            var formData = new FormData();
-            for (var i = 0; i < validateFile.length;i++){
-                formData.append(i,validateFile[i]);
-            }
-            $.ajax({
-                url: "/Blog/Upload?blogId=" + blogId,
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (message) {
-                    if (message == "Uploaded") {
-                        Swal.fire({
-                            title: "Uploaded",
-                            text: "Blog Imaged added",
-                            icon: "success",
-                            timer: 1500
-                        });
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1500);
-                    } else {
-                        Swal.fire({
-                            title: "Error!",
-                            text: "Error when upload Blog image",
-                            icon: "error",
-                            timer: 1500
-                        });
-                    }
-                }
-            });
-        });
-
         $('#demoGrid').dataTable({
         });
-
-        $("#fileId").on("change", function () {
-            const [file] = fileId.files;
+        $("#files").on("change", function () {
+            const [file] = files.files;
             if (file) {
-                for (var i = 0; i < fileId.files.length; i++) {
-                    validateFile.push(fileId.files[i]);
+                for (var i = 0; i < files.files.length; i++) {
+                    validateFile.push(files.files[i]);
                 }
             }
             drawFiles();
         });
-        
     });
     function deleteFile(id){
-        debugger;
         validateFile.splice(id, 1);
          drawFiles();
     }
@@ -337,16 +265,13 @@
             for (var i = 0; i < validateFile.length; i++) {
                 var image = validateFile[i];
                 var id = 'image_' + i;
-                $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+                $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;z-index: 3;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
                 $("#imagePreview").append('<img style="width:100px;height:100px;" id="' + id + '"/>');
                 $("#" + id).attr("src", URL.createObjectURL(image));
             }
         }
         console.log(validateFile);
     }
-    function blogAttachment(id) {
-        $("#blogId").val(id);
-     }
     function  ActiveBlog(id) {
         $.ajax({
             url: "/Blog/active/" + id,

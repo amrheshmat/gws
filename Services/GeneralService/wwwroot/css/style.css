@@ -7733,7 +7733,7 @@ textarea.form-control-lg {
     }
 
     .modal-dialog {
-        max-width: var(--bs-modal-width);
+        max-width: 700px;
         margin-right: auto;
         margin-left: auto
     }

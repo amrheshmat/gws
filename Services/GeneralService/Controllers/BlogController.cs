@@ -144,35 +144,47 @@ namespace SampleMVC.Controllers
         }
         [AuthAttribute("add", "blog")]
         [HttpPost]
-        public async Task<Response> Add([FromBody] Blog blog)
+        public async Task<Response> Add(BlogViewModel blogModel)
         {
-            Response response = new Response();
-            response.Title = _localizationService.Localize("Add");
-            blog.creationDate = DateTime.Now;
-            var createdBlog = _repo.Create(blog);
-            _repo.SaveChanges();
-            var id = createdBlog?.blogId;
-            if (id != null)
+            if (blogModel.blogId == null)
             {
-                response.Status = true;
-                response.Message = _localizationService.Localize("Added");
+                var files = Request.Form.Files;
+                Response response = new Response();
+                Blog blog = new Blog();
+                blog.title = blogModel.title;
+                blog.description = blogModel.description;
+                blog.languageId = blogModel.languageId;
+                blog.creationDate = DateTime.Now;
+                response.Title = _localizationService.Localize("Add");
+                var createdBlog = _repo.Create(blog);
+                _repo.SaveChanges();
+                var id = createdBlog?.blogId;
+                if (id != null)
+                {
+                    Upload(id.Value, files);
+                    response.Status = true;
+                    response.Message = _localizationService.Localize("Added");
+                    return response;
+                }
+                response.Status = false;
+                response.Message = _localizationService.Localize("AddedError");
                 return response;
             }
-            response.Status = false;
-            response.Message = _localizationService.Localize("AddedError");
-            return response;
-
+            else
+            {
+                return await Edit(blogModel);
+            }
         }
         [AuthAttribute("Edit", "blog")]
         [Route("Blog/Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<Blog> Edit(int id)
         {
             Blog blog = new Blog();
             blog = await _repo.Filter<Blog>(e => e.blogId == id).FirstOrDefaultAsync();
             List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
             ViewBag.languages = languages;
             ViewBag.blog = blog;
-            return View(blog);
+            return blog;
 
         }
         [Route("Blog/GetAttachmentById/{id}")]
@@ -185,18 +197,22 @@ namespace SampleMVC.Controllers
             return blogAttachment;
 
         }
-        [AuthAttribute("Edit", "blog")]
-        [HttpPost]
-        public async Task<Response> Edit([FromBody] Blog blogModel)
+        public async Task<Response> Edit(BlogViewModel blogModel)
         {
             Response response = new Response();
+            Blog blog = new Blog();
+            blog.title = blogModel.title;
+            blog.blogId = blogModel.blogId.Value;
+            blog.description = blogModel.description;
+            blog.languageId = blogModel.languageId;
             response.Title = _localizationService.Localize("Update");
-            blogModel.creationDate = DateTime.Now;
             //var rolePermissions = _repo.Filter<Blog>(e => e.blogId == blogModel.blogId).ToList();
-            var Blog = _repo.Update<Blog>(blogModel);
+            var Blog = _repo.Update<Blog>(blog);
             _repo.SaveChanges();
             if (Blog != null)
             {
+                var files = Request.Form.Files;
+                Upload(blogModel.blogId.Value, files);
                 response.Status = true;
                 response.Message = _localizationService.Localize("Updated");
                 return response;
@@ -205,16 +221,13 @@ namespace SampleMVC.Controllers
             response.Message = _localizationService.Localize("UpdatedError");
             return response;
         }
-        [HttpPost]
-        [Route("Blog/Upload")]
-        public async Task<IActionResult> Upload([FromQuery] int blogId)
+        private void Upload(int blogId, IFormFileCollection files)
         {
             if (ModelState.IsValid)
             {
                 List<Attachment> attachments = _repo.Filter<Attachment>(e => e.elementId == blogId && e.type == "blog").ToList();
                 _repo.context.RemoveRange(attachments);
                 _repo.SaveChanges();
-                var files = Request.Form.Files;
 
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
 
@@ -235,7 +248,6 @@ namespace SampleMVC.Controllers
                     _repo.Create(blogAttachment);
                     _repo.SaveChanges();
                     string fileName = myUniqueFileName + fileInfo.Extension;
-
                     string fileNameWithPath = Path.Combine(path, fileName);
 
                     using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
@@ -243,11 +255,7 @@ namespace SampleMVC.Controllers
                         file.CopyTo(stream);
                     }
                 }
-                return Ok("Uploaded");
             }
-            List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
-            ViewBag.blogs = blogs;
-            return NotFound("NotFound");
         }
         [HttpGet]
         [Route("Blog/Delete/{blogId}")]

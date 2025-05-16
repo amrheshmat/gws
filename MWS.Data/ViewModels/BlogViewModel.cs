@@ -1,4 +1,6 @@
-﻿namespace MWS.Data.ViewModels
+﻿using Microsoft.AspNetCore.Http;
+
+namespace MWS.Data.ViewModels
 {
     public class BlogViewModel
     {
@@ -6,8 +8,9 @@
         public string? description { get; set; }
         public string? languageName { get; set; }
         public string? isActive { get; set; }
-        public decimal? blogId { get; set; }
-        public decimal? languageId { get; set; }
-        public FileModel attachments { get; set; } = new FileModel();
+        public int? blogId { get; set; }
+        public int? languageId { get; set; }
+        public List<IFormFile>? files { get; set; }
+
     }
 }

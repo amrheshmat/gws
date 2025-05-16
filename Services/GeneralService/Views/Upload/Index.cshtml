@@ -72,11 +72,15 @@
         });
         validateFile = [];
         $("#files").on("change", function () {
-            for (var i = 0; i < this.files.length; i++) {
-                validateFile.push(this.files[i]);
-                var fileName = this.files[i].name;
-                $('#showFiles').append('<div class="row" style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"><span class="col-11">' + fileName + '</span> <span class="col-1"><i class="fa fa-trash delete" id="' + i + '"></i></span></div>');
+            const [file] = files.files;
+            alert(files.files.length);
+
+            if (file) {
+                for (var i = 0; i < files.files.length; i++) {
+                    validateFile.push(files.files[i]);
+                }
             }
+            drawFiles();
         });
         $(document).on('click', '.delete', function () {
             var id = $(this).attr('id');
@@ -113,4 +117,23 @@
             });
         });
     });
+    function drawFiles() {
+        $("#imagePreview").children().remove();
+        debugger;
+        if (validateFile.length > 0) {
+            for (var i = 0; i < validateFile.length; i++) {
+                var image = validateFile[i];
+                var id = 'image_' + i;
+                $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+                $("#imagePreview").append('<img style="width:100px;height:100px;" id="' + id + '"/>');
+                $("#" + id).attr("src", URL.createObjectURL(image));
+            }
+        }
+        console.log(validateFile);
+    }
+    function deleteFile(id) {
+        debugger;
+        validateFile.splice(id, 1);
+        drawFiles();
+    }
 </script>

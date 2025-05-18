@@ -166,14 +166,14 @@
                 $("#imagePreview").children().remove();
                 for (var i = 0; i < data.length; i++) {
                     $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
-                    $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].blogAttachmentId + '"/>');
-                    var getLinkFromImage = $("#" + data[i].blogAttachmentId).attr('src');
+                    $("#imagePreview").append('<img style="width:100px;height:100px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].attachmentId + '"/>');
+                    var getLinkFromImage = $("#" + data[i].attachmentId).attr('src');
                     console.log(getLinkFromImage);
                     fetch(getLinkFromImage)
                         .then((res) => res.blob())
                         .then((myBlob) => {
                             debugger
-                            const myFile = new File([myBlob], 'image_'+ i + '.jpg', { type: myBlob.type });
+                            const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
                             console.log(myFile);
                             validateFile.push(myFile);
                         });

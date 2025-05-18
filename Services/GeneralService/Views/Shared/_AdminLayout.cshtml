@@ -978,34 +978,21 @@ position: relative;
 top: 2px;
 overflow: hidden;
 }
+
+ 
 </style>
 </head>
-@* <body>
-    <ul>
-        <li class="nav-item">
-            <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
-                <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
-                <select id="culture"
-                        name="culture"
-                        class="form-control"
-                        onchange="this.form.submit();"
-                        asp-items="cultureItems"
-                        asp-for="@requestCulture.RequestCulture.UICulture.Name">
-                </select>
-            </form>
-        </li>
-    </ul>
-    <div>
-        @RenderBody()
-    </div>
-</body> *@
 <body class="">
 
-    <!-- Loader Start -->
-    <div class="preloader" id="preloader">
-            <span class="grow-pulse spinner" />
-        </div>
-    <!-- Loader End -->
+    <!-- Full page spinner overlay -->
+    <div id="nb-global-spinner" class="spinner">
+        <div class="blob blob-0"></div>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+    </div>
     <div id="">
 
         <div id="db-wrapper" class="">

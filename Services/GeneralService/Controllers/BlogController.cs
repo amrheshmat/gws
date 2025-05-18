@@ -71,7 +71,25 @@ namespace SampleMVC.Controllers
             ViewBag.lastId = lastId;
             return View(tourAttachments);
         }
-
+        [HttpGet]
+        [Route("getBlogs")]
+        public async Task<IActionResult> getBlogs()
+        {
+            List<Blog> blogs = await _repo.GetAll<Blog>().ToListAsync();
+            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
+            List<BlogViewModel> list = new List<BlogViewModel>();
+            foreach (Blog blog in blogs)
+            {
+                BlogViewModel blogViewModel = new BlogViewModel();
+                var lang = _repo.Filter<Language>(e => e.languageId == blog.languageId).FirstOrDefault()?.languageName;
+                blogViewModel.languageName = lang;
+                blogViewModel.title = blog.title;
+                blogViewModel.blogId = blog.blogId;
+                blogViewModel.isActive = blog.isActive;
+                list.Add(blogViewModel);
+            }
+            return Json(new { data = list });
+        }
         [Route("BlogSingle/{id}")]
         public async Task<IActionResult> BlogSingle(int id)
         {
@@ -144,7 +162,7 @@ namespace SampleMVC.Controllers
         }
         [AuthAttribute("add", "blog")]
         [HttpPost]
-        public async Task<Response> Add(BlogViewModel blogModel)
+        public async Task<Response> AddOrUpdate(BlogViewModel blogModel)
         {
             if (blogModel.blogId == null)
             {

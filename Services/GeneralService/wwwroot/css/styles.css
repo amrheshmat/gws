@@ -1,4 +1,8 @@
-﻿
+﻿.italic {
+    color: #2b57a4;
+    font-size: 34px;
+    font-style: italic;
+}
 /*-------------------------------------- Start navbar -----------------------------------------------------------*/
 .navbar {
     background: transparent;
@@ -255,10 +259,11 @@ video {
     transition: 2s ease; /* Smooth fade-in transition */
 }
 
-    .section.loaded {
-        opacity: 1; /* Show section when it's loaded */
-        transform: translateY(-50px);
-    }
+.section.loaded {
+    opacity: 1; /* Show section when it's loaded */
+    transform: translateY(-50px);
+}
+
 /*-------------------------------------- End owl carousel -----------------------------------------------------------*/
 /*-------------------------------------- Start flib section --------------------------------------------------------------*/
 .card-container {
@@ -1236,3 +1241,222 @@ h2 {
     }
 }
 /*-------------------------------------- end terms --------------------------------------------------------------*/
+/*-------------------------------------- start who it work section --------------------------------------------------------------*/
+#how-it-works {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #fff;
+}
+
+    #how-it-works h2 {
+        margin-bottom: 10px;
+    }
+
+    #how-it-works .subtitle {
+        font-size: 1.1rem;
+        color: #777;
+        margin-bottom: 40px;
+    }
+
+.step-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    opacity: 0;
+    transform: translateY(40px);
+    position: relative;
+}
+
+    .step-card.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .step-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+        .step-card:hover::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 15px;
+            animation: pulse 1.5s infinite;
+            border: 2px solid rgba(249, 249, 249, 0.3);
+        }
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0.6;
+    }
+}
+
+.step-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #ff7a59;
+    transition: transform 0.5s ease;
+    opacity: 0;
+}
+
+.step-card.show .step-icon {
+    opacity: 1;
+    animation: bounceIn 0.8s ease;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.step-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.step-description {
+    color: #555;
+}
+
+
+/*-------------------------------------- end who it work section  --------------------------------------------------------------*/
+/*-------------------------------------- start why choose us --------------------------------------------------------------*/
+.why-choose-us {
+    padding: 60px 20px;
+    /*background: linear-gradient(to bottom right, #ffffff, #eef2f7);*/
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.card {
+    border:0px;
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 1s ease forwards;
+}
+
+    .card:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .card ul {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+    }
+
+        .card ul li {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #555;
+            position: relative;
+            padding-left: 1.5em;
+        }
+
+            .card ul li::before {
+                content: '✔️';
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+.footer-text {
+    margin-top: 50px;
+    font-size: 1.2rem;
+    color: #666;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+/*-------------------------------------- end why choose us --------------------------------------------------------------*/
+

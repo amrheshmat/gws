@@ -54,7 +54,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-   
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="~/css/styles.css">
     <link rel="stylesheet" href="~/css/custom-them.min.css">
     <link rel="stylesheet" href="~/css/dashboard-style.css">
@@ -332,9 +333,6 @@
     </footer>
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <!-- Isotope -->
-    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-
     <!-- Include Owl Carousel JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <!-- Include Bootstrap JS (optional for components like Modal or Dropdown) -->
@@ -366,22 +364,6 @@
                 }
             });
         }
-    </script>
-    <script>
-        // Initialize Isotope
-        var $grid = $('.grid').isotope({
-            itemSelector: '.grid-item',
-            layoutMode: 'fitRows',
-            transitionDuration: '0.6s' // smoother transitions
-        });
-
-        // Filter on button click
-        $('.filter-buttons').on('click', 'button', function () {
-            var filterValue = $(this).attr('data-filter');
-            $grid.isotope({ filter: filterValue });
-            $('.filter-buttons button').removeClass('active');
-            $(this).addClass('active');
-        });
     </script>
 </body>
 </html>

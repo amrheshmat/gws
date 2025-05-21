@@ -34,21 +34,21 @@ const observer = new IntersectionObserver((entries, observer) => {
         }
     });
 }, observerOptions);
-
 // Observe each section
 sections.forEach(section => {
     observer.observe(section);
 });
+
 /**************************************************************************************************** */
 //make fixed navbar ...
-window.onscroll = function () {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-};
+//window.onscroll = function () {
+//    const navbar = document.querySelector('.navbar');
+//    if (window.scrollY > 50) {
+//        navbar.classList.add('scrolled');
+//    } else {
+//        navbar.classList.remove('scrolled');
+//    }
+//};
 /*************************************************************************************************** */
 //document ready ...
 $(document).ready(function () {
@@ -74,5 +74,18 @@ $(document).ready(function () {
             }
         }
     });
+    function revealSteps() {
+        $('[data-step]').each(function () {
+            const cardTop = $(this).offset().top;
+            const scrollBottom = $(window).scrollTop() + $(window).height();
+
+            if (cardTop < scrollBottom - 50) {
+                $(this).addClass('show');
+            }
+        });
+    }
+    $(window).on('scroll', revealSteps);
+    revealSteps(); // Trigger on load
+
 });
 /*************************************************************************************************** */

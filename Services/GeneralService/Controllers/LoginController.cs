@@ -36,10 +36,68 @@ namespace SampleMVC.Controllers
 
             return RedirectToAction("index", "Profile");
         }
+        public IActionResult RegisterResult()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Register()
+        {
+            var currentUser = HttpContext.Session.GetString("currentUser");
+            ViewData["users"] = await Localize("users");
+            if (currentUser == null)
+                return View();
+            ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
+            ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
+            ViewBag.languages = _repo.GetAll<Language>().ToList();
 
+            return RedirectToAction("index", "Profile");
+        }
         public IActionResult AccessDenied()
         {
             return View();
+        }
+        [HttpPost]
+        public Response subscribe(RegisterModel registerModel)
+        {
+            Response response = new Response();
+            response.Status = false;
+            response.Title = "subscribe";
+            if (ModelState.IsValid)
+            {
+                User getOldUser = _repo.Filter<User>(e => e.userName == registerModel.userName).FirstOrDefault();
+                if (getOldUser == null)
+                {
+                    User newUser = new User();
+                    newUser.userName = registerModel.userName;
+                    newUser.fullName = registerModel.fullName;
+                    newUser.email = registerModel.email;
+                    newUser.mobile = registerModel.mobile;
+                    newUser.gender = registerModel.gender;
+                    newUser.status = "P";//pending
+                    newUser.password = MPSSecurity.Hash(registerModel.password);
+                    newUser.creationDate = DateTime.Now;
+                    var createdUser = _repo.Create<User>(newUser);
+                    _repo.SaveChanges();
+                    if (createdUser != null && createdUser.userId != null)
+                    {
+                        Subscriber subscriber = new Subscriber();
+                        subscriber.userId = createdUser.userId;
+                        subscriber.isVerified = "N";
+                        subscriber.status = "P";//pending
+                        subscriber.created_at = DateTime.Now;
+                        var createdSubscriber = _repo.Create<Subscriber>(subscriber);
+                        _repo.SaveChanges();
+                        response.Status = true;
+                        response.Message = "you register successfully , wait untill acivate use";
+                    }
+                }
+                else
+                {
+                    response.Status = false;
+                    response.Message = "User name already exists";
+                }
+            }
+            return response;
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)

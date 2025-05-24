@@ -19,13 +19,9 @@ namespace MWS.Data.Entities
         public string? createdBy { get; set; }
 
         public DateTime? creationDate { get; set; }
-
         public string? lastUpdateBy { get; set; }
-
         public DateTime? lastUpdateDate { get; set; }
-
         public string? email { get; set; }
-
         public string? mobile { get; set; }
         public string? password { get; set; }
         public decimal? roleId { get; set; }

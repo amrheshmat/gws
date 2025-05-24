@@ -29,6 +29,9 @@ namespace MWS.Infrustructure.Context
         public DbSet<Role> roles { get; set; }
         public DbSet<Permission> permissions { get; set; }
         public DbSet<RolePermission> rolePermissions { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Package> packages { get; set; }
+        public DbSet<Subscriber> subscribers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +48,9 @@ namespace MWS.Infrustructure.Context
             modelBuilder.Entity<Faq>().ToTable("faqs");
             modelBuilder.Entity<About>().ToTable("abouts");
             modelBuilder.Entity<Term>().ToTable("terms");
+            modelBuilder.Entity<Category>().ToTable("categories");
+            modelBuilder.Entity<Package>().ToTable("packages");
+            modelBuilder.Entity<Subscriber>().ToTable("subscribers");
             modelBuilder.Entity<Permission>().ToTable("permissions").HasMany(e => e.roles).WithMany(e => e.permissions);
             modelBuilder.Entity<RolePermission>().ToTable("rolePermissions").HasKey(e => e.rolePermissionsId);
             modelBuilder.Entity<Role>().ToTable("roles").HasMany(e => e.users).WithOne(e => e.role);

@@ -44,6 +44,7 @@ namespace MWS.Shared
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var user = new UserDTO();
 
+                user.status = jwtToken.Claims.First(x => x.Type == "Status").Value;
                 user.userName = jwtToken.Claims.First(x => x.Type == "Name").Value;
                 user.roleId = jwtToken.Claims.First(x => x.Type == "roleId").Value;
                 // return user id from JWT token if validation successful

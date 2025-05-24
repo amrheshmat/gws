@@ -7,6 +7,7 @@ namespace MWS.Business.Shared.Data.Models
         public System.String? userName { get; set; }
 
         public System.String? token { get; set; }
+        public System.String? status { get; set; }
         public System.String? mobile { get; set; }
         public System.String? roleId { get; set; }
         public int? email { get; set; }

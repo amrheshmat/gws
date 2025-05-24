@@ -4,6 +4,7 @@ using MWS.Business.Shared;
 using MWS.Business.Shared.Data.Models;
 using MWS.Business.Shared.IBusiness;
 using MWS.Data.Entities;
+using MWS.Data.Enums;
 using MWS.Infrustructure.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -33,7 +34,7 @@ namespace TripBusiness.business
 
             // get users from cache ...
             var chachedUsers = await _cache.getUsers();
-            User user = chachedUsers.FirstOrDefault(u => u.userName!.ToLower() == name.ToLower());
+            User user = chachedUsers.FirstOrDefault(u => u.userName!.ToLower() == name.ToLower() && (u.status == UserStatus.Active || u.status == UserStatus.Pending));
             if (user == null) return "404";
             //verify password with hashing...
             var isCorrectPassword = MPSSecurity.Verify(user.password!, password);
@@ -41,15 +42,19 @@ namespace TripBusiness.business
             {
                 return "404";
             }
-            //get permission by user role
-            List<Permission> permissions = await _role.getCurrentUserPermissions(user.roleId!.Value);
+            List<Permission> permissions = new List<Permission>();
+            if (user.roleId!.HasValue)
+            {
+                //get permission by user role
+                permissions = await _role.getCurrentUserPermissions(user.roleId!.Value);
+            }
             //generate token ...
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config!.GetSection("TokenSettings:EncryptionKey").ToString() ?? "");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 //token data ...
-                Subject = new ClaimsIdentity(new[] { new Claim("Name", user!.userName!.ToString()),
+                Subject = new ClaimsIdentity(new[] { new Claim("Name", user!.userName!.ToString()),new Claim("Status", user!.status!),
                     new Claim("roleId", user!.roleId!.ToString() ?? "") }),
 
                 // generate token that is valid for 7 days ...
@@ -61,6 +66,7 @@ namespace TripBusiness.business
             return new UserDTO
             {
                 userName = user.userName,
+                status = user.status,
                 mobile = user.mobile,
                 token = tokenHandler.WriteToken(token),
                 permissions = permissions,

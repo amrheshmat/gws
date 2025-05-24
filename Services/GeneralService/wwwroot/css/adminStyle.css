@@ -152,3 +152,6 @@ table.dataTable thead .sorting_desc::after {
       box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
       animation: spin 1.5s linear infinite;
     }
+#GenderLabel{
+    margin-right:25px;
+}

@@ -31,10 +31,11 @@
     var showLanguageButton = _config.GetSection("ShowLanguageButton").Value;
     var currentUser = ViewContext.HttpContext.Session.GetString("currentUser");
     var currentUserName = "";
-    if (currentUser != null)
+    var currentUserIsActive = "";
+    if (currentUser != null){
         currentUserName = JsonConvert.DeserializeObject<UserDTO>(currentUser)?.userName;
-
-
+        currentUserIsActive = JsonConvert.DeserializeObject<UserDTO>(currentUser)?.status;
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +87,19 @@
         </div>
     </div> 
     <!-- Loader End -->
- 
+    @if (currentUserIsActive != "" && currentUserIsActive != "A")
+    {
+        <div class="container" style="position: absolute; top: 90px; left: 50%; transform: translate(-50%, -50%);z-index: 999;font-size: 18px;">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="alert alert-warning text-center">
+                        🚫 Your account is not active. Please contact support.
+                        <a href="#"> link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
         <header class="main-header">
             <!--  logo  -->
             <div class="logo-holder"><a href="index.html"><img src="./img/logo.png" alt=""></a></div>
@@ -276,8 +289,9 @@
                 </div>
             </div>
             <!--header-opt-modal end -->
-        </header>
-        @RenderBody()<!-- Start Header -->
+    </header>
+   
+    @RenderBody()<!-- Start Header -->
         <!-- End Header -->
 
     <footer class="footer">

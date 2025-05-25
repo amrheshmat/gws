@@ -30,6 +30,8 @@ namespace MWS.Infrustructure.Context
         public DbSet<Permission> permissions { get; set; }
         public DbSet<RolePermission> rolePermissions { get; set; }
         public DbSet<Category> categories { get; set; }
+        public DbSet<UserCategory> userCategories { get; set; }
+        public DbSet<City> cities { get; set; }
         public DbSet<Package> packages { get; set; }
         public DbSet<Subscriber> subscribers { get; set; }
 
@@ -49,6 +51,8 @@ namespace MWS.Infrustructure.Context
             modelBuilder.Entity<About>().ToTable("abouts");
             modelBuilder.Entity<Term>().ToTable("terms");
             modelBuilder.Entity<Category>().ToTable("categories");
+            modelBuilder.Entity<UserCategory>().ToTable("user_category");
+            modelBuilder.Entity<City>().ToTable("cities");
             modelBuilder.Entity<Package>().ToTable("packages");
             modelBuilder.Entity<Subscriber>().ToTable("subscribers");
             modelBuilder.Entity<Permission>().ToTable("permissions").HasMany(e => e.roles).WithMany(e => e.permissions);

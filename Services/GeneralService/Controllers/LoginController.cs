@@ -45,7 +45,21 @@ namespace SampleMVC.Controllers
             var currentUser = HttpContext.Session.GetString("currentUser");
             ViewData["users"] = await Localize("users");
             if (currentUser == null)
-                return View();
+            {
+                try
+                {
+                    var categories = _repo.GetAll<Category>().ToList(); // Load from database
+                    var cities = _repo.GetAll<City>().ToList(); // Load from database
+
+                    var model = new RegisterModel
+                    {
+                        Categories = categories,
+                        Cities = cities
+                    };
+                    return View(model);
+                }
+                catch (Exception ex) { }
+            }
             ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
             ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
             ViewBag.languages = _repo.GetAll<Language>().ToList();
@@ -85,10 +99,24 @@ namespace SampleMVC.Controllers
                         subscriber.isVerified = "N";
                         subscriber.status = "P";//pending
                         subscriber.created_at = DateTime.Now;
+                        subscriber.city = registerModel.SelectedCity;
                         var createdSubscriber = _repo.Create<Subscriber>(subscriber);
-                        _repo.SaveChanges();
-                        response.Status = true;
-                        response.Message = "you register successfully , wait untill acivate use";
+                        if (createdSubscriber != null && createdSubscriber.id != null)
+                        {
+                            if (registerModel.SelectedCategoryIds != null)
+                            {
+                                foreach (var categoryId in registerModel.SelectedCategoryIds)
+                                {
+                                    UserCategory userCategory = new UserCategory();
+                                    userCategory.user_id = createdSubscriber.userId;
+                                    userCategory.category_id = categoryId;
+                                    _repo.Create<UserCategory>(userCategory);
+                                    _repo.SaveChanges();
+                                }
+                            }
+                            response.Status = true;
+                            response.Message = "you register successfully , wait untill acivate use";
+                        }
                     }
                 }
                 else

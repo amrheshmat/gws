@@ -1,3 +1,4 @@
+using MWS.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace SampleMVC.Models
@@ -20,6 +21,9 @@ namespace SampleMVC.Models
 
         [Required(ErrorMessage = "Password is required")]
         public string? password { get; set; }
-
+        public List<int>? SelectedCategoryIds { get; set; }  // For binding selected values
+        public string? SelectedCity { get; set; }  // For binding selected values
+        public List<Category>? Categories { get; set; }      // To populate the dropdown
+        public List<City>? Cities { get; set; }
     }
 }

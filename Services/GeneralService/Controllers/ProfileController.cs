@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
+using Newtonsoft.Json;
 using SampleMVC.Controllers;
+using SampleMVC.Models;
 using TripBusiness.Ibusiness;
 
 namespace GeneralService.Controllers
@@ -22,14 +26,30 @@ namespace GeneralService.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = HttpContext.Session.GetString("currentUser");
+            UserDTO currentUserModel = JsonConvert.DeserializeObject<UserDTO>(currentUser);
             ViewData["users"] = await Localize("users");
             if (currentUser == null)
                 return RedirectToAction("Index", "Login");
             ViewBag.NumberOfUsers = _repo.GetAll<User>().ToList().Count();
             ViewBag.NumberOfRoles = _repo.GetAll<Role>().ToList().Count();
             ViewBag.languages = _repo.GetAll<Language>().ToList();
+            var user = _repo.Filter<User>(e => e.userName == currentUserModel.userName).FirstOrDefault();
+            var subscriber = _repo.Filter<Subscriber>(e => e.userId == user!.userId).FirstOrDefault();
+            var model = new BasicInfoModel
+            {
+                FullName = user!.fullName,
+                Email = user.email,
+                Phone = user.mobile,
+                City = subscriber.city,
+                SelectedCategories = new List<string> { "Cairo" },
+                AvailableCategories = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "Cairo", Text = "Cairo" },
+                    new SelectListItem { Value = "Giza", Text = "Giza" },
+                }
+            };
 
-            return View();
+            return View(model);
         }
     }
 }

@@ -101,6 +101,11 @@ namespace SampleMVC.Controllers
                         subscriber.created_at = DateTime.Now;
                         subscriber.city = registerModel.SelectedCity;
                         var createdSubscriber = _repo.Create<Subscriber>(subscriber);
+                        try
+                        {
+                            _repo.SaveChanges();
+                        }
+                        catch (Exception ex) { }
                         if (createdSubscriber != null && createdSubscriber.id != null)
                         {
                             if (registerModel.SelectedCategoryIds != null)

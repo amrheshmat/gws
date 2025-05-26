@@ -273,7 +273,7 @@ function initHomeradar() {
         updateHash: false,
         offset: 140,
         threshold: 100,
-        speed: 1200,
+        speed: 500,
         currentClass: "act-scrlink"
     });
     // Share   ------------------

@@ -95,7 +95,7 @@ namespace SampleMVC.Controllers
                     if (createdUser != null && createdUser.userId != null)
                     {
                         Subscriber subscriber = new Subscriber();
-                        subscriber.userId = createdUser.userId;
+                        subscriber.userId = int.Parse(createdUser.userId.ToString());
                         subscriber.isVerified = "N";
                         subscriber.status = "P";//pending
                         subscriber.created_at = DateTime.Now;

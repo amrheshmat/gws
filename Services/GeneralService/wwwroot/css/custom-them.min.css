@@ -1259,11 +1259,15 @@ nav li ul a:before , nav li ul a:after {
 .custom-form .nice-select input {
 	padding-left:20px;
 }
-.custom-form  textarea{
-	height: 200px;
-    resize: none;
-    padding: 25px 20px;
+.form-control:focus {
+	border-color:rgba(255,255,255,0.1)
+}
+.custom-form textarea {
+	height: 150px;
+	resize: vertical;
+	padding: 10px;
 	-webkit-appearance: none;
+	color: #fff !important;
 }
 .custom-form  input  {
 	margin-bottom:20px;

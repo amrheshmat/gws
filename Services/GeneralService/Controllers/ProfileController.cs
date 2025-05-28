@@ -35,17 +35,30 @@ namespace GeneralService.Controllers
             ViewBag.languages = _repo.GetAll<Language>().ToList();
             var user = _repo.Filter<User>(e => e.userName == currentUserModel.userName).FirstOrDefault();
             var subscriber = _repo.Filter<Subscriber>(e => e.userId == user!.userId).FirstOrDefault();
-            var model = new BasicInfoModel
+            var categories = _repo.GetAll<Category>().ToList(); // Load from database
+            var cities = _repo.GetAll<City>().ToList(); // Load from database
+            var subscriberCategory = _repo.Filter<UserCategory>(e => e.user_id == user!.userId).ToList();
+            List<string> categoriesList = new List<string>();
+            foreach (var category in subscriberCategory)
             {
-                FullName = user!.fullName,
-                Email = user.email,
-                Phone = user.mobile,
-                City = subscriber.city,
-                SelectedCategories = new List<string> { "Cairo" },
-                AvailableCategories = new List<SelectListItem>
+                string categoryName = categories.Where(e => e.id == category.id).FirstOrDefault().id.ToString();
+                categoriesList.Add(categoryName);
+            }
+            var model = new ProfileModel
+            {
+                basicInfo = new BasicInfoModel
                 {
-                    new SelectListItem { Value = "Cairo", Text = "Cairo" },
-                    new SelectListItem { Value = "Giza", Text = "Giza" },
+                    FullName = user!.fullName,
+                    Email = user.email,
+                    Phone = user.mobile,
+                    City = subscriber.city,
+                    SelectedCategories = categoriesList,
+                    AvailableCategories = categories.Select(c => new SelectListItem
+                    {
+                        Value = c.id.ToString(),
+                        Text = c.name
+                    }).ToList(),
+                    Cities = cities
                 }
             };
 

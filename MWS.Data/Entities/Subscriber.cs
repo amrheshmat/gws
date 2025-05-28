@@ -8,7 +8,7 @@ namespace MWS.Data.Entities
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? id { get; set; }
-        public decimal? userId { get; set; }
+        public int? userId { get; set; }
 
         public string? bio { get; set; }
         public string? isVerified { get; set; }

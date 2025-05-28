@@ -1,4 +1,4 @@
-﻿@model BasicInfoModel
+﻿@model ProfileModel
 @{
 
 }
@@ -65,10 +65,9 @@
                 <div class="dasboard-scrollnav-wrap scroll-init2 fl-wrap" style="z-index: auto; position: relative; top: 0px;">
                     <ul>
                         <li><a href="#sec1" class="act-scrlink">Info</a></li>
-                        <li><a href="#sec2" class="">Categories</a></li>
-                        <li><a href="#sec3" class="">Packages</a></li>
-                        <li><a href="#sec4" class="">Portfolio</a></li>
-                        <li><a href="#sec5" class="">Availability</a></li>
+                        <li><a href="#sec2" class="">Packages</a></li>
+                        <li><a href="#sec3" class="">Portfolio</a></li>
+                        <li><a href="#sec4" class="">Availability</a></li>
                     </ul>
                     <div class="progress-indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
@@ -89,36 +88,55 @@
                         <div class="custom-form">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <label>Full name</label>
-                                    <input asp-for="FullName" class="form-control" placeholder="full name" />
+                                    <label>
+                                        Full name
+                                        <span class="dec-icon"><i class="fa fa-user"></i></span>
+                                    </label>
+                                    <input asp-for="basicInfo.FullName" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
-                                    <label>Email</label>
-                                    <input asp-for="Email" class="form-control" placeholder="email" />
+                                    <label>
+                                        Email
+                                        <span class="dec-icon"><i class="fa fa-envelope"></i></span>
+                                    </label>
+                                    <input asp-for="basicInfo.Email" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
-                                    <label>Phone</label>
-                                    <input asp-for="Phone" class="form-control" placeholder="phone" />
+                                    <label>
+                                        Phone
+                                        <span class="dec-icon"><i class="fa fa-phone"></i> </span>
+                                    </label>
+                                    <input asp-for="basicInfo.Phone" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
                                     <label>City</label>
-                                    <select id="citySelect" name="City" class="form-control">
-                                        <option value="">-- Select a City --</option>
-                                        @foreach (var city in Model.Cities)
+                                    <select id="citySelect" name="City" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
+                                    <option value="" disabled>Select a City</option>
+                                        @foreach (var city in Model.basicInfo.Cities)
                                         {
-                                            <option value="@city.name">@city.name</option>
-                                        }
-                                    </select>
+                                            if (city.name == Model.basicInfo.City)
+                                            {
+                                            <option value="@city.name"  selected>@city.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@city.name">@city.name</option>
+                                            }
+                                    }
+                                </select>
                                 </div>
                                 <div class="col-sm-4">
                                     <label>Category</label>
-                                    <select asp-for="SelectedCategories" asp-items="Model.AvailableCategories" id="multiSelect" required multiple class="form-control multi-select">
+                                    <select asp-for="basicInfo.SelectedCategories" asp-items="Model.basicInfo.AvailableCategories" id="multiSelect" required multiple class="form-control multi-select">
                                     </select>
                                 </div>
+                                <div class="col-sm-4">
+                                    <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                        Update
+                                    </button>
+                                </div>
                             </div>
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
+                           
                         </div>
                     </form>
 
@@ -126,112 +144,90 @@
                 <!-- dasboard-widget-box  end-->
                 <!-- dasboard-widget-title -->
                 <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec2">
-                    <h5><i class="fas fa-street-view"></i>Location / Contacts</h5>
+                    <h5><i class="fas fa-street-view"></i>Packages</h5>
                 </div>
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
-                <div class="dasboard-widget-box   fl-wrap">
-                    <div class="custom-form">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Address <span class="dec-icon"><i class="fa fa-map-marker"></i></span></label>
-                                <input type="text" placeholder="Address of your business" value="">
-                            </div>
-                            <div class="col-sm-4">
-                                <label>Longitude (Drag marker on the map)  <span class="dec-icon"><i class="fa fa-long-arrow-alt-right"></i></span></label>
-                                <input type="text" id="long" placeholder="Map Longitude" value="">
-                            </div>
-                            <div class="col-sm-4">
-                                <label>Latitude (Drag marker on the map)<span class="dec-icon"><i class="fa fa-long-arrow-alt-down"></i> </span></label>
-                                <input type="text" id="lat" placeholder="Map Latitude" value="">
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>City</label>
-                                <div class="listsearch-input-item">
-                                    <select data-placeholder="Apartments" class="chosen-select no-search-select" style="display: none;">
-                                        <option>All Cities</option>
-                                        <option>New York</option>
-                                        <option>London</option>
-                                        <option>Paris</option>
-                                        <option>Kiev</option>
-                                        <option>Moscow</option>
-                                        <option>Dubai</option>
-                                        <option>Rome</option>
-                                        <option>Beijing</option>
-                                    </select>
-                                    <div class="nice-select chosen-select no-search-select" tabindex="0">
-                                        <span class="current">All Cities</span>
-                                        <i class="fa fa-caret-down"></i>
-                                        <div class="nice-select-search-box">
-                                            <input type="text" class="nice-select-search" placeholder="Search...">
-                                        </div>
-                                        <ul class="list">
-                                            <li data-value="All Cities" class="option selected">All Cities</li>
-                                            <li data-value="New York" class="option">New York</li>
-                                            <li data-value="London" class="option">London</li>
-                                            <li data-value="Paris" class="option">Paris</li>
-                                            <li data-value="Kiev" class="option">Kiev</li>
-                                            <li data-value="Moscow" class="option">Moscow</li>
-                                            <li data-value="Dubai" class="option">Dubai</li>
-                                            <li data-value="Rome" class="option">Rome</li>
-                                            <li data-value="Beijing" class="option">Beijing</li>
-                                        </ul>
-                                    </div>
+                <div class="dasboard-widget-box fl-wrap">
+                    <form asp-action="Update" method="post">
+                        <div class="custom-form">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>
+                                        title
+                                        <span class="dec-icon"><i class="fa fa-pen-to-square"></i></span>
+                                    </label>
+                                    <input asp-for="packageInfo.title" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>
+                                        price
+                                        <span class="dec-icon"><i class="fa fa-money-bill-wave"></i></span>
+                                    </label>
+                                    <input asp-for="packageInfo.price" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>
+                                        duration <span class="labelNote">* number of hours</span>
+                                        <span class="dec-icon"><i class="fa fa-clock"></i> </span>
+                                    </label>
+                                    <input asp-for="packageInfo.duration" class="form-control" placeholder="" />
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <label>Email Address <span class="dec-icon"><i class="fa fa-envelope"></i></span>  </label>
-                                <input type="text" placeholder="JessieManrty@domain.com" value="">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>
+                                        deliverables
+                                    </label>
+                                    <textarea asp-for="packageInfo.deliverables" class="form-control" placeholder=""></textarea>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="col-sm-12">
+                                        <label>
+                                            description
+                                        </label>
+                                        <textarea asp-for="packageInfo.description" class="form-control" placeholder=""></textarea>
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="col-sm-6">
-                                <label>Phone <span class="dec-icon"><i class="fa fa-phone"></i> </span> </label>
-                                <input type="text" placeholder="+7(123)987654" value="">
-                            </div>
-                            <div class="col-sm-6">
-                                <label> Website <span class="dec-icon"><i class="fa fa-globe"></i> </span> </label>
-                                <input type="text" placeholder="themeforest.net" value="">
+                            <div class="row">
+                                <div class="col-sm-6" style="margin: auto;">
+                                    <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                        Update
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+
                 </div>
                 <!-- dasboard-widget-box  end-->
                 <!-- dasboard-widget-title -->
                 <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec3">
-                    <h5><i class="fas fa-image"></i>Header Media</h5>
+                    <h5><i class="fas fa-image"></i>Portofolio</h5>
                 </div>
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
                 <div class="dasboard-widget-box   fl-wrap">
                     <div class="custom-form">
-                        <div class="add-list-media-header">
-                            <label class="radio inline">
-                                <input type="radio" name="gender" checked="">
-                                <span>Carousel</span>
-                            </label>
-                        </div>
-                        <div class="add-list-media-header">
-                            <label class="radio inline">
-                                <input type="radio" name="gender">
-                                <span>Slider</span>
-                            </label>
-                        </div>
-                        <div class="add-list-media-header">
-                            <label class="radio inline">
-                                <input type="radio" name="gender">
-                                <span>  Background image</span>
-                            </label>
-                        </div>
                         <div class="clearfix"></div>
                         <div class="listsearch-input-item fl-wrap">
-                            <form class="fuzone">
-                                <div class="fu-text">
-                                    <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
-                                    <div class="photoUpload-files fl-wrap"></div>
+                            <form>
+                                <div class="fuzone">
+                                    <div class="fu-text">
+                                        <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
+                                        <div class="photoUpload-files fl-wrap"></div>
+                                    </div>
+                                    <input type="file" class="upload" multiple="">
                                 </div>
-                                <input type="file" class="upload" multiple="">
+                                <div class="row">
+                                    <div class="col-sm-6" style="margin: auto;">
+                                        <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                            upload
+                                        </button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -239,7 +235,7 @@
                 <!-- dasboard-widget-box  end-->
                 <!-- dasboard-widget-title -->
                 <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec4">
-                    <h5><i class="fas fa-list"></i>Listing Details</h5>
+                    <h5><i class="fas fa-list"></i>Availability</h5>
                 </div>
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
@@ -312,86 +308,6 @@
                     </div>
                 </div>
                 <!-- dasboard-widget-box  end-->
-                <!-- dasboard-widget-title -->
-                <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec5">
-                    <h5><i class="fas fa-home-lg-alt"></i>Rooms</h5>
-                    <div class="onoffswitch">
-                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch5" checked="">
-                        <label class="onoffswitch-label" for="myonoffswitch5">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
-                    </div>
-                </div>
-                <!-- dasboard-widget-title end -->
-                <!-- dasboard-widget-box  -->
-                <div class="dasboard-widget-box   fl-wrap">
-                    <div class="custom-form add_room-item-wrap">
-                        <div class="add_room-container fl-wrap">
-                            <!-- add_room-item   -->
-                            <div class="add_room-item fl-wrap">
-                                <span class="remove-rp tolt" data-microtip-position="left" data-tooltip="Remove Room"><i class="fa fa-times-circle"></i></span>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Room Title: <span class="dec-icon"><i class="fa fa-layer-group"></i></span></label>
-                                        <input type="text" placeholder="Standard Family Room" value="">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Additional Room: <span class="dec-icon"><i class="fa fa-layer-plus"></i></span></label>
-                                        <input type="text" placeholder="Example: Sauna" value="">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Room Details</label>
-                                        <div class="listsearch-input-item">
-                                            <textarea cols="40" rows="3" style="height: 175px;margin-bottom: 10px" placeholder="Datails" spellcheck="fase"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Room Images</label>
-                                        <div class="listsearch-input-item fl-wrap">
-                                            <form class="fuzone">
-                                                <div class="fu-text">
-                                                    <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
-                                                    <div class="photoUpload-files fl-wrap"></div>
-                                                </div>
-                                                <input type="file" class="upload" multiple="">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <label>Amenities: </label>
-                                <div class=" add-list-tags fl-wrap">
-                                    <!-- Checkboxes -->
-                                    <ul class="fl-wrap filter-tags no-list-style ds-tg">
-                                        <li>
-                                            <input id="check-2aaa5" type="checkbox" name="check" checked="">
-                                            <label for="check-2aaa5">Air conditioner</label>
-                                        </li>
-                                        <li>
-                                            <input id="check-2bb5" type="checkbox" name="check" checked="">
-                                            <label for="check-2bb5">Tv Inside</label>
-                                        </li>
-                                        <li>
-                                            <input id="check-2dd5" type="checkbox" name="check">
-                                            <label for="check-2dd5"> Ceramic bath</label>
-                                        </li>
-                                        <li>
-                                            <input id="check-2cc5" type="checkbox" name="check" checked="">
-                                            <label for="check-2cc5">Microwave</label>
-                                        </li>
-                                    </ul>
-                                    <!-- Checkboxes end -->
-                                </div>
-                            </div>
-                            <!--add_room-item end  -->
-                        </div>
-                        <a href="#" class="add-room-item">Add New <i class="fa fa-plus"></i> </a>
-                    </div>
-                </div>
-                <!-- dasboard-widget-box  end-->
                 <a href="#" class="btn  color-bg float-btn">Save Changes </a>
             </div>
         </div>
@@ -401,26 +317,13 @@
 </div>
 <!-- Initialize Select2 AFTER all scripts have loaded -->
 <script>
-    function toggleDropdownIcon() {
-        const $select = $('#multiSelect');
-        const hasSelected = $select.val() && $select.val().length > 0;
-        const container = $select.next('.select2-container').find('.select2-selection--multiple');
-
-        if (hasSelected) {
-            container.addClass('has-selection');
-        } else {
-            container.removeClass('has-selection');
-        }
-    }
+   
     $(document).ready(function () {
         // This will now work if Select2 loaded correctly
         $('.multi-select').select2({
             placeholder: "Select Categories",
-            allowClear: true,
-            maximumSelectionLength: 5
+            maximumSelectionLength: 5,
         });
-        toggleDropdownIcon();
         // Update on change
-        $('#multiSelect').on('change', toggleDropdownIcon);
     });
 </script>

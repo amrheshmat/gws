@@ -34,6 +34,7 @@ namespace MWS.Infrustructure.Context
         public DbSet<City> cities { get; set; }
         public DbSet<Package> packages { get; set; }
         public DbSet<Subscriber> subscribers { get; set; }
+        public DbSet<Availability> userAvailability { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +55,7 @@ namespace MWS.Infrustructure.Context
             modelBuilder.Entity<UserCategory>().ToTable("user_category");
             modelBuilder.Entity<City>().ToTable("cities");
             modelBuilder.Entity<Package>().ToTable("packages");
+            modelBuilder.Entity<Availability>().ToTable("userAvailability");
             modelBuilder.Entity<Subscriber>().ToTable("subscribers");
             modelBuilder.Entity<Permission>().ToTable("permissions").HasMany(e => e.roles).WithMany(e => e.permissions);
             modelBuilder.Entity<RolePermission>().ToTable("rolePermissions").HasKey(e => e.rolePermissionsId);

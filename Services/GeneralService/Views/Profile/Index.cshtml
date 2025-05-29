@@ -1,6 +1,7 @@
-﻿@model ProfileModel
+﻿@using MWS.Data.Enums
+@model ProfileModel
 @{
-
+    ViewBag.WeekDayNames = Enum.GetNames(typeof(WeekDays)).ToList();
 }
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
@@ -111,7 +112,7 @@
                                 <div class="col-sm-4">
                                     <label>City</label>
                                     <select id="citySelect" name="City" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
-                                    <option value="" disabled>Select a City</option>
+                                        <option value="" disabled>Select a City</option>
                                         @foreach (var city in Model.basicInfo.Cities)
                                         {
                                             if (city.name == Model.basicInfo.City)
@@ -122,8 +123,8 @@
                                             {
                                                 <option value="@city.name">@city.name</option>
                                             }
-                                    }
-                                </select>
+                                        }
+                                    </select>
                                 </div>
                                 <div class="col-sm-4">
                                     <label>Category</label>
@@ -200,7 +201,6 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
                 <!-- dasboard-widget-box  end-->
                 <!-- dasboard-widget-title -->
@@ -239,76 +239,75 @@
                 </div>
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
-                <div class="dasboard-widget-box   fl-wrap">
-                    <div class="custom-form">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Area: <span class="dec-icon"><i class="fa fa-sort-size-down-alt"></i></span></label>
-                                        <input type="text" placeholder="House Area" value="">
-                                        <label>Accomodation: <span class="dec-icon"><i class="fa fa-users"></i></span></label>
-                                        <input type="text" placeholder="Listing Accomodation" value="">
-                                        <label>Yard size: <span class="dec-icon"><i class="fa fa-trees"></i></span></label>
-                                        <input type="text" placeholder="Yard size" value="">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Bedrooms: <span class="dec-icon"><i class="fa fa-bed"></i></span></label>
-                                        <input type="text" placeholder="House Bedrooms" value="">
-                                        <label>Bathrooms: <span class="dec-icon"><i class="fa fa-bath"></i></span></label>
-                                        <input type="text" placeholder="House Bathrooms" value="">
-                                        <label>Garage: <span class="dec-icon"><i class="fa fa-warehouse"></i></span></label>
-                                        <input type="text" placeholder="Number of cars" value="">
-                                    </div>
+                <div class="dasboard-widget-box fl-wrap">
+                    <form asp-action="Update" method="post">
+                        <div class="custom-form">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>
+                                        From Hour
+                                        <span class="dec-icon"><i class="fa fa-clock"></i></span>
+                                    </label>
+                                    <input asp-for="availability.fromHour" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        To Hour
+                                        <span class="dec-icon"><i class="fa fa-clock"></i></span>
+                                    </label>
+                                    <input asp-for="availability.toHour" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        From Day
+                                    </label>
+                                    <select id="fromDaySelect" name="fromDay" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
+                                        <option value="" disabled>Select a City</option>
+                                        @foreach (var day in (List<string>)ViewBag.WeekDayNames)
+                                        {
+                                            if (day == Model.availability.fromDay)
+                                            {
+                                                <option value="@day" selected>@day</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@day">@day</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>
+                                        To Day
+                                    </label>
+                                    <select id="toDayfromDaySelect" name="toDay" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
+                                        <option value="" disabled>Select a City</option>
+                                        @foreach (var day in (List<string>)ViewBag.WeekDayNames)
+                                        {
+                                            if (day == Model.availability.toDay)
+                                            {
+                                                <option value="@day" selected>@day</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@day">@day</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <label>Details Text</label>
-                                <div class="listsearch-input-item">
-                                    <textarea cols="40" rows="3" style="height: 235px" placeholder="Datails" spellcheck="fase"></textarea>
+                            <div class="row">
+                                <div class="col-sm-6" style="margin: auto;">
+                                    <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                        save
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
-                        <label>Amenities: </label>
-                        <div class=" add-list-tags fl-wrap">
-                            <!-- Checkboxes -->
-                            <ul class="fl-wrap filter-tags no-list-style ds-tg">
-                                <li>
-                                    <input id="check-aaa5" type="checkbox" name="check" checked="">
-                                    <label for="check-aaa5"> Wi Fi</label>
-                                </li>
-                                <li>
-                                    <input id="check-bb5" type="checkbox" name="check" checked="">
-                                    <label for="check-bb5">Pool</label>
-                                </li>
-                                <li>
-                                    <input id="check-dd5" type="checkbox" name="check">
-                                    <label for="check-dd5"> Security</label>
-                                </li>
-                                <li>
-                                    <input id="check-cc5" type="checkbox" name="check">
-                                    <label for="check-cc5"> Laundry Room</label>
-                                </li>
-                                <li>
-                                    <input id="check-ff5" type="checkbox" name="check" checked="">
-                                    <label for="check-ff5"> Equipped Kitchen</label>
-                                </li>
-                                <li>
-                                    <input id="check-c4" type="checkbox" name="check">
-                                    <label for="check-c4">Air Conditioning</label>
-                                </li>
-                                <li>
-                                    <input id="check-c18" type="checkbox" name="check">
-                                    <label for="check-c18">Parking</label>
-                                </li>
-                            </ul>
-                            <!-- Checkboxes end -->
-                        </div>
-                    </div>
+                    </form>
+
                 </div>
                 <!-- dasboard-widget-box  end-->
-                <a href="#" class="btn  color-bg float-btn">Save Changes </a>
             </div>
         </div>
         <div class="limit-box fl-wrap"></div>

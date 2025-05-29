@@ -35,6 +35,7 @@ namespace GeneralService.Controllers
             ViewBag.languages = _repo.GetAll<Language>().ToList();
             var user = _repo.Filter<User>(e => e.userName == currentUserModel.userName).FirstOrDefault();
             var subscriber = _repo.Filter<Subscriber>(e => e.userId == user!.userId).FirstOrDefault();
+            var availability = _repo.Filter<Availability>(e => e.userId == user!.userId).FirstOrDefault();
             var categories = _repo.GetAll<Category>().ToList(); // Load from database
             var cities = _repo.GetAll<City>().ToList(); // Load from database
             var subscriberCategory = _repo.Filter<UserCategory>(e => e.user_id == user!.userId).ToList();
@@ -59,6 +60,13 @@ namespace GeneralService.Controllers
                         Text = c.name
                     }).ToList(),
                     Cities = cities
+                },
+                availability = new AvailabilityModel
+                {
+                    fromDay = availability?.fromDay,
+                    toDay = availability?.toDay,
+                    fromHour = availability?.fromHour,
+                    toHour = availability?.toHour,
                 }
             };
 

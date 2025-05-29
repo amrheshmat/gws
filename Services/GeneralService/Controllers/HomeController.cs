@@ -38,6 +38,10 @@ namespace SampleMVC.Controllers
                     attachments.Add(attach);
                 }
             }
+            List<City> cities = _repo.GetAll<City>().ToList();
+            List<Category> categories = _repo.GetAll<Category>().ToList();
+            ViewBag.cities = cities;
+            ViewBag.categories = categories;
             ViewBag.blogs = blogs.OrderByDescending(e => e.creationDate).Take(10);
             ViewBag.languages = _repo.GetAll<Language>().ToList();
             return View(attachments);

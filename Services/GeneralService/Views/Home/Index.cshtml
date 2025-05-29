@@ -2,6 +2,8 @@
 @{
     var tours = ViewBag.tours;
     var blogs = ViewBag.blogs;
+    var cities = ViewBag.cities;
+    var categories = ViewBag.categories;
     var whyChooseUs = ViewBag.whyChooseUs;
     var toursAttachments = ViewBag.toursAttachments;
 }
@@ -34,34 +36,31 @@
                         </div>
                         <div class="main-search-input-item">
                             <select data-placeholder="All Categories" class="chosen-select no-search-select" style="display: none;">
-                                <option>All Statuses</option>
-                                <option>For Rent</option>
-                                <option>For Sale</option>
+                                @foreach (var category in categories)
+                                {
+                                    <option>@category.name</option>
+                                }
                             </select>
                             <div class="nice-select chosen-select no-search-select" tabindex="0">
-                                <span class="current">All Statuses</span>
+                                <span class="current">All Categories</span>
                                 <i class="fa fa-caret-down"></i>
                                 <div class="nice-select-search-box">
                                     <input type="text" class="nice-select-search" placeholder="Search...">
                                 </div>
                                 <ul class="list">
-                                    <li data-value="All Statuses" class="option selected">All Statuses</li>
-                                    <li data-value="For Rent" class="option">For Rent</li>
-                                    <li data-value="For Sale" class="option">For Sale</li>
+                                    @foreach (var category in categories)
+                                    {
+                                        <li data-value="@category.name" class="option">@category.name</li>
+                                    }
                                 </ul>
                             </div>
                         </div>
                         <div class="main-search-input-item">
                             <select data-placeholder="All Categories" class="chosen-select" style="display: none;">
-                                <option>All Cities</option>
-                                <option>New York</option>
-                                <option>London</option>
-                                <option>Paris</option>
-                                <option>Kiev</option>
-                                <option>Moscow</option>
-                                <option>Dubai</option>
-                                <option>Rome</option>
-                                <option>Beijing</option>
+                                @foreach(var city in cities)
+                                {
+                                    <option>@city.name</option>
+                                }
                             </select>
                             <div class="nice-select chosen-select no-search-select" tabindex="0">
                                 <span class="current">All Cities</span>
@@ -70,15 +69,10 @@
                                     <input type="text" class="nice-select-search" placeholder="Search...">
                                 </div>
                                 <ul class="list">
-                                    <li data-value="All Cities" class="option selected">All Cities</li>
-                                    <li data-value="New York" class="option">New York</li>
-                                    <li data-value="London" class="option">London</li>
-                                    <li data-value="Paris" class="option">Paris</li>
-                                    <li data-value="Kiev" class="option">Kiev</li>
-                                    <li data-value="Moscow" class="option">Moscow</li>
-                                    <li data-value="Dubai" class="option">Dubai</li>
-                                    <li data-value="Rome" class="option">Rome</li>
-                                    <li data-value="Beijing" class="option">Beijing</li>
+                                    @foreach (var city in cities)
+                                    {
+                                        <li data-value="@city.name" class="option">@city.name</li>
+                                    }
                                 </ul>
                             </div>
                         </div>

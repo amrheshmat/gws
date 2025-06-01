@@ -117,7 +117,7 @@
                                         Experience years
                                         <span class="dec-icon"><i class="fa fa-clock"></i> </span>
                                     </label>
-                                    <input type="text" title="Enter a number between 0 and 40" title="Enter only numbers" pattern="^(?:[0-9]|[1-3][0-9]|40)$" required asp-for="basicInfo.experience_years" class="form-control" placeholder="" />
+                                    <input type="text" title="Enter a number between 0 and 40"  pattern="^(?:[0-9]|[1-3][0-9]|40)$" required asp-for="basicInfo.experience_years" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
                                     <label>City</label>
@@ -166,7 +166,19 @@
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
                 <div class="dasboard-widget-box fl-wrap">
-                    <form asp-action="Update" method="post">
+                    <div class="row">
+                        @foreach (var package in Model.packageInfo.userPackages)
+                        {
+                            <div class="col-sm-3" style="margin: 20px;border-radius: 5px; background: linear-gradient(45deg, #3172e8, #2a5298); color: #fff; font-family: ui-serif;">
+                                <h3>@package.title</h3>
+                                <p>@package.price</p>
+                                <p>@package.duration</p>
+                                <p>@package.deliverables</p>
+                            </div>
+                        }
+                    </div>
+                    <form asp-action="Update" method="post" id="packageInfo" enctype="multipart/form-data">
+                        @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
                         <div class="custom-form">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -174,21 +186,21 @@
                                         title
                                         <span class="dec-icon"><i class="fa fa-pen-to-square"></i></span>
                                     </label>
-                                    <input asp-for="packageInfo.title" class="form-control" placeholder="" />
+                                    <input asp-for="packageInfo.title" required class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
                                     <label>
                                         price
                                         <span class="dec-icon"><i class="fa fa-money-bill-wave"></i></span>
                                     </label>
-                                    <input asp-for="packageInfo.price" class="form-control" placeholder="" />
+                                    <input asp-for="packageInfo.price" required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" pattern="^\d+(\.\d+)?$" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
                                     <label>
                                         duration <span class="labelNote">* number of hours</span>
                                         <span class="dec-icon"><i class="fa fa-clock"></i> </span>
                                     </label>
-                                    <input asp-for="packageInfo.duration" class="form-control" placeholder="" />
+                                    <input asp-for="packageInfo.duration" required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" pattern="^\d+(\.\d+)?$" class="form-control" placeholder="" />
                                 </div>
                             </div>
                             <div class="row">
@@ -196,14 +208,14 @@
                                     <label>
                                         deliverables
                                     </label>
-                                    <textarea asp-for="packageInfo.deliverables" class="form-control" placeholder=""></textarea>
+                                    <textarea asp-for="packageInfo.deliverables" required class="form-control" placeholder=""></textarea>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="col-sm-12">
                                         <label>
                                             description
                                         </label>
-                                        <textarea asp-for="packageInfo.description" class="form-control" placeholder=""></textarea>
+                                        <textarea asp-for="packageInfo.description" required class="form-control" placeholder=""></textarea>
                                     </div>
                                 </div>
 
@@ -345,7 +357,7 @@
             placeholder: "Select Categories",
             maximumSelectionLength: 5,
         });
-        // Update on change
+        // Update Basic information ...
         $('#basciInfo').on('submit', function (e) {
             e.preventDefault(); // Prevent default form submission
             showLoader();
@@ -363,6 +375,45 @@
                         "progressBar": true,
                         "positionClass": "toast-top-right", // top-left, bottom-right, etc.
                         "timeOut": "10000"
+                    };
+                    if (data.status == true) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        });
+
+        // Update package information ...
+        $('#packageInfo').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            showLoader();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/Profile/UpdatePackageInfo',
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
+                success: function (data) {
+                    hideLoader();
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "600000",          // 10 minutes
+                        "extendedTimeOut": "6000000",       // No extra time on hover
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
                     };
                     if (data.status == true) {
                         toastr.success(data.message);

@@ -35,6 +35,7 @@ namespace GeneralService.Controllers
             ViewBag.languages = _repo.GetAll<Language>().ToList();
             var user = _repo.Filter<User>(e => e.userName == currentUserModel.userName).FirstOrDefault();
             var subscriber = _repo.Filter<Subscriber>(e => e.userId == user!.userId).FirstOrDefault();
+            var userPacakges = _repo.Filter<Package>(e => e.user_id == user!.userId).ToList();
             var availability = _repo.Filter<Availability>(e => e.userId == user!.userId).FirstOrDefault();
             var categories = _repo.GetAll<Category>().ToList(); // Load from database
             var cities = _repo.GetAll<City>().ToList(); // Load from database
@@ -71,6 +72,10 @@ namespace GeneralService.Controllers
                     toDay = availability?.toDay,
                     fromHour = availability?.fromHour,
                     toHour = availability?.toHour,
+                },
+                packageInfo = new PackageModel
+                {
+                    userPackages = userPacakges,
                 }
             };
             return View(model);
@@ -124,23 +129,31 @@ namespace GeneralService.Controllers
         [HttpPost]
         public async Task<Response> UpdatePackageInfo([FromForm] ProfileModel profileModel)
         {
-
             PackageModel packageInfo = profileModel.packageInfo;
             Response response = new Response();
             response.Status = false;
             try
             {
-                Package package = new Package();
-                package.user_id = int.Parse(profileModel.userId);
-                package.title = packageInfo.title;
-                package.price = packageInfo.price;
-                package.duration = packageInfo.duration;
-                package.description = packageInfo.description;
-                package.deliverables = packageInfo.deliverables;
-                _repo.Update<Package>(package);
-                _repo.SaveChanges();
-                response.Message = "package information updated";
-                response.Status = true;
+                List<Package> packages = _repo.Filter<Package>(e => e.user_id == int.Parse(profileModel.userId)).ToList();
+                if (packages.Count <= 3)
+                {
+                    Package package = new Package();
+                    package.user_id = int.Parse(profileModel.userId);
+                    package.title = packageInfo.title;
+                    package.price = packageInfo.price;
+                    package.duration = packageInfo.duration;
+                    package.description = packageInfo.description;
+                    package.deliverables = packageInfo.deliverables;
+                    _repo.Update<Package>(package);
+                    _repo.SaveChanges();
+                    response.Message = "package information updated";
+                    response.Status = true;
+                }
+                else
+                {
+                    response.Message = "You already have 3 package";
+                    response.Status = false;
+                }
             }
             catch (Exception ex)
             {

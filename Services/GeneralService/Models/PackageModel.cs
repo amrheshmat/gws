@@ -1,3 +1,4 @@
+using MWS.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace SampleMVC.Models
@@ -14,5 +15,7 @@ namespace SampleMVC.Models
         public string? duration { get; set; }
         [Required(ErrorMessage = "deliverables is required")]
         public string? deliverables { get; set; }
+        public List<Package>? userPackages { get; set; }      // To populate the dropdown
+
     }
 }

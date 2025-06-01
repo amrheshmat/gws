@@ -2,6 +2,7 @@
 @model ProfileModel
 @{
     ViewBag.WeekDayNames = Enum.GetNames(typeof(WeekDays)).ToList();
+    var userId = ViewBag.userId;
 }
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
@@ -85,9 +86,11 @@
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
                 <div class="dasboard-widget-box fl-wrap">
-                    <form asp-action="Update" method="post">
+                    <form asp-action="Update" method="post" id="basciInfo" enctype="multipart/form-data">
                         <div class="custom-form">
                             <div class="row">
+                                <input asp-for="userId" type="hidden" class="form-control"/>
+                                @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
                                 <div class="col-sm-4">
                                     <label>
                                         Full name
@@ -110,8 +113,15 @@
                                     <input asp-for="basicInfo.Phone" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-4">
+                                    <label>
+                                        Experience years
+                                        <span class="dec-icon"><i class="fa fa-clock"></i> </span>
+                                    </label>
+                                    <input type="text" title="Enter a number between 0 and 40" title="Enter only numbers" pattern="^(?:[0-9]|[1-3][0-9]|40)$" required asp-for="basicInfo.experience_years" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-sm-4">
                                     <label>City</label>
-                                    <select id="citySelect" name="City" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
+                                    <select id="citySelect" asp-for="basicInfo.City" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
                                         <option value="" disabled>Select a City</option>
                                         @foreach (var city in Model.basicInfo.Cities)
                                         {
@@ -131,8 +141,14 @@
                                     <select asp-for="basicInfo.SelectedCategories" asp-items="Model.basicInfo.AvailableCategories" id="multiSelect" required multiple class="form-control multi-select">
                                     </select>
                                 </div>
+                                <div class="col-sm-6">
+                                        <label>
+                                            Bio
+                                        </label>
+                                    <textarea style="height: 100px;" asp-for="basicInfo.bio" class="form-control" placeholder=""></textarea>
+                                </div>
                                 <div class="col-sm-4">
-                                    <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                    <button id="basciInfoBtn" style="width: 100%;margin-top:15%;" type="submit" class="btn btn-primary">
                                         Update
                                     </button>
                                 </div>
@@ -194,7 +210,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6" style="margin: auto;">
-                                    <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                    <button  style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
                                         Update
                                     </button>
                                 </div>
@@ -314,9 +330,15 @@
     </div>
     <!-- content end -->
 </div>
+
 <!-- Initialize Select2 AFTER all scripts have loaded -->
 <script>
-   
+    function showLoader() {
+        $("#nb-global-spinner").css("display", "flex");
+    }
+    function hideLoader() {
+        $("#nb-global-spinner").css("display", "none");
+    }
     $(document).ready(function () {
         // This will now work if Select2 loaded correctly
         $('.multi-select').select2({
@@ -324,5 +346,31 @@
             maximumSelectionLength: 5,
         });
         // Update on change
+        $('#basciInfo').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            showLoader();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/Profile/UpdateBasicInfo',
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
+                success: function (data) {
+                    hideLoader();
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right", // top-left, bottom-right, etc.
+                        "timeOut": "10000"
+                    };
+                    if (data.status == true) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        });
     });
 </script>

@@ -61,6 +61,10 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="~/css/styles.css">
     <link rel="stylesheet" href="~/css/custom-them.min.css">
     <link rel="stylesheet" href="~/css/dashboard-style.css">
@@ -141,10 +145,18 @@
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
             top: -20px !important;
         }
+
     </style>
 </head>
 <body>
-
+    <div id="nb-global-spinner" class="spinner">
+        <div class="blob blob-0"></div>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+    </div>
     <!-- Loader with Software Demo Text -->
     <div id="loader">
         <div class="loader-text">

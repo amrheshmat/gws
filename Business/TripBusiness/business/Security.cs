@@ -54,7 +54,7 @@ namespace TripBusiness.business
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 //token data ...
-                Subject = new ClaimsIdentity(new[] { new Claim("Name", user!.userName!.ToString()),new Claim("Status", user!.status!),
+                Subject = new ClaimsIdentity(new[] { new Claim("UserId", user!.userId!.ToString()), new Claim("Name", user!.userName!.ToString()),new Claim("Status", user!.status!),
                     new Claim("roleId", user!.roleId!.ToString() ?? "") }),
 
                 // generate token that is valid for 7 days ...
@@ -66,6 +66,7 @@ namespace TripBusiness.business
             return new UserDTO
             {
                 userName = user.userName,
+                userId = user.userId.ToString(),
                 status = user.status,
                 mobile = user.mobile,
                 token = tokenHandler.WriteToken(token),

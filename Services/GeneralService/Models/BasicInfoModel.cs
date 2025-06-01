@@ -12,6 +12,8 @@ namespace SampleMVC.Models
         public string? Email { get; set; }
         [Required(ErrorMessage = "Mobile is required")]
         public string? Phone { get; set; }
+        public int? experience_years { get; set; }
+        public string? bio { get; set; }
         public string? City { get; set; }  // For binding selected values
         public List<City>? Cities { get; set; }
         public List<string>? SelectedCategories { get; set; }      // To populate the dropdown

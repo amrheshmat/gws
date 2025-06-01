@@ -38,21 +38,25 @@ namespace GeneralService.Controllers
             var availability = _repo.Filter<Availability>(e => e.userId == user!.userId).FirstOrDefault();
             var categories = _repo.GetAll<Category>().ToList(); // Load from database
             var cities = _repo.GetAll<City>().ToList(); // Load from database
-            var subscriberCategory = _repo.Filter<UserCategory>(e => e.user_id == user!.userId).ToList();
+            var subscriberCategories = _repo.Filter<UserCategory>(e => e.user_id == user!.userId).ToList();
             List<string> categoriesList = new List<string>();
-            foreach (var category in subscriberCategory)
+            foreach (var subscriberCategory in subscriberCategories)
             {
-                string categoryName = categories.Where(e => e.id == category.id).FirstOrDefault().id.ToString();
+                var category = categories.Where(e => e.id == subscriberCategory.category_id).FirstOrDefault();
+                string categoryName = category.id.ToString();
                 categoriesList.Add(categoryName);
             }
             var model = new ProfileModel
             {
+                userId = currentUserModel?.userId,
                 basicInfo = new BasicInfoModel
                 {
                     FullName = user!.fullName,
                     Email = user.email,
                     Phone = user.mobile,
                     City = subscriber.city,
+                    bio = subscriber.bio,
+                    experience_years = subscriber.experience_years,
                     SelectedCategories = categoriesList,
                     AvailableCategories = categories.Select(c => new SelectListItem
                     {
@@ -69,8 +73,81 @@ namespace GeneralService.Controllers
                     toHour = availability?.toHour,
                 }
             };
-
             return View(model);
+        }
+        [HttpPost]
+        public async Task<Response> UpdateBasicInfo([FromForm] ProfileModel profileModel)
+        {
+
+            BasicInfoModel basicInfo = profileModel.basicInfo;
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                User user = _repo.Filter<User>(e => e.userId == decimal.Parse(profileModel.userId)).FirstOrDefault();
+                user.email = basicInfo.Email;
+                user.fullName = basicInfo.FullName;
+                user.mobile = basicInfo.Phone;
+                _repo.Update<User>(user);
+                _repo.SaveChanges();
+                Subscriber subscriber = _repo.Filter<Subscriber>(e => e.userId == decimal.Parse(profileModel.userId)).FirstOrDefault();
+                subscriber.city = basicInfo.City;
+                subscriber.experience_years = basicInfo.experience_years;
+                subscriber.bio = basicInfo.bio;
+                _repo.Update<Subscriber>(subscriber);
+                _repo.SaveChanges();
+                List<UserCategory> oldUserCategory = _repo.Filter<UserCategory>(e => e.user_id == user.userId).ToList();
+                foreach (UserCategory category in oldUserCategory)
+                {
+                    _repo.Delete<UserCategory>(category);
+                }
+                _repo.SaveChanges();
+                foreach (var category in basicInfo.SelectedCategories)
+                {
+                    UserCategory userCategory = new UserCategory();
+                    userCategory.user_id = int.Parse(profileModel.userId);
+                    userCategory.category_id = int.Parse(category);
+                    _repo.Create<UserCategory>(userCategory);
+                    _repo.SaveChanges();
+                }
+                response.Message = "Basic information updated";
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
+        }
+
+        [HttpPost]
+        public async Task<Response> UpdatePackageInfo([FromForm] ProfileModel profileModel)
+        {
+
+            PackageModel packageInfo = profileModel.packageInfo;
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                Package package = new Package();
+                package.user_id = int.Parse(profileModel.userId);
+                package.title = packageInfo.title;
+                package.price = packageInfo.price;
+                package.duration = packageInfo.duration;
+                package.description = packageInfo.description;
+                package.deliverables = packageInfo.deliverables;
+                _repo.Update<Package>(package);
+                _repo.SaveChanges();
+                response.Message = "package information updated";
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
         }
     }
 }

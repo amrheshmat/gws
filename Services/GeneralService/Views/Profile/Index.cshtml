@@ -59,6 +59,10 @@
     transform: translateY(0);
     max-height: 500px; /* Must be large enough to fit the form */
 }
+
+.photoUpload-files{
+    display:none;
+}
 </style>
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
@@ -324,33 +328,23 @@
                         <div class="clearfix"></div>
                         <div class="listsearch-input-item fl-wrap">
                             <form>
-                                <div class="fuzone">
-                                    <div class="fu-text">
-                                        <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
-                                        <div class="photoUpload-files fl-wrap"></div>
-                                    </div>
-                                    <input type="file" id="fileInput" class="upload" multiple="">
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6" style="margin: auto;">
-                                        <button id="uploadBtn" style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
-                                            upload
-                                        </button>
-                                    </div>
-                                </div>
+                                
                             </form>
                             <form id="uploadForm" asp-action="Upload" asp-controller="Tour" method="post" enctype="multipart/form-data">
                                 <div id="imagePreview">
                                 </div>
                                 <div id="selectedImage">
                                 </div>
-                                <div class="row mt-2" style="border: 1px solid #ebe5e5;border-radius: 5px;">
+                                <div class="row mt-2" style="border-radius: 5px;">
                                     <div class="col-12" id="showFiles">
                                     </div>
-                                    <div class="col-12">
-                                        <input type="file" id="files" name="files" class="form-control" multiple hidden />
-                                        <i class="fa fa-upload" id="uploadIcon" style="cursor: pointer;font-size: 25px; margin: 10px 50%;"></i>
+                                </div>
+                                <div class="fuzone" id="uploadIcon">
+                                    <div class="fu-text">
+                                        <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
+                                        <div class="photoUpload-files fl-wrap"></div>
                                     </div>
+                                    <input type="file" id="files" name="files" class="upload" multiple="">
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-12">
@@ -549,7 +543,6 @@
     });
 </script>
 <script>
-
     var validateFile = [];
     $(document).ready(function () {
         $("#uploadIcon").on("click", function () {
@@ -558,8 +551,6 @@
         validateFile = [];
         $("#files").on("change", function () {
             const [file] = files.files;
-            alert(files.files.length);
-
             if (file) {
                 for (var i = 0; i < files.files.length; i++) {
                     validateFile.push(files.files[i]);
@@ -580,10 +571,10 @@
             }
         }
         $('#uploadForm').on('submit', function (e) {
+            showLoader();
             e.preventDefault(); // Prevent the default form submission
             var formData = new FormData(this); // Create a FormData object
             formData.delete("files");
-            alert(validateFile.length);
             for (var i = 0; i < validateFile.length; i++) {
                 formData.append(i, validateFile[i]);
             }
@@ -593,17 +584,46 @@
                 data: formData,
                 contentType: false, // Required for FormData
                 processData: false, // Required for FormData
-                success: function (response) {
+                success: function (data) {
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "600000", 
+                        "extendedTimeOut": "6000000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    if (data.status == true) {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                            hideLoader();
+                        }, 1500);
+                    } else {
+                        toastr.error(data.message);
+                        hideLoader();
+                    }
+                      
                 },
                 error: function (xhr, status, error) {
+                    toastr.error(data.message);
+                    hideLoader();
                 }
             });
         });
     });
     function drawFiles() {
         $("#imagePreview").children().remove();
-        debugger;
-        if (validateFile.length > 0) {
+        if(validateFile.length > 0) {
             for (var i = 0; i < validateFile.length; i++) {
                 var image = validateFile[i];
                 var id = 'image_' + i;
@@ -615,15 +635,12 @@
         console.log(validateFile);
     }
     function deleteFile(id) {
-        debugger;
         validateFile.splice(id, 1);
         drawFiles();
     }
 </script>
 <script>
-
     let currentCard = null;
-
     document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             showLoader();
@@ -638,15 +655,12 @@
             document.getElementById('packageDeliverables').value = this.getAttribute('data-deliverables');
             document.getElementById('packageDescription').value = this.getAttribute('data-description');
 
-
             // Show the form with smooth animation
             const formContainer = document.querySelector('.form-container2');
-            debugger;
             formContainer.classList.add('show');
             setTimeout(function () {
                 hideLoader();
             }, 500);
-            // After updating card
         });
     });
     document.addEventListener('DOMContentLoaded', function () {

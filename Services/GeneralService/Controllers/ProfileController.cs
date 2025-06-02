@@ -16,11 +16,13 @@ namespace GeneralService.Controllers
         private IRepository _repo;
         private ILocalizationService _localizationService;
         private ISecurity _security;
-        public ProfileController(ILogger<ProfileController> logger, IRepositoryFactory repo, ISecurity security, ILanguageService languageService, ILocalizationService localizationService) : base(languageService, localizationService)
+        private IWebHostEnvironment _env;
+        public ProfileController(IWebHostEnvironment env, ILogger<ProfileController> logger, IRepositoryFactory repo, ISecurity security, ILanguageService languageService, ILocalizationService localizationService) : base(languageService, localizationService)
         {
             _logger = logger;
             _repo = repo.Create("AGGRDB");
             _security = security;
+            _env = env;
             _localizationService = localizationService;
         }
         public async Task<IActionResult> Index()
@@ -205,27 +207,68 @@ namespace GeneralService.Controllers
             }
             return response;
         }
-
-        [HttpPost("Profile/upload")]
-        public async Task<IActionResult> UploadFiles(List<IFormFile> files)
+        private void Upload(int userId, IFormFileCollection files)
         {
-            var files2 = Request.Form.Files;
-            if (files == null || files.Count == 0)
-                return BadRequest("No files uploaded.");
-
-            foreach (var file in files)
+            if (ModelState.IsValid)
             {
-                if (file.Length > 0)
-                {
-                    var filePath = Path.Combine("wwwroot\\Uploads", file.FileName);
+                List<Attachment> attachments = _repo.Filter<Attachment>(e => e.elementId == userId && e.type == "Portofolio").ToList();
+                _repo.context.RemoveRange(attachments);
+                _repo.SaveChanges();
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+
+                //create folder if not exist
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                //get file extension
+                foreach (var file in files)
+                {
+                    FileInfo fileInfo = new FileInfo(file.FileName);
+                    var myUniqueFileName = string.Format(@"{0}", Guid.NewGuid());
+                    Attachment blogAttachment = new Attachment();
+                    blogAttachment.type = "blog";
+                    blogAttachment.elementId = userId;
+                    blogAttachment.attachmentName = file.Name;
+                    blogAttachment.attachmentPath = myUniqueFileName + fileInfo.Extension;
+                    _repo.Create(blogAttachment);
+                    _repo.SaveChanges();
+                    string fileName = myUniqueFileName + fileInfo.Extension;
+                    string fileNameWithPath = Path.Combine(path, fileName);
+
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                     {
-                        await file.CopyToAsync(stream);
+                        file.CopyTo(stream);
                     }
                 }
             }
-            return Ok(new { Message = "Files uploaded successfully!" });
+        }
+        [HttpPost("Profile/upload")]
+        public async Task<Response> UploadFiles()
+        {
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                var currentUser = HttpContext.Session.GetString("currentUser");
+                UserDTO currentUserModel = JsonConvert.DeserializeObject<UserDTO>(currentUser);
+                var files = Request.Form.Files;
+                if (files == null || files.Count == 0)
+                {
+                    response.Status = false;
+                    response.Message = "No files uploaded";
+                    return response;
+                }
+                Upload(int.Parse(currentUserModel.userId), files);
+                response.Status = true;
+                response.Message = "Files uploaded successfully!";
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
         }
     }
 }

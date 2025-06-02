@@ -127,18 +127,17 @@ namespace GeneralService.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> UpdatePackageInfo([FromForm] ProfileModel profileModel)
+        public async Task<Response> AddUpdatePackageInfo([FromForm] ProfileModel profileModel)
         {
             PackageModel packageInfo = profileModel.packageInfo;
             Response response = new Response();
             response.Status = false;
             try
             {
-                List<Package> packages = _repo.Filter<Package>(e => e.user_id == int.Parse(profileModel.userId)).ToList();
-                if (packages.Count <= 3)
+                if (packageInfo != null && packageInfo.id != null)
                 {
-                    Package package = new Package();
-                    package.user_id = int.Parse(profileModel.userId);
+                    Package package = _repo.Filter<Package>(e => e.user_id == int.Parse(profileModel.userId)
+                    && e.id == int.Parse(packageInfo.id)).FirstOrDefault();
                     package.title = packageInfo.title;
                     package.price = packageInfo.price;
                     package.duration = packageInfo.duration;
@@ -146,13 +145,32 @@ namespace GeneralService.Controllers
                     package.deliverables = packageInfo.deliverables;
                     _repo.Update<Package>(package);
                     _repo.SaveChanges();
-                    response.Message = "package information updated";
+                    response.Message = "Package information updated";
                     response.Status = true;
                 }
                 else
                 {
-                    response.Message = "You already have 3 package";
-                    response.Status = false;
+
+                    List<Package> packages = _repo.Filter<Package>(e => e.user_id == int.Parse(profileModel.userId)).ToList();
+                    if (packages.Count < 3)
+                    {
+                        Package package = new Package();
+                        package.user_id = int.Parse(profileModel.userId);
+                        package.title = packageInfo.title;
+                        package.price = packageInfo.price;
+                        package.duration = packageInfo.duration;
+                        package.description = packageInfo.description;
+                        package.deliverables = packageInfo.deliverables;
+                        _repo.Create<Package>(package);
+                        _repo.SaveChanges();
+                        response.Message = "new package created";
+                        response.Status = true;
+                    }
+                    else
+                    {
+                        response.Message = "You already have 3 package";
+                        response.Status = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -161,6 +179,53 @@ namespace GeneralService.Controllers
                 response.Message = "an error occurred";
             }
             return response;
+        }
+
+        [HttpGet]
+        [Route("Profile/DeletePackage/{packageId}")]
+        public async Task<Response> DeletePackage(int packageId)
+        {
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                if (packageId != null)
+                {
+                    Package package = _repo.Filter<Package>(e => e.id == packageId).FirstOrDefault();
+                    _repo.Delete<Package>(package);
+                    _repo.SaveChanges();
+                    response.Message = "Package deleted";
+                    response.Status = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
+        }
+
+        [HttpPost("Profile/upload")]
+        public async Task<IActionResult> UploadFiles(List<IFormFile> files)
+        {
+            var files2 = Request.Form.Files;
+            if (files == null || files.Count == 0)
+                return BadRequest("No files uploaded.");
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var filePath = Path.Combine("wwwroot\\Uploads", file.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
+            }
+            return Ok(new { Message = "Files uploaded successfully!" });
         }
     }
 }

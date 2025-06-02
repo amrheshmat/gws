@@ -4,6 +4,62 @@
     ViewBag.WeekDayNames = Enum.GetNames(typeof(WeekDays)).ToList();
     var userId = ViewBag.userId;
 }
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+<style>
+.card {
+    background-color: #292e3a;
+    border: 1px solid #383839;
+    position: relative;
+    border-radius:5px;
+}
+
+.card-title {
+    color: #ffffff;
+}
+
+.card-subtitle {
+    color: #bbb;
+}
+
+.icon-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.icon-buttons i {
+    color: #bbb;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.3s;
+}
+
+.icon-buttons i:hover {
+    color: #fff;
+}
+
+/* Initially hidden */
+.form-container2 {
+    display: none;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    background:none;
+    margin-top:30px;
+    max-height: 0;
+    transform: translateY(-10px);
+    transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* When active */
+.form-container2.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px; /* Must be large enough to fit the form */
+}
+</style>
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
     <div class="dashbard-menu-overlay" style="display: none;"></div>
@@ -166,69 +222,95 @@
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
                 <div class="dasboard-widget-box fl-wrap">
-                    <div class="row">
+                    <div class="row" style="border-bottom: 1px solid #282727;">
+                        <h4 style="color: #fff; font-family: ui-serif; font-size: 25px;">current pacakges</h4>
                         @foreach (var package in Model.packageInfo.userPackages)
                         {
-                            <div class="col-sm-3" style="margin: 20px;border-radius: 5px; background: linear-gradient(45deg, #3172e8, #2a5298); color: #fff; font-family: ui-serif;">
-                                <h3>@package.title</h3>
-                                <p>@package.price</p>
-                                <p>@package.duration</p>
-                                <p>@package.deliverables</p>
+                            <div class="col-sm-3" style="margin: 20px;border-radius: 5px;  color: #fff; font-family: ui-serif;">
+                                <div class="card p-3 package-card">
+                                    <div class="icon-buttons">
+                                        <i class="fas fa-pen-to-square edit-btn"
+                                           data-packageId="@package.id"
+                                           data-title="@package.title"
+                                           data-price="@package.price"
+                                           data-duration="@package.duration"
+                                           data-deliverables="@package.deliverables"
+                                           data-description="@package.description"
+                                           title="Edit"></i>
+                                        <i data-packageId="@package.id" class="fas fa-trash delete-btn" title="Delete"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="card-title">@package.title</h5>
+                                        <h6 class="card-subtitle mb-2">@package.price</h6>
+                                        <p class="card-text">@package.description</p>
+                                    </div>
+                                </div>  
+                            </div>
+                        }
+                        @if (Model.packageInfo.userPackages.Count < 3)
+                        {
+                            <div class="col-sm-3" style="margin: auto;">
+                                <button style="width: 100%;margin-top: 30px;" type="submit" class="addBtn btn btn-primary">
+                                    Add Package
+                                </button>
                             </div>
                         }
                     </div>
-                    <form asp-action="Update" method="post" id="packageInfo" enctype="multipart/form-data">
-                        @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
-                        <div class="custom-form">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <label>
-                                        title
-                                        <span class="dec-icon"><i class="fa fa-pen-to-square"></i></span>
-                                    </label>
-                                    <input asp-for="packageInfo.title" required class="form-control" placeholder="" />
-                                </div>
-                                <div class="col-sm-4">
-                                    <label>
-                                        price
-                                        <span class="dec-icon"><i class="fa fa-money-bill-wave"></i></span>
-                                    </label>
-                                    <input asp-for="packageInfo.price" required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" pattern="^\d+(\.\d+)?$" class="form-control" placeholder="" />
-                                </div>
-                                <div class="col-sm-4">
-                                    <label>
-                                        duration <span class="labelNote">* number of hours</span>
-                                        <span class="dec-icon"><i class="fa fa-clock"></i> </span>
-                                    </label>
-                                    <input asp-for="packageInfo.duration" required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" pattern="^\d+(\.\d+)?$" class="form-control" placeholder="" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <label>
-                                        deliverables
-                                    </label>
-                                    <textarea asp-for="packageInfo.deliverables" required class="form-control" placeholder=""></textarea>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="col-sm-12">
+                    <div class="form-container2" sy>
+                        <form asp-action="Update" method="post" id="packageInfo" enctype="multipart/form-data">
+                            @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
+                            @Html.TextBoxFor(m => m.packageInfo.id, new { @id = "packageId", @class = "form-control", style = "display:none" })
+                            <div class="custom-form">
+                                <div class="row">
+                                    <div class="col-sm-4">
                                         <label>
-                                            description
+                                            title
+                                            <span class="dec-icon"><i class="fa fa-pen-to-square"></i></span>
                                         </label>
-                                        <textarea asp-for="packageInfo.description" required class="form-control" placeholder=""></textarea>
+                                        <input id="packageTitle" asp-for="packageInfo.title" required class="form-control" placeholder="" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            price
+                                            <span class="dec-icon"><i class="fa fa-money-bill-wave"></i></span>
+                                        </label>
+                                        <input id="packagePrice" asp-for="packageInfo.price" required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" pattern="^\d+(\.\d+)?$" class="form-control" placeholder="" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            duration <span class="labelNote">* number of hours</span>
+                                            <span class="dec-icon"><i class="fa fa-clock"></i> </span>
+                                        </label>
+                                        <input id="packageDuration" asp-for="packageInfo.duration" required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" pattern="^\d+(\.\d+)?$" class="form-control" placeholder="" />
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>
+                                            deliverables
+                                        </label>
+                                        <textarea id="packageDeliverables" asp-for="packageInfo.deliverables" required class="form-control" placeholder=""></textarea>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12">
+                                            <label>
+                                                description
+                                            </label>
+                                            <textarea id="packageDescription" asp-for="packageInfo.description" required class="form-control" placeholder=""></textarea>
+                                        </div>
+                                    </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6" style="margin: auto;">
-                                    <button  style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
-                                        Update
-                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6" style="margin: auto;">
+                                        <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                            Save
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
                 <!-- dasboard-widget-box  end-->
                 <!-- dasboard-widget-title -->
@@ -247,13 +329,32 @@
                                         <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
                                         <div class="photoUpload-files fl-wrap"></div>
                                     </div>
-                                    <input type="file" class="upload" multiple="">
+                                    <input type="file" id="fileInput" class="upload" multiple="">
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6" style="margin: auto;">
-                                        <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
+                                        <button id="uploadBtn" style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
                                             upload
                                         </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <form id="uploadForm" asp-action="Upload" asp-controller="Tour" method="post" enctype="multipart/form-data">
+                                <div id="imagePreview">
+                                </div>
+                                <div id="selectedImage">
+                                </div>
+                                <div class="row mt-2" style="border: 1px solid #ebe5e5;border-radius: 5px;">
+                                    <div class="col-12" id="showFiles">
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="file" id="files" name="files" class="form-control" multiple hidden />
+                                        <i class="fa fa-upload" id="uploadIcon" style="cursor: pointer;font-size: 25px; margin: 10px 50%;"></i>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <button id="submit" type="submit" class="btn btn-success">Upload</button>
                                     </div>
                                 </div>
                             </form>
@@ -342,7 +443,6 @@
     </div>
     <!-- content end -->
 </div>
-
 <!-- Initialize Select2 AFTER all scripts have loaded -->
 <script>
     function showLoader() {
@@ -352,6 +452,20 @@
         $("#nb-global-spinner").css("display", "none");
     }
     $(document).ready(function () {
+        //add new package
+        $(".addBtn").on("click", function () {
+            showLoader();
+            document.getElementById('packageId').value = null;
+            document.getElementById('packageTitle').value = null;
+            document.getElementById('packagePrice').value = null;
+            document.getElementById('packageDuration').value = null;
+            document.getElementById('packageDeliverables').value = null;
+            document.getElementById('packageDescription').value = null;
+            $(".form-container2").addClass("show");
+            setTimeout(function () {
+                hideLoader();
+            }, 200);
+        });
         // This will now work if Select2 loaded correctly
         $('.multi-select').select2({
             placeholder: "Select Categories",
@@ -369,7 +483,6 @@
                 contentType: false, // Required for FormData
                 processData: false, // Required for FormData
                 success: function (data) {
-                    hideLoader();
                     toastr.options = {
                         "closeButton": true,
                         "progressBar": true,
@@ -378,9 +491,15 @@
                     };
                     if (data.status == true) {
                         toastr.success(data.message);
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                            hideLoader();
+                        }, 1500);
                     } else {
+                        hideLoader();
                         toastr.error(data.message);
                     }
+
                 }
             });
         });
@@ -391,13 +510,12 @@
             showLoader();
             var formData = new FormData(this);
             $.ajax({
-                url: '/Profile/UpdatePackageInfo',
+                url: '/Profile/AddUpdatePackageInfo',
                 type: 'POST',
                 data: formData,
                 contentType: false, // Required for FormData
                 processData: false, // Required for FormData
                 success: function (data) {
-                    hideLoader();
                     toastr.options = {
                         "closeButton": true,
                         "debug": false,
@@ -417,10 +535,178 @@
                     };
                     if (data.status == true) {
                         toastr.success(data.message);
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                            hideLoader();
+                        }, 1500);
                     } else {
+                        hideLoader();
                         toastr.error(data.message);
                     }
                 }
+            });
+        });
+    });
+</script>
+<script>
+
+    var validateFile = [];
+    $(document).ready(function () {
+        $("#uploadIcon").on("click", function () {
+            $("#files").click();
+        });
+        validateFile = [];
+        $("#files").on("change", function () {
+            const [file] = files.files;
+            alert(files.files.length);
+
+            if (file) {
+                for (var i = 0; i < files.files.length; i++) {
+                    validateFile.push(files.files[i]);
+                }
+            }
+            drawFiles();
+        });
+        $(document).on('click', '.delete', function () {
+            var id = $(this).attr('id');
+            validateFile.splice(id, 1);
+            updatefiles();
+        });
+        function updatefiles(result) {
+            document.getElementById('showFiles').innerHTML = "";
+            for (var i = 0; i < validateFile.length; i++) {
+                var fileName = validateFile[i].name;
+                $('#showFiles').append('<div class="row" style="background: #eee;padding: 10px 13px;border-radius: 5px;margin: 7px 0px;" class="name"><span class="col-11">' + fileName + '</span> <span class="col-1"><i class="fa fa-trash delete" id="' + i + '"></i></span></div>');
+            }
+        }
+        $('#uploadForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            var formData = new FormData(this); // Create a FormData object
+            formData.delete("files");
+            alert(validateFile.length);
+            for (var i = 0; i < validateFile.length; i++) {
+                formData.append(i, validateFile[i]);
+            }
+            $.ajax({
+                url: '/Profile/upload', // Your API endpoint
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
+                success: function (response) {
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        });
+    });
+    function drawFiles() {
+        $("#imagePreview").children().remove();
+        debugger;
+        if (validateFile.length > 0) {
+            for (var i = 0; i < validateFile.length; i++) {
+                var image = validateFile[i];
+                var id = 'image_' + i;
+                $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
+                $("#imagePreview").append('<img style="width:100px;height:100px;" id="' + id + '"/>');
+                $("#" + id).attr("src", URL.createObjectURL(image));
+            }
+        }
+        console.log(validateFile);
+    }
+    function deleteFile(id) {
+        debugger;
+        validateFile.splice(id, 1);
+        drawFiles();
+    }
+</script>
+<script>
+
+    let currentCard = null;
+
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            showLoader();
+            const card = this.closest('.package-card');
+            currentCard = card;
+
+            // Fill form
+            document.getElementById('packageId').value = this.getAttribute('data-packageId');
+            document.getElementById('packageTitle').value = this.getAttribute('data-title');
+            document.getElementById('packagePrice').value = this.getAttribute('data-price');
+            document.getElementById('packageDuration').value = this.getAttribute('data-duration');
+            document.getElementById('packageDeliverables').value = this.getAttribute('data-deliverables');
+            document.getElementById('packageDescription').value = this.getAttribute('data-description');
+
+
+            // Show the form with smooth animation
+            const formContainer = document.querySelector('.form-container2');
+            debugger;
+            formContainer.classList.add('show');
+            setTimeout(function () {
+                hideLoader();
+            }, 500);
+            // After updating card
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+     
+        // Handle delete button
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                var packageId = this.getAttribute('data-packageId');
+
+                const card = this.closest('.package-card');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will remove the package from the list.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!',
+                    background: '#1e1e1e',
+                    color: '#f1f1f1'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        showLoader();
+                        $.ajax({
+                            url: "/Profile/DeletePackage/" + packageId,
+                            type: "GET",
+                            cache: false,
+                            success: function (data) {
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": true,
+                                    "positionClass": "toast-top-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "600000",          // 10 minutes
+                                    "extendedTimeOut": "6000000",       // No extra time on hover
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                if (data.status == true) {
+                                    card.remove();
+                                    toastr.success(data.message);
+                                    setTimeout(function () {
+                                        location.href = document.referrer;
+                                        hideLoader();
+                                    }, 1500);
+                                } else {
+                                    toastr.error(data.message);
+                                    hideLoader();
+                                }
+                            }
+                        });
+                    }
+                });
             });
         });
     });

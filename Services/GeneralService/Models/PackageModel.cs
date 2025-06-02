@@ -7,6 +7,7 @@ namespace SampleMVC.Models
     {
         [Required(ErrorMessage = "title is required")]
         public string? title { get; set; }
+        public string? id { get; set; }
         [Required(ErrorMessage = "description is required")]
         public string? description { get; set; }
         [Required(ErrorMessage = "price is required")]

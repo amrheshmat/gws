@@ -59,10 +59,12 @@
     transform: translateY(0);
     max-height: 500px; /* Must be large enough to fit the form */
 }
-
-.photoUpload-files{
-    display:none;
+.labelNote{
+    color: rgba(255, 255, 255, 0.7);
 }
+/* .photoUpload-files{
+    display:none;
+} */
 </style>
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
@@ -209,7 +211,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <button id="basciInfoBtn" style="width: 100%;margin-top:15%;" type="submit" class="btn btn-primary">
-                                        Update
+                                        Save
                                     </button>
                                 </div>
                             </div>
@@ -319,7 +321,7 @@
                 <!-- dasboard-widget-box  end-->
                 <!-- dasboard-widget-title -->
                 <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec3">
-                    <h5><i class="fas fa-image"></i>Portofolio</h5>
+                    <h5><i class="fas fa-image"></i>Portofolio <span class="labelNote"> * Only 5 files are allowed!</span></h5>
                 </div>
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
@@ -327,11 +329,9 @@
                     <div class="custom-form">
                         <div class="clearfix"></div>
                         <div class="listsearch-input-item fl-wrap">
-                            <form>
-                                
-                            </form>
                             <form id="uploadForm" asp-action="Upload" asp-controller="Tour" method="post" enctype="multipart/form-data">
-                                <div id="imagePreview">
+                                @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
+                                <div id="imagePreview" style="border-bottom: 1px solid #252424; margin-bottom: 25px; padding-bottom: 20px;">
                                 </div>
                                 <div id="selectedImage">
                                 </div>
@@ -339,16 +339,18 @@
                                     <div class="col-12" id="showFiles">
                                     </div>
                                 </div>
-                                <div class="fuzone" id="uploadIcon">
-                                    <div class="fu-text">
-                                        <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
-                                        <div class="photoUpload-files fl-wrap"></div>
+                                <div id="uploadSection">
+                                    <div class="fuzone" id="uploadIcon">
+                                        <div class="fu-text">
+                                            <span><i class="fa fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
+                                            <div class="photoUpload-files fl-wrap"></div>
+                                        </div>
+                                        <input type="file" id="files" name="files" class="upload" multiple="">
                                     </div>
-                                    <input type="file" id="files" name="files" class="upload" multiple="">
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-12">
-                                        <button id="submit" type="submit" class="btn btn-success">Upload</button>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <button disabled id="submitFiles" type="submit" class="btn btn-success">Save</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -446,6 +448,7 @@
         $("#nb-global-spinner").css("display", "none");
     }
     $(document).ready(function () {
+        getAttachment($("#userId").val());
         //add new package
         $(".addBtn").on("click", function () {
             showLoader();
@@ -556,7 +559,9 @@
                     validateFile.push(files.files[i]);
                 }
             }
-            drawFiles();
+            $(".photoUpload-files").show();
+            $('#submitFiles').prop('disabled', false);
+           // drawFiles();
         });
         $(document).on('click', '.delete', function () {
             var id = $(this).attr('id');
@@ -603,9 +608,10 @@
                         "hideMethod": "fadeOut"
                     };
                     if (data.status == true) {
+                        getAttachment($("#userId").val());
                         toastr.success(data.message);
                         setTimeout(function () {
-                            location.href = document.referrer;
+                            //location.href = document.referrer;
                             hideLoader();
                         }, 1500);
                     } else {
@@ -622,22 +628,130 @@
         });
     });
     function drawFiles() {
+        debugger;
         $("#imagePreview").children().remove();
         if(validateFile.length > 0) {
             for (var i = 0; i < validateFile.length; i++) {
                 var image = validateFile[i];
                 var id = 'image_' + i;
-                $("#imagePreview").append('<span style="cursor: pointer;color:#c30707;position: absolute;" onclick="deleteFile(' + i + ')"><i class="fa fa-trash"></i></span>');
-                $("#imagePreview").append('<img style="width:100px;height:100px;" id="' + id + '"/>');
-                $("#" + id).attr("src", URL.createObjectURL(image));
+                $("#imagePreview").append(
+                    '<div style="position: relative; display: inline-block; margin: 5px 10px;">' +
+                    '<span style="font-size: 20px;cursor: pointer; color: #0095ff; position: absolute; top: 0; right: 0;" onclick="deleteFile(' + i + ')">' +
+                    '<i class="fa fa-trash"></i>' +
+                    '</span>' +
+                    '<img style="width:200px;height:200px;" id="' + id + '"/>' +
+                    '</div>'
+                );
+               $("#" + id).attr("src", URL.createObjectURL(image));
             }
         }
-        console.log(validateFile);
     }
     function deleteFile(id) {
-        validateFile.splice(id, 1);
-        drawFiles();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This will remove the image from portofolio.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            background: '#1e1e1e',
+            color: '#f1f1f1'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                validateFile.splice(id, 1);
+                debugger;
+                showLoader();
+                var formData = new FormData(); 
+                formData.delete("files");
+                for (var i = 0; i < validateFile.length; i++) {
+                    formData.append(i, validateFile[i]);
+                }
+                $.ajax({
+                    url: '/Profile/upload', // Your API endpoint
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Required for FormData
+                    processData: false, // Required for FormData
+                    success: function (data) {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "600000",
+                            "extendedTimeOut": "6000000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        if (data.status == true) {
+                            getAttachment($("#userId").val());
+                            toastr.success(data.message);
+                            drawFiles();
+                            setTimeout(function () {
+                                //location.href = document.referrer;
+                                hideLoader();
+                            }, 1500);
+                        } else {
+                            toastr.error(data.message);
+                            hideLoader();
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error(data.message);
+                        hideLoader();
+                    }
+                });
+            }
+        });
+       
     }
+    function getAttachment(id) {
+        $(".photoUpload-files").hide();
+        $('#submitFiles').prop('disabled', true);
+
+        $.ajax({
+            url: "/Profile/GetAttachmentById/" + id,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                validateFile = [];
+                if (data.length >= 5) {
+                    $("#uploadSection").hide();
+                }else{
+                    $("#uploadSection").show();
+                }
+                $("#imagePreview").children().remove();
+                for (var i = 0; i < data.length; i++) {
+                    $("#imagePreview").append(
+                        '<div style="position: relative; display: inline-block; margin: 5px 10px;">' +
+                        '<span style="font-size: 20px;cursor: pointer; color: #0095ff; position: absolute; top: 0; right: 0;" onclick="deleteFile(' + i + ')">' +
+                        '<i class="fa fa-trash"></i>' +
+                        '</span>' +
+                        '<img style="width:200px;height:200px;" src="/Files/' + data[i].attachmentPath + '" id="' + data[i].attachmentId + '"/>' +
+                        '</div>'
+                    ); 
+                    var getLinkFromImage = $("#" + data[i].attachmentId).attr('src');
+                    fetch(getLinkFromImage)
+                        .then((res) => res.blob())
+                        .then((myBlob) => {
+                            const myFile = new File([myBlob], 'image.jpg', { type: myBlob.type });
+                            validateFile.push(myFile);
+                        });
+                }
+               
+            }
+        });
+    }
+
 </script>
 <script>
     let currentCard = null;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Infrustructure.Repositories;
@@ -227,7 +228,7 @@ namespace GeneralService.Controllers
                     FileInfo fileInfo = new FileInfo(file.FileName);
                     var myUniqueFileName = string.Format(@"{0}", Guid.NewGuid());
                     Attachment blogAttachment = new Attachment();
-                    blogAttachment.type = "blog";
+                    blogAttachment.type = "Portofolio";
                     blogAttachment.elementId = userId;
                     blogAttachment.attachmentName = file.Name;
                     blogAttachment.attachmentPath = myUniqueFileName + fileInfo.Extension;
@@ -259,9 +260,17 @@ namespace GeneralService.Controllers
                     response.Message = "No files uploaded";
                     return response;
                 }
-                Upload(int.Parse(currentUserModel.userId), files);
-                response.Status = true;
-                response.Message = "Files uploaded successfully!";
+                if (files.Count <= 5)
+                {
+                    Upload(int.Parse(currentUserModel.userId), files);
+                    response.Status = true;
+                    response.Message = "Files updated successfully!";
+                }
+                else
+                {
+                    response.Status = false;
+                    response.Message = " Only 5 files are allowed!";
+                }
             }
             catch (Exception ex)
             {
@@ -269,6 +278,15 @@ namespace GeneralService.Controllers
                 response.Message = "an error occurred";
             }
             return response;
+        }
+
+        [Route("Profile/GetAttachmentById/{id}")]
+        [HttpGet]
+        public async Task<List<Attachment>> GetAttachmentById(int id)
+        {
+            List<Attachment> portofolioAttachment = await _repo.Filter<Attachment>(e => e.elementId == id && e.type == "Portofolio").ToListAsync();
+            return portofolioAttachment;
+
         }
     }
 }

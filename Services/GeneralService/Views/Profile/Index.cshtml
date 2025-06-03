@@ -65,6 +65,12 @@
 /* .photoUpload-files{
     display:none;
 } */
+ @@media (max-width: 768px) {
+    #basciInfoBtn {
+      margin-top:5% !important;
+    }
+  }
+</styl
 </style>
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
@@ -209,8 +215,8 @@
                                         </label>
                                     <textarea style="height: 100px;" asp-for="basicInfo.bio" class="form-control" placeholder=""></textarea>
                                 </div>
-                                <div class="col-sm-4">
-                                    <button id="basciInfoBtn" style="width: 100%;margin-top:15%;" type="submit" class="btn btn-primary">
+                                <div class="col-sm-2">
+                                    <button id="basciInfoBtn" style="width: 100%;margin-top:30%;" type="submit" class="btn btn-primary">
                                         Save
                                     </button>
                                 </div>
@@ -308,7 +314,7 @@
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6" style="margin: auto;">
+                                    <div class="col-sm-2" style="margin: auto;">
                                         <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
                                             Save
                                         </button>
@@ -347,9 +353,9 @@
                                         </div>
                                         <input type="file" id="files" name="files" class="upload" multiple="">
                                     </div>
-                                    <div class="row mt-2">
-                                        <div class="col-12">
-                                            <button disabled id="submitFiles" type="submit" class="btn btn-success">Save</button>
+                                    <div class="row">
+                                        <div class="col-sm-2" style="margin:auto">
+                                            <button style="width: 100%;margin-top: 30px;" disabled id="submitFiles" type="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -365,22 +371,23 @@
                 <!-- dasboard-widget-title end -->
                 <!-- dasboard-widget-box  -->
                 <div class="dasboard-widget-box fl-wrap">
-                    <form asp-action="Update" method="post">
+                    <form asp-action="Update" method="post" id="availabilityForm">
                         <div class="custom-form">
+                            @Html.TextBoxFor(m => m.userId, new { @id = "userId", @class = "form-control", style = "display:none" })
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label>
                                         From Hour
                                         <span class="dec-icon"><i class="fa fa-clock"></i></span>
                                     </label>
-                                    <input asp-for="availability.fromHour" class="form-control" placeholder="" />
+                                    <input required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" asp-for="availability.fromHour" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-6">
                                     <label>
                                         To Hour
                                         <span class="dec-icon"><i class="fa fa-clock"></i></span>
                                     </label>
-                                    <input asp-for="availability.toHour" class="form-control" placeholder="" />
+                                    <input required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" asp-for="availability.toHour" class="form-control" placeholder="" />
                                 </div>
                                 <div class="col-sm-6">
                                     <label>
@@ -422,7 +429,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6" style="margin: auto;">
+                                <div class="col-sm-2" style="margin: auto;">
                                     <button style="width: 100%;margin-top: 30px;" type="submit" class="btn btn-primary">
                                         save
                                     </button>

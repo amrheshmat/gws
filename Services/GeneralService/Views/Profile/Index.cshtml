@@ -70,7 +70,31 @@
       margin-top:5% !important;
     }
   }
-</styl
+
+.input-group select {
+    position: absolute !important;
+    z-index: 7 !important;
+    width: 10% !important;
+    border-radius: 0 !important;
+    height: 49px !important;
+    right: 0px !important;
+    background: transparent !important;
+    border: navajowhite !important;
+    border-left: 1px solid !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    border-radius: 0 !important;
+}
+
+.input-group select:focus {
+        box-shadow:none;
+}
+
+.input-group select option {
+    background-color: #292e3a !important; /* Background of dropdown items */
+    color: #fff !important;
+    border-radius: 0 !important;
+}
 </style>
 <div id="wrapper">
     <!-- dashbard-menu-wrap -->
@@ -380,21 +404,41 @@
                                         From Hour
                                         <span class="dec-icon"><i class="fa fa-clock"></i></span>
                                     </label>
-                                    <input required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" asp-for="availability.fromHour" class="form-control" placeholder="" />
+                                    <div class="input-group">
+                                        <input required pattern="^\d+([:]\d+)?$"
+                                               title="for example 5:30"
+                                               asp-for="availability.fromHour"
+                                               class="form-control"
+                                               placeholder="for example 5:30" />
+                                        <select asp-for="availability.fromPeriod" class="form-control">
+                                            <option value="AM">AM</option>
+                                            <option value="PM">PM</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label>
                                         To Hour
                                         <span class="dec-icon"><i class="fa fa-clock"></i></span>
                                     </label>
-                                    <input required title="Enter only numbers and dot&#10;أدخل الأرقام والنقطة فقط" asp-for="availability.toHour" class="form-control" placeholder="" />
+                                    <div class="input-group">
+                                        <input required pattern="^\d+([:]\d+)?$"
+                                               title="for example 5:30"
+                                               asp-for="availability.toHour"
+                                               class="form-control"
+                                               placeholder="for example 5:30" />
+                                        <select asp-for="availability.toPeriod" class="form-control">
+                                            <option value="AM">AM</option>
+                                            <option value="PM">PM</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label>
                                         From Day
                                     </label>
-                                    <select id="fromDaySelect" name="fromDay" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
-                                        <option value="" disabled>Select a City</option>
+                                    <select id="fromDaySelect" name="availability.fromDay" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
+                                        <option value="" disabled>Select Day</option>
                                         @foreach (var day in (List<string>)ViewBag.WeekDayNames)
                                         {
                                             if (day == Model.availability.fromDay)
@@ -412,8 +456,8 @@
                                     <label>
                                         To Day
                                     </label>
-                                    <select id="toDayfromDaySelect" name="toDay" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
-                                        <option value="" disabled>Select a City</option>
+                                    <select id="toDayfromDaySelect" asp-for="availability.toDay" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 12px;border-radius: 4px;" class="form-control">
+                                        <option value="" disabled>Select Day</option>
                                         @foreach (var day in (List<string>)ViewBag.WeekDayNames)
                                         {
                                             if (day == Model.availability.toDay)
@@ -550,6 +594,49 @@
                 }
             });
         });
+
+        // availability information ...
+        $('#availabilityForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            showLoader();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/Profile/AddUpdateAvailability',
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
+                success: function (data) {
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "600000",          // 10 minutes
+                        "extendedTimeOut": "6000000",       // No extra time on hover
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    if (data.status == true) {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            //location.href = document.referrer;
+                            hideLoader();
+                        }, 1500);
+                    } else {
+                        hideLoader();
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        });
     });
 </script>
 <script>
@@ -559,11 +646,13 @@
             $("#files").click();
         });
         validateFile = [];
-        $("#files").on("change", function () {
-            const [file] = files.files;
+        $("#files").on("change", function (e) {
+           // e.target.files; new selection only in case of select and then change selection before submit
+           // getAttachment($("#userId").val()); i need to get already submitten and then add new selection
+            const [file] = e.target.files;
             if (file) {
-                for (var i = 0; i < files.files.length; i++) {
-                    validateFile.push(files.files[i]);
+                for (var i = 0; i < e.target.files.length; i++) {
+                    validateFile.push(e.target.files[i]);
                 }
             }
             $(".photoUpload-files").show();

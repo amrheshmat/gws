@@ -75,6 +75,8 @@ namespace GeneralService.Controllers
                     toDay = availability?.toDay,
                     fromHour = availability?.fromHour,
                     toHour = availability?.toHour,
+                    fromPeriod = availability?.fromPeriod,
+                    toPeriod = availability?.toPeriod,
                 },
                 packageInfo = new PackageModel
                 {
@@ -173,6 +175,55 @@ namespace GeneralService.Controllers
                     {
                         response.Message = "You already have 3 package";
                         response.Status = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
+        }
+        [HttpPost]
+        public async Task<Response> AddUpdateAvailability([FromForm] ProfileModel profileModel)
+        {
+            AvailabilityModel availabilityModel = profileModel.availability;
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                if (availabilityModel != null)
+                {
+                    Availability oldAvailability = _repo.Filter<Availability>(e => e.userId == int.Parse(profileModel.userId)).FirstOrDefault();
+                    if (oldAvailability != null)
+                    {
+                        oldAvailability.userId = int.Parse(profileModel.userId);
+                        oldAvailability.fromHour = availabilityModel.fromHour;
+                        oldAvailability.toHour = availabilityModel.toHour;
+                        oldAvailability.fromDay = availabilityModel.fromDay;
+                        oldAvailability.toDay = availabilityModel.toDay;
+                        oldAvailability.fromPeriod = availabilityModel.fromPeriod;
+                        oldAvailability.toPeriod = availabilityModel.toPeriod;
+                        _repo.Update<Availability>(oldAvailability);
+                        _repo.SaveChanges();
+                        response.Message = "Availability saved";
+                        response.Status = true;
+                    }
+                    else
+                    {
+                        Availability availability = new Availability();
+                        availability.userId = int.Parse(profileModel.userId);
+                        availability.fromHour = availabilityModel.fromHour;
+                        availability.toHour = availabilityModel.toHour;
+                        availability.fromDay = availabilityModel.fromDay;
+                        availability.toDay = availabilityModel.toDay;
+                        availability.fromPeriod = availabilityModel.fromPeriod;
+                        availability.toPeriod = availabilityModel.toPeriod;
+                        _repo.Create<Availability>(availability);
+                        _repo.SaveChanges();
+                        response.Message = "Availability saved";
+                        response.Status = true;
                     }
                 }
             }

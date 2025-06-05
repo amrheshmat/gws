@@ -12,5 +12,7 @@ namespace SampleMVC.Models
         public string? fromDay { get; set; }
         [Required(ErrorMessage = "toDay is required")]
         public string? toDay { get; set; }
+        public string? toPeriod { get; set; } // "AM" or "PM"
+        public string? fromPeriod { get; set; } // "AM" or "PM"
     }
 }

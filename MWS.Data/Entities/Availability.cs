@@ -13,5 +13,7 @@ namespace MWS.Data.Entities
         public string? toHour { get; set; }
         public string? fromDay { get; set; }
         public string? toDay { get; set; }
+        public string? toPeriod { get; set; }
+        public string? fromPeriod { get; set; }
     }
 }

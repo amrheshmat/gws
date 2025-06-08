@@ -903,11 +903,12 @@ video {
 /*-------------------------------------- end Loder --------------------------------------------------------------*/
 /*-------------------------------------- start about us --------------------------------------------------------------*/
 .about-us {
-    margin: 100px 0;
+    padding: 100px 0 !important;
+    margin-top: 100px;
 }
 
 .testimonials, .our-team {
-    margin: 80px 0;
+    padding: 80px 0 !important;
 }
 
 h2 {
@@ -1049,9 +1050,6 @@ h2 {
     }
 
 /* Testimonials Section */
-.testimonials {
-    padding: 40px 0;
-}
 
 .testimonial-cards {
     display: flex;

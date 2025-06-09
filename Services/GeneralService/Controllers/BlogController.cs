@@ -62,6 +62,7 @@ namespace SampleMVC.Controllers
             ViewBag.languages = languages;
             ViewBag.toursAttachments = tourAttachments;
             int blogsCount = _repo.GetAll<Blog>().ToList().Count;
+            //int blogsCount = _repo.Filter<Blog>(e => e.isActive == "Y").ToList().Count;
             double blogsPaginationCount = (double)blogsCount / 2;
             ViewBag.attachments = attachments;
             ViewBag.recentAttachments = recentAttachments;

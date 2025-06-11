@@ -19,14 +19,18 @@
                     {
                         @if (Model.Where(e => e.elementId == blog.blogId).ToList().Count > 0)
                         {
+                            var words = blog.description?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                            var preview = words != null && words.Length > 20
+                            ? string.Join(" ", words.Take(20)) + "..."
+                            : blog.description;
                             var mainImage = Model.Where(e => e.elementId == blog.blogId && e.type == "blog").ToList();
                             <div class="col-md-6">
                                 <div class="card blog-card">
                                     <img src="Files/@mainImage[0].attachmentPath" class="card-img-top" alt="Blog Post 1" loading="lazy" />
                                     <div class="card-body">
-                                        <h5 class="card-title">How to Use Our Software</h5>
-                                        <p class="card-text">Learn how to get started with our software demo. Discover all its features and functionalities...</p>
-                                        <a href="#" class="stretched-link">Read More</a>
+                                        <h5 class="card-title">@blog.title</h5>
+                                        <p class="card-text">@preview</p>
+                                        <a href="/BlogSingle/@blog.blogId" class="stretched-link">Read More</a>
                                     </div>
                                 </div>
                             </div>

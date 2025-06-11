@@ -20,6 +20,14 @@ namespace SampleMVC.Controllers
             _appEnvironment = appEnvironment;
             _localizationService = localizationService;
         }
+        string GetFirstWords(string input, int wordCount = 20)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return "";
+
+            var words = input.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            return string.Join(" ", words.Take(wordCount)) + (words.Length > wordCount ? "..." : "");
+        }
 
         [Route("blogs")]
         public async Task<IActionResult> Index()//index page
@@ -36,6 +44,7 @@ namespace SampleMVC.Controllers
                 {
                     tourAttachments.Add(attachment);
                 }
+                b.description = GetFirstWords(b.description, 20);
             }
             List<Blog> recentLogs = await _repo.Filter<Blog>(e => e.isActive == "Y").ToListAsync();
             var recentbLogs = recentLogs.OrderByDescending(e => e.creationDate).ToList().Take(3);

@@ -23,6 +23,14 @@ namespace SampleMVC.Controllers
             _languageService = languageService;
         }
         [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Client, NoStore = false)]
+        string GetFirstWords(string input, int wordCount = 20)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return "";
+
+            var words = input.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            return string.Join(" ", words.Take(wordCount)) + (words.Length > wordCount ? "..." : "");
+        }
         public async Task<IActionResult> Index()
         {
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
@@ -37,6 +45,7 @@ namespace SampleMVC.Controllers
                 {
                     attachments.Add(attach);
                 }
+                blog.description = GetFirstWords(blog.description, 20);
             }
             List<City> cities = _repo.GetAll<City>().ToList();
             List<Category> categories = _repo.GetAll<Category>().ToList();

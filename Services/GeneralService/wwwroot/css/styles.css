@@ -3,6 +3,9 @@
     font-size: 34px;
     font-style: italic;
 }
+select {
+    appearance: auto;
+}
 /*-------------------------------------- Start navbar -----------------------------------------------------------*/
 .navbar {
     background: transparent;

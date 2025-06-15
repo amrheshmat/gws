@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
+using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
 using TripBusiness.Ibusiness;
 
@@ -33,6 +34,7 @@ namespace SampleMVC.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            HomeModel homeModel = new HomeModel();
             var currentCulture = Thread.CurrentThread.CurrentUICulture.Name;
             var language = _languageService.GetLanguageByCulture(currentCulture);
             List<Attachment> attachments = new List<Attachment>();
@@ -53,7 +55,8 @@ namespace SampleMVC.Controllers
             ViewBag.categories = categories;
             ViewBag.blogs = blogs.OrderByDescending(e => e.creationDate).Take(10);
             ViewBag.languages = _repo.GetAll<Language>().ToList();
-            return View(attachments);
+            homeModel.attachments = attachments;
+            return View(homeModel);
         }
 
         public IActionResult Privacy()

@@ -42,6 +42,7 @@ namespace GeneralService.Controllers
             var availability = _repo.Filter<Availability>(e => e.userId == user!.userId).FirstOrDefault();
             var categories = _repo.GetAll<Category>().ToList(); // Load from database
             var cities = _repo.GetAll<City>().ToList(); // Load from database
+            Attachment attachment = _repo.Filter<Attachment>(e => e.elementId == user!.userId && e.type == "Profile").FirstOrDefault();
             var subscriberCategories = _repo.Filter<UserCategory>(e => e.user_id == user!.userId).ToList();
             List<string> categoriesList = new List<string>();
             foreach (var subscriberCategory in subscriberCategories)
@@ -59,6 +60,7 @@ namespace GeneralService.Controllers
                     Email = user.email,
                     Phone = user.mobile,
                     City = subscriber.city,
+                    ProfilePicPath = attachment?.attachmentPath,
                     bio = subscriber.bio,
                     experience_years = subscriber.experience_years,
                     SelectedCategories = categoriesList,
@@ -92,6 +94,7 @@ namespace GeneralService.Controllers
             BasicInfoModel basicInfo = profileModel.basicInfo;
             Response response = new Response();
             response.Status = false;
+            var profilePic = Request.Form.Files;
             try
             {
                 User user = _repo.Filter<User>(e => e.userId == decimal.Parse(profileModel.userId)).FirstOrDefault();
@@ -119,6 +122,10 @@ namespace GeneralService.Controllers
                     userCategory.category_id = int.Parse(category);
                     _repo.Create<UserCategory>(userCategory);
                     _repo.SaveChanges();
+                }
+                if (profilePic != null)
+                {
+                    Upload(int.Parse(profileModel.userId), profilePic, "Profile");
                 }
                 response.Message = "Basic information updated";
                 response.Status = true;
@@ -259,11 +266,11 @@ namespace GeneralService.Controllers
             }
             return response;
         }
-        private void Upload(int userId, IFormFileCollection files)
+        private void Upload(int userId, IFormFileCollection files, string fileType)
         {
             if (ModelState.IsValid)
             {
-                List<Attachment> attachments = _repo.Filter<Attachment>(e => e.elementId == userId && e.type == "Portofolio").ToList();
+                List<Attachment> attachments = _repo.Filter<Attachment>(e => e.elementId == userId && e.type == fileType).ToList();
                 _repo.context.RemoveRange(attachments);
                 _repo.SaveChanges();
 
@@ -279,7 +286,7 @@ namespace GeneralService.Controllers
                     FileInfo fileInfo = new FileInfo(file.FileName);
                     var myUniqueFileName = string.Format(@"{0}", Guid.NewGuid());
                     Attachment blogAttachment = new Attachment();
-                    blogAttachment.type = "Portofolio";
+                    blogAttachment.type = fileType;
                     blogAttachment.elementId = userId;
                     blogAttachment.attachmentName = file.Name;
                     blogAttachment.attachmentPath = myUniqueFileName + fileInfo.Extension;
@@ -313,7 +320,7 @@ namespace GeneralService.Controllers
                 }
                 if (files.Count <= 5)
                 {
-                    Upload(int.Parse(currentUserModel.userId), files);
+                    Upload(int.Parse(currentUserModel.userId), files, "Portofolio");
                     response.Status = true;
                     response.Message = "Files updated successfully!";
                 }

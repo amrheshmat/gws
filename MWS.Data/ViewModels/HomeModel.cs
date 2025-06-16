@@ -9,6 +9,7 @@ namespace MWS.Data.ViewModels
     }
     public class SearchModel
     {
+        public string? fullName { get; set; }
         public string? category { get; set; }
         public string? city { get; set; }
     }

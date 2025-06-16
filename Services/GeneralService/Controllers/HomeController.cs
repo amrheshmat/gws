@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
@@ -126,5 +127,56 @@ namespace SampleMVC.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<Response> HomeSearch([FromForm] HomeModel homeModel)
+        {
+            SearchModel searchModel = homeModel.searchModel;
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                if (searchModel != null && (searchModel.fullName != null || searchModel.city != null || searchModel.category != null))
+                {
+                    List<User> users = null;
+                    List<Subscriber> subscribers = _repo.GetAll<Subscriber>().ToList();
+                    List<UserCategory> userCategory = null;
+                    if (searchModel.category != null)
+                    {
+                        userCategory = _repo.Filter<UserCategory>(x => x.category_id == int.Parse(searchModel.category)).ToList();
+                    }
+                    if (searchModel != null && searchModel.fullName != null)
+                    {
+                        users = _repo.Filter<User>(x => x.fullName == searchModel.fullName || x.userName == searchModel.fullName).ToList();
+                    }
+                    if (users != null && users.Count > 0)
+                    {
+                        var usersId = users.Select(x => x.userId).ToList();
+                        subscribers = _repo.Filter<Subscriber>(e => usersId.Contains(e.userId)).ToList();
+                    }
+                    if (userCategory != null && userCategory.Count > 0)
+                    {
+                        var usersId = userCategory.Select(x => x.user_id).ToList();
+                        subscribers = _repo.Filter<Subscriber>(e => usersId.Contains(e.userId)).ToList();
+                    }
+                    if (searchModel != null && searchModel.city != null)
+                    {
+                        subscribers = subscribers.Where(x => x.city == searchModel.city).ToList();
+                    }
+                    response.Status = true;
+                    ViewBag.subscribers = subscribers;
+                }
+                else
+                {
+                    response.Status = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
+        }
+
     }
 }

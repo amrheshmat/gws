@@ -31,33 +31,34 @@
                     </h2>
                 </div>
                 <div class="main-search-input-wrap">
-                    <div class="main-search-input fl-wrap">
-                        <div class="main-search-input-item">
-                            <input type="text" placeholder="What are you looking for?" value="">
-                        </div>
-                        <div class="main-search-input-item">
-                            <select id="citySelect" asp-for="searchModel.category"
-                                style="background: #1b182b; color: #fff; padding: 12px; width: 100%; height: 100%; border: none; appearance: auto;" class="form-control">
-                                <option value="0" disabled selected>Select Category</option>
-                                @foreach (var category in categories)
-                                {
-                                    <option value="@category.id">@category.name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="main-search-input-item">
-                            <select id="citySelect" asp-for="searchModel.city"
+                    <form asp-action="Update" method="post" id="HomeSearch" enctype="multipart/form-data">
+                        <div class="main-search-input fl-wrap">
+                            <div class="main-search-input-item">
+                                <input asp-for="searchModel.fullName" class="form-control" placeholder="Search by name" />
+                            </div>
+                            <div class="main-search-input-item">
+                                <select asp-for="searchModel.category"
                                     style="background: #1b182b; color: #fff; padding: 12px; width: 100%; height: 100%; border: none; appearance: auto;" class="form-control">
-                                <option value="0" disabled selected>Select City</option>
-                                @foreach (var city in cities)
-                                {
-                                    <option value="@city.id">@city.name</option>
-                                }
-                            </select>
+                                    <option value="" selected>Select Category</option>
+                                    @foreach (var category in categories)
+                                    {
+                                        <option value="@category.id">@category.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="main-search-input-item">
+                                <select asp-for="searchModel.city"
+                                        style="background: #1b182b; color: #fff; padding: 12px; width: 100%; height: 100%; border: none; appearance: auto;" class="form-control">
+                                    <option value="" selected>Select City</option>
+                                    @foreach (var city in cities)
+                                    {
+                                        <option value="@city.id">@city.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" id="HomeSearchBtn" class="main-search-button color-bg">  Search <i class="fa fa-search"></i> </button>
                         </div>
-                      
-                        <button class="main-search-button color-bg" onclick="window.location.href='listing.html'">  Search <i class="fa fa-search"></i> </button>
-                    </div>
+                    </form>
                 </div>
                 <div class="hero-notifer fl-wrap">Need more search options? <a href="listing.html">Advanced Search</a> </div>
                 <div class="scroll-down-wrap">
@@ -246,3 +247,44 @@
     </div>
 </section>
 <!--End contact form -->
+<script>
+    function showLoader() {
+        $("#nb-global-spinner").css("display", "flex");
+    }
+    function hideLoader() {
+        $("#nb-global-spinner").css("display", "none");
+    }
+    $(document).ready(function () {
+        $('#HomeSearch').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            showLoader();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/Home/HomeSearch',
+                type: 'POST',
+                data: formData,
+                contentType: false, // Required for FormData
+                processData: false, // Required for FormData
+                success: function (data) {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right", // top-left, bottom-right, etc.
+                        "timeOut": "10000"
+                    };
+                    if (data.status == true) {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                            hideLoader();
+                        }, 1500);
+                    } else {
+                        hideLoader();
+                        toastr.error(data.message);
+                    }
+
+                }
+            });
+        });
+    });
+</script>

@@ -16,7 +16,7 @@ namespace SampleMVC.Models
         public string? duration { get; set; }
         [Required(ErrorMessage = "deliverables is required")]
         public string? deliverables { get; set; }
-        public List<Package>? userPackages { get; set; }      // To populate the dropdown
+        public List<Package>? userPackages { get; set; }
 
     }
 }

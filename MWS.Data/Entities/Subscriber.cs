@@ -20,6 +20,10 @@ namespace MWS.Data.Entities
         public string? planName { get; set; }
         public decimal? price { get; set; }
         public string? status { get; set; }
+        public string? fullName { get; set; }
+        public string? email { get; set; }
+        public string? mobile { get; set; }
+        public string? isVip { get; set; }
         public DateOnly? start_date { get; set; }
         public DateOnly? end_date { get; set; }
         public string? paymentMethod { get; set; }

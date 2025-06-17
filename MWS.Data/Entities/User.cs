@@ -7,7 +7,7 @@ namespace MWS.Data.Entities
     {
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public decimal? userId { get; set; }
+        public int? userId { get; set; }
 
         public string? userName { get; set; }
         public string? fullName { get; set; }

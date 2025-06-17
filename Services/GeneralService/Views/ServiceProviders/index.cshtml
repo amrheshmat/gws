@@ -1,0 +1,157 @@
+﻿@using TripBusiness.Ibusiness
+@model ServiceProvidersModel;
+@inject ILocalizationService _localizationService;
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var abouts = ViewBag.abouts;
+}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+     .card {
+      transition: 0.3s;
+    }
+    .card:hover {
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    p{
+        padding:0px;
+        color:#000;
+    }
+    .filters {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    @@media (max-width: 768px) {
+      .filters {
+        margin-bottom: 10px;
+      }
+    }
+</style>
+<div class="container py-4" style="margin-top:100px;">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3">
+            <div class="filters">
+                <h5>Filters</h5>
+                <div class="mb-3">
+                    <label for="categoryFilter" class="form-label">Category</label>
+                    <select class="form-select" id="categoryFilter">
+                        <option value="">All</option>
+                        <option value="photography">Photography</option>
+                        <option value="planning">Planning</option>
+                        <option value="content">Content Creation</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="locationFilter" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="locationFilter" placeholder="Enter city...">
+                </div>
+                <div class="mb-3">
+                    <label for="ratingFilter" class="form-label">Rating</label>
+                    <select class="form-select" id="ratingFilter">
+                        <option value="">Any</option>
+                        <option value="4">4★ & above</option>
+                        <option value="3">3★ & above</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="priceFilter" class="form-label">Price Range</label>
+                    <select class="form-select" id="priceFilter">
+                        <option value="">All</option>
+                        <option value="low">Low to High</option>
+                        <option value="high">High to Low</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Search Results</h5>
+                <div>
+                    <select class="form-select" id="sortResults" style="width: 200px;">
+                        <option selected>Sort by</option>
+                        <option value="name">Name</option>
+                        <option value="rating">Rating</option>
+                        <option value="price">Price</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" id="resultsContainer">
+                <!-- Example Result Card -->
+                @foreach (var subscriber in Model.subscribers)
+                {
+                    <div class="col-md-6 col-xl-4 mb-4 result-item" data-rating="4" data-price="high" data-category="photography">
+                        <div class="card">
+                            <img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F682452.jpg&sp=1750168580T912fa247841ea8fbb09ce8bb76406d94e311d9a93fee7c13be642d5489cabe30" class="card-img-top" alt="Image">
+                            <div class="card-body">
+                                <h5 class="card-title">@subscriber.</h5>
+                                @* <p class="card-text">Cairo, Egypt</p> *@
+                                @* <p class="text-warning mb-1">★★★★☆</p> *@
+                                <!-- Packages -->
+                                <div class="mt-2">
+                                    <strong class="text-primary">Packages:</strong>
+                                    <ul class="list-inline small mb-2">
+                                        <li class="list-inline-item">📷 Basic: $150</li>
+                                        <li class="list-inline-item">✨ Premium: $300</li>
+                                        <li class="list-inline-item">👰 Wedding: $600</li>
+                                    </ul>
+                                </div>
+                                <a href="#" class="btn btn-outline-primary w-100">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#applyFilters').click(function () {
+            let category = $('#categoryFilter').val().toLowerCase();
+            let rating = $('#ratingFilter').val();
+            let price = $('#priceFilter').val();
+
+            $('.result-item').hide().filter(function () {
+                let item = $(this);
+                let itemCat = item.data('category');
+                let itemRating = parseInt(item.data('rating'));
+                let itemPrice = item.data('price');
+
+                return (!category || category === itemCat)
+                    && (!rating || itemRating >= rating)
+                    && (!price || price === itemPrice);
+            }).show();
+        });
+
+        $('#sortResults').change(function () {
+            let sortBy = $(this).val();
+            let items = $('.result-item').get();
+
+            items.sort(function (a, b) {
+                if (sortBy === 'name') {
+                    return $(a).find('.card-title').text().localeCompare($(b).find('.card-title').text());
+                }
+                if (sortBy === 'rating') {
+                    return $(b).data('rating') - $(a).data('rating');
+                }
+                if (sortBy === 'price') {
+                    let priceVal = { low: 1, high: 2 };
+                    return priceVal[$(a).data('price')] - priceVal[$(b).data('price')];
+                }
+            });
+
+            $('#resultsContainer').append(items);
+        });
+    });
+</script>

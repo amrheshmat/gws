@@ -97,6 +97,11 @@ namespace SampleMVC.Controllers
                         Subscriber subscriber = new Subscriber();
                         subscriber.userId = int.Parse(createdUser.userId.ToString());
                         subscriber.isVerified = "N";
+                        subscriber.fullName = registerModel.fullName;
+                        subscriber.email = registerModel.email;
+                        subscriber.mobile = registerModel.mobile;
+                        subscriber.isVerified = "N";
+                        subscriber.isVerified = "N";
                         subscriber.status = "P";//pending
                         subscriber.created_at = DateTime.Now;
                         subscriber.city = registerModel.SelectedCity;

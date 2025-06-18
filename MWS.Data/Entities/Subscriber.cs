@@ -19,7 +19,7 @@ namespace MWS.Data.Entities
         public string? city { get; set; }
         public string? planName { get; set; }
         public decimal? price { get; set; }
-        public string? status { get; set; }
+        public string? status { get; set; }//P pending -------- A active -------
         public string? fullName { get; set; }
         public string? email { get; set; }
         public string? mobile { get; set; }

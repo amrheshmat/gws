@@ -11,6 +11,7 @@ namespace SampleMVC.Models
     public class subscriberModel
     {
         public string? Name { get; set; }
+        public string? Phone { get; set; }
         public string? ProfileImage { get; set; }
         public string? City { get; set; }
         public List<string>? Categories { get; set; }

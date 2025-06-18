@@ -25,6 +25,7 @@ namespace GeneralService.Controllers
         public async Task<IActionResult> Index()
         {
             var subscribers = _repo.GetAll<Subscriber>().ToList();
+            //var subscribers = _repo.Filter<Subscriber>(e=>e.status == "A").ToList();
             List<subscriberModel> subscriberModelList = new List<subscriberModel>();
             foreach (var subscriber in subscribers)
             {
@@ -32,7 +33,9 @@ namespace GeneralService.Controllers
                 var packages = _repo.Filter<Package>(e => e.user_id == subscriber.userId).ToList();
                 subscriberModel.Packages = packages;
                 subscriberModel.Name = subscriber.fullName;
+                subscriberModel.Phone = subscriber.mobile;
                 subscriberModel.City = subscriber.city;
+                subscriberModel.ProfileImage = _repo.Filter<Attachment>(e => e.type == "Profile" && e.elementId == subscriber.userId).FirstOrDefault()?.attachmentPath;
                 var userCategory = _repo.Filter<UserCategory>(e => e.user_id == subscriber.userId).Select(e => e.category_id).ToList();
                 List<string> categories = new List<string>();
                 foreach (var category in userCategory)

@@ -90,22 +90,35 @@
                 @foreach (var subscriber in Model.subscribers)
                 {
                     <div class="col-md-6 col-xl-4 mb-4 result-item" data-rating="4" data-price="high" data-category="photography">
-                        <div class="card">
-                            <img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F682452.jpg&sp=1750168580T912fa247841ea8fbb09ce8bb76406d94e311d9a93fee7c13be642d5489cabe30" class="card-img-top" alt="Image">
+                        <div class="card" style="padding:0px;">
+                            <div style="width:100%;height:200px;background-repeat: no-repeat; background-size: contain; background-position: center; width: 100%; aspect-ratio: 16 / 9;background-position:center;background-image:url('/Files/@subscriber.ProfileImage')">
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">@subscriber.</h5>
+                                <h6 class="card-title">
+                                    <i class="fa fa-user" style="margin: 0px 5px; color: #2b57a4;"></i>@subscriber.Name
+                                </h6>
                                 @* <p class="card-text">Cairo, Egypt</p> *@
                                 @* <p class="text-warning mb-1">★★★★☆</p> *@
                                 <!-- Packages -->
                                 <div class="mt-2">
                                     <strong class="text-primary">Packages:</strong>
-                                    <ul class="list-inline small mb-2">
-                                        <li class="list-inline-item">📷 Basic: $150</li>
-                                        <li class="list-inline-item">✨ Premium: $300</li>
-                                        <li class="list-inline-item">👰 Wedding: $600</li>
-                                    </ul>
+                                    <p class="list-inline small mb-2">
+                                        @foreach(var package in subscriber.Packages)
+                                        {
+                                            <span class="list-inline-item"><span style="font-weight:bold">@package.title:</span> <span style="color:#2b57a4">@package.price$</span></span>
+                                        }
+                                    </p>
                                 </div>
-                                <a href="#" class="btn btn-outline-primary w-100">View Profile</a>
+                                <div style="margin-top:15px;">
+                                    <a href="#" style="padding:10px 5px;margin: 5px;display:inline;" class="btn btn-outline-primary w-100">
+                                        <i class="fa fa-user" style="margin: 0px 5px; color: #fff;"></i>
+                                        View Profile
+                                    </a>
+                                    <a href="tel:@subscriber.Phone" style="padding:10px 5px;margin: 5px;display:inline;" class="btn btn-outline-primary w-100">
+                                        <i class="fa fa-phone" style="margin: 0px 5px; color: #fff;"></i>
+                                        phone call
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

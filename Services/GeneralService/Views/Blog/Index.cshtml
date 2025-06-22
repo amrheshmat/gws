@@ -103,6 +103,7 @@
         $('#pagination li').on("click", function (e) {
             e.preventDefault();
             startId = $(this).attr("id").substring(7);
+            alert(startId);
             $('#pagination li').removeClass("active");
             $(this).toggleClass("active");
             $("#preloader").css({ "visibility": "visible", "opacity": 1 });

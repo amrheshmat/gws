@@ -6,6 +6,7 @@
 select {
     appearance: auto;
 }
+
 /*-------------------------------------- Start navbar -----------------------------------------------------------*/
 .navbar {
     background: transparent;
@@ -1550,6 +1551,10 @@ h2 {
     opacity: 1;
     box-shadow: none;
 }
+#toast-container > .toast-success {
+    background: #2b56a2;
+    background-image: none !important;
+}
 /*------------------------start blog section--------------------------------------------------*/
 #pagination li {
     display: inline-block;
@@ -1557,6 +1562,13 @@ h2 {
     padding: 5px;
     border-radius: 4px;
     width:30px;
+}
+#pagination .disabled {
+    cursor: not-allowed;
+    background: #f0f0f0;
+}
+#pagination  li:first-child,#pagination li:last-child{
+    width:50px;
 }
 #pagination li.active {
     background: #000;

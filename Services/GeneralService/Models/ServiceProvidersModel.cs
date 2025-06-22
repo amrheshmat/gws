@@ -7,6 +7,8 @@ namespace SampleMVC.Models
     {
         public SearchModel? searchModel { get; set; }
         public List<subscriberModel>? subscribers { get; set; }
+        public int? totalCount { get; set; }
+        public int? totalPages { get; set; }
     }
     public class subscriberModel
     {

@@ -328,32 +328,28 @@ namespace SampleMVC.Controllers
             return response;
         }
 
-        //[HttpGet]
-        //[Route("Blog/GetPagination/{pageId}")]
-        //public async Task<List<BlogViewModel>> GetPagination(string pageId)
-        //{
-        //    List<TourAttachment> attachments = await _repo.Filter<TourAttachment>(e => e.type == "blog").ToListAsync();
-        //    List<Blog> blogs = _repo.Filter<Blog>(e => e.isActive == "Y").OrderByDescending(e => e.blogId).Skip(int.Parse(pageId) * 2).Take(2).ToList();
-        //    List<BlogViewModel> viewModelList = new List<BlogViewModel>();
-        //    foreach (var b in blogs)
-        //    {
-        //       BlogViewModel model = new BlogViewModel();
-        //        model.blog = b;
-        //        model.attachments = await _repo.Filter<TourAttachment>(e => e.tourId == b.blogId && e.type == "blog").ToListAsync();
-        //        viewModelList.Add(model);
-        //    }
-        //    int lastId = blogs.Select(e => e.blogId).ToList().Min();
-        //    Seo homeSeo = await _repo.GetAll<Seo>().FirstOrDefaultAsync();
-        //    homeSeo.title = homeSeo.title + " - Our Blogs";
-        //    ViewBag.homeSeo = homeSeo;
-        //    int blogsCount = _repo.GetAll<Blog>().ToList().Count;
-        //    double blogsPaginationCount = (double)blogsCount / 2;
-        //    ViewBag.attachments = attachments;
-        //    ViewBag.blogs = blogs;
-        //    ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
-        //    ViewBag.lastId = lastId;
-        //    return viewModelList;
-
-        //}
+        [HttpGet]
+        [Route("Blog/GetPagination/{pageId}")]
+        public async Task<List<BlogViewModel>> GetPagination(string pageId)
+        {
+            List<Attachment> attachments = await _repo.Filter<Attachment>(e => e.type == "blog").ToListAsync();
+            List<Blog> blogs = _repo.Filter<Blog>(e => e.isActive == "Y").OrderByDescending(e => e.blogId).Skip(int.Parse(pageId) * 2).Take(2).ToList();
+            List<BlogViewModel> viewModelList = new List<BlogViewModel>();
+            foreach (var b in blogs)
+            {
+                BlogViewModel model = new BlogViewModel();
+                model.blog = b;
+                model.attachments = await _repo.Filter<Attachment>(e => e.elementId == b.blogId && e.type == "blog").ToListAsync();
+                viewModelList.Add(model);
+            }
+            int lastId = blogs.Select(e => e.blogId).ToList().Min();
+            int blogsCount = _repo.GetAll<Blog>().ToList().Count;
+            double blogsPaginationCount = (double)blogsCount / 2;
+            ViewBag.attachments = attachments;
+            ViewBag.blogs = blogs;
+            ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
+            ViewBag.lastId = lastId;
+            return viewModelList;
+        }
     }
 }

@@ -3,6 +3,7 @@
 @{
     ViewBag.WeekDayNames = Enum.GetNames(typeof(WeekDays)).ToList();
     var userId = ViewBag.userId;
+    var packages = ViewBag.Pacakges;
 }
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
@@ -74,7 +75,7 @@
 .input-group select {
     position: absolute !important;
     z-index: 7 !important;
-    width: 10% !important;
+    width: 15% !important;
     border-radius: 0 !important;
     height: 49px !important;
     right: 0px !important;
@@ -84,6 +85,7 @@
     border-color: rgba(255, 255, 255, 0.1) !important;
     color: #fff !important;
     border-radius: 0 !important;
+    appearance:auto;
 }
 
 .input-group select:focus {
@@ -274,29 +276,31 @@
                 <!-- dasboard-widget-box  -->
                 <div class="dasboard-widget-box fl-wrap">
                     <div class="row" style="border-bottom: 1px solid #282727;">
-                        <h4 style="color: #fff; font-family: ui-serif; font-size: 25px;">current pacakges</h4>
-                        @foreach (var package in Model.packageInfo.userPackages)
-                        {
-                            <div class="col-sm-3" style="margin: 20px;border-radius: 5px;  color: #fff; font-family: ui-serif;">
-                                <div class="card p-3 package-card">
-                                    <div class="icon-buttons">
-                                        <i class="fas fa-pen-to-square edit-btn"
-                                           data-packageId="@package.id"
-                                           data-title="@package.title"
-                                           data-price="@package.price"
-                                           data-duration="@package.duration"
-                                           data-deliverables="@package.deliverables"
-                                           data-description="@package.description"
-                                           title="Edit"></i>
-                                        <i data-packageId="@package.id" class="fas fa-trash delete-btn" title="Delete"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="card-title">@package.title</h5>
-                                        <h6 class="card-subtitle mb-2">@package.price</h6>
-                                        <p class="card-text">@package.description</p>
-                                    </div>
-                                </div>  
-                            </div>
+                        @if (Model.packageInfo.userPackages.Count > 0){
+                            <h4 style="color: #fff; font-family: ui-serif; font-size: 25px;">current pacakges</h4>
+                            @foreach (var package in Model.packageInfo.userPackages)
+                            {
+                                <div class="col-sm-3" style="margin: 20px;border-radius: 5px;  color: #fff; font-family: ui-serif;">
+                                    <div class="card p-3 package-card">
+                                        <div class="icon-buttons">
+                                            <i class="fas fa-pen-to-square edit-btn"
+                                               data-packageId="@package.id"
+                                               data-title="@package.title"
+                                               data-price="@package.price"
+                                               data-duration="@package.duration"
+                                               data-deliverables="@package.deliverables"
+                                               data-description="@package.description"
+                                               title="Edit"></i>
+                                            <i data-packageId="@package.id" class="fas fa-trash delete-btn" title="Delete"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title">@package.title</h5>
+                                            <h6 class="card-subtitle mb-2">@package.price</h6>
+                                            <p class="card-text">@package.description</p>
+                                        </div>
+                                    </div>  
+                                </div>
+                            }
                         }
                         @if (Model.packageInfo.userPackages.Count < 3)
                         {
@@ -318,7 +322,13 @@
                                             title
                                             <span class="dec-icon"><i class="fa fa-pen-to-square"></i></span>
                                         </label>
-                                        <input id="packageTitle" asp-for="packageInfo.title" required class="form-control" placeholder="" />
+                                        <select required id="packageTitle" asp-for="packageInfo.title" style="background: #292e3a;border-color: rgba(255, 255, 255, 0.1);color: #fff;padding: 10px 55px;border-radius: 4px;" class="form-control">
+                                            <option value="" disabled>Select a City</option>
+                                            @foreach (var packageName in packages)
+                                            {
+                                                <option value="@packageName">@packageName</option>
+                                            }
+                                        </select>
                                     </div>
                                     <div class="col-sm-4">
                                         <label>
@@ -347,7 +357,7 @@
                                             <label>
                                                 description
                                             </label>
-                                            <textarea id="packageDescription" asp-for="packageInfo.description" required class="form-control" placeholder=""></textarea>
+                                            <textarea id="packageDescription" asp-for="packageInfo.description" class="form-control" placeholder=""></textarea>
                                         </div>
                                     </div>
 
@@ -425,7 +435,7 @@
                                                asp-for="availability.fromHour"
                                                class="form-control"
                                                placeholder="for example 5:30" />
-                                        <select asp-for="availability.fromPeriod" class="form-control">
+                                        <select asp-for="availability.fromPeriod" >
                                             <option value="AM">AM</option>
                                             <option value="PM">PM</option>
                                         </select>
@@ -442,7 +452,7 @@
                                                asp-for="availability.toHour"
                                                class="form-control"
                                                placeholder="for example 5:30" />
-                                        <select asp-for="availability.toPeriod" class="form-control">
+                                        <select asp-for="availability.toPeriod">
                                             <option value="AM">AM</option>
                                             <option value="PM">PM</option>
                                         </select>
@@ -507,6 +517,9 @@
 </div>
 <!-- Initialize Select2 AFTER all scripts have loaded -->
 <script>
+    var validateFile = [];
+    var profilePic = [];
+    var currentSelectionFiles = [];
     function showLoader() {
         $("#nb-global-spinner").css("display", "flex");
     }
@@ -536,9 +549,13 @@
         });
         // Update Basic information ...
         $('#basciInfo').on('submit', function (e) {
+            debugger;
             e.preventDefault(); // Prevent default form submission
             showLoader();
             var formData = new FormData(this);
+            for (var i = 0; i < profilePic.length; i++) {
+                formData.append(i, profilePic[i]);
+            }
             $.ajax({
                 url: '/Profile/UpdateBasicInfo',
                 type: 'POST',
@@ -555,7 +572,6 @@
                     if (data.status == true) {
                         toastr.success(data.message);
                         setTimeout(function () {
-                            location.href = document.referrer;
                             hideLoader();
                         }, 1500);
                     } else {
@@ -653,10 +669,7 @@
             });
         });
     });
-</script>
-<script>
-    var validateFile = [];
-    var profilePic = [];
+
     $(document).ready(function () {
         $("#uploadProfile").on("click", function () {
             $("#profilePic").click();
@@ -677,16 +690,17 @@
                 reader.readAsDataURL(file);
             } // Make sure it's visible
         });
-        validateFile = [];
         $("#files").on("change", function (e) {
-           // e.target.files; new selection only in case of select and then change selection before submit
+            //e.target.files; new selection only in case of select and then change selection before submit
            // getAttachment($("#userId").val()); i need to get already submitten and then add new selection
-            const [file] = e.target.files;
-            if (file) {
-                for (var i = 0; i < e.target.files.length; i++) {
-                    validateFile.push(e.target.files[i]);
-                }
-            }
+            debugger;
+            currentSelectionFiles = [];
+            currentSelectionFiles = e.target.files;
+            // if (file) {
+            //     for (var i = 0; i < e.target.files.length; i++) {
+            //         validateFile.push(e.target.files[i]);
+            //     }
+            // }
             $(".photoUpload-files").show();
             $('#submitFiles').prop('disabled', false);
            // drawFiles();
@@ -710,6 +724,9 @@
             formData.delete("files");
             for (var i = 0; i < validateFile.length; i++) {
                 formData.append(i, validateFile[i]);
+            }
+            for (var i = 0; i < currentSelectionFiles.length; i++) {
+                formData.append(i, currentSelectionFiles[i]);
             }
             $.ajax({
                 url: '/Profile/upload', // Your API endpoint
@@ -787,7 +804,7 @@
             color: '#f1f1f1'
         }).then((result) => {
             if (result.isConfirmed) {
-                validateFile.splice(id, 1);
+                var deletedFile 
                 debugger;
                 showLoader();
                 var formData = new FormData(); 
@@ -795,8 +812,9 @@
                 for (var i = 0; i < validateFile.length; i++) {
                     formData.append(i, validateFile[i]);
                 }
+                validateFile.splice(id, 1);
                 $.ajax({
-                    url: '/Profile/upload', // Your API endpoint
+                    url: '/Profile/deleteFile', // Your API endpoint
                     type: 'POST',
                     data: formData,
                     contentType: false, // Required for FormData
@@ -880,15 +898,13 @@
         });
     }
 
-</script>
-<script>
     let currentCard = null;
     document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             showLoader();
             const card = this.closest('.package-card');
             currentCard = card;
-
+            debugger;
             // Fill form
             document.getElementById('packageId').value = this.getAttribute('data-packageId');
             document.getElementById('packageTitle').value = this.getAttribute('data-title');

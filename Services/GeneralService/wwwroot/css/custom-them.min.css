@@ -884,7 +884,7 @@ blockquote p {
 	position: absolute;
 	min-width:150px;
 	top: 57px;
-	left: 0;
+	left: 10px;
 	z-index: 1;
 	padding:10px 0;
 	background:#fff;
@@ -893,10 +893,11 @@ blockquote p {
 	transition: all .2s ease-in-out;
 	list-style:none;
 }
-.nav-holder nav li:hover > ul {
+.nav-holder nav li:hover > ul, .nav-holder nav li ul:hover{
 	opacity: 1;
 	visibility: visible;
-	margin: 0;
+	border: 0;
+    top: 20px;
 }
 .nav-holder nav li ul li ul {
 	top: -10px  ;
@@ -939,7 +940,7 @@ blockquote p {
     transition: all 200ms linear;
 }
 .nav-holder nav li a:hover i {
-    transform: rotateX(180deg);
+    /*transform: rotateX(180deg);*/
 }
 .nav-holder nav li ul a {
 	color:#566985;
@@ -954,12 +955,12 @@ nav li ul a:before , nav li ul a:after {
 }
 /*------ button ------------------------------------------------*/
 .btn {
-    padding:15px 40px;
-    color:#fff;
-    border-radius: 4px;
-    font-weight: 500;
-    font-size: 12px;
-    margin-top: 15px;
+	/*padding: 15px 40px;*/
+	color: #fff;
+	border-radius: 4px;
+	font-weight: 500;
+	font-size: 12px;
+	margin-top: 15px;
 }
 .float-btn {
     float:left;

@@ -2,9 +2,9 @@
 //page loader ...
 window.onload = function () {
     // Hide the loader after the page has fully loaded
-    setTimeout(() => {
+    //setTimeout(() => {
         document.getElementById("loader").style.display = "none";
-    }, 3000);
+    //}, 3000);
     // Add the 'active' class to the element after the page has loaded
     //     const element = document.getElementById('animateMe');
     //   element.classList.add('active');

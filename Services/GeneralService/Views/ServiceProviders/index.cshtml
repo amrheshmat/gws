@@ -2,9 +2,38 @@
 @model ServiceProvidersModel;
 @inject ILocalizationService _localizationService;
 @{
-    ViewData["Title"] = "Admin Page";
     Layout = "~/Views/Shared/_layout.cshtml";
-    var abouts = ViewBag.abouts;
+    var cities = ViewBag.cities;
+    var categories = ViewBag.categories;
+    int totalPages = Model.totalPages.Value;
+    int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    List<int?> pagesToShow = new List<int?>();
+
+    // Always show first two pages
+    pagesToShow.Add(1);
+    if (totalPages >= 2) pagesToShow.Add(2);
+
+    // Ellipsis before middle if needed
+    if (currentPage > 4)
+        pagesToShow.Add(null);
+    // Middle (currentPage - 1, currentPage, currentPage + 1)
+    if (currentPage > 2 && currentPage < totalPages - 1)
+    {
+        pagesToShow.Add(currentPage - 1);
+        pagesToShow.Add(currentPage);
+        pagesToShow.Add(currentPage + 1);
+    }
+    // Ellipsis after middle if needed
+    if (currentPage <= totalPages - 3)
+        pagesToShow.Add(null);
+    // Last 2 pages
+    if (totalPages > 2)
+    {
+        pagesToShow.Add(totalPages - 1);
+        pagesToShow.Add(totalPages);
+    }
 }
 <style>
     body {
@@ -31,6 +60,12 @@
         margin-bottom: 10px;
       }
     }
+
+    #pagination li.active {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
 </style>
 <div class="container py-4" style="margin-top:100px;">
     <div class="row">
@@ -40,25 +75,43 @@
                 <h5>Filters</h5>
                 <div class="mb-3">
                     <label for="categoryFilter" class="form-label">Category</label>
-                    <select class="form-select" id="categoryFilter">
-                        <option value="">All</option>
-                        <option value="photography">Photography</option>
-                        <option value="planning">Planning</option>
-                        <option value="content">Content Creation</option>
+                    <select asp-for="searchModel.category"
+                            style="appearance: auto;" class="form-control">
+                        <option value="" selected>Select Category</option>
+                        @foreach (var category in categories)
+                        {
+                            <option value="@category.id">@category.name</option>
+                        }
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="locationFilter" class="form-label">Location</label>
-                    <input type="text" class="form-control" id="locationFilter" placeholder="Enter city...">
+                    <select asp-for="searchModel.city"
+                            style="appearance: auto;" class="form-control">
+                        <option value="" selected>Select City</option>
+                        @foreach (var city in cities)
+                        {
+                            <option value="@city.id">@city.name</option>
+                        }
+                    </select>
                 </div>
                 <div class="mb-3">
+                    <label for="locationFilter" class="form-label">Gender</label>
+                    <select asp-for="searchModel.city"
+                            style="appearance: auto;" class="form-control">
+                        <option value="" selected>Select Gender</option>
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
+                    </select>
+                </div>
+               @*  <div class="mb-3">
                     <label for="ratingFilter" class="form-label">Rating</label>
                     <select class="form-select" id="ratingFilter">
                         <option value="">Any</option>
                         <option value="4">4★ & above</option>
                         <option value="3">3★ & above</option>
                     </select>
-                </div>
+                </div> *@
                 <div class="mb-3">
                     <label for="priceFilter" class="form-label">Price Range</label>
                     <select class="form-select" id="priceFilter">
@@ -74,12 +127,13 @@
         <!-- Search Results -->
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">Search Results</h5>
+                <h5 class="mb-0">All Providers</h5>
                 <div>
                     <select class="form-select" id="sortResults" style="width: 200px;">
                         <option selected>Sort by</option>
                         <option value="name">Name</option>
-                        <option value="rating">Rating</option>
+                        <option value="category">Category</option>
+                        <option value="city">City</option>
                         <option value="price">Price</option>
                     </select>
                 </div>
@@ -91,25 +145,31 @@
                 {
                     <div class="col-md-6 col-xl-4 mb-4 result-item" data-rating="4" data-price="high" data-category="photography">
                         <div class="card" style="padding:0px;">
-                            <div style="width:100%;height:200px;background-repeat: no-repeat; background-size: contain; background-position: center; width: 100%; aspect-ratio: 16 / 9;background-position:center;background-image:url('/Files/@subscriber.ProfileImage')">
-                            </div>
-                            <div class="card-body">
+                            <div style="width:100%;height:200px;">
+                                @if(subscriber.ProfileImage != null){
+                                    <img src="/Files/@subscriber.ProfileImage" style="border-radius: 10px 10px 0px 0px;background-repeat: no-repeat; background-size: contain;width:100%;height:100%" />
+                                }
+                                else{
+                                    <img src="/images/default-profile-image.jpg" style="border-radius: 10px 10px 0px 0px;background-repeat: no-repeat; background-size: contain;width:100%;height:100%" />
+                                    }
+                                </div>
+                            <div class="card-body" style="padding: 20px 10px;">
                                 <h6 class="card-title">
                                     <i class="fa fa-user" style="margin: 0px 5px; color: #2b57a4;"></i>@subscriber.Name
+                                    <i class="fa fa-location-dot" style="margin: 0px 5px; color: #2b57a4;"></i>@subscriber.City
                                 </h6>
                                 @* <p class="card-text">Cairo, Egypt</p> *@
                                 @* <p class="text-warning mb-1">★★★★☆</p> *@
                                 <!-- Packages -->
                                 <div class="mt-2">
-                                    <strong class="text-primary">Packages:</strong>
-                                    <p class="list-inline small mb-2">
+                                    <p class="list-inline small mb-2" style="text-align: center;">
                                         @foreach(var package in subscriber.Packages)
                                         {
                                             <span class="list-inline-item"><span style="font-weight:bold">@package.title:</span> <span style="color:#2b57a4">@package.price$</span></span>
                                         }
                                     </p>
                                 </div>
-                                <div style="margin-top:15px;">
+                                <div style="margin-top: 10px;padding: 15px;">
                                     <a href="#" style="padding:10px 5px;margin: 5px;display:inline;" class="btn btn-outline-primary w-100">
                                         <i class="fa fa-user" style="margin: 0px 5px; color: #fff;"></i>
                                         View Profile
@@ -123,6 +183,47 @@
                         </div>
                     </div>
                 }
+            </div>
+            <div class="row mt-5" style="margin:60px!important;">
+                <div class="col">
+                    <div class="block-27">
+                        <ul id="pagination">
+                            @if (Model.totalCount > 1)
+                            {
+                                @if (currentPage > 1)
+                                {
+
+                                    <li class="" ><a href="?page=@(currentPage - 1)">Prev</a></li>
+                                }
+                                else
+                                {
+                                    <li class="disabled"><span class="">Prev</span></li>
+                                }
+                                @foreach (var i in pagesToShow.Distinct())
+                                {
+                                    if (i == null)
+                                    {
+                                        <li><span>...</span></li>
+                                    }
+                                    else
+                                    {
+                                    <li class="@(currentPage == i ? "active" : "")"
+                                        id="pageId-@i"><a href="/ServiceProviders?page=@i">@i</a></li>
+                                    }
+                                }
+                                @if (currentPage < totalPages)
+                                {
+                                    <li class=""><a href="?page=@(currentPage + 1)">Next</a></li>
+                                }
+                                else
+                                {
+                                    <li class="disabled"><span class="">Next</span></li>
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

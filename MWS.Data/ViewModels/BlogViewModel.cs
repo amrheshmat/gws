@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MWS.Data.Entities;
 
 namespace MWS.Data.ViewModels
 {
@@ -11,6 +12,8 @@ namespace MWS.Data.ViewModels
         public int? blogId { get; set; }
         public int? languageId { get; set; }
         public List<IFormFile>? files { get; set; }
+        public List<Attachment>? attachments { get; set; }
+        public Blog? blog { get; set; }
 
     }
 }

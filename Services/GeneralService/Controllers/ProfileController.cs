@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using SampleMVC.Controllers;
 using SampleMVC.Models;
 using TripBusiness.Ibusiness;
-
 namespace GeneralService.Controllers
 {
     public class ProfileController : BaseController
@@ -85,6 +84,13 @@ namespace GeneralService.Controllers
                     userPackages = userPacakges,
                 }
             };
+            List<string> packagesList = new List<string>
+            {
+                "Basic",
+                "Premium",
+                "Vip"
+            };
+            ViewBag.Pacakges = packagesList;
             return View(model);
         }
         [HttpPost]
@@ -107,6 +113,9 @@ namespace GeneralService.Controllers
                 subscriber.city = basicInfo.City;
                 subscriber.experience_years = basicInfo.experience_years;
                 subscriber.bio = basicInfo.bio;
+                subscriber.fullName = basicInfo.FullName;
+                subscriber.email = basicInfo.Email;
+                subscriber.mobile = basicInfo.Phone;
                 _repo.Update<Subscriber>(subscriber);
                 _repo.SaveChanges();
                 List<UserCategory> oldUserCategory = _repo.Filter<UserCategory>(e => e.user_id == user.userId).ToList();
@@ -123,7 +132,7 @@ namespace GeneralService.Controllers
                     _repo.Create<UserCategory>(userCategory);
                     _repo.SaveChanges();
                 }
-                if (profilePic != null)
+                if (profilePic != null && profilePic.Count > 0)
                 {
                     Upload(int.Parse(profileModel.userId), profilePic, "Profile");
                 }
@@ -274,8 +283,20 @@ namespace GeneralService.Controllers
                 _repo.context.RemoveRange(attachments);
                 _repo.SaveChanges();
 
+                var oldFilesPaths = attachments.Select(e => e.attachmentPath).ToList();
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
 
+                if (oldFilesPaths != null && oldFilesPaths.Count > 0)
+                {
+                    foreach (var oldFile in oldFilesPaths)
+                    {
+                        string fullPath = Path.Combine(path, oldFile);
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
+                    }
+                }
                 //create folder if not exist
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
@@ -298,6 +319,30 @@ namespace GeneralService.Controllers
                     using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
+                    }
+                }
+            }
+        }
+        private void DeleteFile(int userId, IFormFileCollection files, string fileType)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Attachment> attachments = _repo.Filter<Attachment>(e => e.elementId == userId && e.type == fileType).ToList();
+                _repo.context.RemoveRange(attachments);
+                _repo.SaveChanges();
+
+                var oldFilesPaths = attachments.Select(e => e.attachmentPath).ToList();
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+
+                if (oldFilesPaths != null && oldFilesPaths.Count > 0)
+                {
+                    foreach (var oldFile in oldFilesPaths)
+                    {
+                        string fullPath = Path.Combine(path, oldFile);
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
                     }
                 }
             }
@@ -328,6 +373,30 @@ namespace GeneralService.Controllers
                 {
                     response.Status = false;
                     response.Message = " Only 5 files are allowed!";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.Message = "an error occurred";
+            }
+            return response;
+        }
+        [HttpPost("Profile/deleteFile")]
+        public async Task<Response> deleteFile()
+        {
+            Response response = new Response();
+            response.Status = false;
+            try
+            {
+                var currentUser = HttpContext.Session.GetString("currentUser");
+                UserDTO currentUserModel = JsonConvert.DeserializeObject<UserDTO>(currentUser);
+                var files = Request.Form.Files;
+                if (files != null || files.Count > 0)
+                {
+                    DeleteFile(int.Parse(currentUserModel.userId), files, "Portofolio");
+                    response.Status = true;
+                    response.Message = "Files deleted successfully!";
                 }
             }
             catch (Exception ex)

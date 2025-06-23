@@ -1577,3 +1577,41 @@ h2 {
     color: #fff;
 }
 /*------------------------end blog section--------------------------------------------------*/
+
+
+.special-link {
+    position: relative;
+    background: linear-gradient(45deg, #3172e8, #2a5298) !important;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(49, 114, 232, 0.8);
+}
+
+    /* Subtle hover effect */
+    .special-link:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(49, 114, 232, 0.8);
+        background: linear-gradient(45deg, #3172e8, #2a5298) !important;
+    }
+
+    /* Optional: animated glow */
+    @keyframes glow {
+        0% {
+            box-shadow: 0 0 5px #3172e8;
+        }
+
+        50% {
+            box-shadow: 0 0 10px #3172e8;
+        }
+
+        100% {
+            box-shadow: 0 0 5px #3172e8;
+        }
+    }
+
+    .special-link {
+        animation: glow 2.5s infinite ease-in-out;
+    }

@@ -5,6 +5,7 @@ using MWS.Business.Shared.Data.Models;
 using MWS.Data.Entities;
 using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
+using SampleMVC.Models;
 using TripBusiness.Ibusiness;
 
 namespace SampleMVC.Controllers
@@ -13,11 +14,11 @@ namespace SampleMVC.Controllers
     {
         private IRepository _repo;
         private ILocalizationService _localizationService;
-        IWebHostEnvironment _appEnvironment;
-        public BlogController(IRepositoryFactory repo, IWebHostEnvironment appEnvironment, ILocalizationService localizationService)
+        private readonly IConfiguration _config;
+        public BlogController(IRepositoryFactory repo, IConfiguration config, ILocalizationService localizationService)
         {
             _repo = repo.Create("AGGRDB");
-            _appEnvironment = appEnvironment;
+            _config = config;
             _localizationService = localizationService;
         }
         string GetFirstWords(string input, int wordCount = 20)
@@ -30,24 +31,43 @@ namespace SampleMVC.Controllers
         }
 
         [Route("blogs")]
-        public async Task<IActionResult> Index()//index page
+        public async Task<IActionResult> Index(int? page)
         {
-            List<Attachment> attachments = await _repo.Filter<Attachment>(e => e.type == "blog").ToListAsync();
-            List<Blog> blogs = _repo.Filter<Blog>(e => e.isActive == "Y").OrderByDescending(e => e.blogId).Take(2).ToList();
-            List<Attachment> tourAttachments = new List<Attachment>();
-            List<Attachment> recentAttachments = new List<Attachment>();
-            foreach (var b in blogs)
+            var newsPaginationCount = int.Parse(_config.GetSection("NewsPaginationCount").Value!);
+            List<Blog> blogs = new List<Blog>();
+            var packagesUsers = _repo.GetAll<Package>().Select(e => e.user_id).ToList();
+            if (page != null)
             {
-                List<Attachment> tourAttachment = new List<Attachment>();
-                tourAttachment = await _repo.Filter<Attachment>(e => e.elementId == b.blogId && e.type == "blog").ToListAsync();
-                foreach (var attachment in tourAttachment)
-                {
-                    tourAttachments.Add(attachment);
-                }
-                b.description = GetFirstWords(b.description, 20);
+                page = page - 1;
+                blogs = _repo.GetAll<Blog>().Where(e => e.isActive == "Y").Skip(page.Value * newsPaginationCount).Take(newsPaginationCount).ToList();
             }
+            else
+            {
+                blogs = _repo.GetAll<Blog>().Where(e => e.isActive == "Y").Skip(0).Take(newsPaginationCount).ToList();
+            }
+            var totalCount = _repo.Filter<Blog>(e => e.isActive == "Y").Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / newsPaginationCount);
+            List<BlogModel> blogModelList = new List<BlogModel>();
+
+            foreach (var blog in blogs)
+            {
+                BlogModel blogModel = new BlogModel();
+                blogModel.BlogImage = _repo.Filter<Attachment>(e => e.elementId == blog.blogId && e.type == "blog").FirstOrDefault()?.attachmentPath;
+                blogModel.title = blog.title;
+                blogModel.description = blog.description;
+                blogModel.creationDate = blog.creationDate;
+                blogModel.blogId = blog.blogId;
+                blogModelList.Add(blogModel);
+            }
+            var model = new BlogsModel
+            {
+                blogs = blogModelList,
+                totalCount = totalCount,
+                totalPages = totalPages
+            };
             List<Blog> recentLogs = await _repo.Filter<Blog>(e => e.isActive == "Y").ToListAsync();
             var recentbLogs = recentLogs.OrderByDescending(e => e.creationDate).ToList().Take(3);
+            List<Attachment> recentAttachments = new List<Attachment>();
             foreach (var b in recentbLogs)
             {
                 List<Attachment> tourAttachment = new List<Attachment>();
@@ -57,29 +77,9 @@ namespace SampleMVC.Controllers
                     recentAttachments.Add(attachment);
                 }
             }
-            int lastId = blogs.Select(e => e.blogId).ToList().Min();
-            List<Language> languages = await _repo.GetAll<Language>().ToListAsync();
-            foreach (var lan in languages)
-            {
-                List<Attachment> tourAttachment = new List<Attachment>();
-                tourAttachment = await _repo.Filter<Attachment>(e => e.elementId == lan.languageId && e.type == "language").ToListAsync();
-                foreach (var attachment in tourAttachment)
-                {
-                    tourAttachments.Add(attachment);
-                }
-            }
-            ViewBag.languages = languages;
-            ViewBag.toursAttachments = tourAttachments;
-            int blogsCount = _repo.GetAll<Blog>().ToList().Count;
-            //int blogsCount = _repo.Filter<Blog>(e => e.isActive == "Y").ToList().Count;
-            double blogsPaginationCount = (double)blogsCount / 2;
-            ViewBag.attachments = attachments;
             ViewBag.recentAttachments = recentAttachments;
-            ViewBag.blogs = blogs;
             ViewBag.recentLogs = recentbLogs;
-            ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
-            ViewBag.lastId = lastId;
-            return View(tourAttachments);
+            return View(model);
         }
         [HttpGet]
         [Route("getBlogs")]
@@ -326,30 +326,6 @@ namespace SampleMVC.Controllers
             response.Status = false;
             response.Message = _localizationService.Localize("AciveError");
             return response;
-        }
-
-        [HttpGet]
-        [Route("Blog/GetPagination/{pageId}")]
-        public async Task<List<BlogViewModel>> GetPagination(string pageId)
-        {
-            List<Attachment> attachments = await _repo.Filter<Attachment>(e => e.type == "blog").ToListAsync();
-            List<Blog> blogs = _repo.Filter<Blog>(e => e.isActive == "Y").OrderByDescending(e => e.blogId).Skip(int.Parse(pageId) * 2).Take(2).ToList();
-            List<BlogViewModel> viewModelList = new List<BlogViewModel>();
-            foreach (var b in blogs)
-            {
-                BlogViewModel model = new BlogViewModel();
-                model.blog = b;
-                model.attachments = await _repo.Filter<Attachment>(e => e.elementId == b.blogId && e.type == "blog").ToListAsync();
-                viewModelList.Add(model);
-            }
-            int lastId = blogs.Select(e => e.blogId).ToList().Min();
-            int blogsCount = _repo.GetAll<Blog>().ToList().Count;
-            double blogsPaginationCount = (double)blogsCount / 2;
-            ViewBag.attachments = attachments;
-            ViewBag.blogs = blogs;
-            ViewBag.blogsCount = Math.Ceiling(blogsPaginationCount);
-            ViewBag.lastId = lastId;
-            return viewModelList;
         }
     }
 }

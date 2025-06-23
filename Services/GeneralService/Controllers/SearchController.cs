@@ -14,52 +14,20 @@ namespace GeneralService.Controllers
         private IRepository _repo;
         private ILocalizationService _localizationService;
         private ISecurity _security;
-        private IWebHostEnvironment _env;
-        public SearchController(IWebHostEnvironment env, ILogger<ProfileController> logger, IRepositoryFactory repo, ISecurity security, ILanguageService languageService, ILocalizationService localizationService) : base(languageService, localizationService)
+        private IConfiguration _config;
+        public SearchController(IConfiguration config, ILogger<ProfileController> logger, IRepositoryFactory repo, ISecurity security, ILanguageService languageService, ILocalizationService localizationService) : base(languageService, localizationService)
         {
             _logger = logger;
             _repo = repo.Create("AGGRDB");
             _security = security;
-            _env = env;
+            _config = config;
             _localizationService = localizationService;
-        }
-        public async Task<IActionResult> Index()
-        {
-            var subscribers = _repo.GetAll<Subscriber>().ToList();
-            //var subscribers = _repo.Filter<Subscriber>(e=>e.status == "A").ToList();
-            List<subscriberModel> subscriberModelList = new List<subscriberModel>();
-            foreach (var subscriber in subscribers)
-            {
-                subscriberModel subscriberModel = new subscriberModel();
-                var packages = _repo.Filter<Package>(e => e.user_id == subscriber.userId).ToList();
-                subscriberModel.Packages = packages;
-                subscriberModel.Name = subscriber.fullName;
-                subscriberModel.Phone = subscriber.mobile;
-                subscriberModel.City = subscriber.city;
-                subscriberModel.ProfileImage = _repo.Filter<Attachment>(e => e.type == "Profile" && e.elementId == subscriber.userId).FirstOrDefault()?.attachmentPath;
-                var userCategory = _repo.Filter<UserCategory>(e => e.user_id == subscriber.userId).Select(e => e.category_id).ToList();
-                List<string> categories = new List<string>();
-                foreach (var category in userCategory)
-                {
-                    var cqtegoryName = _repo.Filter<Category>(e => e.id == category).FirstOrDefault().name;
-                    categories.Add(cqtegoryName);
-                }
-                subscriberModelList.Add(subscriberModel);
-            }
-            var model = new ServiceProvidersModel
-            {
-                subscribers = subscriberModelList
-            };
-
-            List<City> cities = _repo.GetAll<City>().ToList();
-            List<Category> categoriesList = _repo.GetAll<Category>().ToList();
-            ViewBag.cities = cities;
-            ViewBag.categories = categoriesList;
-            return View(model);
         }
         public IActionResult Index(string? category, string? city, string? name, decimal? price, string? sort)
         {
+            var providersPaginationCount = int.Parse(_config.GetSection("ProvidersPaginationCount").Value!);
             // Prepare queryable data source (e.g., from EF Core)
+            //var subscribers = _repo.Filter<Subscriber>(e=>e.status == UserStatus.Active).Skip(int.Parse(pageId) * 2).ToList();
             var query = _repo.GetAll<Subscriber>().ToList();
             var userCategory = _repo.GetAll<UserCategory>().ToList();
 
@@ -95,10 +63,34 @@ namespace GeneralService.Controllers
                     query = query.OrderBy(i => i.userId).ToList();
                     break;
             }
+            var subscribers = query.ToList();
+            var totalCount = subscribers.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / providersPaginationCount);
 
-            var results = query.ToList();
+            List<subscriberModel> subscriberModelList = new List<subscriberModel>();
+            foreach (var subscriber in subscribers)
+            {
+                subscriberModel subscriberModel = new subscriberModel();
+                var packages = _repo.Filter<Package>(e => e.user_id == subscriber.userId).ToList();
+                subscriberModel.Packages = packages;
+                subscriberModel.Name = subscriber.fullName;
+                subscriberModel.Phone = subscriber.mobile;
+                subscriberModel.City = subscriber.city;
+                subscriberModel.ProfileImage = _repo.Filter<Attachment>(e => e.type == "Profile" && e.elementId == subscriber.userId).FirstOrDefault()?.attachmentPath;
+                subscriberModelList.Add(subscriberModel);
+            }
+            var model = new ServiceProvidersModel
+            {
+                subscribers = subscriberModelList,
+                totalCount = totalCount,
+                totalPages = totalPages
+            };
+            List<City> cities = _repo.GetAll<City>().ToList();
+            List<Category> categoriesList = _repo.GetAll<Category>().ToList();
+            ViewBag.cities = cities;
+            ViewBag.categories = categoriesList;
 
-            return View(results);
+            return View(model);
         }
 
     }

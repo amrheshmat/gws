@@ -1,32 +1,56 @@
 ﻿@using TripBusiness.Ibusiness
 @inject ILocalizationService _localizationService;
-@model List<MWS.Data.Entities.Attachment>;
+@model BlogsModel;
 @{
     Layout = "~/Views/Shared/_layout.cshtml";
-    var attachments = ViewBag.attachments;
-    var blogs = ViewBag.blogs;
     var recentLogs = ViewBag.recentLogs;
-    var blogsCount = ViewBag.blogsCount;
     var recentAttachments = ViewBag.recentAttachments;
-    var lastId = ViewBag.lastId;
+    int totalPages = Model.totalPages.Value;
+    int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    List<int?> pagesToShow = new List<int?>();
+
+    // Always show first two pages
+    pagesToShow.Add(1);
+    if (totalPages >= 2) pagesToShow.Add(2);
+
+    // Ellipsis before middle if needed
+    if (currentPage > 4)
+        pagesToShow.Add(null);
+    // Middle (currentPage - 1, currentPage, currentPage + 1)
+    if (currentPage > 2 && currentPage < totalPages - 1)
+    {
+        pagesToShow.Add(currentPage - 1);
+        pagesToShow.Add(currentPage);
+        pagesToShow.Add(currentPage + 1);
+    }
+    // Ellipsis after middle if needed
+    if (currentPage <= totalPages - 3)
+        pagesToShow.Add(null);
+    // Last 2 pages
+    if (totalPages > 2)
+    {
+        pagesToShow.Add(totalPages - 1);
+        pagesToShow.Add(totalPages);
+    }
 }
 <section class="ftco-section ftco-no-pb">
     <div class="container" style="margin-top:130px;">
         <div class="row">
             <div class="col-lg-8 col-md-7">
                 <div class="row d-flex" id="blogsShow">
-                    @foreach (var blog in blogs)
+                    @foreach (var blog in Model.blogs)
                     {
-                        @if (Model.Where(e => e.elementId == blog.blogId).ToList().Count > 0)
+                        @if (blog.BlogImage != null)
                         {
                             var words = blog.description?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                             var preview = words != null && words.Length > 20
                             ? string.Join(" ", words.Take(20)) + "..."
                             : blog.description;
-                            var mainImage = Model.Where(e => e.elementId == blog.blogId && e.type == "blog").ToList();
                             <div class="col-md-6">
                                 <div class="card blog-card">
-                                    <img src="Files/@mainImage[0].attachmentPath" class="card-img-top" alt="Blog Post 1" loading="lazy" />
+                                    <img src="Files/@blog.BlogImage" class="card-img-top" alt="Blog Post 1" loading="lazy" />
                                     <div class="card-body">
                                         <h5 class="card-title">@blog.title</h5>
                                         <p class="card-text">@preview</p>
@@ -41,15 +65,39 @@
                     <div class="col">
                         <div class="block-27">
                             <ul id="pagination">
-                                @if (blogsCount > 1)
+                                @if (Model.totalCount > 1)
                                 {
-                                    var v = 1;
-                                    for (var i = 0; i < blogsCount; i++)
+                                    @if (currentPage > 1)
                                     {
-                                        <li class="" id="pageId-@i"><a href="#">@v</a></li>
-                                        v++;
+
+                                        <li class=""><a href="?page=@(currentPage - 1)"><i class="fa fa-backward"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="disabled"><span class=""><i class="fa fa-backward"></i></span></li>
+                                    }
+                                    @foreach (var i in pagesToShow.Distinct())
+                                    {
+                                        if (i == null)
+                                        {
+                                            <li><span>...</span></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="@(currentPage == i ? "active" : "")"
+                                                id="pageId-@i"><a href="/blogs?page=@i">@i</a></li>
+                                        }
+                                    }
+                                    @if (currentPage < totalPages)
+                                    {
+                                        <li class=""><a href="?page=@(currentPage + 1)"><i class="fa fa-forward"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="disabled"><span class=""><i class="fa fa-forward"></i></span></li>
                                     }
                                 }
+
 
                             </ul>
                         </div>
@@ -66,7 +114,9 @@
                             if (b.blogId == image.elementId)
                             {
                                 <div class="block-21 mb-4 d-flex justify-content-between" style="position:relative;margin-left: 75px;">
-                                    <a class="blog-img" style="width: 90px; height: 60px; background-size: contain; background-repeat: no-repeat;background-image: url('/Files/@image.attachmentPath');"></a>
+                                    <a class="blog-img" style="width: 90px; height: 60px; ">
+                                        <img src="/Files/@image.attachmentPath" style="background-size: contain; background-repeat: no-repeat;width:100%;height:100%" />
+                                    </a>
                                     <div class="text pl-3" style="position: absolute; left: 100px;text-align: left;">
                                         <h3 class="heading" style="font-size: 20px; font-family: serif;"><a href="/BlogSingle/@b.blogId">@b.title</a></h3>
                                         <div class="meta">
@@ -79,54 +129,12 @@
                         }
                     }
                 </div>
-                @* <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
-                    <h3>@_localizationService.Localize("Tags")</h3>
-                    <div class="tagcloud">
-                        <a href="#" class="tag-cloud-link">design</a>
-                        <a href="#" class="tag-cloud-link">learn</a>
-                        <a href="#" class="tag-cloud-link">education</a>
-                        <a href="#" class="tag-cloud-link">course</a>
-                        <a href="#" class="tag-cloud-link">online</a>
-                        <a href="#" class="tag-cloud-link">bag</a>
-                        <a href="#" class="tag-cloud-link">pen</a>
-                        <a href="#" class="tag-cloud-link">teacher</a>
-                    </div>
-                </div> *@
             </div>
         </div>
     </div>
 </section>
 <script>
     $(document).ready(function () {
-        var startId = 1;
-        $("#pageId-0").toggleClass("active");
-        $('#pagination li').on("click", function (e) {
-            e.preventDefault();
-            startId = $(this).attr("id").substring(7);
-            alert(startId);
-            $('#pagination li').removeClass("active");
-            $(this).toggleClass("active");
-            $("#preloader").css({ "visibility": "visible", "opacity": 1 });
-            $.ajax({
-                url: "/Blog/GetPagination/" + startId,
-                type: "GET",
-                cache: false,
-                success: function (data) {
-                    $("#preloader").css({ "visibility": "hidden", "opacity": 0 });
-                    $("#blogsShow").empty();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#blogsShow").append('<div class= "col-lg-6 ftco-animate fadeInUp ftco-animated" >'+'<div class="blog-entry">'+
-                            '<a href="/BlogSingle/' + data[i].blog.blogId + '" class="block-20" style="background-image: url(\'/Files/'+data[i].attachments[0].attachmentPath+'\');"></a>'+
-                                '<div class="text d-block text-center">'+
-                                    '<div class="meta">'+
-                            '<p><a href="#"><span class="fa fa-calendar mr-2"></span>' + data[i].blog.creationDate + '</a>' +
-                                        '</p></div>'+
-                            '<h1 style=" font-size: 20px; font-weight: bold !important;"><a href="/BlogSingle/' + data[i].blog.blogId + '">' + data[i].blog.title + '</a></h1>' +
-                            '<p>' + data[i].blog.description +'</p></div></div></div> ')
-                    }
-                }
-            });
-        });
-     
+      
     });
 </script>

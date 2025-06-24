@@ -100,6 +100,7 @@ namespace SampleMVC.Controllers
                         subscriber.fullName = registerModel.fullName;
                         subscriber.email = registerModel.email;
                         subscriber.mobile = registerModel.mobile;
+                        subscriber.gender = registerModel.gender;
                         subscriber.isVerified = "N";
                         subscriber.isVerified = "N";
                         subscriber.status = "P";//pending

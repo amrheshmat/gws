@@ -22,6 +22,7 @@ namespace MWS.Data.Entities
         public string? status { get; set; }//P pending -------- A active -------
         public string? fullName { get; set; }
         public string? email { get; set; }
+        public string? gender { get; set; }
         public string? mobile { get; set; }
         public string? isVip { get; set; }
         public DateOnly? start_date { get; set; }

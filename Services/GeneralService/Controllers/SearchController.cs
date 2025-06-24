@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MWS.Data.Entities;
+using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Controllers;
 using SampleMVC.Models;
@@ -23,7 +24,7 @@ namespace GeneralService.Controllers
             _config = config;
             _localizationService = localizationService;
         }
-        public IActionResult Index(int? page, string? category, string? city, string? name, decimal? price, string? sort)
+        public IActionResult Index(int? page, string? category, string? city, string? name, decimal? price, string? gender, string? sort)
         {
             var providersPaginationCount = int.Parse(_config.GetSection("ProvidersPaginationCount").Value!);
             // Prepare queryable data source (e.g., from EF Core)
@@ -43,6 +44,9 @@ namespace GeneralService.Controllers
 
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(i => i.fullName.Contains(name)).ToList();
+
+            if (!string.IsNullOrWhiteSpace(gender))
+                query = query.Where(i => i.gender == gender).ToList();
 
             if (price.HasValue)
             {
@@ -70,11 +74,11 @@ namespace GeneralService.Controllers
             if (page != null)
             {
                 page = page - 1;
-                query = _repo.GetAll<Subscriber>().Where(e => packagesUsers.Contains(e.userId)).Skip(page.Value * providersPaginationCount).Take(providersPaginationCount).ToList();
+                query = query.Skip(page.Value * providersPaginationCount).Take(providersPaginationCount).ToList();
             }
             else
             {
-                query = _repo.GetAll<Subscriber>().Where(e => packagesUsers.Contains(e.userId)).Skip(0).Take(providersPaginationCount).ToList();
+                query = query.Skip(0).Take(providersPaginationCount).ToList();
             }
             List<subscriberModel> subscriberModelList = new List<subscriberModel>();
             foreach (var subscriber in query)
@@ -84,15 +88,21 @@ namespace GeneralService.Controllers
                 subscriberModel.Packages = packages;
                 subscriberModel.Name = subscriber.fullName;
                 subscriberModel.Phone = subscriber.mobile;
-                subscriberModel.City = subscriber.city;
+                subscriberModel.City = _repo.Filter<City>(e => e.id == int.Parse(subscriber.city)).FirstOrDefault().name;
                 subscriberModel.ProfileImage = _repo.Filter<Attachment>(e => e.type == "Profile" && e.elementId == subscriber.userId).FirstOrDefault()?.attachmentPath;
                 subscriberModelList.Add(subscriberModel);
             }
+            SearchModel searchModel = new SearchModel();
+            searchModel.category = category ?? "";
+            searchModel.fullName = name ?? "";
+            searchModel.city = city ?? "";
+            searchModel.gender = gender ?? "";
             var model = new ServiceProvidersModel
             {
                 subscribers = subscriberModelList,
                 totalCount = totalCount,
-                totalPages = totalPages
+                totalPages = totalPages,
+                searchModel = searchModel
             };
             List<City> cities = _repo.GetAll<City>().ToList();
             List<Category> categoriesList = _repo.GetAll<Category>().ToList();

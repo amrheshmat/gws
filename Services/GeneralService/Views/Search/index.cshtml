@@ -6,6 +6,13 @@
     var cities = ViewBag.cities;
     var categories = ViewBag.categories;
     int totalPages = Model.totalPages.Value;
+    ViewBag.GenderList = new SelectList(new[]
+        {
+            new { Value = "m", Text = "Male" },
+            new { Value = "f", Text = "Female" }
+        }, "Value", "Text", Model.searchModel.gender); // pre-select if exists
+    ViewBag.CategoryList = new SelectList(categories, "id", "name", Model.searchModel.category);
+    ViewBag.CityList = new SelectList(cities, "id", "name", Model.searchModel.city);
     int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
     if (currentPage < 1) currentPage = 1;
     if (currentPage > totalPages) currentPage = totalPages;
@@ -78,43 +85,22 @@
                 <h5>Filters</h5>
                 <div class="mb-3">
                     <label for="categoryFilter" class="form-label">Category</label>
-                    <select asp-for="searchModel.category"
-                            style="appearance: auto;" class="form-control">
-                        <option value="" selected>Select Category</option>
-                        @foreach (var category in categories)
-                        {
-                            <option value="@category.id">@category.name</option>
-                        }
+                    <select asp-for="searchModel.category" asp-items="ViewBag.CategoryList" class="form-control">
+                        <option value="">Select Category</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="locationFilter" class="form-label">Location</label>
-                    <select asp-for="searchModel.city"
-                            style="appearance: auto;" class="form-control">
-                        <option value="" selected>Select City</option>
-                        @foreach (var city in cities)
-                        {
-                            <option value="@city.id">@city.name</option>
-                        }
+                    <select asp-for="searchModel.city" asp-items="ViewBag.CityList" class="form-control">
+                        <option value="">Select City</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="locationFilter" class="form-label">Gender</label>
-                    <select asp-for="searchModel.city"
-                            style="appearance: auto;" class="form-control">
-                        <option value="" selected>Select Gender</option>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
+                    <select asp-for="searchModel.gender" asp-items="ViewBag.GenderList" class="form-control">
+                        <option value="">Select Gender</option>
                     </select>
                 </div>
-               @*  <div class="mb-3">
-                    <label for="ratingFilter" class="form-label">Rating</label>
-                    <select class="form-select" id="ratingFilter">
-                        <option value="">Any</option>
-                        <option value="4">4★ & above</option>
-                        <option value="3">3★ & above</option>
-                    </select>
-                </div> *@
                 <div class="mb-3">
                     <label for="priceFilter" class="form-label">Price Range</label>
                     <select class="form-select" id="priceFilter">
@@ -233,42 +219,29 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#applyFilters').click(function () {
-            let category = $('#categoryFilter').val().toLowerCase();
-            let rating = $('#ratingFilter').val();
-            let price = $('#priceFilter').val();
+    document.getElementById("applyFilters").addEventListener("click", function (e) {
+        e.preventDefault();
 
-            $('.result-item').hide().filter(function () {
-                let item = $(this);
-                let itemCat = item.data('category');
-                let itemRating = parseInt(item.data('rating'));
-                let itemPrice = item.data('price');
+        // Get current URL and query string
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
 
-                return (!category || category === itemCat)
-                    && (!rating || itemRating >= rating)
-                    && (!price || price === itemPrice);
-            }).show();
-        });
+        // Get selected values
+        const category = document.querySelector('[name="searchModel.category"]').value;
+        const city = document.querySelector('[name="searchModel.city"]').value;
+        const gender = document.querySelector('[name="searchModel.gender"]')?.value;
+        const price = document.getElementById("priceFilter").value;
 
-        $('#sortResults').change(function () {
-            let sortBy = $(this).val();
-            let items = $('.result-item').get();
+        // Update or add new parameters
+        if (category) params.set("category", category); else params.delete("category");
+        if (city) params.set("city", city); else params.delete("city");
+        if (gender) params.set("gender", gender); else params.delete("gender");
+        if (price) params.set("price", price); else params.delete("price");
 
-            items.sort(function (a, b) {
-                if (sortBy === 'name') {
-                    return $(a).find('.card-title').text().localeCompare($(b).find('.card-title').text());
-                }
-                if (sortBy === 'rating') {
-                    return $(b).data('rating') - $(a).data('rating');
-                }
-                if (sortBy === 'price') {
-                    let priceVal = { low: 1, high: 2 };
-                    return priceVal[$(a).data('price')] - priceVal[$(b).data('price')];
-                }
-            });
+        // Keep page param if exists, otherwise don't set it
+        // (or reset it to 1 if needed: params.set("page", 1);)
 
-            $('#resultsContainer').append(items);
-        });
+        // Redirect to same path with new params
+        window.location.href = `${url.pathname}?${params.toString()}`;
     });
 </script>

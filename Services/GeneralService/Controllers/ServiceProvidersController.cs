@@ -52,7 +52,7 @@ namespace GeneralService.Controllers
                 subscriberModel.Packages = packages;
                 subscriberModel.Name = subscriber.fullName;
                 subscriberModel.Phone = subscriber.mobile;
-                subscriberModel.City = subscriber.city;
+                subscriberModel.City = _repo.Filter<City>(e => e.id == int.Parse(subscriber.city)).FirstOrDefault().name;
                 subscriberModel.ProfileImage = _repo.Filter<Attachment>(e => e.type == "Profile" && e.elementId == subscriber.userId).FirstOrDefault()?.attachmentPath;
                 var userCategory = _repo.Filter<UserCategory>(e => e.user_id == subscriber.userId).Select(e => e.category_id).ToList();
                 //List<string> categories = new List<string>();

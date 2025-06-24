@@ -23,14 +23,15 @@ namespace GeneralService.Controllers
             _config = config;
             _localizationService = localizationService;
         }
-        public IActionResult Index(string? category, string? city, string? name, decimal? price, string? sort)
+        public IActionResult Index(int? page, string? category, string? city, string? name, decimal? price, string? sort)
         {
             var providersPaginationCount = int.Parse(_config.GetSection("ProvidersPaginationCount").Value!);
             // Prepare queryable data source (e.g., from EF Core)
             //var subscribers = _repo.Filter<Subscriber>(e=>e.status == UserStatus.Active).Skip(int.Parse(pageId) * 2).ToList();
-            var query = _repo.GetAll<Subscriber>().ToList();
+            var query = new List<Subscriber>();
             var userCategory = _repo.GetAll<UserCategory>().ToList();
-
+            var packagesUsers = _repo.GetAll<Package>().Select(e => e.user_id).ToList();
+            query = _repo.GetAll<Subscriber>().Where(e => packagesUsers.Contains(e.userId)).ToList();
             if (!string.IsNullOrWhiteSpace(category))
             {
                 var users = _repo.Filter<UserCategory>(e => e.category_id == int.Parse(category)).ToList().Select(e => e.user_id);
@@ -66,9 +67,17 @@ namespace GeneralService.Controllers
             var subscribers = query.ToList();
             var totalCount = subscribers.Count();
             var totalPages = (int)Math.Ceiling((double)totalCount / providersPaginationCount);
-
+            if (page != null)
+            {
+                page = page - 1;
+                query = _repo.GetAll<Subscriber>().Where(e => packagesUsers.Contains(e.userId)).Skip(page.Value * providersPaginationCount).Take(providersPaginationCount).ToList();
+            }
+            else
+            {
+                query = _repo.GetAll<Subscriber>().Where(e => packagesUsers.Contains(e.userId)).Skip(0).Take(providersPaginationCount).ToList();
+            }
             List<subscriberModel> subscriberModelList = new List<subscriberModel>();
-            foreach (var subscriber in subscribers)
+            foreach (var subscriber in query)
             {
                 subscriberModel subscriberModel = new subscriberModel();
                 var packages = _repo.Filter<Package>(e => e.user_id == subscriber.userId).ToList();

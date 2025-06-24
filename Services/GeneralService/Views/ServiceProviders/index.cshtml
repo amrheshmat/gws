@@ -6,6 +6,11 @@
     var cities = ViewBag.cities;
     var categories = ViewBag.categories;
     int totalPages = Model.totalPages.Value;
+    ViewBag.SortList = new SelectList(new[]
+          {
+            new { Value = "name", Text = "name" },
+            new { Value = "price", Text = "price" }
+        }, "Value", "Text", Model.searchModel.Sort);
     int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
     if (currentPage < 1) currentPage = 1;
     if (currentPage > totalPages) currentPage = totalPages;
@@ -115,14 +120,14 @@
                         <option value="3">3★ & above</option>
                     </select>
                 </div> *@
-                <div class="mb-3">
+               @*  <div class="mb-3">
                     <label for="priceFilter" class="form-label">Price Range</label>
                     <select class="form-select" id="priceFilter">
                         <option value="">All</option>
                         <option value="low">Low to High</option>
                         <option value="high">High to Low</option>
                     </select>
-                </div>
+                </div> *@
                 <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
             </div>
         </div>
@@ -132,13 +137,11 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">All Providers</h5>
                 <div>
-                    <select class="form-select" id="sortResults" style="width: 200px;">
-                        <option selected>Sort by</option>
-                        <option value="name">Name</option>
-                        <option value="category">Category</option>
-                        <option value="city">City</option>
-                        <option value="price">Price</option>
-                    </select>
+                    <div class="mb-3">
+                        <select style="appearance:auto" id="sortResults" asp-for="searchModel.Sort" asp-items="ViewBag.SortList" class="form-control">
+                            <option selected>Sort by</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -233,42 +236,46 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#applyFilters').click(function () {
-            let category = $('#categoryFilter').val().toLowerCase();
-            let rating = $('#ratingFilter').val();
-            let price = $('#priceFilter').val();
+    document.getElementById("applyFilters").addEventListener("click", function (e) {
+        e.preventDefault();
 
-            $('.result-item').hide().filter(function () {
-                let item = $(this);
-                let itemCat = item.data('category');
-                let itemRating = parseInt(item.data('rating'));
-                let itemPrice = item.data('price');
+        // Get current URL and query string
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
 
-                return (!category || category === itemCat)
-                    && (!rating || itemRating >= rating)
-                    && (!price || price === itemPrice);
-            }).show();
-        });
+        // Get selected values
+        const category = document.querySelector('[name="searchModel.category"]').value;
+        const city = document.querySelector('[name="searchModel.city"]').value;
+        const gender = document.querySelector('[name="searchModel.gender"]')?.value;
+        const price = document.getElementById("priceFilter").value;
 
-        $('#sortResults').change(function () {
-            let sortBy = $(this).val();
-            let items = $('.result-item').get();
+        // Update or add new parameters
+        if (category) params.set("category", category); else params.delete("category");
+        if (city) params.set("city", city); else params.delete("city");
+        if (gender) params.set("gender", gender); else params.delete("gender");
+        if (price) params.set("price", price); else params.delete("price");
 
-            items.sort(function (a, b) {
-                if (sortBy === 'name') {
-                    return $(a).find('.card-title').text().localeCompare($(b).find('.card-title').text());
-                }
-                if (sortBy === 'rating') {
-                    return $(b).data('rating') - $(a).data('rating');
-                }
-                if (sortBy === 'price') {
-                    let priceVal = { low: 1, high: 2 };
-                    return priceVal[$(a).data('price')] - priceVal[$(b).data('price')];
-                }
-            });
+        // Keep page param if exists, otherwise don't set it
+        // (or reset it to 1 if needed: params.set("page", 1);)
 
-            $('#resultsContainer').append(items);
-        });
+        // Redirect to same path with new params
+        window.location.href = `${url.pathname}?${params.toString()}`;
+    });
+    document.getElementById("sortResults").addEventListener("change", function () {
+        const selectedSort = this.value;
+        const basePath = window.location.pathname;             // e.g., "/search"
+        const params = new URLSearchParams(window.location.search);
+
+        if (selectedSort) {
+            params.set("sort", selectedSort);                     // set or replace sort key :contentReference[oaicite:1]{index=1}
+        } else {
+            params.delete("sort");                                // remove if empty
+        }
+
+        // Optionally reset page to 1 on sort change:
+        // params.set("page", 1);
+
+        const newQuery = params.toString();
+        window.location.href = newQuery ? `${basePath}?${newQuery}` : basePath;
     });
 </script>

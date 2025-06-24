@@ -56,7 +56,12 @@ namespace SampleMVC.Controllers
             ViewBag.categories = categories;
             ViewBag.blogs = blogs.OrderByDescending(e => e.creationDate).Take(10);
             ViewBag.languages = _repo.GetAll<Language>().ToList();
-            homeModel.attachments = attachments;
+            SearchModel searchModel = new SearchModel();
+            searchModel.category = "";
+            searchModel.fullName = "";
+            searchModel.city = "";
+            searchModel.gender = "";
+            homeModel.searchModel = searchModel;
             return View(homeModel);
         }
 

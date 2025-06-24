@@ -10,7 +10,12 @@
         {
             new { Value = "m", Text = "Male" },
             new { Value = "f", Text = "Female" }
-        }, "Value", "Text", Model.searchModel.gender); // pre-select if exists
+        }, "Value", "Text", Model.searchModel.gender);
+    ViewBag.SortList = new SelectList(new[]
+           {
+            new { Value = "name", Text = "name" },
+            new { Value = "price", Text = "price" }
+        }, "Value", "Text", Model.searchModel.Sort);
     ViewBag.CategoryList = new SelectList(categories, "id", "name", Model.searchModel.category);
     ViewBag.CityList = new SelectList(cities, "id", "name", Model.searchModel.city);
     int currentPage = Convert.ToInt32(Context.Request.Query["page"]);
@@ -101,14 +106,14 @@
                         <option value="">Select Gender</option>
                     </select>
                 </div>
-                <div class="mb-3">
+                @* <div class="mb-3">
                     <label for="priceFilter" class="form-label">Price Range</label>
                     <select class="form-select" id="priceFilter">
                         <option value="">All</option>
                         <option value="low">Low to High</option>
                         <option value="high">High to Low</option>
                     </select>
-                </div>
+                </div> *@
                 <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
             </div>
         </div>
@@ -117,13 +122,9 @@
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">All Providers</h5>
-                <div>
-                    <select class="form-select" id="sortResults" style="width: 200px;">
+                <div class="mb-3">
+                    <select style="appearance:auto" id="sortResults" asp-for="searchModel.Sort" asp-items="ViewBag.SortList" class="form-control">
                         <option selected>Sort by</option>
-                        <option value="name">Name</option>
-                        <option value="category">Category</option>
-                        <option value="city">City</option>
-                        <option value="price">Price</option>
                     </select>
                 </div>
             </div>
@@ -243,5 +244,22 @@
 
         // Redirect to same path with new params
         window.location.href = `${url.pathname}?${params.toString()}`;
+    });
+    document.getElementById("sortResults").addEventListener("change", function () {
+        const selectedSort = this.value;
+        const basePath = window.location.pathname;             // e.g., "/search"
+        const params = new URLSearchParams(window.location.search);
+
+        if (selectedSort) {
+            params.set("sort", selectedSort);                     // set or replace sort key :contentReference[oaicite:1]{index=1}
+        } else {
+            params.delete("sort");                                // remove if empty
+        }
+
+        // Optionally reset page to 1 on sort change:
+        // params.set("page", 1);
+
+        const newQuery = params.toString();
+        window.location.href = newQuery ? `${basePath}?${newQuery}` : basePath;
     });
 </script>

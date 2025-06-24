@@ -7,7 +7,16 @@
     var categories = ViewBag.categories;
     var whyChooseUs = ViewBag.whyChooseUs;
     var toursAttachments = ViewBag.toursAttachments;
-}
+    ViewBag.GenderList = new SelectList(new[]
+        {
+            new { Value = "m", Text = "Male" },
+            new { Value = "f", Text = "Female" }
+        }, "Value", "Text", Model.searchModel.gender);
+}<style>
+     .select:focus{
+         box-shadow:none !important;
+     }
+</style>
 <!-- Start wrapper-->
 <div id="wrapper">
     <!-- content -->
@@ -34,9 +43,6 @@
                     <form asp-action="Update" method="post" id="HomeSearch" enctype="multipart/form-data">
                         <div class="main-search-input fl-wrap">
                             <div class="main-search-input-item">
-                                <input asp-for="searchModel.fullName" class="form-control" placeholder="Search by name" />
-                            </div>
-                            <div class="main-search-input-item">
                                 <select asp-for="searchModel.category"
                                     style="background: #1b182b; color: #fff; padding: 12px; width: 100%; height: 100%; border: none; appearance: auto;" class="form-control">
                                     <option value="" selected>Select Category</option>
@@ -54,6 +60,12 @@
                                     {
                                         <option value="@city.id">@city.name</option>
                                     }
+                                </select>
+                            </div>
+                            <div class="main-search-input-item">
+                                <select style="background: #1b182b; color: #fff; padding: 12px; width: 100%; height: 100%; border: none; appearance: auto;"
+                                    asp-for="searchModel.gender" asp-items="ViewBag.GenderList" class="form-control">
+                                    <option value="">Select Gender</option>
                                 </select>
                             </div>
                             <button type="submit" id="HomeSearchBtn" class="main-search-button color-bg">  Search <i class="fa fa-search"></i> </button>
@@ -286,5 +298,23 @@
                 }
             });
         });
+    });
+
+    document.getElementById("HomeSearchBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        // Get current URL and query string
+        const url = new URL(window.location.href);
+        url.href = url.href + 'search';
+        const params = new URLSearchParams(url.search);
+        // Get selected values
+        const category = document.querySelector('[name="searchModel.category"]').value;
+        const city = document.querySelector('[name="searchModel.city"]').value;
+        const gender = document.querySelector('[name="searchModel.gender"]')?.value;
+        // Update or add new parameters
+        if (category) params.set("category", category); else params.delete("category");
+        if (city) params.set("city", city); else params.delete("city");
+        if (gender) params.set("gender", gender); else params.delete("gender");
+        // Redirect to same path with new params
+        window.location.href = `${url.pathname}?${params.toString()}`;
     });
 </script>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MWS.Data.Entities;
+using MWS.Data.ViewModels;
 using MWS.Infrustructure.Repositories;
 using SampleMVC.Controllers;
 using SampleMVC.Models;
@@ -63,11 +64,17 @@ namespace GeneralService.Controllers
                 //}
                 subscriberModelList.Add(subscriberModel);
             }
+            SearchModel searchModel = new SearchModel();
+            searchModel.category = "";
+            searchModel.fullName = "";
+            searchModel.city = "";
+            searchModel.gender = "";
             var model = new ServiceProvidersModel
             {
                 subscribers = subscriberModelList,
                 totalCount = totalCount,
-                totalPages = totalPages
+                totalPages = totalPages,
+                searchModel = searchModel
             };
 
             List<City> cities = _repo.GetAll<City>().ToList();

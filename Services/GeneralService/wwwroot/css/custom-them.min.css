@@ -1261,7 +1261,8 @@ nav li ul a:before , nav li ul a:after {
 	padding-left:20px;
 }
 .form-control:focus {
-	border-color:rgba(255,255,255,0.1)
+	border-color: rgba(255,255,255,0.1);
+	box-shadow : none !important;
 }
 .custom-form textarea {
 	height: 150px;

@@ -415,5 +415,10 @@ namespace GeneralService.Controllers
             return portofolioAttachment;
 
         }
+        [Route("Profile/{id}")]
+        public async Task<IActionResult> ProfileView(int? page)
+        {
+            return View();
+        }
     }
 }

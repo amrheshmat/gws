@@ -83,6 +83,6 @@ namespace GeneralService.Controllers
             ViewBag.categories = categoriesList;
             return View(model);
         }
-    }
 
+    }
 }

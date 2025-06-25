@@ -1,0 +1,128 @@
+﻿@using MWS.Data.Enums
+@model ProfileModel
+@{
+    ViewBag.WeekDayNames = Enum.GetNames(typeof(WeekDays)).ToList();
+    var userId = ViewBag.userId;
+    var packages = ViewBag.Pacakges;
+}
+<style>
+.profile-header {
+    text-align: center;
+}
+
+.profile-photo {
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.bio {
+    font-style: italic;
+    margin-bottom: 1rem;
+    color:#000;
+    text-align:center;
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    text-align:center;
+}
+
+.contact-info li {
+    margin: 0.3rem 0;
+}
+
+</style>
+<div>
+    <section class="profile-header">
+        <img src="https://www.findbanquet.com/blog/wp-content/uploads/2024/06/photographers.jpg" alt="Photographer Name" class="profile-photo">
+        <h1>Alex Andrews</h1>
+        <p class="bio">I'm a professional wedding & portrait photographer capturing timeless memories.</p>
+        <ul class="contact-info">
+            <li>Email: alex@example.com</li>
+            <li>Phone: +1 234 567890</li>
+            <li>Location: New York, USA</li>
+        </ul>
+    </section>
+    <!--Start owl carousel -->
+    <section>
+        <div class="container section">
+            <h2 class="italic">Featured Photographers</h2>
+            <div class="owl-carousel owl-theme ">
+                <div class="item">
+                    <div class="card tour-card">
+                        <img src="images/header-lap-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
+                        <div class="card-body">
+                            <h5 class="card-title">Mountain Adventure</h5>
+                            <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
+                            <a href="#" class="btn btn-read-more">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="card tour-card">
+                        <img src="images/header-office-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
+                        <div class="card-body">
+                            <h5 class="card-title">Mountain Adventure</h5>
+                            <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
+                            <a href="#" class="btn btn-read-more">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="card tour-card">
+                        <img src="images/header-office-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
+                        <div class="card-body">
+                            <h5 class="card-title">Mountain Adventure</h5>
+                            <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
+                            <a href="#" class="btn btn-read-more">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="card tour-card">
+                        <img src="images/header-person-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
+                        <div class="card-body">
+                            <h5 class="card-title">Mountain Adventure</h5>
+                            <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
+                            <a href="#" class="btn btn-read-more">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End owl carousel -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".owl-carousel").owlCarousel({
+            loop: true,
+            margin: 10,
+            rtl: true,
+            nav: false,// Hide navigation controls (next/prev arrows)
+            dots: true,// Optional: you can enable dots for navigation if needed
+            autoplay: true,        // Enable autoplay
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            smartSpeed: 800,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        });
+
+    });
+</script>

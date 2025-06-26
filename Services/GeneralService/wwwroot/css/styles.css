@@ -399,6 +399,10 @@ video {
     background: linear-gradient(45deg, #1b182b, #2a5298);
     color: #fff; /* White text */
     padding: 40px 20px;
+    float:left;
+    width:100%;
+    position:relative;
+    z-index:9;
 }
 
 /* Footer Content Section */

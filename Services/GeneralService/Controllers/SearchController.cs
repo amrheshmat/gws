@@ -85,6 +85,7 @@ namespace GeneralService.Controllers
             {
                 subscriberModel subscriberModel = new subscriberModel();
                 var packages = _repo.Filter<Package>(e => e.user_id == subscriber.userId).ToList();
+                subscriberModel.userId = subscriber.userId;
                 subscriberModel.Packages = packages;
                 subscriberModel.Name = subscriber.fullName;
                 subscriberModel.Phone = subscriber.mobile;

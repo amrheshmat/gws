@@ -413,12 +413,48 @@ namespace GeneralService.Controllers
         {
             List<Attachment> portofolioAttachment = await _repo.Filter<Attachment>(e => e.elementId == id && e.type == "Portofolio").ToListAsync();
             return portofolioAttachment;
-
         }
-        [Route("Profile/{id}")]
-        public async Task<IActionResult> ProfileView(int? page)
+        [Route("Profile/{userId}")]
+        public async Task<IActionResult> ProfileView(int userId)
         {
-            return View();
+            ProfileModel model = new ProfileModel();
+            Subscriber subscriber = _repo.Filter<Subscriber>(e => e.userId == userId).FirstOrDefault();
+            List<Package> packages = _repo.Filter<Package>(e => e.user_id == userId).ToList();
+            var availability = _repo.Filter<Availability>(e => e.userId == userId).FirstOrDefault();
+            var categories = _repo.GetAll<Category>().ToList(); // Load from database
+            List<string> portofolioAttachment = _repo.Filter<Attachment>(e => e.elementId == userId && e.type == "Portofolio").Select(e => e.attachmentPath).ToList();
+            var subscriberCategories = _repo.Filter<UserCategory>(e => e.user_id == userId).ToList();
+            List<string> categoriesList = new List<string>();
+            foreach (var subscriberCategory in subscriberCategories)
+            {
+                var category = categories.Where(e => e.id == subscriberCategory.category_id).FirstOrDefault();
+                string categoryName = category.id.ToString();
+                categoriesList.Add(categoryName);
+            }
+            PackageModel packageModel = new PackageModel();
+            packageModel.userPackages = packages;
+            BasicInfoModel basicInfoModel = new BasicInfoModel();
+            basicInfoModel.bio = subscriber.bio;
+            basicInfoModel.FullName = subscriber.fullName;
+            basicInfoModel.Phone = subscriber.mobile;
+            basicInfoModel.Email = subscriber.email;
+            basicInfoModel.City = _repo.Filter<City>(e => e.id == int.Parse(subscriber.city)).FirstOrDefault()?.name;
+            basicInfoModel.SelectedCategories = categoriesList;
+            basicInfoModel.ProfilePicPath = _repo.Filter<Attachment>(e => e.elementId == userId && e.type == "Profile").FirstOrDefault()?.attachmentPath;
+            model.attachmentPathes = portofolioAttachment;
+            model.packageInfo = packageModel;
+            model.basicInfo = basicInfoModel;
+            model.availability = new AvailabilityModel
+            {
+                fromDay = availability?.fromDay,
+                toDay = availability?.toDay,
+                fromHour = availability?.fromHour,
+                toHour = availability?.toHour,
+                fromPeriod = availability?.fromPeriod,
+                toPeriod = availability?.toPeriod,
+            };
+
+            return View(model);
         }
     }
 }

@@ -4,30 +4,38 @@
     ViewBag.WeekDayNames = Enum.GetNames(typeof(WeekDays)).ToList();
     var userId = ViewBag.userId;
     var packages = ViewBag.Pacakges;
+    var profilePicPath = Model.basicInfo.ProfilePicPath;
 }
 <style>
 .profile-header {
     text-align: center;
     position: fixed;
-    right: 0px;
+    left: 0px;
     height: 100%;
     top: 0px;
     z-index: -4;
     background: #fff;
     color: #000;
-    box-shadow: 10px 10px 5px 12px #c3ced2;
+    box-shadow: 10px 10px 5px -8px #c3ced2;
 }
-
 .profile-photo {
     border-radius: 50%;
     width: 160px;
     height: 160px;
     object-fit: cover;
     margin-bottom: 1rem;
-    margin-top: 100px;
+    margin-top: 35%;
     z-index:1;
 }
-
+@@media (max-width: 768px) {
+    .profile-header{
+        position:relative;
+        box-shadow: none;
+    }
+    .profile-photo{
+        margin-top:0px;
+    }
+}
 .bio {
     font-style: italic;
     margin-bottom: 1rem;
@@ -46,75 +54,320 @@
     margin: 0.3rem 0;
 }
 
+.rotate-icon {
+    transition: transform 0.3s ease;
+    position: absolute;
+    right: 20px;
+}
+section{
+    float:right;
+}
+button[aria-expanded="true"] .rotate-icon {
+    transform: rotate(-90deg); /* right arrow */
+}
+.card{
+    background: linear-gradient(45deg, #3172e8, #2a5298) !important;
+}
+.card{
+    padding:10px;
+}
+.card-body{
+    padding: 0px;
+}
+.card-title,.card-text{
+    color:#fff;
+}
+  /* Gallery Grid */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.lightbox.show {
+    display: flex;
+}
+
+.zoom-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+}
+
+.main-image {
+    max-height: 80vh;
+    max-width: 90vw;
+}
+
+.zoom-area {
+    width: 250px;
+    height: 250px;
+    border: 2px solid white;
+    background-repeat: no-repeat;
+    background-size: 500%;
+    display: none;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@@media (max-width: 768px) {
+    .zoom-wrapper {
+    flex-direction: column;
+    }
+
+    .zoom-area {
+    margin-top: 20px;
+    }
+}
+
+.zoom-controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 10;
+}
+
+.zoom-controls button {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    padding: 6px 10px;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.zoom-controls button:hover {
+    background: white;
+}
 </style>
-<section style="background:#fff;">
+<section style="background:#fff;z-index:0;">
     <div class="container" style="margin-top:100px;">
-       <div class="row">
-           
-            <!--Start owl carousel -->
-            <section class="col-9">
-                <div class="container section">
-                    <h2 class="italic" style="margin-top: 50px;">Portofolio</h2>
-                    <div class="owl-carousel owl-theme ">
-                        <div class="item">
-                            <div class="card tour-card">
-                                <img src="images/header-lap-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
-                                <div class="card-body">
-                                    <h5 class="card-title">Mountain Adventure</h5>
-                                    <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
-                                    <a href="#" class="btn btn-read-more">Learn More</a>
-                                </div>
+        <section class="profile-header col-sm-12 col-md-3">
+            <div>
+                @if(profilePicPath != null)
+                {
+                    <img src="/Files/@profilePicPath" alt="Photographer Name" class="profile-photo">
+                }
+                else
+                {
+                    <img src="https://www.findbanquet.com/blog/wp-content/uploads/2024/06/photographers.jpg" alt="Photographer Name" class="profile-photo">
+                }
+                <h1>@Model.basicInfo.FullName</h1>
+                <p class="bio">@Model.basicInfo.bio</p>
+                <ul class="contact-info">
+                    <li>Email: @Model.basicInfo.Email</li>
+                    <li>Phone: @Model.basicInfo.Phone</li>
+                    <li>Location: @Model.basicInfo.City</li>
+                </ul>
+            </div>
+        </section>
+        <!--Start owl carousel -->
+        <section class="col-sm-12 col-md-9">
+            @*  <div class="container section">
+                <h2 class="italic" style="margin-top: 50px;">Packages</h2>
+                <div id="accordion">
+                    <div class="">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button style="background: #fff;border: 1px solid #f2f0f0;box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);margin-top: 0px; width: 100%; text-align: left; padding: 20px 5px; border-radius: 10px 10px 0px 0px;color:#000;" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Collapsible Group Item #1
+                                    <i class="fas fa-chevron-down rotate-icon"></i>
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body" style="border: 1px solid #f2f0f0;">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="card tour-card">
-                                <img src="images/header-office-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
-                                <div class="card-body">
-                                    <h5 class="card-title">Mountain Adventure</h5>
-                                    <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
-                                    <a href="#" class="btn btn-read-more">Learn More</a>
-                                </div>
+                    </div>
+                    <div class="">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button style="color:#000;border: 1px solid #f2f0f0;background: #fff;margin-top: 0px; width: 100%; text-align: left; padding: 20px 5px;border-radius: 0px;" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Collapsible Group Item #2
+                                    <i class="fas fa-chevron-down rotate-icon"></i>
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body" style="border: 1px solid #f2f0f0;">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="card tour-card">
-                                <img src="images/header-office-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
-                                <div class="card-body">
-                                    <h5 class="card-title">Mountain Adventure</h5>
-                                    <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
-                                    <a href="#" class="btn btn-read-more">Learn More</a>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="">
+                        <div class="card-header" id="headingThree">
+                            <h5 class="mb-0">
+                                <button style="color:#000;border: 1px solid #f2f0f0;background: #fff;margin-top: 0px; width: 100%; text-align: left; padding: 20px 5px; border-radius: 0px 0px 10px 10px;" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Collapsible Group Item #3
+                                    <i class="fas fa-chevron-down rotate-icon"></i>
+                                </button>
+                            </h5>
                         </div>
-                        <div class="item">
-                            <div class="card tour-card">
-                                <img src="images/header-person-carousel.webp" class="card-img-top" alt="Tour 1" loading="lazy" />
-                                <div class="card-body">
-                                    <h5 class="card-title">Mountain Adventure</h5>
-                                    <p class="card-text">Explore the beautiful mountains and enjoy breathtaking views.</p>
-                                    <a href="#" class="btn btn-read-more">Learn More</a>
-                                </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="card-body" style="border: 1px solid #f2f0f0;">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-            <!-- End owl carousel -->
-            <section class="profile-header col-3">
-                <img src="https://www.findbanquet.com/blog/wp-content/uploads/2024/06/photographers.jpg" alt="Photographer Name" class="profile-photo">
-                <h1>Alex Andrews</h1>
-                <p class="bio">I'm a professional wedding & portrait photographer capturing timeless memories.</p>
-                <ul class="contact-info">
-                    <li>Email: alex@example.com</li>
-                    <li>Phone: +1 234 567890</li>
-                    <li>Location: New York, USA</li>
-                </ul>
-            </section>
-       </div>
+            </div> *@
+            <div class="container section">
+                <h2 class="italic" style="margin-top: 50px;">Packages</h2>
+                <div class="row" style="margin:auto">
+                    @foreach (var package in Model.packageInfo.userPackages)
+                    {
+                        <div class="item col-sm-12 col-md-4">
+                            <div class="card tour-card">
+                                <div class="card-body">
+                                    @if (package.title != null)
+                                    {
+                                        <h5 class="card-title">@package.title</h5>
+                                    }
+                                    @if (package.price != null)
+                                    {
+                                        <p class="card-text">@package.price</p>
+                                    }
+                                    @if (package.deliverables != null)
+                                    {
+                                        <p class="card-text">@package.deliverables</p>
+                                    }
+                                    @if(package.description != null)
+                                    {
+                                        <p class="card-text">@package.description</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="container section">
+                <h2 class="italic" style="margin-top: 50px;">Portofolio</h2>
+                <div class="gallery">
+                    @foreach (var path in Model.attachmentPathes)
+                    {
+                            <img style="height:300px;" src="/Files/@path" class="card-img-top" alt="@path" loading="lazy" />
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- End owl carousel -->
     </div>
 </section>
 
+<div class="lightbox" id="lightbox">
+    <span class="close" id="closeBtn">&times;</span>
+    <div class="zoom-wrapper">
+        <img id="lightbox-img" class="main-image" src="" alt="Zoom Image">
+        <div class="zoom-area" id="zoomArea"></div>
+        <div class="zoom-controls">
+            <button id="zoomIn">+</button>
+            <button id="zoomOut">−</button>
+        </div>
+    </div>
+</div>
+
+
 <script>
+    let zoomLevel = 200; // Start at 200%
+
+    const zoomInBtn = document.getElementById('zoomIn');
+    const zoomOutBtn = document.getElementById('zoomOut');
+
+    function updateZoom() {
+        zoomArea.style.backgroundSize = `${zoomLevel}%`;
+    }
+
+    zoomInBtn.addEventListener('click', () => {
+        zoomLevel = Math.min(zoomLevel + 50, 1000); // max 1000%
+        updateZoom();
+    });
+
+    zoomOutBtn.addEventListener('click', () => {
+        zoomLevel = Math.max(zoomLevel - 50, 100); // min 100%
+        updateZoom();
+    });
+
+    // Update position and zoom on mousemove
+   
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const zoomArea = document.getElementById('zoomArea');
+    const closeBtn = document.getElementById('closeBtn');
+
+    document.querySelectorAll('.gallery img').forEach(img => {
+        img.addEventListener('click', () => {
+            lightbox.classList.add('show');
+            lightboxImg.src = img.src;
+            zoomArea.style.backgroundImage = `url('${img.src}')`;
+            zoomArea.style.display = 'block';
+        });
+    });
+
+    closeBtn.addEventListener('click', () => {
+        lightbox.classList.remove('show');
+        zoomArea.style.display = 'none';
+    });
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.classList.remove('show');
+        }
+    });
+    lightboxImg.addEventListener('mousemove', function (e) {
+        const rect = lightboxImg.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
+
+        zoomArea.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+    });
+
+    lightboxImg.addEventListener('mouseenter', () => {
+        zoomArea.style.display = 'block';
+        updateZoom();
+    });
+
+    lightbox.addEventListener('mouseleave', () => {
+        zoomArea.style.display = 'none';
+    });
     $(document).ready(function () {
         $(".owl-carousel").owlCarousel({
             loop: true,
@@ -138,6 +391,6 @@
                 }
             }
         });
-
     });
+    $('.collapse').collapse();
 </script>

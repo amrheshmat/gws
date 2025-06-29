@@ -5,6 +5,7 @@
     var userId = ViewBag.userId;
     var packages = ViewBag.Pacakges;
     var profilePicPath = Model.basicInfo.ProfilePicPath;
+    var phone = Model.basicInfo.Phone;
 }
 <style>
 .profile-header {
@@ -43,7 +44,7 @@
     text-align:center;
 }
 
-.contact-info {
+.contact-info-profile {
     list-style: none;
     padding: 0;
     margin-bottom: 2rem;
@@ -78,13 +79,6 @@ button[aria-expanded="true"] .rotate-icon {
     color:#fff;
 }
   /* Gallery Grid */
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    padding: 20px;
-}
-
 .gallery img {
     width: 100%;
     height: 200px;
@@ -173,8 +167,68 @@ button[aria-expanded="true"] .rotate-icon {
 .zoom-controls button:hover {
     background: white;
 }
+
+.whatsapp-icon {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #25D366;
+    color: white;
+    font-size: 30px;
+    padding: 15px;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+    z-index: 999;
+    width: 60px;
+    height: 60px;
+}
+.whatsapp-icon i{
+    position: absolute;
+    left: 20%;
+    top: 15%;
+    font-size: 40px;
+}
+
+
+.call-button {
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    background-color: #25d366;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    left: 100px;
+    transition: transform 0.2s;
+}
+.whatsapp-icon:hover,.call-button:hover {
+    transform: scale(1.1);
+    background-color: #1ebe5d;
+}
+.call-button i {
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    font-size: 25px;
+}
 </style>
+@* <a class="whatsapp-icon" href="https://wa.me/201234567890?text=السلام عليكم" target="_blank"> *@
+<a class="whatsapp-icon" href="https://wa.me/@phone" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+<a class="call-button" href="tel:@phone">
+    <i class="fas fa-phone"></i>
+</a>
 <section style="background:#fff;z-index:0;">
+    
     <div class="container" style="margin-top:100px;">
         <section class="profile-header col-sm-12 col-md-3">
             <div>
@@ -188,11 +242,12 @@ button[aria-expanded="true"] .rotate-icon {
                 }
                 <h1>@Model.basicInfo.FullName</h1>
                 <p class="bio">@Model.basicInfo.bio</p>
-                <ul class="contact-info">
+                <ul class=".contact-info-profile">
                     <li>Email: @Model.basicInfo.Email</li>
                     <li>Phone: @Model.basicInfo.Phone</li>
                     <li>Location: @Model.basicInfo.City</li>
                 </ul>
+                
             </div>
         </section>
         <!--Start owl carousel -->
@@ -253,7 +308,7 @@ button[aria-expanded="true"] .rotate-icon {
                 <div class="row" style="margin:auto">
                     @foreach (var package in Model.packageInfo.userPackages)
                     {
-                        <div class="item col-sm-12 col-md-4">
+                        <div class="item col-sm-12 col-md-4" style="margin: 10px 0px;">
                             <div class="card tour-card">
                                 <div class="card-body">
                                     @if (package.title != null)
@@ -280,10 +335,12 @@ button[aria-expanded="true"] .rotate-icon {
             </div>
             <div class="container section">
                 <h2 class="italic" style="margin-top: 50px;">Portofolio</h2>
-                <div class="gallery">
+                <div class="row gallery">
                     @foreach (var path in Model.attachmentPathes)
                     {
-                            <img style="height:300px;" src="/Files/@path" class="card-img-top" alt="@path" loading="lazy" />
+                        <div class="col-md-4 col-sm-6" style="margin:10px 0px;">
+                            <img style="height:300px; width:100%;border-radius:10px;" src="/Files/@path" class="card-img-top" alt="@path" loading="lazy" />
+                        </div>
                     }
                 </div>
             </div>
